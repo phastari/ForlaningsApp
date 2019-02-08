@@ -1,0 +1,21 @@
+﻿'FiefApp.exe' (CLR v4.0.30319: DefaultDomain): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_32\mscorlib\v4.0_4.0.0.0__b77a5c561934e089\mscorlib.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: DefaultDomain): Loaded 'C:\Users\Jonas\source\repos\Förlänings App\FiefApp\bin\Debug\FiefApp.exe'. Symbols loaded.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Users\Jonas\source\repos\Förlänings App\FiefApp\bin\Debug\Prism.Unity.Wpf.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Users\Jonas\source\repos\Förlänings App\FiefApp\bin\Debug\Prism.Wpf.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\PresentationFramework\v4.0_4.0.0.0__31bf3856ad364e35\PresentationFramework.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\WindowsBase\v4.0_4.0.0.0__31bf3856ad364e35\WindowsBase.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Core\v4.0_4.0.0.0__b77a5c561934e089\System.Core.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_32\PresentationCore\v4.0_4.0.0.0__31bf3856ad364e35\PresentationCore.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Xaml\v4.0_4.0.0.0__b77a5c561934e089\System.Xaml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Users\Jonas\source\repos\Förlänings App\FiefApp\bin\Debug\Prism.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Runtime\Microsoft.VisualStudio.Debugger.Runtime.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Configuration\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Configuration.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Xml\v4.0_4.0.0.0__b77a5c561934e089\System.Xml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Step into: Stepping over non-user code 'FiefApp.App..ctor'
+Step into: Stepping over non-user code 'FiefApp.App.InitializeComponent'
+'FiefApp.exe' (CLR v4.0.30319: FiefApp.exe): Loaded 'C:\Users\Jonas\source\repos\Förlänings App\FiefApp\bin\Debug\FiefApp.Common.Infrastructure.dll'. Symbols loaded.
+An unhandled exception of type 'System.IO.FileLoadException' occurred in Prism.Wpf.dll
+Could not load file or assembly 'Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)
+
+The program '[12476] FiefApp.exe' has exited with code -1 (0xffffffff).

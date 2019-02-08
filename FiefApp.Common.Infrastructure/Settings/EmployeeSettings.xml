@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Employee Name="Falconer" Base="2" Luxury="1"/>
+  <Employee Name="Bailiff" Base="3" Luxury="1"/>
+  <Employee Name="Herald" Base="4" Luxury="1"/>
+  <Employee Name="Hunter" Base="2" Luxury="0"/>
+  <Employee Name="Physician" Base="3" Luxury="3"/>
+  <Employee Name="Scholar" Base="3" Luxury="1"/>
+  <Employee Name="Cupbearer" Base="2" Luxury="0"/>
+  <Employee Name="Prospector" Base="2" Luxury="^2,8/13-1"/>
+</Settings>

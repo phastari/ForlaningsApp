@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Information TypText="Ärftligt län" InformationText="Vasallen får länet mot att han utför vapentjänst och svär trohet till länsherren. När vasallen dör så ärver hans arvinge länet. Har vasallen inte har någon arvinge så går länet tillbaka till länsherren."/>
+  <Information TypText="Icke ärftligt län" InformationText="Vasallen får länet mot att han utför vapentjänst och svär trohet till länsherren. När vasallen dör så går länet tillbaka till länsherren."/>
+  <Information TypText="Pantlän" InformationText="Ibland händer det att en länsherre måste låna pengar, till exempel i tider av ofred. Länsherren kan då skänka långivaren ett län att disponera fritt tills dess att lånet är återbetalat."/>
+  <Information TypText="Län på avgift" InformationText="Vasallen betalar en fast avgift till sin länsherre mot att han fritt får disponera länets inkomster."/>
+  <RoadNetwork Road="Stigar"/>
+  <RoadNetwork Road="Väg"/>
+  <RoadNetwork Road="Stenlagdväg"/>
+  <RoadNetwork Road="Kungliglandsväg"/>
+  <Liegelord Title="Storfurste"/>
+  <Liegelord Title="Storfurstinna"/>
+  <Liegelord Title="Furste"/>
+  <Liegelord Title="Furstinna"/>
+  <Liegelord Title="Hertig"/>
+  <Liegelord Title="Hertiginna"/>
+  <Liegelord Title="Greve"/>
+  <Liegelord Title="Grevinna"/>
+  <Liegelord Title="Baron"/>
+  <Liegelord Title="Baronessa"/>
+  <Liegelord Title="Godsherre"/>
+  <Liegelord Title="Godsfru"/>
+  <Liegelord Title="Riddare"/>
+  <Liegelord Title="Riddersdam"/>
+</Settings>

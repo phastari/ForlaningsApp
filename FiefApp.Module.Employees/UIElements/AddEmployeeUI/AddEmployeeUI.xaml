@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="FiefApp.Module.Employees.UIElements.AddEmployeeUI.AddEmployeeUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:behavior="clr-namespace:FiefApp.Common.Infrastructure.Behaviors;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="24" 
+             d:DesignWidth="349"
+             x:Name="Self">
+
+    <Grid
+        x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="349"/>
+        </Grid.ColumnDefinitions>
+
+        <Button
+            Content="lägg till"
+            Grid.Column="0"
+            Grid.Row="0"
+            Width="45"
+            Height="21"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding Path=AddButtonClickCommand}"
+            Visibility="{Binding Path=ShowingButtonVisibility}"
+            Style="{DynamicResource ButtonStyle}"/>
+
+        <Grid 
+            Grid.Column="0"
+            Grid.Row="0"
+            Background="LightGray"
+            Visibility="{Binding Path=ShowingAddVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="145"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox 
+                Text="{Binding Path=Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="3,0,0,0"
+                Template="{DynamicResource TextBoxEnabled}"
+                behavior:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+            <Button 
+                Content="spara" 
+                Command="{Binding Path=SaveCommand}"
+                Grid.Column="2"
+                Grid.Row="0"
+                Style="{DynamicResource ButtonStyle}"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Padding="0"/>
+
+            <Button 
+                Content="avbryt" 
+                Command="{Binding Path=CancelCommand}"
+                Grid.Column="4"
+                Grid.Row="0"
+                Style="{DynamicResource ButtonStyle}"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox 
+                Text="{Binding Path=Base, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Grid.Column="6"
+                Grid.Row="0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Template="{DynamicResource TextBoxEnabled}"
+                behavior:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+            <TextBox 
+                Text="{Binding Path=Luxury, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Grid.Column="8"
+                Grid.Row="0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Template="{DynamicResource TextBoxEnabled}"
+                behavior:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+        </Grid>
+    </Grid>
+</UserControl>

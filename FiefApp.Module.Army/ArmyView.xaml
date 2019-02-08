@@ -1,0 +1,1663 @@
+﻿<UserControl x:Class="FiefApp.Module.Army.ArmyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:itb="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="531" 
+             d:DesignWidth="784">
+
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <!-- WIDTH 768 -->
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="176"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="30"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="176"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle x:Name="InitialFocus" 
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Focusable="True"/>
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="9"
+            Grid.Row="1" 
+            Grid.RowSpan="39" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="11" 
+            Grid.ColumnSpan="9"
+            Grid.Row="1" 
+            Grid.RowSpan="39" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <!-- COLUMN 1 -->
+
+        <ComboBox 
+            x:Name="FiefComboBox"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Grid.Row="3"
+            Width="120"
+            ItemsSource="{Binding Path=FiefCollection}"
+            SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0">
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <Label
+            Content="{Binding ElementName=FiefComboBox, Path=Text}"
+            Grid.Column="2"
+            Grid.ColumnSpan="5"
+            Grid.Row="3"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            Padding="6,0,0,0"
+            Width="120"
+            ToolTip="Läge">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+
+        <Label 
+            Grid.Column="6"
+            Grid.Row="5"
+            Content="Silver"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="8"
+            Grid.Row="5"
+            Content="Bas"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="4"
+            Grid.Row="7"
+            Content="Totalt"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="7"
+            Text="{Binding Path=DataModel.TotalSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="#FAE1D7"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="7"
+            Text="{Binding Path=DataModel.TotalBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="#FAE1D7"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="9"
+            Content="Fotfolk"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="4"
+            Grid.Row="9"
+            Content="Antal"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="6"
+            Grid.Row="9"
+            Content="Silver"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="8"
+            Grid.Row="9"
+            Content="Bas"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="11"
+            Content="Armborstskyttar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="11"
+            Value="{Binding Path=DataModel.ArmyCrossbowmen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="11"
+            Text="{Binding Path=DataModel.ArmyCrossbowmenSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="11"
+            Text="{Binding Path=DataModel.ArmyCrossbowmenBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="13"
+            Content="Bågskyttar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="13"
+            Value="{Binding Path=DataModel.ArmyBowmen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="13"
+            Text="{Binding Path=DataModel.ArmyBowmenSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="13"
+            Text="{Binding Path=DataModel.ArmyBowmenBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            
+            Grid.Row="15"
+            Content="Fältmedikus"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="15"
+            Value="{Binding Path=DataModel.ArmyMedics, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            
+            Grid.Row="15"
+            Text="{Binding Path=DataModel.ArmyMedicsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="15"
+            Text="{Binding Path=DataModel.ArmyMedicsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="17"
+            Content="Fältmedikus, skicklig"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="17"
+            Value="{Binding Path=DataModel.ArmyMedicsSkilled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="17"
+            Text="{Binding Path=DataModel.ArmyMedicsSkilledSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="17"
+            Text="{Binding Path=DataModel.ArmyMedicsSkilledBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="19"
+            Content="Infanteri"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="19"
+            Value="{Binding Path=DataModel.ArmyInfantry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="19"
+            Text="{Binding Path=DataModel.ArmyInfantrySilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="19"
+            Text="{Binding Path=DataModel.ArmyInfantryBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="21"
+            Content="Infanteri, medeltungt"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Medeltungt infanteri"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="21"
+            Value="{Binding Path=DataModel.ArmyInfantryMedium, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="21"
+            Text="{Binding Path=DataModel.ArmyInfantryMediumSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="21"
+            Text="{Binding Path=DataModel.ArmyInfantryMediumBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="23"
+            Content="Infanteri, tungt"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Tungt infanteri"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="23"
+            Value="{Binding Path=DataModel.ArmyInfantryHeavy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="23"
+            Text="{Binding Path=DataModel.ArmyInfantryHeavySilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="23"
+            Text="{Binding Path=DataModel.ArmyInfantryHeavyBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="25"
+            Content="Infanteri, tungt elit"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Tungt elite infanteri"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="25"
+            Value="{Binding Path=DataModel.ArmyInfantryElite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="25"
+            Text="{Binding Path=DataModel.ArmyInfantryEliteSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="25"
+            Text="{Binding Path=DataModel.ArmyInfantryEliteBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="27"
+            Content="Långbågskyttar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="27"
+            Value="{Binding Path=DataModel.ArmyLongbowmen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="27"
+            Text="{Binding Path=DataModel.ArmyLongbowmenSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="27"
+            Text="{Binding Path=DataModel.ArmyLongbowmenBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="29"
+            Content="Legoknektar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="29"
+            Value="{Binding Path=DataModel.ArmyMercenary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="29"
+            Text="{Binding Path=DataModel.ArmyMercenarySilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="29"
+            Text="{Binding Path=DataModel.ArmyMercenaryBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="31"
+            Content="Legoknektar, elit"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Elite legoknektar"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="31"
+            Value="{Binding Path=DataModel.ArmyMercenaryElite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="31"
+            Text="{Binding Path=DataModel.ArmyMercenaryEliteSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="31"
+            Text="{Binding Path=DataModel.ArmyMercenaryEliteBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="33"
+            Content="Legoknektar, skyttar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bågskyttar, legoknektar"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="33"
+            Value="{Binding Path=DataModel.ArmyMercenaryBowmen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="33"
+            Text="{Binding Path=DataModel.ArmyMercenaryBowmenSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="33"
+            Text="{Binding Path=DataModel.ArmyMercenaryBowmenBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="35"
+            Content="Maskinist"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="35"
+            Value="{Binding Path=DataModel.ArmyEngineers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="35"
+            Text="{Binding Path=DataModel.ArmyEngineersSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="35"
+            Text="{Binding Path=DataModel.ArmyEngineersBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="37"
+            Content="Spjutmän"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="4"
+            Grid.Row="37"
+            Value="{Binding Path=DataModel.ArmySpearmen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="37"
+            Text="{Binding Path=DataModel.ArmySpearmenSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="37"
+            Text="{Binding Path=DataModel.ArmySpearmenBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="3"
+            Content="Spejare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="3"
+            Value="{Binding Path=DataModel.ArmyScouts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="3"
+            Text="{Binding Path=DataModel.ArmyScoutsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="3"
+            Text="{Binding Path=DataModel.ArmyScoutsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="5"
+            Content="Spejare, skickliga"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="5"
+            Value="{Binding Path=DataModel.ArmyScoutsSkilled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="5"
+            Text="{Binding Path=DataModel.ArmyScoutsSkilledSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="5"
+            Text="{Binding Path=DataModel.ArmyScoutsSkilledBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="7"
+            Content="Tempelriddare*"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bor på godset, och kostar därför lika mycket bas/lyx som en vuxen."/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="7"
+            Value="{Binding Path=DataModel.ArmyKnightTemplars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="7"
+            Text="{Binding Path=DataModel.ArmyKnightTemplarsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="7"
+            Text="{Binding Path=DataModel.ArmyKnightTemplarsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="9"
+            Content="Vakter"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="9"
+            Value="{Binding Path=DataModel.ArmyGuards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="9"
+            Text="{Binding Path=DataModel.ArmyGuardsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="9"
+            Text="{Binding Path=DataModel.ArmyGuardsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="11"
+            Content="Vapenmästare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="11"
+            Value="{Binding Path=DataModel.ArmyWeaponmasters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="11"
+            Text="{Binding Path=DataModel.ArmyWeaponmastersSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="11"
+            Text="{Binding Path=DataModel.ArmyWeaponmastersBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="13"
+            Content="Kavalleri"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="14"
+            Grid.Row="13"
+            Content="Antal"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="16"
+            Grid.Row="13"
+            Content="Silver"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="18"
+            Grid.Row="13"
+            Content="Bas"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="15"
+            Content="Bågskyttar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="15"
+            Value="{Binding Path=DataModel.CavalryBowmen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="15"
+            Text="{Binding Path=DataModel.CavalryBowmenSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="15"
+            Text="{Binding Path=DataModel.CavalryBowmenBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="17"
+            Content="Kurir ryttare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="17"
+            Value="{Binding Path=DataModel.CavalryCourier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="17"
+            Text="{Binding Path=DataModel.CavalryCourierSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="17"
+            Text="{Binding Path=DataModel.CavalryCourierBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="19"
+            Content="Lättkavalleri"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="19"
+            Value="{Binding Path=DataModel.CavalryLight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="19"
+            Text="{Binding Path=DataModel.CavalryLightSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="19"
+            Text="{Binding Path=DataModel.CavalryLightBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="21"
+            Content="Riddare*"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bor på godset, och kostar därför lika mycket bas/lyx som en vuxen."/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="21"
+            Value="{Binding Path=DataModel.CavalryKnights, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="21"
+            Text="{Binding Path=DataModel.CavalryKnightsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="21"
+            Text="{Binding Path=DataModel.CavalryKnightsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="23"
+            Content="Spejare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="23"
+            Value="{Binding Path=DataModel.CavalryScouts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="23"
+            Text="{Binding Path=DataModel.CavalryScoutsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="23"
+            Text="{Binding Path=DataModel.CavalryScoutsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="25"
+            Content="Tempelriddare*"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bor på godset, och kostar därför lika mycket bas/lyx som en vuxen."/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="25"
+            Value="{Binding Path=DataModel.CavalryKnightTemplars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="25"
+            Text="{Binding Path=DataModel.CavalryKnightTemplarsSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="25"
+            Text="{Binding Path=DataModel.CavalryKnightTemplarsBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="27"
+            Content="Tungtkavalleri"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="27"
+            Value="{Binding Path=DataModel.CavalryHeavy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="27"
+            Text="{Binding Path=DataModel.CavalryHeavySilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="27"
+            Text="{Binding Path=DataModel.CavalryHeavyBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="29"
+            Content="Tungtkavalleri, elit"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Tungt elit kavalleri"/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="29"
+            Value="{Binding Path=DataModel.CavalryElite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="29"
+            Text="{Binding Path=DataModel.CavalryEliteSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="18"
+            Grid.Row="29"
+            Text="{Binding Path=DataModel.CavalryEliteBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <!-- COLUMN 3 -->
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="31"
+            Content="Officerare"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="14"
+            Grid.Row="31"
+            Content="Antal"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="16"
+            Grid.Row="31"
+            Content="Silver"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="33"
+            Content="Korpral*"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bor på godset, och kostar därför lika mycket bas/lyx som en vuxen."/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="33"
+            Value="{Binding Path=DataModel.OfficersCorporal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="33"
+            Text="{Binding Path=DataModel.OfficersCorporalSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="35"
+            Content="Sergeant*"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bor på godset, och kostar därför lika mycket bas/lyx som en vuxen."/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="35"
+            Value="{Binding Path=DataModel.OfficersSergeant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="35"
+            Text="{Binding Path=DataModel.OfficersSergeantSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="37"
+            Content="Kapten*"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Bor på godset, och kostar därför lika mycket bas/lyx som en vuxen."/>
+
+        <itb:iTextBox
+            Grid.Column="14"
+            Grid.Row="37"
+            Value="{Binding Path=DataModel.OfficersCaptain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <itb:iTextBox.Style>
+                <Style TargetType="{x:Type itb:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </itb:iTextBox.Style>
+        </itb:iTextBox>
+
+        <TextBox
+            Grid.Column="16"
+            Grid.Row="37"
+            Text="{Binding Path=DataModel.OfficersCaptainSilver}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            IsTabStop="False"
+            Background="WhiteSmoke"
+            Padding="0"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,655 @@
+﻿<UserControl x:Class="FiefApp.Module.Employees.EmployeesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:itb="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:eui="clr-namespace:FiefApp.Module.Employees.UIElements.EmployeeUI"
+             xmlns:aeui="clr-namespace:FiefApp.Module.Employees.UIElements.AddEmployeeUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cdc="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:m="clr-namespace:FiefApp.Common.Infrastructure.Models;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="531" 
+             d:DesignWidth="784">
+
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <!-- WIDTH 768 -->
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="196"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="30"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="196"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle x:Name="InitialFocus" 
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Focusable="True"/>
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="9"
+            Grid.Row="1" 
+            Grid.RowSpan="39" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="11" 
+            Grid.ColumnSpan="9"
+            Grid.Row="1" 
+            Grid.RowSpan="39" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+
+        <ItemsControl
+            Grid.Column="1"
+            Grid.ColumnSpan="20"
+            Grid.Row="3"
+            Grid.RowSpan="36"
+            Background="Transparent"
+            Grid.ZIndex="0">
+
+            <ItemsControl.Resources>
+                <CollectionViewSource 
+                    x:Key="Employees" IsLiveFilteringRequested="True"
+                    Source="{Binding Path=DataModel.EmployeesCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <DataTemplate DataType="{x:Type Rectangle}">
+                    <Rectangle/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type m:EmployeeModel}">
+                    <eui:EmployeeUI 
+                        Id="{Binding Path=Id}"
+                        Employee="{Binding Path=Name}"
+                        Number="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Base="{Binding Path=Base}"
+                        BaseCost="{Binding Path=BaseCost}"
+                        Luxury="{Binding Path=Luxury}"
+                        LuxuryCost="{Binding Path=LuxuryCost}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="EmployeeUIEvent">
+                                <cdc:CustomCommandAction Command="{Binding Path=DataContext.EmployeeUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </eui:EmployeeUI>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type aeui:AddEmployeeUI}">
+                    <eui:EmployeeUI/>
+                </DataTemplate>
+            </ItemsControl.Resources>
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" 
+                               Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+                    <Rectangle 
+                        x:Name="ItemRectangle"
+                        Height="288"
+                        Width="395"
+                        HorizontalAlignment="Left"
+                        Fill="Transparent"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource Employees}}"/>
+                    <aeui:AddEmployeeUI
+                        Margin="8,0,0,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="AddEmployeeUIEvent">
+                                <cdc:CustomCommandAction Command="{Binding Path=DataContext.AddEmployeeUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </aeui:AddEmployeeUI>
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </ItemsControl>
+
+
+        <Grid
+            x:Name="Container"
+            Background="Transparent"
+            Grid.Column="1"
+            Grid.ColumnSpan="9"
+            Grid.Row="3"
+            Grid.RowSpan="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="196"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox 
+                x:Name="FiefComboBox"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Grid.Row="2"
+                Width="120"
+                ItemsSource="{Binding Path=FiefCollection}"
+                SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="6,0,0,0">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Label
+                    Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Left"
+                    Padding="6,0,0,0"
+                    ToolTip="Läge">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Hidden">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Label 
+                    Grid.Column="5"
+                    Grid.Row="2"
+                    Content="Bas"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="7"
+                    Grid.Row="2"
+                    Content="Lyx"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="3"
+                    Grid.Row="4"
+                    Content="Totalt"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="4"
+                    Text="{Binding Path=DataModel.TotalBase}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="#FAE1D7"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="4"
+                    Text="{Binding Path=DataModel.TotalLuxury}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Padding="0" 
+                    Background="#FAE1D7"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="6"
+                    Content="Anställda"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0" 
+                    FontWeight="Bold"/>
+
+            <Label 
+                    Grid.Column="3"
+                    Grid.Row="6"
+                    Content="Antal"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="5"
+                    Grid.Row="6"
+                    Content="Bas"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="7"
+                    Grid.Row="6"
+                    Content="Lyx"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="8"
+                    Content="Falkenerare"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="8"
+                    Value="{Binding Path=DataModel.Falconer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="8"
+                    Text="{Binding Path=DataModel.BaseFalconer}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="8"
+                    Text="{Binding Path=DataModel.LuxuryFalconer}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="10"
+                    Content="Fogde"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="10"
+                    Value="{Binding Path=DataModel.Bailiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="10"
+                    Text="{Binding Path=DataModel.BaseBailiff}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="10"
+                    Text="{Binding Path=DataModel.LuxuryBailiff}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="12"
+                    Content="Härold"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="12"
+                    Value="{Binding Path=DataModel.Herald, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="12"
+                    Text="{Binding Path=DataModel.BaseHerald}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="12"
+                    Text="{Binding Path=DataModel.LuxuryHerald}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="14"
+                    Content="Jägare"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="14"
+                    Value="{Binding Path=DataModel.Hunter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="14"
+                    Text="{Binding Path=DataModel.BaseHunter}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="14"
+                    Text="{Binding Path=DataModel.LuxuryHunter}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="16"
+                    Content="Livmedikus"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="16"
+                    Value="{Binding Path=DataModel.Physician, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="16"
+                    Text="{Binding Path=DataModel.BasePhysician}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="16"
+                    Text="{Binding Path=DataModel.LuxuryPhysician}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="18"
+                    Content="Lärd"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="18"
+                    Value="{Binding Path=DataModel.Scholar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="18"
+                    Text="{Binding Path=DataModel.BaseScholar}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="18"
+                    Text="{Binding Path=DataModel.LuxuryScholar}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="20"
+                    Content="Munskänk"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="20"
+                    Value="{Binding Path=DataModel.Cupbearer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="20"
+                    Text="{Binding Path=DataModel.BaseCupbearer}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="20"
+                    Text="{Binding Path=DataModel.LuxuryCupbearer}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <Label 
+                    Grid.Column="1"
+                    Grid.Row="22"
+                    Content="Prospektor"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <itb:iTextBox
+                    Grid.Column="3"
+                    Grid.Row="22"
+                    Value="{Binding Path=DataModel.Prospector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox
+                    Grid.Column="5"
+                    Grid.Row="22"
+                    Text="{Binding Path=DataModel.BaseProspector}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+            <TextBox
+                    Grid.Column="7"
+                    Grid.Row="22"
+                    Text="{Binding Path=DataModel.LuxuryProspector}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True"
+                    IsTabStop="False"
+                    Background="WhiteSmoke"
+                    Padding="0"/>
+
+        </Grid>
+
+
+
+
+
+
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <LinearGradientBrush x:Key="MouseOverBackground" EndPoint="0,1" StartPoint="3,0">
+        <GradientStop Color="AntiqueWhite" Offset="0.0"/>
+        <GradientStop Color="WhiteSmoke" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="StaticBackground" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="AntiqueWhite" Offset="0.0"/>
+        <GradientStop Color="WhiteSmoke" Offset="1.0"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+
+    <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">
+        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource StaticBackground}" SnapsToDevicePixels="True">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                <Setter Property="Background" TargetName="border" Value="{StaticResource MouseOverBackground}"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+            </Trigger>
+            <Trigger Property="IsReadOnly" Value="true">
+                <Setter Property="Background" TargetName="border" Value="WhiteSmoke"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+</ResourceDictionary>

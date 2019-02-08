@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <LinearGradientBrush x:Key="Custom.Static.Background" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="AntiqueWhite" Offset="0.0"/>
+        <GradientStop Color="WhiteSmoke" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Custom.MouseOver.Background" EndPoint="0,1" StartPoint="3,0">
+        <GradientStop Color="AntiqueWhite" Offset="0.0"/>
+        <GradientStop Color="WhiteSmoke" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <ControlTemplate x:Key="TextBoxEnabled" TargetType="{x:Type TextBoxBase}">
+        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource Custom.Static.Background}" SnapsToDevicePixels="True">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                <Setter Property="Background" TargetName="border" Value="{StaticResource Custom.MouseOver.Background}"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                <Setter Property="Background" TargetName="border" Value="{StaticResource Custom.MouseOver.Background}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+</ResourceDictionary>
