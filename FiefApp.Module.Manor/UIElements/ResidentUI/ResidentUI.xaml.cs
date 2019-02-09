@@ -107,6 +107,20 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
                 new PropertyMetadata("")
             );
 
+        public string Position
+        {
+            get => (string)GetValue(PositionProperty);
+            set => SetValue(PositionProperty, value);
+        }
+
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register(
+                "Position",
+                typeof(string),
+                typeof(ResidentUI),
+                new PropertyMetadata("")
+            );
+
         public string ResidentType
         {
             get => (string)GetValue(ResidentTypeProperty);

@@ -94,6 +94,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LivingconditionModel.cs" />
     <Compile Include="Models\ResidentModel.cs" />
+    <Compile Include="Models\SoldierModel.cs" />
     <Compile Include="Services\ArmyService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\IArmyService.cs" />

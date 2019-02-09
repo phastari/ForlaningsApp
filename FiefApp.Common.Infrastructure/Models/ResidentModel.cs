@@ -39,6 +39,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private string _position = "Boende";
+        public string Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _age;
         public int Age
         {

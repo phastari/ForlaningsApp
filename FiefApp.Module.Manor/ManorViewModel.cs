@@ -1,6 +1,7 @@
 ﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
@@ -73,7 +74,44 @@ namespace FiefApp.Module.Manor
             {
                 DataModel = _baseService.GetDataModel<ManorDataModel>(Index);
             }
+
             UpdateFiefCollection();
+            CreateFakeData();
+        }
+
+        private void CreateFakeData()
+        {
+            DataModel.ResidentsList.Add(new ResidentModel()
+            {
+                Age = 32,
+                Type = "Resident",
+                Name = "Karl Gunnar",
+                Position = "Boende"
+            });
+
+            DataModel.ResidentsList.Add(new ResidentModel()
+            {
+                Age = 43,
+                Type = "Resident",
+                Name = "Sune Svensson",
+                Position = "Boende"
+            });
+
+            DataModel.ResidentsList.Add(new EmployeeModel()
+            {
+                Age = 54,
+                Name = "Sven Employee",
+                Type = "Employee",
+                Position = "Anställd"
+            });
+
+            DataModel.ResidentsList.Add(new SoldierModel()
+            {
+                Age = 21,
+                Type = "Soldier",
+                Name = "Axel Erövraren",
+                Position = "Soldat"
+            });
         }
 
         #endregion

@@ -455,15 +455,18 @@
             Padding="0"/>
 
         <ComboBox
+            x:Name="LivingconditionsComboBox"
             Grid.Column="6"
             Grid.ColumnSpan="3"
             Grid.Row="13"
-            x:Name="LivingconditionsComboBox"
             ItemsSource="{Binding Path=SettingsModel.LivingconditionsList}"
-            DisplayMemberPath="Text"
+            DisplayMemberPath="Livingcondition"
             Text="{Binding Path=DataModel.Livingcondition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource ComboBoxControlTemplate}"
-            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}">
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0" >
         </ComboBox>
 
         <fcb:FakeComboBox 
@@ -488,7 +491,7 @@
 
         <Label
             Grid.Column="2"
-            Grid.ColumnSpan="5"
+            Grid.ColumnSpan="4"
             Grid.Row="15"
             Content="Boende på godset"
             HorizontalContentAlignment="Left"
@@ -496,14 +499,24 @@
             Padding="12,0,0,0"/>
 
         <Label
+            Grid.Column="6"
+            Grid.ColumnSpan="3"
+            Grid.Row="15"
+            Content="Befattning"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,36,0"/>
+
+        <Label
             Grid.Column="8"
             Grid.Row="15"
             Content="Ålder"
-            HorizontalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
 
         <ItemsControl 
+            ItemsSource="{Binding Path=DataModel.ResidentsList}"
             Grid.Column="2"
             Grid.ColumnSpan="7"
             Grid.Row="17"
@@ -519,7 +532,8 @@
                         Id="{Binding Path=Id}"
                         Resident="{Binding Path=Name}"
                         Age="{Binding Path=Age}"
-                        ResidentType="{Binding Path=Type}">
+                        ResidentType="{Binding Path=Type}"
+                        Position="{Binding Path=Position}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ResidentUIEvent">
                                 <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ResidentUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

@@ -8,6 +8,7 @@ namespace FiefApp.Common.Infrastructure.Models
         int Id { get; set; }
         string Name { get; set; }
         string Type { get; set; }
+        string Position { get; set; }
         int Age { get; set; }
         string Resources { get; set; }
         string Loyalty { get; set; }

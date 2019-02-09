@@ -149,6 +149,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private string _position = "Anställd";
+        public string Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
