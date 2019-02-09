@@ -117,6 +117,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private string _livingcondition;
+        public string Livingcondition
+        {
+            get => _livingcondition;
+            set
+            {
+                _livingcondition = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private BindingList<IPeopleModel> _residentsList = new BindingList<IPeopleModel>();
         public BindingList<IPeopleModel> ResidentsList
         {

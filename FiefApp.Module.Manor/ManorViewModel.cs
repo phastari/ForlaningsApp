@@ -2,7 +2,7 @@
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Services;
-using Prism.Events;
+using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Module.Manor
 {
@@ -10,14 +10,19 @@ namespace FiefApp.Module.Manor
     {
         private readonly IBaseService _baseService;
         private readonly IManorService _manorService;
+        private readonly ISettingsService _settingsService;
 
         public ManorViewModel(
             IBaseService baseService,
-            IManorService manorService
+            IManorService manorService,
+            ISettingsService settingsService
             ) : base(baseService)
         {
             _baseService = baseService;
             _manorService = manorService;
+            _settingsService = settingsService;
+
+            SettingsModel = _settingsService.ManorSettingsModel;
 
             TabName = "Gods/Byar";
 
@@ -42,6 +47,12 @@ namespace FiefApp.Module.Manor
             get => _dataModel;
             set => SetProperty(ref _dataModel, value);
         }
+
+        #endregion
+
+        #region Settings
+
+        public readonly ManorSettingsModel SettingsModel;
 
         #endregion
 

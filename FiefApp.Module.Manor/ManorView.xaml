@@ -7,6 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              xmlns:residentUi="clr-namespace:FiefApp.Module.Manor.UIElements.ResidentUI"
+             xmlns:fcb="clr-namespace:FiefApp.Common.Infrastructure.UIElements.FakeComboBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
              d:DesignWidth="784">
@@ -165,10 +166,8 @@
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
-                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -194,10 +193,21 @@
             HorizontalContentAlignment="Center"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
-            Padding="0"
-            IsReadOnly="True"
-            IsTabStop="False"
-            Background="WhiteSmoke"/>
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Padding="0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
+                            <Setter Property="IsReadOnly" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
         <Label
             Grid.Column="2"
@@ -217,10 +227,21 @@
             HorizontalContentAlignment="Center"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
-            Padding="0"
-            IsReadOnly="True"
-            IsTabStop="False"
-            Background="WhiteSmoke"/>
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Padding="0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
+                            <Setter Property="IsReadOnly" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
         <Label
             Grid.Column="6"
@@ -245,10 +266,8 @@
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
-                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -279,10 +298,8 @@
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
-                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -315,10 +332,8 @@
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
-                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -351,10 +366,8 @@
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
-                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -380,10 +393,21 @@
             HorizontalContentAlignment="Center"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
-            Padding="0"
-            IsReadOnly="True"
-            IsTabStop="False"
-            Background="WhiteSmoke"/>
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Padding="0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
+                            <Setter Property="IsReadOnly" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
         <Label
             Grid.Column="6"
@@ -410,10 +434,8 @@
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
-                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=EditEnableButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -435,9 +457,33 @@
         <ComboBox
             Grid.Column="6"
             Grid.ColumnSpan="3"
-            Grid.Row="13">
-
+            Grid.Row="13"
+            x:Name="LivingconditionsComboBox"
+            ItemsSource="{Binding Path=SettingsModel.LivingconditionsList}"
+            DisplayMemberPath="Text"
+            Text="{Binding Path=DataModel.Livingcondition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}">
         </ComboBox>
+
+        <fcb:FakeComboBox 
+            Grid.Column="6"
+            Grid.ColumnSpan="3"
+            Grid.Row="13"
+            IsSmall="False"
+            TextBoxText="{Binding Path=Text, ElementName=LivingconditionsComboBox}">
+            <fcb:FakeComboBox.Style>
+                <Style TargetType="{x:Type fcb:FakeComboBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </fcb:FakeComboBox.Style>
+        </fcb:FakeComboBox>
+
 
 
         <Label
@@ -457,10 +503,11 @@
             VerticalContentAlignment="Center"
             Padding="0"/>
 
-        <ItemsControl Grid.Column="2"
-                      Grid.ColumnSpan="7"
-                      Grid.Row="17"
-                      Grid.RowSpan="22">
+        <ItemsControl 
+            Grid.Column="2"
+            Grid.ColumnSpan="7"
+            Grid.Row="17"
+            Grid.RowSpan="22">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />
@@ -468,10 +515,11 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <residentUi:ResidentUI Id="{Binding Path=Id}"
-                                           Resident="{Binding Path=Name}"
-                                           Age="{Binding Path=Age}"
-                                           ResidentType="{Binding Path=Type}">
+                    <residentUi:ResidentUI 
+                        Id="{Binding Path=Id}"
+                        Resident="{Binding Path=Name}"
+                        Age="{Binding Path=Age}"
+                        ResidentType="{Binding Path=Type}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ResidentUIEvent">
                                 <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ResidentUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -484,40 +532,89 @@
 
 
 
-        <Button x:Name="EditEnableButton"
-                Content="redigera"
-                Command="{Binding Path=EditButtonCommand}"
-                Grid.Column="12"
-                Grid.Row="41"
-                Visibility="{Binding Path=EditButtonVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                VerticalContentAlignment="Center"
-                Padding="0"
-                Width="51"
-                HorizontalAlignment="Right"
-                Style="{DynamicResource ButtonStyle}"/>
 
-        <Button Content="avbryt"
-                Command="{Binding Path=CancelEditingButtonCommand}"
-                Visibility="{Binding Path=IsEditingVisibility}"
-                Style="{DynamicResource ButtonStyle}"
-                Grid.Column="12"
-                Grid.Row="41"
-                Width="51"
-                HorizontalAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+        <ToggleButton 
+            x:Name="EditButton"
+            Content="redigera"
+            Command="{Binding Path=EditButtonCommand}"
+            Grid.Column="12"
+            Grid.Row="41"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Width="51"
+            HorizontalAlignment="Right" 
+            Template="{DynamicResource ToggleButtonTemplate}">
+            <ToggleButton.Style>
+                <Style TargetType="{x:Type ToggleButton}">
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=CancelEditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=SaveEditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
 
-        <Button Content="spara"
-                Command="{Binding Path=SaveEditedButtonCommand}"
-                Visibility="{Binding Path=IsEditingVisibility}"
-                Style="{DynamicResource ButtonStyle}"
-                Grid.Column="12"
-                Grid.Row="41"
-                HorizontalAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"
-                Width="51"
-                Margin="0,0,57,0"/>
+        <ToggleButton 
+            x:Name="CancelEditButton"
+            Content="avbryt"
+            Command="{Binding Path=CancelEditingButtonCommand}"
+            Grid.Column="12"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Template="{DynamicResource ToggleButtonTemplate}">
+            <ToggleButton.Style>
+                <Style TargetType="{x:Type ToggleButton}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+
+        <ToggleButton 
+            x:Name="SaveEditButton"
+            Content="spara"
+            Command="{Binding Path=SaveEditedButtonCommand}"
+            Template="{DynamicResource ToggleButtonTemplate}"
+            Grid.Column="12"
+            Grid.Row="41"
+            HorizontalAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Width="51"
+            Margin="0,0,57,0">
+            <ToggleButton.Style>
+                <Style TargetType="{x:Type ToggleButton}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
 
     </Grid>
 </UserControl>

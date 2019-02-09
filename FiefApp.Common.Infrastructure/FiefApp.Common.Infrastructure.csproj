@@ -92,6 +92,7 @@
     <Compile Include="EventAggregatorEvents\EmployeeModelToEmployeeDataModelEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\LivingconditionModel.cs" />
     <Compile Include="Models\ResidentModel.cs" />
     <Compile Include="Services\ArmyService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Settings\SettingsModels\InformationSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\ArmySettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\EmployeeSettingsModel.cs" />
+    <Compile Include="Settings\SettingsModels\ManorSettingsModel.cs" />
     <Compile Include="UIElements\FakeComboBox\FakeComboBox.xaml.cs">
       <DependentUpon>FakeComboBox.xaml</DependentUpon>
     </Compile>
@@ -202,6 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Settings\InformationSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Settings\ManorSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

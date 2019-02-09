@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Livingcondition Text="Nödtorftig" Base="1" Luxury="0"/>
+  <Livingcondition Text="Gemen" Base="2" Luxury="0"/>
+  <Livingcondition Text="God" Base="2" Luxury="2"/>
+  <Livingcondition Text="Mycket god" Base="3" Luxury="4"/>
+  <Livingcondition Text="Lyxliv" Base="4" Luxury="8"/>
+</Settings>

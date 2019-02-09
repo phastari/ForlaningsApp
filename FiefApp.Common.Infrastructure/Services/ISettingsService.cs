@@ -7,12 +7,17 @@ namespace FiefApp.Common.Infrastructure.Services
         ArmySettingsModel ArmySettingsModel { get; }
         EmployeeSettingsModel EmployeeSettingsModel { get; }
         InformationSettingsModel InformationSettingsModel { get; }
+        ManorSettingsModel ManorSettingsModel { get; }
 
         ArmySettingsModel LoadArmySettingsFromXml();
-        void CreateDefaultArmySettingsXmlFile();
         EmployeeSettingsModel LoadEmployeeSettingsFromXml();
-        void CreateDefaultEmployeeSettingsXmlFile();
         InformationSettingsModel LoadInformationSettingsFromXml();
+        ManorSettingsModel LoadManorSettingsFromXml();
+        
+
+        void CreateDefaultArmySettingsXmlFile();
+        void CreateDefaultEmployeeSettingsXmlFile();
         void CreateDefaultInformationSettingsXmlFile();
+        void CreateDefaultManorSettingsXmlFile();
     }
 }

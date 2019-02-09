@@ -1,4 +1,5 @@
-﻿using FiefApp.Common.Infrastructure.Settings.SettingsModels;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using System;
 using System.IO;
 using System.Xml;
@@ -13,11 +14,13 @@ namespace FiefApp.Common.Infrastructure.Services
             ArmySettingsModel = LoadArmySettingsFromXml();
             EmployeeSettingsModel = LoadEmployeeSettingsFromXml();
             InformationSettingsModel = LoadInformationSettingsFromXml();
+            ManorSettingsModel = LoadManorSettingsFromXml();
         }
 
         public ArmySettingsModel ArmySettingsModel { get; private set; }
         public EmployeeSettingsModel EmployeeSettingsModel { get; private set; }
         public InformationSettingsModel InformationSettingsModel { get; private set; }
+        public ManorSettingsModel ManorSettingsModel { get; private set; }
 
         #region Methods : Army Settings
 
@@ -814,5 +817,93 @@ namespace FiefApp.Common.Infrastructure.Services
         }
 
         #endregion
+
+        #region Methods : Manor Settings
+
+        public ManorSettingsModel LoadManorSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ManorSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            ManorSettingsModel tempModel = new ManorSettingsModel();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("Livingcondition");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        tempModel.LivingconditionsList.Add(new LivingconditionModel()
+                        {
+                            Livingcondition = xmlAttributeCollection["Text"].Value,
+                            BaseCost = Convert.ToInt16(xmlAttributeCollection["Base"].Value),
+                            LuxuryCost = Convert.ToInt16(xmlAttributeCollection["Luxury"].Value)
+                        });
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (foundError)
+            {
+                CreateDefaultManorSettingsXmlFile();
+                return null;
+            }
+            else
+            {
+                return tempModel;
+            }
+        }
+
+        public void CreateDefaultManorSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("Livingcondition",
+                        new XAttribute("Text", "Nödtorftig"),
+                        new XAttribute("Base", "1"),
+                        new XAttribute("Luxury", "0")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Text", "Gemen"),
+                        new XAttribute("Base", "2"),
+                        new XAttribute("Luxury", "0")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Text", "God"),
+                        new XAttribute("Base", "2"),
+                        new XAttribute("Luxury", "2")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Text", "Mycket god"),
+                        new XAttribute("Base", "3"),
+                        new XAttribute("Luxury", "2")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Text", "Lyxliv"),
+                        new XAttribute("Base", "4"),
+                        new XAttribute("Luxury", "8")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ManorSettings.xml";
+            xmlDoc.Save(@filePath);
+            ManorSettingsModel = LoadManorSettingsFromXml();
+        }
+
+        #endregion
+
     }
 }
