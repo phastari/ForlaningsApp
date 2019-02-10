@@ -59,7 +59,8 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
                     new ResidentModel()
                     {
                         Age = Age,
-                        Name = Resident
+                        Name = Resident,
+                        Position = Position
                     }
                 );
             RaiseEvent(newEventArgs);

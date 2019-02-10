@@ -461,12 +461,21 @@
             Grid.Row="13"
             ItemsSource="{Binding Path=SettingsModel.LivingconditionsList}"
             DisplayMemberPath="Livingcondition"
-            Text="{Binding Path=DataModel.Livingcondition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource ComboBoxControlTemplate}"
             ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             Padding="6,0,0,0" >
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="IsReadOnly" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
         </ComboBox>
 
         <fcb:FakeComboBox 
@@ -543,9 +552,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-
-
 
         <ToggleButton 
             x:Name="EditButton"

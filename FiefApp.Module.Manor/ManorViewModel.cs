@@ -1,9 +1,11 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
+using FiefApp.Module.Manor.RoutedEvents;
 
 namespace FiefApp.Module.Manor
 {
@@ -33,9 +35,43 @@ namespace FiefApp.Module.Manor
         #region CustomDelegateCommand : ResidentUIEventHandler
 
         public CustomDelegateCommand ResidentUIEventHandler { get; set; }
+
         private void ExecuteResidentUIEventHandler(object obj)
         {
+            var tuple = (Tuple<object, object>) obj;
 
+            if (!(tuple.Item2 is ResidentUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Save")
+            {
+                for (int x = 0; x < DataModel.ResidentsList.Count; x++)
+                {
+                    if (DataModel.ResidentsList[x].Id == e.Id)
+                    {
+                        DataModel.ResidentsList[x].Name = e.ResidentModel.Name;
+                        DataModel.ResidentsList[x].Position = e.ResidentModel.Position;
+                        DataModel.ResidentsList[x].Age = e.ResidentModel.Age;
+                    }
+                }
+            }
+            else if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.ResidentsList.Count; x++)
+                {
+                    if (DataModel.ResidentsList[x].Id == e.Id)
+                    {
+                        DataModel.ResidentsList.RemoveAt(x);
+                        break;
+                    }
+                }
+            }
+
+            SaveData();
         }
 
         #endregion
@@ -53,7 +89,12 @@ namespace FiefApp.Module.Manor
 
         #region Settings
 
-        public readonly ManorSettingsModel SettingsModel;
+        private ManorSettingsModel _settingsModel;
+        public ManorSettingsModel SettingsModel
+        {
+            get => _settingsModel;
+            set => SetProperty(ref _settingsModel, value);
+        }
 
         #endregion
 

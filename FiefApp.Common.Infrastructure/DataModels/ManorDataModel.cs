@@ -128,6 +128,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _livingconditionIndex;
+        public int LivingconditionIndex
+        {
+            get => _livingconditionIndex;
+            set
+            {
+                _livingconditionIndex = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private BindingList<IPeopleModel> _residentsList = new BindingList<IPeopleModel>();
         public BindingList<IPeopleModel> ResidentsList
         {
