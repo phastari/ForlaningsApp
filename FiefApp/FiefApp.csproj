@@ -145,6 +145,10 @@
       <Project>{67cc9daf-baf9-454b-9e51-579d25b19617}</Project>
       <Name>FiefApp.Module.Employees</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Income\FiefApp.Module.Income.csproj">
+      <Project>{12716b6b-7a72-4789-ab47-86a9cb8b9552}</Project>
+      <Name>FiefApp.Module.Income</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FiefApp.Module.Information\FiefApp.Module.Information.csproj">
       <Project>{8af2fc59-09f5-4d27-b404-917f57474184}</Project>
       <Name>FiefApp.Module.Information</Name>

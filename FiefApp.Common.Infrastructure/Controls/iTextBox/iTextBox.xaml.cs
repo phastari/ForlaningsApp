@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using FiefApp.Common.Infrastructure.Controls.iTextBox.RoutedEvents;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Controls.iTextBox
 {
@@ -18,25 +20,56 @@ namespace FiefApp.Common.Infrastructure.Controls.iTextBox
         private void IncreaseValue(
             object sender,
             RoutedEventArgs e
-        )
+            )
         {
             Value++;
+            if (BoundToResident)
+            {
+                BoundToResidentEventArgs newEventArgs =
+                    new BoundToResidentEventArgs(
+                        BoundToResidentRoutedEvent,
+                        "Increase",
+                        new SoldierModel()
+                        {
+                            Name = "",
+                            Age = 0,
+                            Type = "Soldier",
+                            Position = ResidentType
+                        }
+                    );
+
+                RaiseEvent(newEventArgs);
+            }
         }
 
         private void DecreaseValue(
             object sender,
             RoutedEventArgs e
-        )
+            )
         {
             Value--;
+            if (BoundToResident)
+            {
+                BoundToResidentEventArgs newEventArgs =
+                    new BoundToResidentEventArgs(
+                        BoundToResidentRoutedEvent,
+                        "Decrease",
+                        new SoldierModel()
+                        {
+                            Position = ResidentType
+                        }
+                    );
+
+                RaiseEvent(newEventArgs);
+            }
         }
 
         #endregion
 
         public int Value
         {
-            get { return (int)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (int)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         public static readonly DependencyProperty ValueProperty =
@@ -49,8 +82,8 @@ namespace FiefApp.Common.Infrastructure.Controls.iTextBox
 
         public string BGColor
         {
-            get { return (string)GetValue(BGColorProperty); }
-            set { SetValue(BGColorProperty, value); }
+            get => (string)GetValue(BGColorProperty);
+            set => SetValue(BGColorProperty, value);
         }
 
         public static readonly DependencyProperty BGColorProperty =
@@ -63,8 +96,8 @@ namespace FiefApp.Common.Infrastructure.Controls.iTextBox
 
         public bool TextBoxReadOnly
         {
-            get { return (bool)GetValue(TextBoxReadOnlyProperty); }
-            set { SetValue(TextBoxReadOnlyProperty, value); }
+            get => (bool)GetValue(TextBoxReadOnlyProperty);
+            set => SetValue(TextBoxReadOnlyProperty, value);
         }
 
         public static readonly DependencyProperty TextBoxReadOnlyProperty =
@@ -74,5 +107,51 @@ namespace FiefApp.Common.Infrastructure.Controls.iTextBox
                 typeof(iTextBox),
                 new PropertyMetadata(false)
             );
+
+        public bool BoundToResident
+        {
+            get => (bool)GetValue(BoundToResidentProperty);
+            set => SetValue(BoundToResidentProperty, value);
+        }
+
+        public static readonly DependencyProperty BoundToResidentProperty =
+            DependencyProperty.Register(
+                "BoundToResident",
+                typeof(bool),
+                typeof(iTextBox),
+                new PropertyMetadata(false)
+            );
+
+        public string ResidentType
+        {
+            get => (string)GetValue(ResidentTypeProperty);
+            set => SetValue(ResidentTypeProperty, value);
+        }
+
+        public static readonly DependencyProperty ResidentTypeProperty =
+            DependencyProperty.Register(
+                "ResidentType",
+                typeof(string),
+                typeof(iTextBox),
+                new PropertyMetadata("")
+            );
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent BoundToResidentRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "BoundToResidentEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(iTextBox)
+            );
+
+        public event RoutedEventHandler BoundToResidentEvent
+        {
+            add => AddHandler(BoundToResidentRoutedEvent, value);
+            remove => RemoveHandler(BoundToResidentRoutedEvent, value);
+        }
+
+        #endregion
     }
 }

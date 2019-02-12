@@ -1,7 +1,9 @@
 ﻿using FiefApp.Common.Infrastructure.Services;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
@@ -1352,6 +1354,48 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 _totalBase = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        private List<SoldierModel> _templarKnightsList = new List<SoldierModel>();
+        public List<SoldierModel> TemplarKnightsList
+        {
+            get => _templarKnightsList;
+            set => _templarKnightsList = value;
+        }
+
+        private List<SoldierModel> _knightsList = new List<SoldierModel>();
+        public List<SoldierModel> KnightsList
+        {
+            get => _knightsList;
+            set => _knightsList = value;
+        }
+
+        private List<SoldierModel> _cavalryTemplarKnightsList = new List<SoldierModel>();
+        public List<SoldierModel> CavalryTemplarKnightsList
+        {
+            get => _cavalryTemplarKnightsList;
+            set => _cavalryTemplarKnightsList = value;
+        }
+
+        private List<SoldierModel> _officerCorporalsList = new List<SoldierModel>();
+        public List<SoldierModel> OfficerCorporalsList
+        {
+            get => _officerCorporalsList;
+            set => _officerCorporalsList = value;
+        }
+
+        private List<SoldierModel> _officerSergeantsList = new List<SoldierModel>();
+        public List<SoldierModel> OfficerSergeantsList
+        {
+            get => _officerSergeantsList;
+            set => _officerSergeantsList = value;
+        }
+
+        private List<SoldierModel> _officerCaptainsList = new List<SoldierModel>();
+        public List<SoldierModel> OfficerCaptainsList
+        {
+            get => _officerCaptainsList;
+            set => _officerCaptainsList = value;
         }
 
         #region Methods

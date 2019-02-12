@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.Runtime.CompilerServices;
+using System.Windows.Documents;
 using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
@@ -117,33 +121,40 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private string _livingcondition;
-        public string Livingcondition
+        private string _manorLivingconditions;
+        public string ManorLivingsconditions
         {
-            get => _livingcondition;
+            get => _manorLivingconditions;
             set
             {
-                _livingcondition = value;
+                _manorLivingconditions = value;
                 NotifyPropertyChanged();
             }
         }
 
-        private int _livingconditionIndex;
-        public int LivingconditionIndex
+        private ObservableCollection<IPeopleModel> _residentsCollection = new ObservableCollection<IPeopleModel>();
+        public ObservableCollection<IPeopleModel> ResidentsCollection
         {
-            get => _livingconditionIndex;
+            get => _residentsCollection;
             set
             {
-                _livingconditionIndex = value;
+                _residentsCollection = value;
                 NotifyPropertyChanged();
             }
         }
 
-        private BindingList<IPeopleModel> _residentsList = new BindingList<IPeopleModel>();
-        public BindingList<IPeopleModel> ResidentsList
+        private List<ResidentModel> _residentsList = new List<ResidentModel>();
+        public List<ResidentModel> ResidentsList
         {
             get => _residentsList;
             set => _residentsList = value;
+        }
+
+        private ObservableCollection<VillageModel> _villagesCollection = new ObservableCollection<VillageModel>();
+        public ObservableCollection<VillageModel> VillagesCollection
+        {
+            get => _villagesCollection;
+            set => _villagesCollection = value;
         }
 
 

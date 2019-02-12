@@ -7,7 +7,10 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              xmlns:residentUi="clr-namespace:FiefApp.Module.Manor.UIElements.ResidentUI"
+             xmlns:addResidentUI="clr-namespace:FiefApp.Module.Manor.UIElements.AddResidentUI"
              xmlns:fcb="clr-namespace:FiefApp.Common.Infrastructure.UIElements.FakeComboBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:villageUI="clr-namespace:FiefApp.Module.Manor.UIElements.VillageUI"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
              d:DesignWidth="784">
@@ -61,7 +64,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="69"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="8"/>
@@ -70,10 +73,10 @@
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="8"/>
 
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="32"/>
 
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="478"/>
+            <ColumnDefinition Width="457"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -87,6 +90,16 @@
         <Frame 
             Grid.Column="1" 
             Grid.ColumnSpan="9"
+            Grid.Row="1"
+            Grid.RowSpan="39" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="11" 
+            Grid.ColumnSpan="3"
             Grid.Row="1"
             Grid.RowSpan="39" 
             Background="LightGray" 
@@ -459,6 +472,7 @@
             Grid.Column="6"
             Grid.ColumnSpan="3"
             Grid.Row="13"
+            Text="{Binding Path=DataModel.ManorLivingconditions}"
             ItemsSource="{Binding Path=SettingsModel.LivingconditionsList}"
             DisplayMemberPath="Livingcondition"
             Template="{DynamicResource ComboBoxControlTemplate}"
@@ -505,7 +519,7 @@
             Content="Boende på godset"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            Padding="12,0,0,0"/>
+            Padding="6,0,0,0"/>
 
         <Label
             Grid.Column="6"
@@ -514,7 +528,7 @@
             Content="Befattning"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
-            Padding="0,0,36,0"/>
+            Padding="0,0,39,0"/>
 
         <Label
             Grid.Column="8"
@@ -522,42 +536,67 @@
             Content="Ålder"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
-            Padding="0"/>
+            Padding="0,0,6,0"/>
 
-        <ItemsControl 
-            ItemsSource="{Binding Path=DataModel.ResidentsList}"
+        <ScrollViewer
             Grid.Column="2"
             Grid.ColumnSpan="7"
             Grid.Row="17"
-            Grid.RowSpan="22">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <residentUi:ResidentUI 
+            Grid.RowSpan="22"
+            VerticalScrollBarVisibility="Auto">
+
+            <ScrollViewer.Resources>
+                <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">3</system:Double>
+            </ScrollViewer.Resources>
+
+            <ItemsControl
+                ItemsSource="{Binding Path=DataModel.ResidentsCollection}"
+                Background="Transparent"
+                Grid.ZIndex="0">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.Template>
+                    <ControlTemplate TargetType="ItemsControl">
+                        <StackPanel>
+                            <ItemsPresenter />
+                            <addResidentUI:AddResidentUI/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <residentUi:ResidentUI
                         Id="{Binding Path=Id}"
                         Resident="{Binding Path=Name}"
                         Age="{Binding Path=Age}"
                         ResidentType="{Binding Path=Type}"
                         Position="{Binding Path=Position}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="ResidentUIEvent">
-                                <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ResidentUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </residentUi:ResidentUI>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="EmployeeUIEvent">
+                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ResidentUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </residentUi:ResidentUI>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
 
         <ToggleButton 
             x:Name="EditButton"
             Content="redigera"
             Command="{Binding Path=EditButtonCommand}"
-            Grid.Column="12"
+            Grid.Column="7"
+            Grid.ColumnSpan="2"
             Grid.Row="41"
             VerticalContentAlignment="Center"
             Padding="0"
@@ -589,7 +628,8 @@
             x:Name="CancelEditButton"
             Content="avbryt"
             Command="{Binding Path=CancelEditingButtonCommand}"
-            Grid.Column="12"
+            Grid.Column="7"
+            Grid.ColumnSpan="2"
             Grid.Row="41"
             Width="51"
             HorizontalAlignment="Right"
@@ -615,13 +655,14 @@
             Content="spara"
             Command="{Binding Path=SaveEditedButtonCommand}"
             Template="{DynamicResource ToggleButtonTemplate}"
-            Grid.Column="12"
+            Grid.Column="5"
+            Grid.ColumnSpan="2"
             Grid.Row="41"
             HorizontalAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"
             Width="51"
-            Margin="0,0,57,0">
+            Margin="0,0,6,0">
             <ToggleButton.Style>
                 <Style TargetType="{x:Type ToggleButton}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -635,6 +676,69 @@
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
+
+
+        <ItemsControl
+            Grid.Column="12"
+            Grid.Row="3"
+            Grid.RowSpan="36"
+            ItemsSource="{Binding Path=DataModel.VillagesCollection}"
+            Background="Transparent"
+            Grid.ZIndex="0">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <StackPanel>
+                        <ItemsPresenter />
+                        <Button 
+                            Content="lägg till"
+                            Command="{Binding Path=AddVillageCommand}"
+                            Height="21"
+                            Width="51"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Padding="0"
+                            Template="{DynamicResource ButtonTemplate}"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <villageUI:VillageUI
+                        Id="{Binding Path=Id}"
+                        Village="{Binding Path=Village, Mode=TwoWay}"
+                        Population="{Binding Path=Population, Mode=TwoWay}"
+                        Burgess="{Binding Path=Burgess, Mode=TwoWay}"
+                        Farmers="{Binding Path=Farmers, Mode=TwoWay}"
+                        Serfdoms="{Binding Path=Serfdoms, Mode=TwoWay}"
+                        Boatbuilders="{Binding Path=Boatbuilders, Mode=TwoWay}"
+                        Tanners="{Binding Path=Tanners, Mode=TwoWay}"
+                        Millers="{Binding Path=Millers, Mode=TwoWay}"
+                        Furriers="{Binding Path=Furriers, Mode=TwoWay}"
+                        Tailors="{Binding Path=Tailors, Mode=TwoWay}"
+                        Smiths="{Binding Path=Smiths, Mode=TwoWay}"
+                        Carpenters="{Binding Path=Carpenters, Mode=TwoWay}"
+                        Innkeepers="{Binding Path=Innkeepers, Mode=TwoWay}"
+                        IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="VillageUIEvent">
+                                <customCommands:CustomCommandAction Command="{Binding Path=DataContext.VillageUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </villageUI:VillageUI>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
     </Grid>
 </UserControl>

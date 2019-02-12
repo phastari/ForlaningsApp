@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:itb="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
              d:DesignWidth="784">
@@ -996,7 +998,9 @@
         <itb:iTextBox
             Grid.Column="14"
             Grid.Row="7"
-            Value="{Binding Path=DataModel.ArmyKnightTemplars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            Value="{Binding Path=DataModel.ArmyKnightTemplars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            BoundToResident="True"
+            ResidentType="KnightTemplars">
             <itb:iTextBox.Style>
                 <Style TargetType="{x:Type itb:iTextBox}">
                     <Setter Property="TextBoxReadOnly" Value="False"/>
@@ -1007,6 +1011,11 @@
                     </Style.Triggers>
                 </Style>
             </itb:iTextBox.Style>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="BoundToResidentEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoundToResidentEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </itb:iTextBox>
 
         <TextBox
@@ -1305,7 +1314,9 @@
         <itb:iTextBox
             Grid.Column="14"
             Grid.Row="21"
-            Value="{Binding Path=DataModel.CavalryKnights, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            Value="{Binding Path=DataModel.CavalryKnights, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+            BoundToResident="True"
+            ResidentType="Knights">
             <itb:iTextBox.Style>
                 <Style TargetType="{x:Type itb:iTextBox}">
                     <Setter Property="TextBoxReadOnly" Value="False"/>
@@ -1316,6 +1327,12 @@
                     </Style.Triggers>
                 </Style>
             </itb:iTextBox.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="BoundToResidentEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoundToResidentEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </itb:iTextBox>
 
         <TextBox
@@ -1398,7 +1415,9 @@
         <itb:iTextBox
             Grid.Column="14"
             Grid.Row="25"
-            Value="{Binding Path=DataModel.CavalryKnightTemplars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            Value="{Binding Path=DataModel.CavalryKnightTemplars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+            BoundToResident="True"
+            ResidentType="CavalryTemplarKnights">
             <itb:iTextBox.Style>
                 <Style TargetType="{x:Type itb:iTextBox}">
                     <Setter Property="TextBoxReadOnly" Value="False"/>
@@ -1409,6 +1428,12 @@
                     </Style.Triggers>
                 </Style>
             </itb:iTextBox.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="BoundToResidentEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoundToResidentEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </itb:iTextBox>
 
         <TextBox
@@ -1564,7 +1589,9 @@
         <itb:iTextBox
             Grid.Column="14"
             Grid.Row="33"
-            Value="{Binding Path=DataModel.OfficersCorporal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            Value="{Binding Path=DataModel.OfficersCorporal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+            BoundToResident="True"
+            ResidentType="OfficerCorporals">
             <itb:iTextBox.Style>
                 <Style TargetType="{x:Type itb:iTextBox}">
                     <Setter Property="TextBoxReadOnly" Value="False"/>
@@ -1575,6 +1602,12 @@
                     </Style.Triggers>
                 </Style>
             </itb:iTextBox.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="BoundToResidentEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoundToResidentEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </itb:iTextBox>
 
         <TextBox
@@ -1600,7 +1633,9 @@
         <itb:iTextBox
             Grid.Column="14"
             Grid.Row="35"
-            Value="{Binding Path=DataModel.OfficersSergeant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+            Value="{Binding Path=DataModel.OfficersSergeant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+            BoundToResident="True"
+            ResidentType="OfficerSergeants">
             <itb:iTextBox.Style>
                 <Style TargetType="{x:Type itb:iTextBox}">
                     <Setter Property="TextBoxReadOnly" Value="False"/>
@@ -1611,6 +1646,12 @@
                     </Style.Triggers>
                 </Style>
             </itb:iTextBox.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="BoundToResidentEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoundToResidentEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </itb:iTextBox>
 
         <TextBox
@@ -1636,7 +1677,9 @@
         <itb:iTextBox
             Grid.Column="14"
             Grid.Row="37"
-            Value="{Binding Path=DataModel.OfficersCaptain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            Value="{Binding Path=DataModel.OfficersCaptain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            BoundToResident="True"
+            ResidentType="OfficerCaptains">
             <itb:iTextBox.Style>
                 <Style TargetType="{x:Type itb:iTextBox}">
                     <Setter Property="TextBoxReadOnly" Value="False"/>
@@ -1647,6 +1690,12 @@
                     </Style.Triggers>
                 </Style>
             </itb:iTextBox.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="BoundToResidentEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoundToResidentEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </itb:iTextBox>
 
         <TextBox

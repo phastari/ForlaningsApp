@@ -1,4 +1,6 @@
-﻿using FiefApp.Common.Infrastructure.DataModels;
+﻿using System.Collections.ObjectModel;
+using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -6,5 +8,6 @@ namespace FiefApp.Common.Infrastructure.Services
     {
         ManorDataModel GetManorDataModel(int id);
         void SetManorDataModel(ManorDataModel manorDataModel);
+        ObservableCollection<IPeopleModel> GetResidentsCollection(int index);
     }
 }

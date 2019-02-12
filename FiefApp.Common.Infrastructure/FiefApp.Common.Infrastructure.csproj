@@ -80,6 +80,7 @@
     <Compile Include="Controls\iTextBox\iTextBox.xaml.cs">
       <DependentUpon>iTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\iTextBox\RoutedEvents\BoundToResidentEventArgs.cs" />
     <Compile Include="Controls\T6TextBox\T6TextBox.xaml.cs">
       <DependentUpon>T6TextBox.xaml</DependentUpon>
     </Compile>
@@ -93,8 +94,10 @@
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LivingconditionModel.cs" />
+    <Compile Include="Models\ManorModel.cs" />
     <Compile Include="Models\ResidentModel.cs" />
     <Compile Include="Models\SoldierModel.cs" />
+    <Compile Include="Models\VillageModel.cs" />
     <Compile Include="Services\ArmyService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\IArmyService.cs" />
@@ -140,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\T6TextBox\T6TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ButtonTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

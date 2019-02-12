@@ -1,4 +1,6 @@
-﻿using FiefApp.Common.Infrastructure.DataModels;
+﻿using System.Collections.Generic;
+using System.Windows.Documents;
+using FiefApp.Common.Infrastructure.DataModels;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -86,6 +88,21 @@ namespace FiefApp.Common.Infrastructure.Services
             }
 
             return tempDataModel;
+        }
+
+        public List<int> GetAllResidentIds()
+        {
+            List<int> tempList = new List<int>();
+
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.ManorList[x].ResidentsCollection.Count; y++)
+                {
+                    tempList.Add(_fiefService.ManorList[x].ResidentsCollection[y].Id);
+                }
+            }
+
+            return tempList;
         }
     }
 }

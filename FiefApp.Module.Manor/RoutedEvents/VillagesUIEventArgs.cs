@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using FiefApp.Common.Infrastructure.Models;
 
-namespace FiefApp.Module.Employees.RoutedEvents
+namespace FiefApp.Module.Manor.RoutedEvents
 {
-    public class AddEmployeeUIEventArgs : RoutedEventArgs
+    public class VillagesUIEventArgs : RoutedEventArgs
     {
         private readonly int _id;
         public int Id => _id;
@@ -11,20 +11,20 @@ namespace FiefApp.Module.Employees.RoutedEvents
         private readonly string _action;
         public string Action => _action;
 
-        private readonly EmployeeModel _employeeModel;
-        public EmployeeModel EmployeeModel => _employeeModel;
+        private readonly VillageModel _villageModel;
+        public VillageModel VillageModel => _villageModel;
 
-        public AddEmployeeUIEventArgs(
+        public VillagesUIEventArgs(
             RoutedEvent routedEvent,
             int id,
             string action,
-            EmployeeModel employeeModel = null
-            ) 
+            VillageModel villageModel = null
+            )
             : base(routedEvent)
         {
             _id = id;
             _action = action;
-            _employeeModel = employeeModel;
+            _villageModel = villageModel;
         }
     }
 }

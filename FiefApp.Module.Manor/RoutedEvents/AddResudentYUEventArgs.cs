@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace FiefApp.Module.Manor.RoutedEvents
 {
-    public class ResidentUIEventArgs : RoutedEventArgs
+    public class AddResidentUIEventArgs : RoutedEventArgs
     {
         private readonly int _id;
         public int Id => _id;
@@ -14,7 +14,7 @@ namespace FiefApp.Module.Manor.RoutedEvents
         private readonly ResidentModel _residentModel;
         public ResidentModel ResidentModel => _residentModel;
 
-        public ResidentUIEventArgs(
+        public AddResidentUIEventArgs(
             RoutedEvent routedEvent,
             int id,
             string action,
