@@ -1,6 +1,6 @@
-﻿namespace FiefApp.Common.Infrastructure.DataModels
+﻿using System;
+
+namespace FiefApp.Common.Infrastructure.DataModels
 {
-    public interface IDataModelBase
-    {
-    }
+    public interface IDataModelBase { }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
@@ -52,34 +53,38 @@ namespace FiefApp.Module.Manor
             {
                 return;
             }
-
+            
             e.Handled = true;
 
             if (e.Action == "Save")
             {
-                for (int x = 0; x < DataModel.ResidentsCollection.Count; x++)
+                if (e.Model.Type == "Soldier")
                 {
-                    if (DataModel.ResidentsCollection[x].Id == e.Id)
+                    _manorService.SetSoldierModel(e.Id, Index, e.Model as SoldierModel);
+                }
+                else if (e.Model.Type == "Resident")
+                {
+                    for (int x = 0; x < DataModel.ResidentsList.Count; x++)
                     {
-                        DataModel.ResidentsCollection[x].Name = e.ResidentModel.Name;
-                        DataModel.ResidentsCollection[x].Position = e.ResidentModel.Position;
-                        DataModel.ResidentsCollection[x].Age = e.ResidentModel.Age;
+                        if (DataModel.ResidentsList[x].Id == e.Id)
+                        {
+                            DataModel.ResidentsList[x].Name = e.Model.Name;
+                            DataModel.ResidentsList[x].Position = e.Model.Position;
+                            DataModel.ResidentsList[x].Age = e.Model.Age;
+                        }
                     }
                 }
+
+                SaveData();
+                DataModel.ResidentsCollection = _manorService.GetResidentsCollection(Index);
             }
             else if (e.Action == "Delete")
             {
-                for (int x = 0; x < DataModel.ResidentsCollection.Count; x++)
-                {
-                    if (DataModel.ResidentsCollection[x].Id == e.Id)
-                    {
-                        DataModel.ResidentsCollection.RemoveAt(x);
-                        break;
-                    }
-                }
-            }
+                _manorService.DeletePeople(e.Id, Index);
 
-            SaveData();
+                SaveData();
+                DataModel.ResidentsCollection = _manorService.GetResidentsCollection(Index);
+            }
         }
 
         #endregion
@@ -99,13 +104,16 @@ namespace FiefApp.Module.Manor
 
             if (e.Action == "Save")
             {
-                DataModel.ResidentsCollection.Add( new ResidentModel()
+                DataModel.ResidentsList.Add( new ResidentModel()
                 {
-                    Id = DataModel.ResidentsCollection.Max(t => t.Id),
+                    Id = _manorService.GetPeopleId(Index),
                     Name = e.ResidentModel.Name,
                     Position = "Boende",
                     Age = e.ResidentModel.Age
                 });
+
+                SaveData();
+                DataModel.ResidentsCollection = _manorService.GetResidentsCollection(Index);
             }
         }
 
@@ -188,7 +196,7 @@ namespace FiefApp.Module.Manor
                 Acres = DataModel.ManorAcres,
                 Arable = DataModel.ManorArable,
                 Felling = DataModel.ManorFelling,
-                Livingconditions = DataModel.ManorLivingsconditions,
+                Livingconditions = DataModel.ManorLivingconditions,
                 ManorName = DataModel.ManorName,
                 Population = DataModel.ManorPopulation,
                 Pasture = DataModel.ManorPasture,
@@ -208,7 +216,7 @@ namespace FiefApp.Module.Manor
             DataModel.ManorAcres = OldManorModel.Acres;
             DataModel.ManorArable = OldManorModel.Arable;
             DataModel.ManorFelling = OldManorModel.Felling;
-            DataModel.ManorLivingsconditions = OldManorModel.Livingconditions;
+            DataModel.ManorLivingconditions = OldManorModel.Livingconditions;
             DataModel.ManorName = OldManorModel.ManorName;
             DataModel.ManorPopulation = OldManorModel.Population;
             DataModel.ManorPasture = OldManorModel.Pasture;
@@ -262,24 +270,31 @@ namespace FiefApp.Module.Manor
 
         protected override void SaveData(int index = -1)
         {
-            _manorService.SetManorDataModel(DataModel);
+            if (index == -1)
+            {
+                _baseService.SetDataModel(DataModel, Index);
+            }
+            else
+            {
+                _baseService.SetDataModel(DataModel, index);
+            }
         }
 
         protected override void LoadData()
         {
             if (Index == 0)
             {
-                //DataModel = _manorService.GetAllManorDataModel();
+                DataModel = _manorService.GetAllManorDataModel();
             }
             else
             {
                 DataModel = _baseService.GetDataModel<ManorDataModel>(Index);
-                DataModel.ResidentsCollection = _manorService.GetResidentsCollection(Index);
+                DataModel.ResidentsCollection.Clear();
+                DataModel.ResidentsCollection = new ObservableCollection<IPeopleModel>(_manorService.GetResidentsCollection(Index));
                 UpdateManorPopulationFromVillages();
             }
 
             UpdateFiefCollection();
-            CreateFakeData();
         }
 
         private void UpdateManorPopulationFromVillages()
@@ -296,36 +311,22 @@ namespace FiefApp.Module.Manor
 
         private void CreateFakeData()
         {
-            DataModel.ResidentsCollection.Add(new ResidentModel()
+            DataModel.ResidentsList.Add(new ResidentModel()
             {
+                Id = 0,
                 Age = 32,
                 Type = "Resident",
                 Name = "Karl Gunnar",
                 Position = "Boende"
             });
 
-            DataModel.ResidentsCollection.Add(new ResidentModel()
+            DataModel.ResidentsList.Add(new ResidentModel()
             {
+                Id = 1,
                 Age = 43,
                 Type = "Resident",
                 Name = "Sune Svensson",
                 Position = "Boende"
-            });
-
-            DataModel.ResidentsCollection.Add(new EmployeeModel()
-            {
-                Age = 54,
-                Name = "Sven Employee",
-                Type = "Employee",
-                Position = "Anställd"
-            });
-
-            DataModel.ResidentsCollection.Add(new SoldierModel()
-            {
-                Age = 21,
-                Type = "Soldier",
-                Name = "Axel Erövraren",
-                Position = "Soldat"
             });
 
             DataModel.VillagesCollection.Add(new VillageModel()

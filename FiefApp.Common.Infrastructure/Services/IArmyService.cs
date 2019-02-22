@@ -6,6 +6,6 @@ namespace FiefApp.Common.Infrastructure.Services
     public interface IArmyService
     {
         ArmyDataModel GetAllArmyDataModel();
-        List<int> GetAllResidentIds();
+        int GetPeopleId(int index);
     }
 }

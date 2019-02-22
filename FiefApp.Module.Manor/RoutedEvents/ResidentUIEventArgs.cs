@@ -11,20 +11,20 @@ namespace FiefApp.Module.Manor.RoutedEvents
         private readonly string _action;
         public string Action => _action;
 
-        private readonly ResidentModel _residentModel;
-        public ResidentModel ResidentModel => _residentModel;
+        private readonly IPeopleModel _model;
+        public IPeopleModel Model => _model;
 
         public ResidentUIEventArgs(
             RoutedEvent routedEvent,
             int id,
             string action,
-            ResidentModel residentModel = null
+            IPeopleModel model = null
             )
             : base(routedEvent)
         {
             _id = id;
             _action = action;
-            _residentModel = residentModel;
+            _model = model;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -15,12 +17,21 @@ namespace FiefApp.Common.Infrastructure.Services
             EmployeeSettingsModel = LoadEmployeeSettingsFromXml();
             InformationSettingsModel = LoadInformationSettingsFromXml();
             ManorSettingsModel = LoadManorSettingsFromXml();
+            BoatbuildingSettingsModel = LoadBoatbuildingSettingsFromXml();
+            LivingconditionsSettingsModel = LoadLivingconditionsSettingsFromXml();
+            StableSettingsModel = LoadStableSettingsFromXml();
+            ExpensesSettingsModel = LoadExpensesSettingsFromXml();
         }
 
         public ArmySettingsModel ArmySettingsModel { get; private set; }
         public EmployeeSettingsModel EmployeeSettingsModel { get; private set; }
         public InformationSettingsModel InformationSettingsModel { get; private set; }
         public ManorSettingsModel ManorSettingsModel { get; private set; }
+        public BoatbuildingSettingsModel BoatbuildingSettingsModel { get; private set; }
+        public List<ShipyardTypeSettingsModel> ShipyardTypeSettingsList { get; private set; }
+        public LivingconditionsSettingsModel LivingconditionsSettingsModel { get; private set; }
+        public StableSettingsModel StableSettingsModel { get; private set; }
+        public ExpensesSettingsModel ExpensesSettingsModel { get; private set; }
 
         #region Methods : Army Settings
 
@@ -693,7 +704,14 @@ namespace FiefApp.Common.Infrastructure.Services
                     XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
                     if (xmlAttributeCollection != null)
                     {
-                        tempModel.RoadTypesList.Add(xmlAttributeCollection["Road"].Value);
+                        tempModel.RoadTypesList.Add(
+                            new RoadModel()
+                            {
+                                Road = xmlAttributeCollection["Road"].Value,
+                                BaseCost = Convert.ToInt32(xmlAttributeCollection["BaseCost"].Value),
+                                StoneCost = Convert.ToInt32(xmlAttributeCollection["StoneCost"].Value)
+                            }
+                        );
                     }
                     else
                     {
@@ -739,7 +757,8 @@ namespace FiefApp.Common.Infrastructure.Services
                 new XElement("Settings",
                     new XElement("Information",
                         new XAttribute("TypText", "Ärftligt län"),
-                        new XAttribute("InformationText", "Vasallen får länet mot att han utför vapentjänst och svär trohet till länsherren. När vasallen dör så ärver hans arvinge länet. Har vasallen inte har någon arvinge så går länet tillbaka till länsherren.")
+                        new XAttribute("InformationText",
+                            "Vasallen får länet mot att han utför vapentjänst och svär trohet till länsherren. När vasallen dör så ärver hans arvinge länet. Har vasallen inte har någon arvinge så går länet tillbaka till länsherren.")
                     ),
                     new XElement("Information",
                         new XAttribute("TypText", "Icke ärftligt län"),
@@ -747,23 +766,32 @@ namespace FiefApp.Common.Infrastructure.Services
                     ),
                     new XElement("Information",
                         new XAttribute("TypText", "Pantlän"),
-                        new XAttribute("InformationText", "Ibland händer det att en länsherre måste låna pengar, till exempel i tider av ofred. Länsherren kan då skänka långivaren ett län att disponera fritt tills dess att lånet är återbetalat.")
+                        new XAttribute("InformationText",
+                            "Ibland händer det att en länsherre måste låna pengar, till exempel i tider av ofred. Länsherren kan då skänka långivaren ett län att disponera fritt tills dess att lånet är återbetalat.")
                     ),
                     new XElement("Information",
                         new XAttribute("TypText", "Län på avgift"),
                         new XAttribute("InformationText", "Vasallen betalar en fast avgift till sin länsherre mot att han fritt får disponera länets inkomster.")
                     ),
                     new XElement("RoadNetwork",
-                        new XAttribute("Road", "Stigar")
+                        new XAttribute("Road", "Stigar"),
+                        new XAttribute("BaseCost", "0"),
+                        new XAttribute("StoneCost", "0")
                     ),
                     new XElement("RoadNetwork",
-                        new XAttribute("Road", "Väg")
+                        new XAttribute("Road", "Väg"),
+                        new XAttribute("BaseCost", "2"),
+                        new XAttribute("StoneCost", "0")
                     ),
                     new XElement("RoadNetwork",
-                        new XAttribute("Road", "Stenlagdväg")
+                        new XAttribute("Road", "Stenlagdväg"),
+                        new XAttribute("BaseCost", "32"),
+                        new XAttribute("StoneCost", "1000")
                     ),
                     new XElement("RoadNetwork",
-                        new XAttribute("Road", "Kungliglandsväg")
+                        new XAttribute("Road", "Kungliglandsväg"),
+                        new XAttribute("BaseCost", "35"),
+                        new XAttribute("StoneCost", "5000")
                     ),
                     new XElement("Liegelord",
                         new XAttribute("Title", "Storfurste")
@@ -905,5 +933,1184 @@ namespace FiefApp.Common.Infrastructure.Services
 
         #endregion
 
+        #region Methods : Boatbuilding Settings
+
+        public BoatbuildingSettingsModel LoadBoatbuildingSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BoatbuildingSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            BoatbuildingSettingsModel tempModel = new BoatbuildingSettingsModel();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("BoatType");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            tempModel.BoatSettingsList.Add(new BoatModel()
+                            {
+                                BoatType = xmlAttributeCollection["BoatType"].Value,
+                                Masts = Convert.ToInt32(xmlAttributeCollection["Masts"].Value),
+                                LengthMin = Convert.ToInt32(xmlAttributeCollection["LengthMin"].Value),
+                                LengthMax = Convert.ToInt32(xmlAttributeCollection["LengthMax"].Value),
+                                BL = Convert.ToDecimal(xmlAttributeCollection["BL"].Value.Replace(".", ",")),
+                                DB = Convert.ToDecimal(xmlAttributeCollection["DB"].Value.Replace(".", ",")),
+                                Crew = Convert.ToDecimal(xmlAttributeCollection["Crew"].Value.Replace(".", ",")),
+                                Cargo = Convert.ToDecimal(xmlAttributeCollection["Cargo"].Value.Replace(".", ",")),
+                                BenchMod = Convert.ToInt32(xmlAttributeCollection["BenchMod"].Value),
+                                BenchMulti = Convert.ToDecimal(xmlAttributeCollection["BenchMulti"].Value.Replace(".", ",")),
+                                OarsMulti = Convert.ToInt32(xmlAttributeCollection["OarsMulti"].Value),
+                                RowerMulti = Convert.ToInt32(xmlAttributeCollection["RowerMulti"].Value),
+                                IMGSource = xmlAttributeCollection["IMGSource"].Value,
+                                Seaworthiness = xmlAttributeCollection["Seaworthiness"].Value
+                            });
+                        }
+                        else
+                        {
+                            tempModel.BoatSettingsList.Add(new BoatModel()
+                            {
+                                BoatType = xmlAttributeCollection["BoatType"].Value,
+                                Masts = Convert.ToInt32(xmlAttributeCollection["Masts"].Value),
+                                LengthMin = Convert.ToInt32(xmlAttributeCollection["LengthMin"].Value),
+                                LengthMax = Convert.ToInt32(xmlAttributeCollection["LengthMax"].Value),
+                                BL = Convert.ToDecimal(xmlAttributeCollection["BL"].Value),
+                                DB = Convert.ToDecimal(xmlAttributeCollection["DB"].Value),
+                                Crew = Convert.ToDecimal(xmlAttributeCollection["Crew"].Value),
+                                Cargo = Convert.ToDecimal(xmlAttributeCollection["Cargo"].Value),
+                                BenchMod = Convert.ToInt32(xmlAttributeCollection["BenchMod"].Value),
+                                BenchMulti = Convert.ToDecimal(xmlAttributeCollection["BenchMulti"].Value),
+                                OarsMulti = Convert.ToInt32(xmlAttributeCollection["OarsMulti"].Value),
+                                RowerMulti = Convert.ToInt32(xmlAttributeCollection["RowerMulti"].Value),
+                                IMGSource = xmlAttributeCollection["IMGSource"].Value,
+                                Seaworthiness = xmlAttributeCollection["Seaworthiness"].Value
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (foundError)
+            {
+                CreateDefaultBoatbuildingSettingsXmlFile();
+                return null;
+            }
+            else
+            {
+                return tempModel;
+            }
+        }
+
+        public void CreateDefaultBoatbuildingSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Bridad"),
+                        new XAttribute("Masts", "3"),
+                        new XAttribute("LengthMin", "20"),
+                        new XAttribute("LengthMax", "28"),
+                        new XAttribute("BL", "0.3"),
+                        new XAttribute("DB", "0.28"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1.5"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "1.jpg"),
+                        new XAttribute("Seaworthiness", "1T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Drakfartyg"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "23"),
+                        new XAttribute("LengthMax", "28"),
+                        new XAttribute("BL", "0.25"),
+                        new XAttribute("DB", "0.28"),
+                        new XAttribute("Crew", "0.5"),
+                        new XAttribute("Cargo", "0.5"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "2.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Fiskebåt"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "6"),
+                        new XAttribute("LengthMax", "6"),
+                        new XAttribute("BL", "0.38"),
+                        new XAttribute("DB", "0.35"),
+                        new XAttribute("Crew", "0.3"),
+                        new XAttribute("Cargo", "0.9"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "3.jpg"),
+                        new XAttribute("Seaworthiness", "1T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Flodbåt"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "5"),
+                        new XAttribute("LengthMax", "7"),
+                        new XAttribute("BL", "0.44"),
+                        new XAttribute("DB", "0.15"),
+                        new XAttribute("Crew", "0.4"),
+                        new XAttribute("Cargo", "1.8"),
+                        new XAttribute("BenchMod", "-3"),
+                        new XAttribute("BenchMulti", "0.5"),
+                        new XAttribute("OarsMulti", "2"),
+                        new XAttribute("RowerMulti", "-1"),
+                        new XAttribute("IMGSource", "4.jpg"),
+                        new XAttribute("Seaworthiness", "4T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Flodpråm"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "17"),
+                        new XAttribute("LengthMax", "27"),
+                        new XAttribute("BL", "0.42"),
+                        new XAttribute("DB", "0.12"),
+                        new XAttribute("Crew", "0.2"),
+                        new XAttribute("Cargo", "2"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "5.jpg"),
+                        new XAttribute("Seaworthiness", "4T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Gaffa"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "13"),
+                        new XAttribute("LengthMax", "19"),
+                        new XAttribute("BL", "0.28"),
+                        new XAttribute("DB", "0.35"),
+                        new XAttribute("Crew", "0.25"),
+                        new XAttribute("Cargo", "1"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "6.jpg"),
+                        new XAttribute("Seaworthiness", "1T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Galloz"),
+                        new XAttribute("Masts", "3"),
+                        new XAttribute("LengthMin", "22"),
+                        new XAttribute("LengthMax", "35"),
+                        new XAttribute("BL", "0.24"),
+                        new XAttribute("DB", "0.33"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1.6"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "7.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Jagol"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "7"),
+                        new XAttribute("LengthMax", "11"),
+                        new XAttribute("BL", "0.27"),
+                        new XAttribute("DB", "0.28"),
+                        new XAttribute("Crew", "0.4"),
+                        new XAttribute("Cargo", "1.4"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "8.jpg"),
+                        new XAttribute("Seaworthiness", "1T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Jakt"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "12"),
+                        new XAttribute("LengthMax", "17"),
+                        new XAttribute("BL", "0.18"),
+                        new XAttribute("DB", "0.4"),
+                        new XAttribute("Crew", "0.4"),
+                        new XAttribute("Cargo", "1"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "9.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Kaga"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "19"),
+                        new XAttribute("LengthMax", "23"),
+                        new XAttribute("BL", "0.21"),
+                        new XAttribute("DB", "0.35"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1"),
+                        new XAttribute("BenchMod", "-10"),
+                        new XAttribute("BenchMulti", "0.5"),
+                        new XAttribute("OarsMulti", "4"),
+                        new XAttribute("RowerMulti", "4"),
+                        new XAttribute("IMGSource", "10.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Kagge"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "14"),
+                        new XAttribute("LengthMax", "22"),
+                        new XAttribute("BL", "0.27"),
+                        new XAttribute("DB", "0.4"),
+                        new XAttribute("Crew", "0.25"),
+                        new XAttribute("Cargo", "1.7"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "11.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Karack"),
+                        new XAttribute("Masts", "4"),
+                        new XAttribute("LengthMin", "26"),
+                        new XAttribute("LengthMax", "37"),
+                        new XAttribute("BL", "0.28"),
+                        new XAttribute("DB", "0.36"),
+                        new XAttribute("Crew", "0.3"),
+                        new XAttribute("Cargo", "1.4"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "12.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Bridad"),
+                        new XAttribute("Masts", "3"),
+                        new XAttribute("LengthMin", "20"),
+                        new XAttribute("LengthMax", "28"),
+                        new XAttribute("BL", "0.3"),
+                        new XAttribute("DB", "0.28"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1.5"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "1.jpg"),
+                        new XAttribute("Seaworthiness", "1T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Karack"),
+                        new XAttribute("Masts", "3"),
+                        new XAttribute("LengthMin", "17"),
+                        new XAttribute("LengthMax", "29"),
+                        new XAttribute("BL", "0.26"),
+                        new XAttribute("DB", "0.38"),
+                        new XAttribute("Crew", "0.33"),
+                        new XAttribute("Cargo", "1.3"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "13.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Lanacka"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "13"),
+                        new XAttribute("LengthMax", "24"),
+                        new XAttribute("BL", "0.32"),
+                        new XAttribute("DB", "0.2"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1.4"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "14.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Lemirier"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "24"),
+                        new XAttribute("LengthMax", "34"),
+                        new XAttribute("BL", "0.2"),
+                        new XAttribute("DB", "0.32"),
+                        new XAttribute("Crew", "0.2"),
+                        new XAttribute("Cargo", "0.7"),
+                        new XAttribute("BenchMod", "-14"),
+                        new XAttribute("BenchMulti", "1.5"),
+                        new XAttribute("OarsMulti", "2"),
+                        new XAttribute("RowerMulti", "4"),
+                        new XAttribute("IMGSource", "15.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Rundskepp, ett däck"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "12"),
+                        new XAttribute("LengthMax", "25"),
+                        new XAttribute("BL", "0.3"),
+                        new XAttribute("DB", "0.28"),
+                        new XAttribute("Crew", "0.36"),
+                        new XAttribute("Cargo", "1.5"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "16.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Rundskepp, två däck"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "25"),
+                        new XAttribute("LengthMax", "36"),
+                        new XAttribute("BL", "0.25"),
+                        new XAttribute("DB", "0.32"),
+                        new XAttribute("Crew", "0.38"),
+                        new XAttribute("Cargo", "1.6"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "17.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Sabrier, tremastad"),
+                        new XAttribute("Masts", "3"),
+                        new XAttribute("LengthMin", "23"),
+                        new XAttribute("LengthMax", "33"),
+                        new XAttribute("BL", "0.22"),
+                        new XAttribute("DB", "0.35"),
+                        new XAttribute("Crew", "0.4"),
+                        new XAttribute("Cargo", "1.6"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "18.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Sabrier, tvåmastad"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "17"),
+                        new XAttribute("LengthMax", "25"),
+                        new XAttribute("BL", "0.2"),
+                        new XAttribute("DB", "0.4"),
+                        new XAttribute("Crew", "0.4"),
+                        new XAttribute("Cargo", "1.5"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "19.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Slurp"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "8"),
+                        new XAttribute("LengthMax", "14"),
+                        new XAttribute("BL", "0.35"),
+                        new XAttribute("DB", "0.24"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1.2"),
+                        new XAttribute("BenchMod", "-5"),
+                        new XAttribute("BenchMulti", "0.4"),
+                        new XAttribute("OarsMulti", "2"),
+                        new XAttribute("RowerMulti", "-1"),
+                        new XAttribute("IMGSource", "20.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Umbura"),
+                        new XAttribute("Masts", "1"),
+                        new XAttribute("LengthMin", "27"),
+                        new XAttribute("LengthMax", "37"),
+                        new XAttribute("BL", "0.18"),
+                        new XAttribute("DB", "0.3"),
+                        new XAttribute("Crew", "0.2"),
+                        new XAttribute("Cargo", "1"),
+                        new XAttribute("BenchMod", "-17"),
+                        new XAttribute("BenchMulti", "1.8"),
+                        new XAttribute("OarsMulti", "4"),
+                        new XAttribute("RowerMulti", "4"),
+                        new XAttribute("IMGSource", "21.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Vågridare, tremastad"),
+                        new XAttribute("Masts", "3"),
+                        new XAttribute("LengthMin", "14"),
+                        new XAttribute("LengthMax", "21"),
+                        new XAttribute("BL", "0.25"),
+                        new XAttribute("DB", "0.35"),
+                        new XAttribute("Crew", "0.28"),
+                        new XAttribute("Cargo", "1.5"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "22.jpg"),
+                        new XAttribute("Seaworthiness", "2T6")
+                    ),
+
+                    new XElement("BoatType",
+                        new XAttribute("BoatType", "Vågridare, tvåmastad"),
+                        new XAttribute("Masts", "2"),
+                        new XAttribute("LengthMin", "11"),
+                        new XAttribute("LengthMax", "16"),
+                        new XAttribute("BL", "0.24"),
+                        new XAttribute("DB", "0.32"),
+                        new XAttribute("Crew", "0.35"),
+                        new XAttribute("Cargo", "1.4"),
+                        new XAttribute("BenchMod", "0"),
+                        new XAttribute("BenchMulti", "0"),
+                        new XAttribute("OarsMulti", "0"),
+                        new XAttribute("RowerMulti", "0"),
+                        new XAttribute("IMGSource", "23.jpg"),
+                        new XAttribute("Seaworthiness", "3T6")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BoatbuildingSettings.xml";
+            xmlDoc.Save(@filePath);
+            BoatbuildingSettingsModel = LoadBoatbuildingSettingsFromXml();
+        }
+
+        #endregion
+
+        #region Methods : ShipyardType Settings
+
+        public List<ShipyardTypeSettingsModel> LoadShipyardTypeSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ShipyardTypeSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            List<ShipyardTypeSettingsModel> tempList = new List<ShipyardTypeSettingsModel>();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("Docks");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            tempList.Add(new ShipyardTypeSettingsModel()
+                            {
+                                DockType = xmlAttributeCollection["DockType"].Value,
+                                DockSize = Convert.ToInt32(xmlAttributeCollection["DockSize"].Value),
+                                OperationBaseCostModifier = Convert.ToDecimal(xmlAttributeCollection["OperationBaseCostModifier"].Value.Replace(".", ",")),
+                                OperationBaseIncomeModifier = Convert.ToDecimal(xmlAttributeCollection["OperationBaseIncomeModifier"].Value.Replace(".", ",")),
+                                DockSmall = Convert.ToInt32(xmlAttributeCollection["DockSmall"].Value),
+                                DockMedium = Convert.ToInt32(xmlAttributeCollection["DockMedium"].Value),
+                                DockLarge = Convert.ToInt32(xmlAttributeCollection["DockLarge"].Value),
+                                CrimeRate = Convert.ToInt32(xmlAttributeCollection["CrimeRate"].Value),
+                                GuardBase = Convert.ToDecimal(xmlAttributeCollection["GuardBase"].Value.Replace(".", ",")),
+                                MarketSilverMod = Convert.ToDecimal(xmlAttributeCollection["MarketSilverMod"].Value.Replace(".", ",")),
+                                MarketBaseMod = Convert.ToDecimal(xmlAttributeCollection["MarketBaseMod"].Value.Replace(".", ",")),
+                                MarketLuxuryMod = Convert.ToDecimal(xmlAttributeCollection["MarketLuxuryMod"].Value.Replace(".", ",")),
+                                MarketWoodMod = Convert.ToDecimal(xmlAttributeCollection["MarketWoodMod"].Value.Replace(".", ",")),
+                                MarketStoneMod = Convert.ToDecimal(xmlAttributeCollection["MarketStoneMod"].Value.Replace(".", ",")),
+                                MarketIronMod = Convert.ToDecimal(xmlAttributeCollection["MarketIronMod"].Value.Replace(".", ",")),
+                                BuildCostSilver = Convert.ToInt32(xmlAttributeCollection["BuildCostSilver"].Value),
+                                BuildCostBase = Convert.ToInt32(xmlAttributeCollection["BuildCostBase"].Value),
+                                BuildCostWood = Convert.ToInt32(xmlAttributeCollection["BuildCostWood"].Value),
+                                BuildCostStone = Convert.ToInt32(xmlAttributeCollection["BuildCostStone"].Value),
+                                BuildCostIron = Convert.ToInt32(xmlAttributeCollection["BuildCostIron"].Value),
+                                DaysWork = Convert.ToInt32(xmlAttributeCollection["BuildTime"].Value),
+                                TaxMod = Convert.ToDecimal(xmlAttributeCollection["TaxMod"].Value.Replace(".", ",")),
+                                Workers = Convert.ToString(xmlAttributeCollection["Workers"].Value)
+                            });
+                        }
+                        else
+                        {
+                            tempList.Add(new ShipyardTypeSettingsModel()
+                            {
+                                DockType = xmlAttributeCollection["DockType"].Value,
+                                DockSize = Convert.ToInt32(xmlAttributeCollection["DockSize"].Value),
+                                OperationBaseCostModifier = Convert.ToDecimal(xmlAttributeCollection["OperationBaseCostModifier"].Value),
+                                OperationBaseIncomeModifier = Convert.ToDecimal(xmlAttributeCollection["OperationBaseIncomeModifier"].Value),
+                                DockSmall = Convert.ToInt32(xmlAttributeCollection["DockSmall"].Value),
+                                DockMedium = Convert.ToInt32(xmlAttributeCollection["DockMedium"].Value),
+                                DockLarge = Convert.ToInt32(xmlAttributeCollection["DockLarge"].Value),
+                                CrimeRate = Convert.ToInt32(xmlAttributeCollection["CrimeRate"].Value),
+                                GuardBase = Convert.ToDecimal(xmlAttributeCollection["GuardBase"].Value),
+                                MarketSilverMod = Convert.ToDecimal(xmlAttributeCollection["MarketSilverMod"].Value),
+                                MarketBaseMod = Convert.ToDecimal(xmlAttributeCollection["MarketBaseMod"].Value),
+                                MarketLuxuryMod = Convert.ToDecimal(xmlAttributeCollection["MarketLuxuryMod"].Value),
+                                MarketWoodMod = Convert.ToDecimal(xmlAttributeCollection["MarketWoodMod"].Value),
+                                MarketStoneMod = Convert.ToDecimal(xmlAttributeCollection["MarketStoneMod"].Value),
+                                MarketIronMod = Convert.ToDecimal(xmlAttributeCollection["MarketIronMod"].Value),
+                                BuildCostSilver = Convert.ToInt32(xmlAttributeCollection["BuildCostSilver"].Value),
+                                BuildCostBase = Convert.ToInt32(xmlAttributeCollection["BuildCostBase"].Value),
+                                BuildCostWood = Convert.ToInt32(xmlAttributeCollection["BuildCostWood"].Value),
+                                BuildCostStone = Convert.ToInt32(xmlAttributeCollection["BuildCostStone"].Value),
+                                BuildCostIron = Convert.ToInt32(xmlAttributeCollection["BuildCostIron"].Value),
+                                DaysWork = Convert.ToInt32(xmlAttributeCollection["BuildTime"].Value),
+                                TaxMod = Convert.ToDecimal(xmlAttributeCollection["TaxMod"].Value),
+                                Workers = Convert.ToString(xmlAttributeCollection["Workers"].Value)
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (foundError)
+            {
+                CreateDefaultShipyardTypeSettingsXmlFile();
+                return null;
+            }
+            else
+            {
+                return tempList;
+            }
+        }
+
+        public void CreateDefaultShipyardTypeSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Byhamn"),
+                        new XAttribute("DockSize", "0"),
+                        new XAttribute("OperationBaseCostModifier", "8"),
+                        new XAttribute("OperationBaseIncomeModifier", "13.36"),
+                        new XAttribute("DockSmall", "2"),
+                        new XAttribute("DockMedium", "0"),
+                        new XAttribute("DockLarge", "0"),
+                        new XAttribute("CrimeRate", "0"),
+                        new XAttribute("GuardBase", "0"),
+                        new XAttribute("MarketSilverMod", "1.67"), // ^ 1.67 per DockSize
+                        new XAttribute("MarketBaseMod", "1.25"), // ^ 1.56
+                        new XAttribute("MarketLuxuryMod", "1.23"), // ^ 1.49
+                        new XAttribute("MarketWoodMod", "1.21"), // ^ 1.43
+                        new XAttribute("MarketStoneMod", "1.21"), // ^ 1.37
+                        new XAttribute("MarketIronMod", "1.21"), // ^ 1.29
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "25"),
+                        new XAttribute("BuildCostWood", "30"),
+                        new XAttribute("BuildCostStone", "0"),
+                        new XAttribute("BuildCostIron", "0"),
+                        new XAttribute("DaysWork", "2500"),
+                        new XAttribute("TaxMod", "1.15"),
+                        new XAttribute("Workers", "3T6")
+                    ),
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Fiskehamn"),
+                        new XAttribute("DockSize", "1"),
+                        new XAttribute("OperationBaseCostModifier", "10"),
+                        new XAttribute("OperationBaseIncomeModifier", "33.4"),
+                        new XAttribute("DockSmall", "4"),
+                        new XAttribute("DockMedium", "1"),
+                        new XAttribute("DockLarge", "0"),
+                        new XAttribute("CrimeRate", "1"),
+                        new XAttribute("GuardBase", "1"),
+                        new XAttribute("MarketSilverMod", "2.355"),
+                        new XAttribute("MarketBaseMod", "1.416"),
+                        new XAttribute("MarketLuxuryMod", "1.361"),
+                        new XAttribute("MarketWoodMod", "1.313"),
+                        new XAttribute("MarketStoneMod", "1.298"),
+                        new XAttribute("MarketIronMod", "1.279"),
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "75"),
+                        new XAttribute("BuildCostWood", "60"),
+                        new XAttribute("BuildCostStone", "20"),
+                        new XAttribute("BuildCostIron", "0"),
+                        new XAttribute("DaysWork", "5000"),
+                        new XAttribute("TaxMod", "1.3"),
+                        new XAttribute("Workers", "9T6")
+                    ),
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Liten hamn"),
+                        new XAttribute("DockSize", "2"),
+                        new XAttribute("OperationBaseCostModifier", "12.5"),
+                        new XAttribute("OperationBaseIncomeModifier", "62.625"),
+                        new XAttribute("DockSmall", "8"),
+                        new XAttribute("DockMedium", "2"),
+                        new XAttribute("DockLarge", "0"),
+                        new XAttribute("CrimeRate", "3"),
+                        new XAttribute("GuardBase", "10"),
+                        new XAttribute("MarketSilverMod", "4.18"),
+                        new XAttribute("MarketBaseMod", "1.721"),
+                        new XAttribute("MarketLuxuryMod", "1.583"),
+                        new XAttribute("MarketWoodMod", "1.477"),
+                        new XAttribute("MarketStoneMod", "1.43"),
+                        new XAttribute("MarketIronMod", "1.373"),
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "225"),
+                        new XAttribute("BuildCostWood", "300"),
+                        new XAttribute("BuildCostStone", "1000"),
+                        new XAttribute("BuildCostIron", "25"),
+                        new XAttribute("DaysWork", "10000"),
+                        new XAttribute("TaxMod", "1.45"),
+                        new XAttribute("Workers", "27T6")
+                    ),
+
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Hamn"),
+                        new XAttribute("DockSize", "3"),
+                        new XAttribute("OperationBaseCostModifier", "18.75"),
+                        new XAttribute("OperationBaseIncomeModifier", "125.25"),
+                        new XAttribute("DockSmall", "16"),
+                        new XAttribute("DockMedium", "4"),
+                        new XAttribute("DockLarge", "1"),
+                        new XAttribute("CrimeRate", "9"),
+                        new XAttribute("GuardBase", "25"),
+                        new XAttribute("MarketSilverMod", "10.897"),
+                        new XAttribute("MarketBaseMod", "2.333"),
+                        new XAttribute("MarketLuxuryMod", "1.361"),
+                        new XAttribute("MarketWoodMod", "1.746"),
+                        new XAttribute("MarketStoneMod", "1.633"),
+                        new XAttribute("MarketIronMod", "1.506"),
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "675"),
+                        new XAttribute("BuildCostWood", "600"),
+                        new XAttribute("BuildCostStone", "5000"),
+                        new XAttribute("BuildCostIron", "150"),
+                        new XAttribute("DaysWork", "20000"),
+                        new XAttribute("TaxMod", "1.6"),
+                        new XAttribute("Workers", "81T6")
+                    ),
+
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Handelshamn"),
+                        new XAttribute("DockSize", "4"),
+                        new XAttribute("OperationBaseCostModifier", "28.125"),
+                        new XAttribute("OperationBaseIncomeModifier", "261.459"),
+                        new XAttribute("DockSmall", "32"),
+                        new XAttribute("DockMedium", "8"),
+                        new XAttribute("DockLarge", "2"),
+                        new XAttribute("CrimeRate", "27"),
+                        new XAttribute("GuardBase", "62.5"),
+                        new XAttribute("MarketSilverMod", "53.986"),
+                        new XAttribute("MarketBaseMod", "3.749"),
+                        new XAttribute("MarketLuxuryMod", "2.774"),
+                        new XAttribute("MarketWoodMod", "2.219"),
+                        new XAttribute("MarketStoneMod", "1.957"),
+                        new XAttribute("MarketIronMod", "1.695"),
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "2025"),
+                        new XAttribute("BuildCostWood", "3000"),
+                        new XAttribute("BuildCostStone", "12500"),
+                        new XAttribute("BuildCostIron", "450"),
+                        new XAttribute("DaysWork", "40000"),
+                        new XAttribute("TaxMod", "1.75"),
+                        new XAttribute("Workers", "243T6")
+                    ),
+
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Stor handelshamn"),
+                        new XAttribute("DockSize", "5"),
+                        new XAttribute("OperationBaseCostModifier", "42.188"),
+                        new XAttribute("OperationBaseIncomeModifier", "523.965"),
+                        new XAttribute("DockSmall", "64"),
+                        new XAttribute("DockMedium", "16"),
+                        new XAttribute("DockLarge", "4"),
+                        new XAttribute("CrimeRate", "81"),
+                        new XAttribute("GuardBase", "156.25"),
+                        new XAttribute("MarketSilverMod", "781.463"),
+                        new XAttribute("MarketBaseMod", "7.859"),
+                        new XAttribute("MarketLuxuryMod", "4.574"),
+                        new XAttribute("MarketWoodMod", "3.126"),
+                        new XAttribute("MarketStoneMod", "2.509"),
+                        new XAttribute("MarketIronMod", "1.976"),
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "6075"),
+                        new XAttribute("BuildCostWood", "6000"),
+                        new XAttribute("BuildCostStone", "25000"),
+                        new XAttribute("BuildCostIron", "1350"),
+                        new XAttribute("DaysWork", "80000"),
+                        new XAttribute("TaxMod", "1.9"),
+                        new XAttribute("Workers", "729T6")
+                    ),
+
+                    new XElement("Docks",
+                        new XAttribute("DockType", "Enorm handelshamn"),
+                        new XAttribute("DockSize", "6"),
+                        new XAttribute("OperationBaseCostModifier", "63.281"),
+                        new XAttribute("OperationBaseIncomeModifier", "1020.858"),
+                        new XAttribute("DockSmall", "128"),
+                        new XAttribute("DockMedium", "32"),
+                        new XAttribute("DockLarge", "8"),
+                        new XAttribute("CrimeRate", "243"),
+                        new XAttribute("GuardBase", "390.625"),
+                        new XAttribute("MarketSilverMod", "67788.674"),
+                        new XAttribute("MarketBaseMod", "24.931"),
+                        new XAttribute("MarketLuxuryMod", "9.634"),
+                        new XAttribute("MarketWoodMod", "5.104"),
+                        new XAttribute("MarketStoneMod", "3.527"),
+                        new XAttribute("MarketIronMod", "2.407"),
+                        new XAttribute("BuildCostSilver", "0"),
+                        new XAttribute("BuildCostBase", "18225"),
+                        new XAttribute("BuildCostWood", "10000"),
+                        new XAttribute("BuildCostStone", "50000"),
+                        new XAttribute("BuildCostIron", "4250"),
+                        new XAttribute("DaysWork", "160000"),
+                        new XAttribute("TaxMod", "2.05"),
+                        new XAttribute("Workers", "2187T6")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ShipyardTypeSettings.xml";
+            xmlDoc.Save(@filePath);
+            ShipyardTypeSettingsList = LoadShipyardTypeSettingsFromXml();
+        }
+
+        #endregion
+
+        #region Methods : Livingconditions Settings
+
+        public LivingconditionsSettingsModel LoadLivingconditionsSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/LivingconditionsSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            List<LivingconditionModel> tempList = new List<LivingconditionModel>();
+            LivingconditionsSettingsModel livingconditionsSettingsModel = new LivingconditionsSettingsModel();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("Livingcondition");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        tempList.Add(
+                            new LivingconditionModel()
+                            {
+                                Livingcondition = xmlAttributeCollection["Livingcondition"].Value,
+                                BaseCost = Convert.ToInt32(xmlAttributeCollection["Base"].Value),
+                                LuxuryCost = Convert.ToInt32(xmlAttributeCollection["Luxury"].Value),
+                                Focus = Convert.ToInt32(xmlAttributeCollection["Focus"].Value),
+                                Wellbeing = Convert.ToInt32(xmlAttributeCollection["Wellbeing"].Value)
+                            }
+                        );
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (foundError)
+            {
+                CreateDefaultLivingconditionsSettingsXmlFile();
+                return null;
+            }
+            else
+            {
+                livingconditionsSettingsModel.LivingconditionsList = tempList;
+                return livingconditionsSettingsModel;
+            }
+        }
+
+        public void CreateDefaultLivingconditionsSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("Livingcondition",
+                        new XAttribute("Livingcondition", "Nödtorftig"),
+                        new XAttribute("Base", "1"),
+                        new XAttribute("Luxury", "0"),
+                        new XAttribute("Focus", "-4"),
+                        new XAttribute("Wellbeing", "-2")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Livingcondition", "Gemen"),
+                        new XAttribute("Base", "2"),
+                        new XAttribute("Luxury", "0"),
+                        new XAttribute("Focus", "-2"),
+                        new XAttribute("Wellbeing", "-1")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Livingcondition", "God"),
+                        new XAttribute("Base", "2"),
+                        new XAttribute("Luxury", "2"),
+                        new XAttribute("Focus", "2"),
+                        new XAttribute("Wellbeing", "1")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Livingcondition", "Mycket god"),
+                        new XAttribute("Base", "3"),
+                        new XAttribute("Luxury", "4"),
+                        new XAttribute("Focus", "4"),
+                        new XAttribute("Wellbeing", "2")
+                    ),
+                    new XElement("Livingcondition",
+                        new XAttribute("Livingcondition", "Lyxliv"),
+                        new XAttribute("Base", "6"),
+                        new XAttribute("Luxury", "8"),
+                        new XAttribute("Focus", "6"),
+                        new XAttribute("Wellbeing", "3")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/LivingconditionsSettings.xml";
+            xmlDoc.Save(@filePath);
+            LivingconditionsSettingsModel = LoadLivingconditionsSettingsFromXml();
+        }
+
+        #endregion
+
+        #region Methods : Stable Settings
+
+        public StableSettingsModel LoadStableSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/StableSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            List<AnimalModel> tempList = new List<AnimalModel>();
+            StableSettingsModel stableSettingsModel = new StableSettingsModel();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("Stable");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        tempList.Add(
+                            new AnimalModel()
+                            {
+                                Animal = xmlAttributeCollection["Animal"].Value,
+                                BaseCost = Convert.ToInt32(xmlAttributeCollection["Base"].Value)
+                            }
+                        );
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (foundError)
+            {
+                CreateDefaultStableSettingsXmlFile();
+                return null;
+            }
+            else
+            {
+                stableSettingsModel.StableList = tempList;
+                return stableSettingsModel;
+            }
+        }
+
+        public void CreateDefaultStableSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("Stable",
+                        new XAttribute("Animal", "Ridhäst"),
+                        new XAttribute("BaseCost", "2")
+                    ),
+                    new XElement("Stable",
+                        new XAttribute("Animal", "Stridshäst"),
+                        new XAttribute("BaseCost", "4")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/StableSettings.xml";
+            xmlDoc.Save(@filePath);
+            StableSettingsModel = LoadStableSettingsFromXml();
+        }
+
+        #endregion
+
+        #region Methods : Expenses Settings
+
+        public ExpensesSettingsModel LoadExpensesSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            List<RoadModel> roadList = new List<RoadModel>();
+            List<EventModel> eventList = new List<EventModel>();
+            ExpensesSettingsModel expensesSettingsModel = new ExpensesSettingsModel();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("FeedingPoorFactor");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            expensesSettingsModel.FeedingPoorFactor = Convert.ToDecimal(xmlAttributeCollection["Factor"].Value.Replace(".", ","));
+                        }
+                        else
+                        {
+                            expensesSettingsModel.FeedingPoorFactor = Convert.ToDecimal(xmlAttributeCollection["Factor"].Value);
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+
+                elemList = doc.GetElementsByTagName("FeedingDaysWorkFactor");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            expensesSettingsModel.FeedingDaysWorkFactor = Convert.ToDecimal(xmlAttributeCollection["Factor"].Value.Replace(".", ","));
+                        }
+                        else
+                        {
+                            expensesSettingsModel.FeedingDaysWorkFactor = Convert.ToDecimal(xmlAttributeCollection["Factor"].Value);
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+
+                elemList = doc.GetElementsByTagName("ManorMaintenanceFactor");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            expensesSettingsModel.ManorMaintenanceFactor = Convert.ToDecimal(xmlAttributeCollection["Factor"].Value.Replace(".", ","));
+                        }
+                        else
+                        {
+                            expensesSettingsModel.ManorMaintenanceFactor = Convert.ToDecimal(xmlAttributeCollection["Factor"].Value);
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+
+                elemList = doc.GetElementsByTagName("Road");
+
+                roadList = InformationSettingsModel.RoadTypesList;
+
+                elemList = doc.GetElementsByTagName("DayWorkersBaseCost");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        expensesSettingsModel.DayWorkersBaseCost = Convert.ToInt32(xmlAttributeCollection["DayWorkersBaseCost"].Value);
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+
+                elemList = doc.GetElementsByTagName("SlavesBaseCost");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        expensesSettingsModel.SlavesBaseCost = Convert.ToInt32(xmlAttributeCollection["SlavesBaseCost"].Value);
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+
+                elemList = doc.GetElementsByTagName("Event");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        eventList.Add(new EventModel()
+                        {
+                            EventName = xmlAttributeCollection["Event"].Value,
+                            SilverCost = Convert.ToInt32(xmlAttributeCollection["SilverCost"].Value),
+                            BaseCost = Convert.ToInt32(xmlAttributeCollection["BaseCost"].Value),
+                            LuxuryCost = Convert.ToInt32(xmlAttributeCollection["LuxuryCost"].Value)
+                        });
+                    }
+                    else
+                    {
+                        foundError = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            expensesSettingsModel.RoadsList = roadList;
+            expensesSettingsModel.EventList = eventList;
+
+            if (!foundError)
+            {
+                return expensesSettingsModel;
+            }
+            else
+            {
+                return null;
+                CreateDefaultExpensesSettingsXmlFile();
+            }
+        }
+
+        public void CreateDefaultExpensesSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("FeedingPoorFactor",
+                        new XAttribute("Factor", "0.05")
+                    ),
+                    new XElement("FeedingDaysWorkFactor",
+                        new XAttribute("Factor", "0.0025")
+                    ),
+                    new XElement("ManorMaintenanceFactor",
+                        new XAttribute("Factor", "0.025")
+                    ),
+                    new XElement("DayWorkersBaseCost",
+                        new XAttribute("DayWorkersBaseCost", "2")
+                    ),
+                    new XElement("SlavesBaseCost",
+                        new XAttribute("SlavesBaseCost", "1")
+                    ),
+                    new XElement("Event",
+                        new XAttribute("Event", "Feast"),
+                        new XAttribute("SilverCost", "0"),
+                        new XAttribute("BaseCost", "8"),
+                        new XAttribute("LuxuryCost", "6")
+                    ),
+                    new XElement("Event",
+                        new XAttribute("Event", "People"),
+                        new XAttribute("SilverCost", "0"),
+                        new XAttribute("BaseCost", "16"),
+                        new XAttribute("LuxuryCost", "2")
+                    ),
+                    new XElement("Event",
+                        new XAttribute("Event", "Religious"),
+                        new XAttribute("SilverCost", "1000"),
+                        new XAttribute("BaseCost", "12"),
+                        new XAttribute("LuxuryCost", "6")
+                    ),
+                    new XElement("Event",
+                        new XAttribute("Event", "Tourney"),
+                        new XAttribute("SilverCost", "10000"),
+                        new XAttribute("BaseCost", "24"),
+                        new XAttribute("LuxuryCost", "10")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
+            xmlDoc.Save(@filePath);
+            ExpensesSettingsModel = LoadExpensesSettingsFromXml();
+        }
+
+        #endregion
     }
 }

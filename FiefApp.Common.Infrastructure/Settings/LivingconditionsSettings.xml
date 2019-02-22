@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Livingcondition Livingcondition="Nödtorftig" Base="1" Luxury="0" Focus="-4" Wellbeing="-2"/>
+  <Livingcondition Livingcondition="Gemen" Base="2" Luxury="0" Focus="-2" Wellbeing="-1"/>
+  <Livingcondition Livingcondition="God" Base="3" Luxury="2" Focus="2" Wellbeing="1"/>
+  <Livingcondition Livingcondition="Mycket god" Base="4" Luxury="4" Focus="4" Wellbeing="2"/>
+  <Livingcondition Livingcondition="Lyxliv" Base="6" Luxury="8" Focus="6" Wellbeing="3"/>
+</Settings>

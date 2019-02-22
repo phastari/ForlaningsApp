@@ -33,6 +33,19 @@ namespace FiefApp.Common.Infrastructure.Services
                 });
             }
 
+            if (BoatbuildingList.Count < 2)
+            {
+                BoatbuildingList.Add(new BoatbuildingDataModel(settingsService)
+                {
+                    Id = 0
+                });
+
+                BoatbuildingList.Add(new BoatbuildingDataModel(settingsService)
+                {
+                    Id = 1
+                });
+            }
+
             if (InformationList.Count < 2)
             {
                 InformationList.Add(new InformationDataModel()
@@ -54,6 +67,23 @@ namespace FiefApp.Common.Infrastructure.Services
 
                 InformationList.Add(new InformationDataModel());
             }
+
+            if (ExpensesList.Count < 2)
+            {
+                ExpensesList.Add(
+                    new ExpensesDataModel(settingsService)
+                    {
+                        Id = 0
+                    }
+                );
+
+                ExpensesList.Add(
+                    new ExpensesDataModel(settingsService)
+                    {
+                        Id = 1
+                    }
+                );
+            }
         }
 
         public int Index { get; set; } = 1;
@@ -71,5 +101,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 Id = 1
             }
         };
+        public List<BoatbuildingDataModel> BoatbuildingList { get; set; } = new List<BoatbuildingDataModel>();
+        public List<ExpensesDataModel> ExpensesList { get; set; } = new List<ExpensesDataModel>();
     }
 }

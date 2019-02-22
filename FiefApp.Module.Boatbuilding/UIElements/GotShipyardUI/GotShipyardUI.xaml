@@ -1,0 +1,452 @@
+﻿<UserControl x:Class="FiefApp.Module.Boatbuilding.UIElements.GotShipyardUI.GotShipyardUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fakeComboBox="clr-namespace:FiefApp.Common.Infrastructure.UIElements.FakeComboBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="417" 
+             d:DesignWidth="238">
+
+    <Grid
+        x:Name="RootGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="96"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="18"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame 
+                Grid.Column="0" 
+                Grid.ColumnSpan="9"
+                Grid.Row="0" 
+                Grid.RowSpan="35" 
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5, 0, 0.5, 0.5"
+                IsTabStop="False"/>
+
+
+        <Label
+                Content="Hamn"
+                Grid.Column="1"
+                Grid.Row="0"
+                FontWeight="Bold"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="14,0,0,0"/>
+
+        <Label
+                Content="Namn"
+                Grid.Column="1"
+                Grid.Row="2"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="3"
+                Grid.ColumnSpan="5"
+                Grid.Row="2"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="{Binding Path=CantEdit}"
+                Padding="6,0,0,0">
+        </TextBox>
+
+        <Label
+                Content="Storlek"
+                Grid.Column="1"
+                Grid.Row="4"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.Size}"
+                Grid.Column="3"
+                Grid.ColumnSpan="5"
+                Grid.Row="4"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="6,0,0,0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Label
+                Content="Förvaltare"
+                Grid.Column="1"
+                Grid.Row="6"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <ComboBox
+                x:Name="StewardComboBox"
+                ItemsSource="{Binding Path=StewardList}"
+                DisplayMemberPath="Name"
+                Grid.Column="3"
+                Grid.ColumnSpan="5"
+                Grid.Row="6"
+                Grid.ZIndex="2"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                IsTabStop="False"
+                Padding="6,0,0,0">
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=CantEdit}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <fakeComboBox:FakeComboBox 
+                Grid.Column="3"
+                Grid.ColumnSpan="5"
+                Grid.Row="6"
+                Grid.ZIndex="1"
+                IsSmall="False"
+                TextBoxText="{Binding Path=Text, ElementName=StewardComboBox}">
+        </fakeComboBox:FakeComboBox>
+
+        <Label
+                Content="Utvecklingsnivå(UN)"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="8"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.UN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="8"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="{Binding Path=CantEdit}"
+                Padding="0"/>
+
+        <Label
+                Content="Driftskostnad i bas"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="10"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.OperationBaseCost}"
+                Grid.Column="7"
+                Grid.Row="10"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+        <Label
+                Content="Tull/Skatt (%)"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="12"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.Taxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="12"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="{Binding Path=CantEdit}"
+                Padding="0">
+        </TextBox>
+
+        <Label
+                Content="Inkomst i bas"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="14"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.OperationBaseIncome}"
+                Grid.Column="7"
+                Grid.Row="14"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+        <Label
+                Content="Upgradera hamnen"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="16"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <CheckBox
+                IsChecked="{Binding Path=ShipyardModel.IsBeingUpgraded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" 
+                Template="{DynamicResource CheckBoxTemplate}">
+            <CheckBox.Style>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=StewardComboBox, Path=Visibility}" Value="Visible">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
+
+        <Label
+                Content="Fogdar"
+                Grid.Column="3"
+                Grid.ColumnSpan="3"
+                Grid.Row="18"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <iTextBox:iTextBox
+                Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="18">
+        </iTextBox:iTextBox>
+
+        <Label
+                Content="Vaktkaptener"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="20"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <iTextBox:iTextBox
+                Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="20">
+        </iTextBox:iTextBox>
+
+        <Label
+                Content="Vaktstyrka"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="22"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <iTextBox:iTextBox
+                Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="22">
+        </iTextBox:iTextBox>
+
+        <Label
+                Content="Kriminalitet"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="24"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.CrimeRate}"
+                Grid.Column="7"
+                Grid.Row="24"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+        <Label
+                Content="Dockplatser"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="26"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <Label
+                Content="Antal"
+                Grid.Column="5"
+                Grid.Row="26"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <Label
+                Content="Lediga"
+                Grid.Column="7"
+                Grid.Row="26"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <Label
+                Content="Små, &lt; 11 meter"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="28"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.DockSmall}"
+                Grid.Column="5"
+                Grid.Row="28"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.DockSmallFree}"
+                Grid.Column="7"
+                Grid.Row="28"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+        <Label
+                Content="Medel, &lt; 21 meter"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="30"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.DockMedium}"
+                Grid.Column="5"
+                Grid.Row="30"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.DockMediumFree}"
+                Grid.Column="7"
+                Grid.Row="30"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+        <Label
+                Content="Stora, 21+ meter"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="32"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.DockLarge}"
+                Grid.Column="5"
+                Grid.Row="32"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+        <TextBox
+                Text="{Binding Path=ShipyardModel.DockLargeFree}"
+                Grid.Column="7"
+                Grid.Row="32"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                Padding="0"/>
+
+    </Grid>
+</UserControl>

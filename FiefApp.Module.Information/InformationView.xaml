@@ -324,12 +324,13 @@
             </ComboBox.Style>
         </ComboBox>
 
-        <fcb:FakeComboBox Grid.Column="3"
-                          Grid.ColumnSpan="5"
-                          Grid.Row="7"
-                          Grid.ZIndex="1"
-                          TextBoxText="{Binding Path=Text, ElementName=TypeComboBox}"
-                          IsSmall="False">
+        <fcb:FakeComboBox 
+            Grid.Column="3"
+            Grid.ColumnSpan="5"
+            Grid.Row="7"
+            Grid.ZIndex="1"
+            TextBoxText="{Binding Path=Text, ElementName=TypeComboBox}"
+            IsSmall="False">
             
             <fcb:FakeComboBox.Style>
                 <Style TargetType="{x:Type fcb:FakeComboBox}">
@@ -368,6 +369,7 @@
                   Grid.Row="19"
                   Grid.ZIndex="1"
                   ItemsSource="{Binding Path=SettingsModel.RoadTypesList}"
+                  DisplayMemberPath="Road"
                   Text="{Binding Path=DataModel.Roads, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Template="{DynamicResource ComboBoxControlTemplate}"
                   ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
@@ -386,12 +388,13 @@
             </ComboBox.Style>
         </ComboBox>
 
-        <fcb:FakeComboBox Grid.Column="3"
-                          Grid.ColumnSpan="5"
-                          Grid.Row="19"
-                          Grid.ZIndex="1"
-                          IsSmall="False"
-                          TextBoxText="{Binding Path=DataModel.Roads}">
+        <fcb:FakeComboBox 
+            Grid.Column="3"
+            Grid.ColumnSpan="5"
+            Grid.Row="19"
+            Grid.ZIndex="1"
+            IsSmall="False"
+            TextBoxText="{Binding Path=DataModel.Roads}">
             <fcb:FakeComboBox.Style>
                 <Style TargetType="{x:Type fcb:FakeComboBox}">
                     <Setter Property="Visibility" Value="Visible"/>

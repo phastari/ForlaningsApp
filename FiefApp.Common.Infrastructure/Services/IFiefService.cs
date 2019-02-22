@@ -10,5 +10,7 @@ namespace FiefApp.Common.Infrastructure.Services
         List<ArmyDataModel> ArmyList { get; set; }
         List<EmployeesDataModel> EmployeesList { get; set; }
         List<ManorDataModel> ManorList { get; set; }
+        List<BoatbuildingDataModel> BoatbuildingList { get; set; }
+        List<ExpensesDataModel> ExpensesList { get; set; }
     }
 }

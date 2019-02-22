@@ -1,13 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using FiefApp.Common.Infrastructure.Models;
+using System.Collections.ObjectModel;
 using FiefApp.Common.Infrastructure.DataModels;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
     public interface IManorService
     {
-        ManorDataModel GetManorDataModel(int id);
-        void SetManorDataModel(ManorDataModel manorDataModel);
         ObservableCollection<IPeopleModel> GetResidentsCollection(int index);
+        void SetSoldierModel(int id, int index, SoldierModel model);
+        int GetPeopleId(int index);
+        void DeletePeople(int id, int index);
+        ManorDataModel GetAllManorDataModel();
     }
 }

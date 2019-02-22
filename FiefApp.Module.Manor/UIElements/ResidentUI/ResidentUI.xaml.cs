@@ -51,19 +51,40 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
         public DelegateCommand SaveCommand { get; set; }
         private void ExecuteSaveCommand()
         {
-            ResidentUIEventArgs newEventArgs =
-                new ResidentUIEventArgs(
-                    ResidentUIRoutedEvent,
-                    Id,
-                    "Save",
-                    new ResidentModel()
-                    {
-                        Age = Age,
-                        Name = Resident,
-                        Position = Position
-                    }
-                );
-            RaiseEvent(newEventArgs);
+            IPeopleModel tempModel = null;
+
+            if (ResidentType == "Resident")
+            {
+                tempModel = new ResidentModel()
+                {
+                    Age = Age,
+                    Name = Resident,
+                    Position = Position,
+                    Type = "Resident"
+                };
+            }
+            else if (ResidentType == "Soldier")
+            {
+                tempModel = new SoldierModel()
+                {
+                    Age = Age,
+                    Name = Resident,
+                    Position = Position,
+                    Type = "Soldier"
+                };
+            }
+
+            if (tempModel != null)
+            {
+                ResidentUIEventArgs newEventArgs =
+                    new ResidentUIEventArgs(
+                        ResidentUIRoutedEvent,
+                        Id,
+                        "Save",
+                        tempModel
+                    );
+                RaiseEvent(newEventArgs);
+            }
         }
 
         public DelegateCommand CancelCommand { get; set; }
@@ -154,13 +175,13 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
 
         #region UI Properties
 
-        private bool _isResident;
-        public bool IsResident
+        private bool _isEditable;
+        public bool IsEditable
         {
-            get => _isResident;
+            get => _isEditable;
             set
             {
-                _isResident = value;
+                _isEditable = value;
                 NotifyPropertyChanged();
             }
         }
@@ -201,7 +222,10 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
         {
             if (d is ResidentUI c)
             {
-                c.IsResident = c.ResidentType == "Resident";
+                if (c.ResidentType == "Resident" || c.ResidentType == "Soldier")
+                {
+                    c.IsEditable = true;
+                }
             }
         }
 

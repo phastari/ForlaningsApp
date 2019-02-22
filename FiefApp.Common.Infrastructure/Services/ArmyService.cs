@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Documents;
 using FiefApp.Common.Infrastructure.DataModels;
 
@@ -90,19 +91,53 @@ namespace FiefApp.Common.Infrastructure.Services
             return tempDataModel;
         }
 
-        public List<int> GetAllResidentIds()
+        public int GetPeopleId(int index)
         {
             List<int> tempList = new List<int>();
 
-            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            for (int x = 0; x < _fiefService.ArmyList[index].TemplarKnightsList.Count; x++)
             {
-                for (int y = 0; y < _fiefService.ManorList[x].ResidentsCollection.Count; y++)
-                {
-                    tempList.Add(_fiefService.ManorList[x].ResidentsCollection[y].Id);
-                }
+                tempList.Add(_fiefService.ArmyList[index].TemplarKnightsList[x].Id);
             }
 
-            return tempList;
+            for (int x = 0; x < _fiefService.ArmyList[index].CavalryTemplarKnightsList.Count; x++)
+            {
+                tempList.Add(_fiefService.ArmyList[index].CavalryTemplarKnightsList[x].Id);
+            }
+
+            for (int x = 0; x < _fiefService.ArmyList[index].KnightsList.Count; x++)
+            {
+                tempList.Add(_fiefService.ArmyList[index].KnightsList[x].Id);
+            }
+
+            for (int x = 0; x < _fiefService.ArmyList[index].OfficerCorporalsList.Count; x++)
+            {
+                tempList.Add(_fiefService.ArmyList[index].OfficerCorporalsList[x].Id);
+            }
+
+            for (int x = 0; x < _fiefService.ArmyList[index].OfficerSergeantsList.Count; x++)
+            {
+                tempList.Add(_fiefService.ArmyList[index].OfficerSergeantsList[x].Id);
+            }
+
+            for (int x = 0; x < _fiefService.ArmyList[index].OfficerCaptainsList.Count; x++)
+            {
+                tempList.Add(_fiefService.ArmyList[index].OfficerCaptainsList[x].Id);
+            }
+
+            for (int x = 0; x < _fiefService.ManorList[index].ResidentsList.Count; x++)
+            {
+                tempList.Add(_fiefService.ManorList[index].ResidentsList[x].Id);
+            }
+
+            if (tempList.Count > 0)
+            {
+                return tempList.Max() + 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

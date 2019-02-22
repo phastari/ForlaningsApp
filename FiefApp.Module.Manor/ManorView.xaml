@@ -178,10 +178,14 @@
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="Template" Value="{DynamicResource TextBoxDisabled}"/>
                     <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                             <Setter Property="Template" Value="{DynamicResource TextBoxEnabled}"/>
                             <Setter Property="IsReadOnly" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -566,7 +570,24 @@
                     <ControlTemplate TargetType="ItemsControl">
                         <StackPanel>
                             <ItemsPresenter />
-                            <addResidentUI:AddResidentUI/>
+                            <addResidentUI:AddResidentUI>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="AddResidentUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.AddResidentUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <addResidentUI:AddResidentUI.Style>
+                                    <Style TargetType="{x:Type addResidentUI:AddResidentUI}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </addResidentUI:AddResidentUI.Style>
+                            </addResidentUI:AddResidentUI>
                         </StackPanel>
                     </ControlTemplate>
                 </ItemsControl.Template>
@@ -580,7 +601,7 @@
                         ResidentType="{Binding Path=Type}"
                         Position="{Binding Path=Position}">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="EmployeeUIEvent">
+                                <i:EventTrigger EventName="ResidentUIEvent">
                                     <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ResidentUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -627,7 +648,7 @@
         <ToggleButton 
             x:Name="CancelEditButton"
             Content="avbryt"
-            Command="{Binding Path=CancelEditingButtonCommand}"
+            Command="{Binding Path=CancelEditButton}"
             Grid.Column="7"
             Grid.ColumnSpan="2"
             Grid.Row="41"
@@ -653,7 +674,7 @@
         <ToggleButton 
             x:Name="SaveEditButton"
             Content="spara"
-            Command="{Binding Path=SaveEditedButtonCommand}"
+            Command="{Binding Path=SaveEditButton}"
             Template="{DynamicResource ToggleButtonTemplate}"
             Grid.Column="5"
             Grid.ColumnSpan="2"
@@ -707,7 +728,18 @@
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             Padding="0"
-                            Template="{DynamicResource ButtonTemplate}"/>
+                            Template="{DynamicResource ButtonTemplate}">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
                 </ControlTemplate>
             </ItemsControl.Template>

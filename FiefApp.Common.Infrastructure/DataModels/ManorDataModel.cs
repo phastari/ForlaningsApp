@@ -1,11 +1,9 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 using System.Runtime.CompilerServices;
-using System.Windows.Documents;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
@@ -55,8 +53,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _manorWealth;
-        public int ManorWealth
+        private string _manorWealth = "0";
+        public string ManorWealth
         {
             get => _manorWealth;
             set
@@ -121,8 +119,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private string _manorLivingconditions;
-        public string ManorLivingsconditions
+        private string _manorLivingconditions = "";
+        public string ManorLivingconditions
         {
             get => _manorLivingconditions;
             set

@@ -141,9 +141,17 @@
       <Project>{e9e9d3bb-b5c5-479a-83ac-487ef849cb81}</Project>
       <Name>FiefApp.Module.Army</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Boatbuilding\FiefApp.Module.Boatbuilding.csproj">
+      <Project>{fb5ed1df-3d98-426c-bcd9-6355e514b239}</Project>
+      <Name>FiefApp.Module.Boatbuilding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FiefApp.Module.Employees\FiefApp.Module.Employees.csproj">
       <Project>{67cc9daf-baf9-454b-9e51-579d25b19617}</Project>
       <Name>FiefApp.Module.Employees</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Expenses\FiefApp.Module.Expenses.csproj">
+      <Project>{06c1de55-1b0d-483a-ab8f-9860e143c62d}</Project>
+      <Name>FiefApp.Module.Expenses</Name>
     </ProjectReference>
     <ProjectReference Include="..\FiefApp.Module.Income\FiefApp.Module.Income.csproj">
       <Project>{12716b6b-7a72-4789-ab47-86a9cb8b9552}</Project>
@@ -156,6 +164,10 @@
     <ProjectReference Include="..\FiefApp.Module.Manor\FiefApp.Module.Manor.csproj">
       <Project>{a7ccd305-aad8-43a7-bb94-70aa91f181e5}</Project>
       <Name>FiefApp.Module.Manor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Stewards\FiefApp.Module.Stewards.csproj">
+      <Project>{00355dae-84dd-4f5d-9e40-d1c4a768e0cb}</Project>
+      <Name>FiefApp.Module.Stewards</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

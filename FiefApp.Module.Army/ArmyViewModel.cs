@@ -45,17 +45,9 @@ namespace FiefApp.Module.Army
 
             if (e.Action == "Increase")
             {
-                int max = 1;
-                List<int> maxList = _armyService.GetAllResidentIds();
-
-                if (maxList.Count > 0)
-                {
-                    max = maxList.Max() + 1;
-                }
-
                 SoldierModel soldierModel = e.SoldierModel;
 
-                soldierModel.Id = max;
+                soldierModel.Id = _armyService.GetPeopleId(Index);
 
                 if (soldierModel.Position == "KnightTemplars")
                 {

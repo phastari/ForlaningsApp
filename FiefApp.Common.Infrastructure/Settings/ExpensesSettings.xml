@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <FeedingPoorFactor Factor="0.05"/>
+  <FeedingDaysWorkFactor Factor="0.0025"/>
+  <ManorMaintenanceFactor Factor="0.025"/>
+  <DayWorkersBaseCost DayWorkersBaseCost="2"/>
+  <SlavesBaseCost SlavesBaseCost="1"/>
+  <Event Event="Feast" SilverCost="0" BaseCost="8" LuxuryCost="6"/>
+  <Event Event="People" SilverCost="0" BaseCost="16" LuxuryCost="2"/>
+  <Event Event="Religious" SilverCost="1000" BaseCost="12" LuxuryCost="6"/>
+  <Event Event="Tourney" SilverCost="10000" BaseCost="24" LuxuryCost="10"/>
+</Settings>

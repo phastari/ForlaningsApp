@@ -5,7 +5,7 @@
         public string ManorName { get; set; }
         public int Population { get; set; }
         public int Acres { get; set; }
-        public int Wealth { get; set; }
+        public string Wealth { get; set; }
         public int Pasture { get; set; }
         public int Arable { get; set; }
         public int Woodland { get; set; }
