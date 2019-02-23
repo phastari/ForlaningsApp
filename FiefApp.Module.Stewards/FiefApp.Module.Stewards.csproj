@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutedEvents\StewardUIEventArgs.cs" />
     <Compile Include="StewardsModule.cs" />
     <Compile Include="StewardsView.xaml.cs">
       <DependentUpon>StewardsView.xaml</DependentUpon>

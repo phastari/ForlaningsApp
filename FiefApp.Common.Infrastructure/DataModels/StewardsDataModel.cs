@@ -9,7 +9,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
     public class StewardsDataModel : INotifyPropertyChanged, ICloneable, IDataModelBase
     {
         private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
-        public ObservableCollection<StewardModel> StewardCollection
+        public ObservableCollection<StewardModel> StewardsCollection
         {
             get => _stewardsCollection;
             set
@@ -29,6 +29,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 NotifyPropertyChanged();
             }
         }
+        
 
         #region INotifyPropertyChanged
 

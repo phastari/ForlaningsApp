@@ -15,8 +15,8 @@ namespace FiefApp.Common.Infrastructure.Models
         public string Loyalty { get; set; }
         public string Skill { get; set; }
         public string Speciality { get; set; }
-        public string Bonus { get; set; }
-
+        public int Bonus { get; set; }
+        public string Family { get; set; }
 
         public string Industry { get; set; }
         public int IndustryId { get; set; }

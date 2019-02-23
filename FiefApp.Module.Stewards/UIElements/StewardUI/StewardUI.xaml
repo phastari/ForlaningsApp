@@ -9,179 +9,455 @@
              mc:Ignorable="d" 
              d:DesignHeight="72" 
              d:DesignWidth="553">
-    <Grid>
+    <Grid
+        x:Name="RootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="21"/>
             <RowDefinition Height="3"/>
-            <RowDefinition Height="21"/>
-            <RowDefinition Height="3"/>
-            <RowDefinition Height="21"/>
-            <RowDefinition Height="3"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="34"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="56"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="553"/>
         </Grid.ColumnDefinitions>
 
-        <Label
-            Content="Namn"
-            Grid.Column="0"
-            Grid.Row="0"
-            HorizontalContentAlignment="Right"
+        <TreeView 
+            x:Name="RootTreeView"
+            Grid.ColumnSpan="1"
+            Grid.RowSpan="3"
             VerticalContentAlignment="Center"
-            Padding="0"/>
+            Padding="0,3,0,0"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            Background="LightGray"
+            BorderBrush="Gray"
+            BorderThickness="0"
+            IsTabStop="False">
 
-        <TextBox
-            Grid.Column="2"
-            Grid.Row="0"
-            Text="{Binding Path=Steward, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="4,0,0,0"/>
+            <TreeView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                 Color="Transparent"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                 Color="Black" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                 Color="Transparent" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                 Color="Black" />
+            </TreeView.Resources>
 
-        <Label
-            Content="Ålder"
-            Grid.Column="4"
-            Grid.Row="0"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+            <TreeViewItem 
+                Background="LightGray"
+                Expanded="TreeViewItemIsExpandedCommand"
+                Collapsed="TreeViewItemIsCollapsedCommand"
+                IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay}"
+                Name="MouseAreaName">
 
-        <TextBox
-            Grid.Column="6"
-            Grid.Row="0"
-            Text="{Binding Path=Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="4,0,0,0"/>
+                <TreeViewItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="21"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="34"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="101"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="46"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="130"/>
+                        </Grid.ColumnDefinitions>
 
-        <Label
-            Content="Färdighet"
-            Grid.Column="7"
-            Grid.ColumnSpan="2"
-            Grid.Row="0"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+                        <Label
+                            Content="Namn"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            HorizontalContentAlignment="Right"
+                            VerticalContentAlignment="Center"
+                            Padding="0"/>
 
-        <t6TextBox:T6TextBox
-            Grid.Column="10"
-            Grid.Row="0"
-            T6Value="{Binding Path=Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Text="{Binding Path=Steward, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+                            HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center"
+                            Template="{DynamicResource TextBoxTemplate}"
+                            Padding="4,0,0,0">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="IsReadOnly" Value="True"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="IsReadOnly" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
 
-        </t6TextBox:T6TextBox>
+                        <Label
+                            Content="Ålder"
+                            Grid.Column="4"
+                            Grid.Row="0"
+                            HorizontalContentAlignment="Right"
+                            VerticalContentAlignment="Center"
+                            Padding="0"/>
 
-        <Label
-            Content="Förvaltar"
-            Grid.Column="12"
-            Grid.Row="0"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+                        <TextBox
+                            Grid.Column="6"
+                            Grid.Row="0"
+                            Text="{Binding Path=Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Template="{DynamicResource TextBoxTemplate}"
+                            Padding="0">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="IsReadOnly" Value="True"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="IsReadOnly" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
 
-        <ComboBox
-            x:Name="IndustryComboBox"
-            Grid.Column="14"
-            Grid.Row="0"
-            ItemsSource="{Binding Path=IndustryCollection}"
-            DisplayMemberPath="Industry"/>
+                        <Label
+                            Content="Färdighet"
+                            Grid.Column="7"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="0"
+                            HorizontalContentAlignment="Right"
+                            VerticalContentAlignment="Center"
+                            Padding="0"/>
 
-        <fakeComboBox:FakeComboBox
-            Grid.Column="14"
-            Grid.Row="0"
-            TextBoxText="{Binding ElementName=IndustryComboBox, Path=Text}">
+                        <t6TextBox:T6TextBox
+                            Grid.Column="10"
+                            Grid.Row="0"
+                            T6Value="{Binding Path=Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <t6TextBox:T6TextBox.Style>
+                                <Style TargetType="{x:Type t6TextBox:T6TextBox}">
+                                    <Setter Property="ReadOnly" Value="True"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="ReadOnly" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </t6TextBox:T6TextBox.Style>
+                        </t6TextBox:T6TextBox>
 
-        </fakeComboBox:FakeComboBox>
+                        <Label
+                            Content="Förvaltar"
+                            Grid.Column="12"
+                            Grid.Row="0"
+                            HorizontalContentAlignment="Right"
+                            VerticalContentAlignment="Center"
+                            Padding="0"/>
 
-        <Label
-            Content="Ätt"
-            Grid.Column="0"
-            Grid.Row="2"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+                        <ComboBox
+                            x:Name="IndustryComboBox"
+                            Grid.Column="14"
+                            Grid.Row="0"
+                            ItemsSource="{Binding Path=IndustryCollection}"
+                            DisplayMemberPath="Industry"
+                            SelectedIndex="{Binding Path=IndustryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Template="{DynamicResource ComboBoxControlTemplate}"
+                            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
 
-        <TextBox
-            Grid.Column="2"
-            Grid.Row="2"
-            Text="{Binding Path=Family, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="4,0,0,0"/>
+                        <fakeComboBox:FakeComboBox
+                            Grid.Column="14"
+                            Grid.Row="0"
+                            TextBoxText="{Binding ElementName=IndustryComboBox, Path=Text}">
+                            <fakeComboBox:FakeComboBox.Style>
+                                <Style TargetType="{x:Type fakeComboBox:FakeComboBox}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </fakeComboBox:FakeComboBox.Style>
+                        </fakeComboBox:FakeComboBox>
+                    </Grid>
+                </TreeViewItem.Header>
 
-        <Label
-            Content="Resurser"
-            Grid.Column="3"
-            Grid.ColumnSpan="3"
-            Grid.Row="2"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+                <Grid
+                    Margin="-19,3,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="34"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="101"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="46"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="130"/>
+                    </Grid.ColumnDefinitions>
 
-        <t6TextBox:T6TextBox
-            Grid.Column="6"
-            Grid.Row="2"
-            T6Value="{Binding Path=Resources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <Label
+                        Content="Ätt"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
 
-        </t6TextBox:T6TextBox>
+                    <TextBox
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Text="{Binding Path=Family, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        Template="{DynamicResource TextBoxTemplate}"
+                        Padding="4,0,0,0">
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="IsReadOnly" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
-        <Label
-            Content="Lojalitet"
-            Grid.Column="7"
-            Grid.ColumnSpan="2"
-            Grid.Row="2"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+                    <Label
+                        Content="Resurser"
+                        Grid.Column="3"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
 
-        <t6TextBox:T6TextBox
-            Grid.Column="10"
-            Grid.Row="2"
-            T6Value="{Binding Path=Loyalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <t6TextBox:T6TextBox
+                        Grid.Column="6"
+                        Grid.Row="0"
+                        T6Value="{Binding Path=StewardResources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <t6TextBox:T6TextBox.Style>
+                            <Style TargetType="{x:Type t6TextBox:T6TextBox}">
+                                <Setter Property="ReadOnly" Value="True"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="ReadOnly" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </t6TextBox:T6TextBox.Style>
+                    </t6TextBox:T6TextBox>
 
-        </t6TextBox:T6TextBox>
+                    <Label
+                        Content="Lojalitet"
+                        Grid.Column="7"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="0"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
 
-        <Label
-            Content="{Binding Path=Speciality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Grid.Column="12"
-            Grid.ColumnSpan="3"
-            Grid.Row="2"
-            Width="131"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
+                    <t6TextBox:T6TextBox
+                        Grid.Column="10"
+                        Grid.Row="0"
+                        T6Value="{Binding Path=Loyalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <t6TextBox:T6TextBox.Style>
+                            <Style TargetType="{x:Type t6TextBox:T6TextBox}">
+                                <Setter Property="ReadOnly" Value="True"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="ReadOnly" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </t6TextBox:T6TextBox.Style>
+                    </t6TextBox:T6TextBox>
 
-        <TextBox
-            Grid.Column="14"
-            Grid.Row="2"
-            Width="45"
-            Text="{Binding Path=Bonus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
-            HorizontalAlignment="Right"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="4,0,0,0"/>
+                    <TextBox
+                        Text="{Binding Path=Speciality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Column="12"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        Width="131"
+                        behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+                        Template="{DynamicResource TextBoxTemplate}"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        Padding="4,0,0,0">
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="IsReadOnly" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
+                    <TextBox
+                        Grid.Column="14"
+                        Grid.Row="0"
+                        Width="45"
+                        Text="{Binding Path=Bonus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+                        HorizontalAlignment="Right"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Template="{DynamicResource TextBoxTemplate}"
+                        Padding="0">
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="IsReadOnly" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                    <ToggleButton 
+                        x:Name="EditButton"
+                        Content="redigera"
+                        Command="{Binding Path=EditButtonCommand}"
+                        Grid.Column="14"
+                        Grid.Row="2"
+                        VerticalContentAlignment="Center"
+                        Padding="0"
+                        Width="51"
+                        HorizontalAlignment="Right" 
+                        Template="{DynamicResource ToggleButtonTemplate}">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=CancelEditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=SaveEditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+
+                    <ToggleButton 
+                        x:Name="RemoveButton"
+                        Content="tabort"
+                        Command="{Binding Path=RemoveButtonCommand}"
+                        Grid.Column="14"
+                        Grid.Row="2"
+                        Padding="0"
+                        Margin="0,0,57,0"
+                        Width="51"
+                        HorizontalAlignment="Right" 
+                        VerticalContentAlignment="Center"
+                        Template="{DynamicResource ToggleButtonTemplate}">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=CancelEditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=SaveEditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+
+                    <ToggleButton 
+                        x:Name="CancelEditButton"
+                        Content="avbryt"
+                        Command="{Binding Path=CancelEditingButtonCommand}"
+                        Grid.Column="14"
+                        Grid.Row="2"
+                        Width="51"
+                        HorizontalAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Padding="0"
+                        Template="{DynamicResource ToggleButtonTemplate}">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+
+                    <ToggleButton 
+                        x:Name="SaveEditButton"
+                        Content="spara"
+                        Command="{Binding Path=SaveEditedButtonCommand}"
+                        Template="{DynamicResource ToggleButtonTemplate}"
+                        Grid.Column="14"
+                        Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Padding="0"
+                        Width="51"
+                        Margin="0,0,57,0">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+                </Grid>
+            </TreeViewItem>
+        </TreeView>
     </Grid>
 </UserControl>

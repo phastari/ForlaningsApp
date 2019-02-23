@@ -2,7 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:stewardUI="clr-namespace:FiefApp.Module.Stewards.UIElements.StewardUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
@@ -96,12 +99,10 @@
             Padding="8,0,0,0"/>
 
         <TextBox
-            Text="{Binding Path=NrForvaltare, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=DataModel.StewardsCollection.Count, Mode=OneWay}"
             Grid.Column="4"
             Grid.Row="3"
-            HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
-            VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
             Padding="0"
             IsReadOnly="True"/>
@@ -183,86 +184,73 @@
             IsTabStop="False"/>
 
         <ItemsControl 
-            x:Name="ForvaltareIC"
+            x:Name="StewardsIC"
             Grid.Column="8"
             Grid.Row="3"
             Grid.RowSpan="34"
-            ItemsSource="{Binding Path=ForvaltareShowCollection}"
-            ItemTemplate="{StaticResource ForvaltareUCTemplate}"
-            IsTabStop="False"/>
+            ItemsSource="{Binding Path=DataModel.StewardsCollection}"
+            IsTabStop="False">
 
-        <Button
-            Command="{Binding Path=AddForvaltareCommand}"
-            Content="lägg till"
-            Grid.Column="8"
-            Grid.Row="{Binding Path=AddButtonRow, FallbackValue=37}"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Stretch"
-            VerticalContentAlignment="Center"
-            Width="45"
-            Padding="0"/>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
 
-        <Button
-            Visibility="{Binding Path=SidorPreviousVisibility}"
-            Command="{Binding Path=SidorPreviousCommand}"
-            Content="&lt;"
-            Grid.Column="8"
-            Grid.Row="37"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Width="21"
-            Padding="0"
-            Margin="290,0,0,0"/>
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <StackPanel>
+                        <ItemsPresenter />
+                        <Button 
+                            Content="lägg till"
+                            Command="{Binding Path=AddStewardCommand}"
+                            Height="21"
+                            Width="51"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Padding="0"
+                            Margin="0,3,0,0"
+                            Template="{DynamicResource ButtonTemplate}">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </ControlTemplate>
+            </ItemsControl.Template>
 
-        <Label
-            Content="{Binding Path=Sida, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Visibility="{Binding Path=SidorVisibility}"
-            Grid.Column="8"
-            Grid.Row="37"
-            HorizontalContentAlignment="Right"
-            VerticalAlignment="Stretch"
-            VerticalContentAlignment="Center"
-            Width="21"
-            Padding="0"
-            Margin="320,0,0,0"/>
-
-        <Label
-            Content="/"
-            Visibility="{Binding Path=SidorVisibility}"
-            Grid.Column="8"
-            Grid.Row="37"
-            HorizontalContentAlignment="Right"
-            VerticalAlignment="Stretch"
-            VerticalContentAlignment="Center"
-            Width="7"
-            Padding="0"
-            Margin="347,0,0,0"/>
-
-        <Label
-            Content="{Binding Path=TotalaSidor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Visibility="{Binding Path=SidorVisibility}"
-            Grid.Column="8"
-            Grid.Row="37"
-            HorizontalContentAlignment="Left"
-            VerticalAlignment="Stretch"
-            VerticalContentAlignment="Center"
-            Width="21"
-            Padding="0"
-            Margin="380,0,0,0"/>
-
-        <Button
-            Visibility="{Binding Path=SidorNextVisibility}"
-            Command="{Binding Path=SidorNextCommand}"
-            Content=">"
-            Grid.Column="8"
-            Grid.Row="37"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Width="21"
-            Padding="0"
-            Margin="410,0,0,0"/>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <stewardUI:StewardUI
+                        Id="{Binding Path=Id}"
+                        Steward="{Binding Path=Name}"
+                        Age="{Binding Path=Age}"
+                        Skill="{Binding Path=Skill}"
+                        IndustryCollection="{Binding Path=DataModel.IndustryCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Family="{Binding Path=Family}"
+                        StewardResources="{Binding Path=Resources}"
+                        Loyalty="{Binding Path=Loyalty}"
+                        Speciality="{Binding Path=Speciality}"
+                        Bonus="{Binding Path=Bonus}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="StewardUIEvent">
+                                <customCommands:CustomCommandAction Command="{Binding Path=DataContext.StewardUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </stewardUI:StewardUI>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
     </Grid>
 </UserControl>
