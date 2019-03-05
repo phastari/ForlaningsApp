@@ -12,5 +12,7 @@ namespace FiefApp.Common.Infrastructure.Services
         List<ManorDataModel> ManorList { get; set; }
         List<BoatbuildingDataModel> BoatbuildingList { get; set; }
         List<ExpensesDataModel> ExpensesList { get; set; }
+        List<StewardsDataModel> StewardsList { get; set; }
+        List<SubsidiaryDataModel> SubsidiaryList { get; set; }
     }
 }

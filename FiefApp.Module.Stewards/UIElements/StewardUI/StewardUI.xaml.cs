@@ -90,7 +90,6 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
         }
 
         #endregion
-
         #region DelegateCommand : RemoveButtonCommand
 
         public DelegateCommand RemoveButtonCommand { get; set; }
@@ -250,6 +249,20 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                 new PropertyMetadata(0)
             );
 
+        public bool TreeViewIsExpanded
+        {
+            get => (bool)GetValue(TreeViewIsExpandedProperty);
+            set => SetValue(TreeViewIsExpandedProperty, value);
+        }
+
+        public static readonly DependencyProperty TreeViewIsExpandedProperty =
+            DependencyProperty.Register(
+                "TreeViewIsExpanded",
+                typeof(bool),
+                typeof(StewardUI),
+                new PropertyMetadata(false)
+            );
+
         #endregion
 
         #region UI Properties
@@ -271,13 +284,16 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
 
         private void TreeViewItemIsExpandedCommand(object sender, RoutedEventArgs e)
         {
+            StewardUIEventArgs newEventArgs =
+                new StewardUIEventArgs(
+                    StewardUIRoutedEvent,
+                    Id,
+                    "Expanded"
+                );
 
+            RaiseEvent(newEventArgs);
         }
-
-        private void TreeViewItemIsCollapsedCommand(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         #region RoutedEvents
 

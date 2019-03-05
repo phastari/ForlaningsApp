@@ -103,5 +103,27 @@ namespace FiefApp.Common.Infrastructure.Services
         };
         public List<BoatbuildingDataModel> BoatbuildingList { get; set; } = new List<BoatbuildingDataModel>();
         public List<ExpensesDataModel> ExpensesList { get; set; } = new List<ExpensesDataModel>();
+        public List<StewardsDataModel> StewardsList { get; set; } = new List<StewardsDataModel>()
+        {
+            new StewardsDataModel()
+            {
+                Id = 0
+            },
+            new StewardsDataModel()
+            {
+                Id = 1
+            }
+        };
+        public List<SubsidiaryDataModel> SubsidiaryList { get; set; } = new List<SubsidiaryDataModel>()
+        {
+            new SubsidiaryDataModel()
+            {
+                Id = 0
+            },
+            new SubsidiaryDataModel()
+            {
+                Id = 1
+            }
+        };
     }
 }

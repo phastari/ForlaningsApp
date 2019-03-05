@@ -51,6 +51,14 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return (T)Convert.ChangeType(_fiefService.ExpensesList[index].Clone(), typeof(ExpensesDataModel));
             }
+            else if (typeof(T) == typeof(StewardsDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.StewardsList[index].Clone(), typeof(StewardsDataModel));
+            }
+            else if (typeof(T) == typeof(SubsidiaryDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.SubsidiaryList[index].Clone(), typeof(SubsidiaryDataModel));
+            }
             else
             {
                 return default(T);
@@ -89,6 +97,16 @@ namespace FiefApp.Common.Infrastructure.Services
                 ExpensesDataModel tempDataModel = (ExpensesDataModel)dataModel;
                 _fiefService.ExpensesList[index] = (ExpensesDataModel)tempDataModel.Clone();
             }
+            else if (dataModel.GetType() == typeof(StewardsDataModel))
+            {
+                StewardsDataModel tempDataModel = (StewardsDataModel)dataModel;
+                _fiefService.StewardsList[index] = (StewardsDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(SubsidiaryDataModel))
+            {
+                SubsidiaryDataModel tempDataModel = (SubsidiaryDataModel)dataModel;
+                _fiefService.SubsidiaryList[index] = (SubsidiaryDataModel)tempDataModel.Clone();
+            }
             else
             {
                 Console.WriteLine("ERROR!");
@@ -105,6 +123,8 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService.ManorList.RemoveAt(index);
             _fiefService.BoatbuildingList.RemoveAt(index);
             _fiefService.ExpensesList.RemoveAt(index);
+            _fiefService.StewardsList.RemoveAt(index);
+            _fiefService.SubsidiaryList.RemoveAt(index);
 
             return removedLast ? index - 1 : index;
         }
@@ -117,6 +137,8 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService.ManorList.Add(new ManorDataModel());
             _fiefService.BoatbuildingList.Add(new BoatbuildingDataModel(_settingsService));
             _fiefService.ExpensesList.Add(new ExpensesDataModel(_settingsService));
+            _fiefService.StewardsList.Add(new StewardsDataModel());
+            _fiefService.SubsidiaryList.Add(new SubsidiaryDataModel());
 
             return _fiefService.InformationList.Count - 1;
         }

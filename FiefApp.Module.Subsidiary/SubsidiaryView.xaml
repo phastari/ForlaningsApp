@@ -1,0 +1,564 @@
+﻿<UserControl x:Class="FiefApp.Module.Subsidiary.SubsidiaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:constructionUI="clr-namespace:FiefApp.Module.Subsidiary.UIElements.ConstructingUI"
+             xmlns:subsidiaryUI="clr-namespace:FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI"
+             xmlns:addSubsidiaryUI="clr-namespace:FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" 
+             d:DesignWidth="778">
+
+    <Grid>
+
+        <CheckBox
+            x:Name="AddSubsidiaryShowHolder"
+            Grid.Column="0"
+            Grid.Row="0"
+            Visibility="Collapsed">
+            <CheckBox.Style>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=AddSubsidiaryUI, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
+
+        <addSubsidiaryUI:AddSubsidiaryUI
+            x:Name="AddSubsidiaryUI"
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.ZIndex="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <addSubsidiaryUI:AddSubsidiaryUI.Style>
+                <Style TargetType="{x:Type addSubsidiaryUI:AddSubsidiaryUI}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=AddSubsidiaryShowHolder, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </addSubsidiaryUI:AddSubsidiaryUI.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="AddSubsidiaryUIEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.AddSubsidiaryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                    <customCommands:CustomSetterAction PropertyName="IsChecked" TargetObject="{Binding ElementName=AddSubsidiaryShowHolder}" Value="False" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </addSubsidiaryUI:AddSubsidiaryUI>
+
+
+        <Grid
+            x:Name="RootGrid"
+            Background="#FFE5E5E5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="9"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="378"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="204"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=AddSubsidiaryShowHolder, Path=IsChecked}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+
+            <Rectangle 
+                x:Name="InitialFocus" 
+                Grid.Column="0"
+                Grid.Row="0"
+                Focusable="True"/>
+
+            <Frame 
+                Grid.Column="1" 
+                Grid.ColumnSpan="3" 
+                Grid.Row="1" 
+                Grid.RowSpan="5" 
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5"
+                IsTabStop="False"
+                Margin="0,0,0,15"/>
+
+            <ComboBox 
+                x:Name="FiefComboBox"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                Grid.Row="3"
+                Width="120"
+                ItemsSource="{Binding Path=FiefCollection}"
+                SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="6,0,0,0">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+
+            <Frame
+                Grid.Column="5"
+                Grid.ColumnSpan="3"
+                Grid.Row="1"
+                Grid.RowSpan="4"
+                Width="394"
+                HorizontalAlignment="Left"
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5, 0.5, 0.5, 0"
+                IsTabStop="False"/>
+
+            <Label
+                Content="Anlagda binäringar"
+                Grid.Column="6"
+                Grid.Row="3"
+                Width="120"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Dagsverk"
+                Grid.Column="6"
+                Grid.Row="3"
+                Width="60"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="126,0,0,0"/>
+
+            <Label
+                Content="Utsatta i år"
+                Grid.Column="6"
+                Grid.Row="3"
+                Width="60"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="192,0,0,0"/>
+
+            <Label
+                Content="Förvaltare"
+                Grid.Column="6"
+                Grid.Row="3"
+                Width="120"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="258,0,0,0"/>
+
+            <StackPanel
+                Grid.Column="1"
+                Grid.ColumnSpan="9"
+                Grid.Row="5"
+                Grid.RowSpan="38"
+                Orientation="Vertical">
+
+                <ItemsControl
+                    ItemsSource="{Binding Path=DataModel.ConstructingCollection}"
+                    Margin="156,0,0,0"
+                    Width="394"
+                    HorizontalAlignment="Left">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel 
+                                IsItemsHost="True" 
+                                Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <StackPanel>
+                                <ItemsPresenter />
+                                <Grid>
+                                    <Frame
+                                        Grid.Column="0"
+                                        Grid.Row="0"
+                                        Height="21"
+                                        Width="394"
+                                        HorizontalAlignment="Left"
+                                        Background="LightGray" 
+                                        BorderBrush="Gray" 
+                                        BorderThickness="0.5, 0, 0.5, 0"
+                                        IsTabStop="False"/>
+
+                                    <ToggleButton 
+                                        x:Name="AddSubsidiaryButton"
+                                        Grid.Column="0"
+                                        Grid.Row="0"
+                                        Content="lägg till"
+                                        Command="{Binding Path=ConstructSubsidiaryCommand}"
+                                        IsChecked="{Binding ElementName=AddSubsidiaryShowHolder, Path=IsChecked, Mode=TwoWay}"
+                                        Height="21"
+                                        Width="51"
+                                        HorizontalAlignment="Right"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Padding="0"
+                                        Margin="0,0,8,0"
+                                        Template="{DynamicResource ButtonTemplate}">
+                                    </ToggleButton>
+                                </Grid>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <constructionUI:ConstructingUI
+                                Id="{Binding Path=Id}"
+                                Subsidiary="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DaysWorkLeft="{Binding Path=DaysWorkBuild, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                StewardsCollection="{Binding Path=StewardsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ConstructingUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ConstructingUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </constructionUI:ConstructingUI>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Frame
+                    Height="9"
+                    Margin="156,0,0,0"
+                    Width="394"
+                    HorizontalAlignment="Left"
+                    Background="LightGray" 
+                    BorderBrush="Gray" 
+                    BorderThickness="0.5, 0, 0.5, 0.5"
+                    IsTabStop="False"/>
+
+                <Rectangle
+                    Height="9"
+                    Focusable="False"/>
+
+                <Frame
+                    Height="9"
+                    Background="LightGray" 
+                    BorderBrush="Gray" 
+                    BorderThickness="0.5, 0.5, 0.5, 0"
+                    IsTabStop="False"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+
+                    <Frame
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Background="LightGray" 
+                        BorderBrush="Gray" 
+                        BorderThickness="0.5, 0, 0.5, 0"
+                        IsTabStop="False"/>
+
+                    <Label
+                        Content="Binäring"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="122"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="8,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Kvalitet"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="45"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="136,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="UN"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="45"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="187,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Silver"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="45"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="238,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Bas"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="45"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="304,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Lyx"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="45"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="355,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Dagsverk"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="60"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="406,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Utsatta"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="60"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="466,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Förvaltare"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="120"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="532,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="SG"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="45"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="658,0,0,0"
+                        Padding="0"/>
+
+                    <Label
+                        Content="Färdighet"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Width="60"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="698,0,0,0"
+                        Padding="0"/>
+
+                </Grid>
+
+                <ItemsControl
+                    ItemsSource="{Binding Path=DataModel.SubsidiaryCollection}">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel 
+                                IsItemsHost="True" 
+                                Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <StackPanel>
+                                <ItemsPresenter />
+                                <Grid>
+                                    <Frame
+                                        Grid.Column="0"
+                                        Grid.Row="0"
+                                        Height="21"
+                                        Background="LightGray" 
+                                        BorderBrush="Gray" 
+                                        BorderThickness="0.5, 0, 0.5, 0"
+                                        IsTabStop="False"/>
+                                    <Button 
+                                        Grid.Column="0"
+                                        Grid.Row="0"
+                                        Content="lägg till"
+                                        Command="{Binding Path=AddSubsidiaryCommand}"
+                                        Height="21"
+                                        Width="51"
+                                        HorizontalAlignment="Right"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Padding="0"
+                                        Margin="0,0,8,0"
+                                        Template="{DynamicResource ButtonTemplate}">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <subsidiaryUI:SubsidiaryUI
+                                Id="{Binding Path=Id}"
+                                Subsidiary="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Quality="{Binding Path=Quality}"
+                                DevelopmentLevel="{Binding Path=DevelopmentLevel}"
+                                Silver="{Binding Path=Silver}"
+                                Base="{Binding Path=Base}"
+                                Luxury="{Binding Path=Luxury}"
+                                DaysWorkLeft="{Binding Path=DaysWorkUpkeep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                StewardsCollection="{Binding Path=StewardsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SubsidiaryUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.SubsidiaryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </subsidiaryUI:SubsidiaryUI>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Frame
+                    Height="9"
+                    Background="LightGray" 
+                    BorderBrush="Gray" 
+                    BorderThickness="0.5, 0, 0.5, 0.5"
+                    IsTabStop="False"/>
+
+            </StackPanel>
+
+
+        </Grid>
+    </Grid>
+</UserControl>

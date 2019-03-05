@@ -7,7 +7,7 @@
              xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
              xmlns:fakeComboBox="clr-namespace:FiefApp.Common.Infrastructure.UIElements.FakeComboBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
-             d:DesignHeight="72" 
+             d:DesignHeight="69" 
              d:DesignWidth="553">
     <Grid
         x:Name="RootGrid">
@@ -45,11 +45,10 @@
             </TreeView.Resources>
 
             <TreeViewItem 
+                x:Name="MouseAreaName"
                 Background="LightGray"
                 Expanded="TreeViewItemIsExpandedCommand"
-                Collapsed="TreeViewItemIsCollapsedCommand"
-                IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay}"
-                Name="MouseAreaName">
+                IsExpanded="{Binding Path=TreeViewIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                 <TreeViewItem.Header>
                     <Grid>
@@ -199,7 +198,6 @@
                         <RowDefinition Height="21"/>
                         <RowDefinition Height="3"/>
                         <RowDefinition Height="21"/>
-                        <RowDefinition Height="3"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="34"/>

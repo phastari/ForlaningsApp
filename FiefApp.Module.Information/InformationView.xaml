@@ -13,7 +13,8 @@
              d:DesignHeight="485" 
              d:DesignWidth="778">
 
-    <Grid Background="#FFE5E5E5">
+    <Grid 
+        Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="9"/>
             <RowDefinition Height="6"/>

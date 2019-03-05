@@ -1,10 +1,15 @@
-﻿using System;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Stewards.RoutedEvents;
+using Prism.Commands;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using FiefApp.Module.Stewards.UIElements.StewardUI;
 
 namespace FiefApp.Module.Stewards
 {
@@ -24,6 +29,7 @@ namespace FiefApp.Module.Stewards
             TabName = "Förvaltare";
 
             StewardUIEventHandler = new CustomDelegateCommand(ExecuteStewardUIEventHandler, o => true);
+            AddStewardCommand = new DelegateCommand(ExecuteAddStewardCommand);
         }
 
         #region CustomDelegateCommand : StewardUIEventHandler
@@ -71,6 +77,30 @@ namespace FiefApp.Module.Stewards
                     }
                 }
             }
+            else if (e.Action == "Expanded")
+            {
+                for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
+                {
+                    if (e.Id != DataModel.StewardsCollection[x].Id)
+                    {
+                        DataModel.StewardsCollection[x].TreeViewIsExpanded = false;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region DelegateCommand : AddStewardCommand
+
+        public DelegateCommand AddStewardCommand { get; set; }
+        private void ExecuteAddStewardCommand()
+        {
+            DataModel.StewardsCollection.Add(
+                new StewardModel()
+                {
+                    Id = _stewardsService.GetNextStewardId()
+                });
         }
 
         #endregion
@@ -90,12 +120,16 @@ namespace FiefApp.Module.Stewards
 
         protected override void SaveData(int index = -1)
         {
-
+            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
         }
 
         protected override void LoadData()
         {
-            CreateFakeData();
+            DataModel = Index
+                        == 0 ? _stewardsService.GetAllStewardsDataModel()
+                : _baseService.GetDataModel<StewardsDataModel>(Index);
+
+            UpdateFiefCollection();
         }
 
         private void CreateFakeData()

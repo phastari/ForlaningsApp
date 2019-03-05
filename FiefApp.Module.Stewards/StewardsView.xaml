@@ -157,7 +157,7 @@
                                 <RowDefinition Height="3"/>
                             </Grid.RowDefinitions>
                             <Label
-                                Grid.Column="1"
+                                Grid.Column="0"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Left"
                                 VerticalAlignment="Stretch"
@@ -184,7 +184,7 @@
             IsTabStop="False"/>
 
         <ItemsControl 
-            x:Name="StewardsIC"
+            x:Name="StewardsUI"
             Grid.Column="8"
             Grid.Row="3"
             Grid.RowSpan="34"
@@ -214,16 +214,6 @@
                             Padding="0"
                             Margin="0,3,0,0"
                             Template="{DynamicResource ButtonTemplate}">
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
                         </Button>
                     </StackPanel>
                 </ControlTemplate>
@@ -236,12 +226,13 @@
                         Steward="{Binding Path=Name}"
                         Age="{Binding Path=Age}"
                         Skill="{Binding Path=Skill}"
-                        IndustryCollection="{Binding Path=DataModel.IndustryCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IndustryCollection="{Binding Path=DataContext.DataModel.IndustryCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Family="{Binding Path=Family}"
                         StewardResources="{Binding Path=Resources}"
                         Loyalty="{Binding Path=Loyalty}"
                         Speciality="{Binding Path=Speciality}"
-                        Bonus="{Binding Path=Bonus}">
+                        Bonus="{Binding Path=Bonus}"
+                        TreeViewIsExpanded="{Binding Path=TreeViewIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="StewardUIEvent">
                                 <customCommands:CustomCommandAction Command="{Binding Path=DataContext.StewardUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

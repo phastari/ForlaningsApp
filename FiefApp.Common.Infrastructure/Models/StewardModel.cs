@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -20,6 +21,17 @@ namespace FiefApp.Common.Infrastructure.Models
 
         public string Industry { get; set; }
         public int IndustryId { get; set; }
+
+        private bool _treeViewIsExpanded;
+        public bool TreeViewIsExpanded
+        {
+            get => _treeViewIsExpanded;
+            set
+            {
+                _treeViewIsExpanded = value;
+                NotifyPropertyChanged();
+            }
+        }
         
         #region INotifyPropertyChanged
 

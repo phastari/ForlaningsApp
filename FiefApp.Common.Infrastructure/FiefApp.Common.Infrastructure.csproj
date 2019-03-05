@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="CustomCommands\CustomCommandAction.cs" />
     <Compile Include="CustomCommands\CustomDelegateCommand.cs" />
+    <Compile Include="CustomCommands\CustomSetterAction.cs" />
     <Compile Include="DataModels\ArmyDataModel.cs" />
     <Compile Include="DataModels\BoatbuildingDataModel.cs" />
     <Compile Include="DataModels\EmployeesDataModel.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="DataModels\IncomeDataModel.cs" />
     <Compile Include="DataModels\ManorDataModel.cs" />
     <Compile Include="DataModels\StewardsDataModel.cs" />
+    <Compile Include="DataModels\SubsidiaryDataModel.cs" />
     <Compile Include="EventAggregatorEvents\EmployeeModelToEmployeeDataModelEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Models\ShipyardModel.cs" />
     <Compile Include="Models\SoldierModel.cs" />
     <Compile Include="Models\StewardModel.cs" />
+    <Compile Include="Models\SubsidiaryModel.cs" />
     <Compile Include="Models\VillageModel.cs" />
     <Compile Include="Services\ArmyService.cs" />
     <Compile Include="Services\BoatbuildingService.cs" />
@@ -122,9 +125,11 @@
     <Compile Include="Services\IncomeService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IStewardsService.cs" />
+    <Compile Include="Services\ISubsidiaryService.cs" />
     <Compile Include="Services\ManorService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StewardsService.cs" />
+    <Compile Include="Services\SubsidiaryService.cs" />
     <Compile Include="Settings\SettingsModels\BoatbuildingSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\ExpensesSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\InformationSettingsModel.cs" />
@@ -134,6 +139,7 @@
     <Compile Include="Settings\SettingsModels\ManorSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\ShipyardTypeSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\StableSettingsModel.cs" />
+    <Compile Include="Settings\SettingsModels\SubsidiarySettingsModel.cs" />
     <Compile Include="UIElements\FakeComboBox\FakeComboBox.xaml.cs">
       <DependentUpon>FakeComboBox.xaml</DependentUpon>
     </Compile>
@@ -293,6 +299,9 @@
     <Resource Include="Settings\ExpensesSettings.xml">
       <SubType>Designer</SubType>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Settings\SubsidiarySettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

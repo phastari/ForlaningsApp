@@ -1,12 +1,12 @@
-﻿using FiefApp.Common.Infrastructure.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
-    public class StewardsDataModel : INotifyPropertyChanged, ICloneable, IDataModelBase
+    public class SubsidiaryDataModel : INotifyPropertyChanged, ICloneable, IDataModelBase
     {
         private int _id;
         public int Id
@@ -19,28 +19,27 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
-        public ObservableCollection<StewardModel> StewardsCollection
+        private ObservableCollection<SubsidiaryModel> _subsidiaryCollection = new ObservableCollection<SubsidiaryModel>();
+        public ObservableCollection<SubsidiaryModel> SubsidiaryCollection
         {
-            get => _stewardsCollection;
+            get => _subsidiaryCollection;
             set
             {
-                _stewardsCollection = value;
+                _subsidiaryCollection = value;
                 NotifyPropertyChanged();
             }
         }
 
-        private ObservableCollection<IndustryModel> _industryCollection = new ObservableCollection<IndustryModel>();
-        public ObservableCollection<IndustryModel> IndustryCollection
+        private ObservableCollection<SubsidiaryModel> _constructingCollection = new ObservableCollection<SubsidiaryModel>();
+        public ObservableCollection<SubsidiaryModel> ConstructingCollection
         {
-            get => _industryCollection;
+            get => _constructingCollection;
             set
             {
-                _industryCollection = value;
+                _constructingCollection = value;
                 NotifyPropertyChanged();
             }
         }
-
 
         #region INotifyPropertyChanged
 

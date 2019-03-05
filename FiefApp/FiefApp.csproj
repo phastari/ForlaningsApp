@@ -169,6 +169,10 @@
       <Project>{00355dae-84dd-4f5d-9e40-d1c4a768e0cb}</Project>
       <Name>FiefApp.Module.Stewards</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Subsidiary\FiefApp.Module.Subsidiary.csproj">
+      <Project>{df745520-d1ee-4a4c-9a43-c06490d5a466}</Project>
+      <Name>FiefApp.Module.Subsidiary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

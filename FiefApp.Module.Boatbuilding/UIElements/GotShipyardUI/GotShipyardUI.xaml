@@ -119,16 +119,6 @@
                 Template="{DynamicResource TextBoxDisabled}"
                 IsReadOnly="True"
                 Padding="6,0,0,0">
-            <TextBox.Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
         </TextBox>
 
         <Label
