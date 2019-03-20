@@ -99,9 +99,11 @@
     <Compile Include="EventAggregatorEvents\EmployeeModelToEmployeeDataModelEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
+    <Compile Include="Models\BoatbuilderModel.cs" />
     <Compile Include="Models\BoatModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EventModel.cs" />
+    <Compile Include="Models\IncomeModel.cs" />
     <Compile Include="Models\IndustryModel.cs" />
     <Compile Include="Models\LivingconditionModel.cs" />
     <Compile Include="Models\ManorModel.cs" />
@@ -114,10 +116,12 @@
     <Compile Include="Models\VillageModel.cs" />
     <Compile Include="Services\ArmyService.cs" />
     <Compile Include="Services\BoatbuildingService.cs" />
+    <Compile Include="Services\Calculations.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\ExpensesService.cs" />
     <Compile Include="Services\IArmyService.cs" />
     <Compile Include="Services\IBoatbuildingService.cs" />
+    <Compile Include="Services\ICalculations.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
     <Compile Include="Services\IExpensesService.cs" />
     <Compile Include="Services\IIncomeService.cs" />

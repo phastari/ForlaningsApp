@@ -29,6 +29,9 @@ namespace FiefApp
             containerRegistry.Register<IExpensesService, ExpensesService>();
             containerRegistry.Register<IStewardsService, StewardsService>();
             containerRegistry.Register<ISubsidiaryService, SubsidiaryService>();
+            containerRegistry.Register<IIncomeService, IncomeService>();
+            containerRegistry.Register<ICalculations, Calculations>();
+            containerRegistry.Register<IBuildingsService, BuildingsService>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

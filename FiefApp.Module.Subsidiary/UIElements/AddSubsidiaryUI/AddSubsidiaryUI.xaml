@@ -6,7 +6,7 @@
              xmlns:behaviors="clr-namespace:FiefApp.Common.Infrastructure.Behaviors;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="339" 
-             d:DesignWidth="264">
+             d:DesignWidth="274">
     <Grid
         x:Name="RootGrid">
         <Grid.RowDefinitions>
@@ -43,7 +43,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="130"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="75"/>
@@ -82,10 +82,13 @@
             Grid.ColumnSpan="2"
             Grid.Row="5"
             IsEditable="True"
-            Text="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            IsTextSearchEnabled="True"
+            IsTextSearchCaseSensitive="False"
             ItemsSource="{Binding Path=SubsidiaryCollection}"
-            Template="{DynamicResource ComboBoxControlTemplate}"
-            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
+            Text="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedIndex="{Binding Path=Id}"
+            DisplayMemberPath="Subsidiary"
+            SelectionChanged="SubsidiaryTypeChanged"/>
 
 
         <Label
@@ -101,6 +104,10 @@
             Grid.Row="7"
             Text="{Binding Path=IncomeFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="{Binding Path=CantEdit}"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -117,6 +124,10 @@
             Grid.Row="9"
             Text="{Binding Path=IncomeSilver, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -133,6 +144,10 @@
             Grid.Row="11"
             Text="{Binding Path=IncomeBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -149,6 +164,10 @@
             Grid.Row="13"
             Text="{Binding Path=IncomeLuxury, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -168,6 +187,10 @@
             Text="{Binding Path=DaysWorkBuild, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             HorizontalAlignment="Left"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
         <Label
@@ -186,6 +209,10 @@
             Text="{Binding Path=DaysWorkUpkeep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             HorizontalAlignment="Left"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -202,6 +229,10 @@
             Grid.Row="19"
             Text="{Binding Path=Spring, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -218,6 +249,10 @@
             Grid.Row="21"
             Text="{Binding Path=Summer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -234,6 +269,10 @@
             Grid.Row="23"
             Text="{Binding Path=Fall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
 
@@ -250,6 +289,10 @@
             Grid.Row="25"
             Text="{Binding Path=Winter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"
             behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
 
         <Button

@@ -6,5 +6,7 @@ namespace FiefApp.Common.Infrastructure.Services
     {
         bool CheckShipyardPossibility(int index);
         BoatbuildingDataModel GetAllBoatbuildingDataModel();
+        int GetNewBuildingBoatId(int index);
+        int GetNewBoatbuilderId(int index);
     }
 }

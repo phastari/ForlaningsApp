@@ -1,15 +1,19 @@
-﻿using System;
-using FiefApp.Common.Infrastructure.Models;
-using System.Collections.ObjectModel;
-using System.Windows;
+﻿using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Module.Subsidiary.RoutedEvents;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
 {
     /// <summary>
     /// Interaction logic for AddSubsidiaryUI.xaml
     /// </summary>
-    public partial class AddSubsidiaryUI
+    public partial class AddSubsidiaryUI : INotifyPropertyChanged
     {
         public AddSubsidiaryUI()
         {
@@ -18,34 +22,6 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
         }
 
         #region Dependency Properties
-
-        public int Id
-        {
-            get => (int)GetValue(IdProperty);
-            set => SetValue(IdProperty, value);
-        }
-
-        public static readonly DependencyProperty IdProperty =
-            DependencyProperty.Register(
-                "Id",
-                typeof(int),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(-1)
-            );
-
-        public string Subsidiary
-        {
-            get => (string)GetValue(SubsidiaryProperty);
-            set => SetValue(SubsidiaryProperty, value);
-        }
-
-        public static readonly DependencyProperty SubsidiaryProperty =
-            DependencyProperty.Register(
-                "Subsidiary",
-                typeof(string),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata("")
-            );
 
         public ObservableCollection<SubsidiaryModel> SubsidiaryCollection
         {
@@ -58,148 +34,297 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
                 "SubsidiaryCollection",
                 typeof(ObservableCollection<SubsidiaryModel>),
                 typeof(AddSubsidiaryUI),
-                new PropertyMetadata(new ObservableCollection<SubsidiaryModel>())
+                new PropertyMetadata(null,
+                    CollectionChanged
+                )
             );
 
-        public decimal IncomeFactor
+        private static void CollectionChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e
+            )
         {
-            get => (decimal)GetValue(IncomeFactorProperty);
-            set => SetValue(IncomeFactorProperty, value);
+            if (d is AddSubsidiaryUI c)
+            {
+                c.RaiseReset();
+            }
         }
 
-        public static readonly DependencyProperty IncomeFactorProperty =
-            DependencyProperty.Register(
-                "IncomeFactor",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
-
-        public decimal IncomeSilver
+        private void RaiseReset()
         {
-            get => (decimal)GetValue(IncomeSilverProperty);
-            set => SetValue(IncomeSilverProperty, value);
+            Id = -1;
+            Subsidiary = "";
+            IncomeFactor = "0";
+            IncomeSilver = "0";
+            IncomeBase = "0";
+            IncomeLuxury = "0";
+            DaysWorkBuild = 0;
+            DaysWorkUpkeep = 0;
+            Spring = "0";
+            Summer = "0";
+            Fall = "0";
+            Winter = "0";
+            CantEdit = true;
         }
 
-        public static readonly DependencyProperty IncomeSilverProperty =
-            DependencyProperty.Register(
-                "IncomeSilver",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
+        #endregion
 
-        public decimal IncomeBase
+        #region UI Properties
+
+        private int _id = -1;
+        public int Id
         {
-            get => (decimal)GetValue(IncomeBaseProperty);
-            set => SetValue(IncomeBaseProperty, value);
+            get => _id;
+            set
+            {
+                _id = value;
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty IncomeBaseProperty =
-            DependencyProperty.Register(
-                "IncomeBase",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
-
-        public decimal IncomeLuxury
+        private string _subsidiary;
+        public string Subsidiary
         {
-            get => (decimal)GetValue(IncomeLuxuryProperty);
-            set => SetValue(IncomeLuxuryProperty, value);
+            get => _subsidiary;
+            set
+            {
+                _subsidiary = value;
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty IncomeLuxuryProperty =
-            DependencyProperty.Register(
-                "IncomeLuxury",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
+        private string _incomeFactor = "0";
+        public string IncomeFactor
+        {
+            get => _incomeFactor;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _incomeFactor = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _incomeFactor = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _incomeFactor = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
+        }
 
+        private string _incomeSilver = "0";
+        public string IncomeSilver
+        {
+            get => _incomeSilver;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _incomeSilver = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _incomeSilver = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _incomeSilver = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _incomeBase = "0";
+        public string IncomeBase
+        {
+            get => _incomeBase;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _incomeBase = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _incomeBase = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _incomeBase = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _incomeLuxury = "0";
+        public string IncomeLuxury
+        {
+            get => _incomeLuxury;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _incomeLuxury = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _incomeLuxury = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _incomeLuxury = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _daysWorkBuild;
         public int DaysWorkBuild
         {
-            get => (int)GetValue(DaysWorkBuildProperty);
-            set => SetValue(DaysWorkBuildProperty, value);
+            get => _daysWorkBuild;
+            set
+            {
+                _daysWorkBuild = value;
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty DaysWorkBuildProperty =
-            DependencyProperty.Register(
-                "DaysWorkBuild",
-                typeof(int),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0)
-            );
-
+        private int _daysWorkUpkeep;
         public int DaysWorkUpkeep
         {
-            get => (int)GetValue(DaysWorkUpkeepProperty);
-            set => SetValue(DaysWorkUpkeepProperty, value);
+            get => _daysWorkUpkeep;
+            set
+            {
+                _daysWorkUpkeep = value;
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty DaysWorkUpkeepProperty =
-            DependencyProperty.Register(
-                "DaysWorkUpkeep",
-                typeof(int),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0)
-            );
-
-        public decimal Spring
+        private string _spring = "0";
+        public string Spring
         {
-            get => (decimal)GetValue(SpringProperty);
-            set => SetValue(SpringProperty, value);
+            get => _spring;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _spring = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _spring = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _spring = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty SpringProperty =
-            DependencyProperty.Register(
-                "Spring",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
-
-        public decimal Summer
+        private string _summer = "0";
+        public string Summer
         {
-            get => (decimal)GetValue(SummerProperty);
-            set => SetValue(SummerProperty, value);
+            get => _summer;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _summer = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _summer = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _summer = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty SummerProperty =
-            DependencyProperty.Register(
-                "Summer",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
-
-        public decimal Fall
+        private string _fall = "0";
+        public string Fall
         {
-            get => (decimal)GetValue(FallProperty);
-            set => SetValue(FallProperty, value);
+            get => _fall;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _fall = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _fall = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _fall = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty FallProperty =
-            DependencyProperty.Register(
-                "Fall",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
-
-        public decimal Winter
+        private string _winter = "0";
+        public string Winter
         {
-            get => (decimal)GetValue(WinterProperty);
-            set => SetValue(WinterProperty, value);
+            get => _winter;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _winter = "0";
+                }
+                else
+                {
+                    if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                    {
+                        _winter = value.Contains(".") ? value.Replace(".", ",") : value;
+                    }
+                    else if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ".")
+                    {
+                        _winter = value.Contains(",") ? value.Replace(",", ".") : value;
+                    }
+                }
+                NotifyPropertyChanged();
+            }
         }
 
-        public static readonly DependencyProperty WinterProperty =
-            DependencyProperty.Register(
-                "Winter",
-                typeof(decimal),
-                typeof(AddSubsidiaryUI),
-                new PropertyMetadata(0M)
-            );
+        private bool _cantEdit = true;
+        public bool CantEdit
+        {
+            get => _cantEdit;
+            set
+            {
+                _cantEdit = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -215,7 +340,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
                 );
 
             RaiseEvent(newEventArgs);
-            Console.WriteLine($"Cancel Click!");
+
+            RaiseReset();
         }
 
         private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
@@ -224,16 +350,16 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
             {
                 Id = Id,
                 Subsidiary = Subsidiary,
-                IncomeFactor = IncomeFactor,
-                IncomeBase = IncomeBase,
-                IncomeLuxury = IncomeLuxury,
-                IncomeSilver = IncomeSilver,
+                IncomeFactor = Convert.ToDecimal(IncomeFactor),
+                IncomeBase = Convert.ToDecimal(IncomeBase),
+                IncomeLuxury = Convert.ToDecimal(IncomeLuxury),
+                IncomeSilver = Convert.ToDecimal(IncomeSilver),
                 DaysWorkBuild = DaysWorkBuild,
                 DaysWorkUpkeep = DaysWorkUpkeep,
-                Spring = Spring,
-                Summer = Summer,
-                Fall = Fall,
-                Winter = Winter
+                Spring = Convert.ToDecimal(Spring),
+                Summer = Convert.ToDecimal(Summer),
+                Fall = Convert.ToDecimal(Fall),
+                Winter = Convert.ToDecimal(Winter)
             };
 
             AddSubsidiaryUIEventArgs newEventArgs =
@@ -263,6 +389,49 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
         {
             add => AddHandler(AddSubsidiaryUIRoutedEvent, value);
             remove => RemoveHandler(AddSubsidiaryUIRoutedEvent, value);
+        }
+
+        #endregion
+
+        private void SubsidiaryTypeChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Id == -1)
+            {
+                CantEdit = false;
+                IncomeFactor = "0";
+                IncomeSilver = "0";
+                IncomeBase = "0";
+                IncomeLuxury = "0";
+                DaysWorkBuild = 0;
+                DaysWorkUpkeep = 0;
+                Spring = "0";
+                Summer = "0";
+                Fall = "0";
+                Winter = "0";
+            }
+            else
+            {
+                CantEdit = false;
+                IncomeFactor = SubsidiaryCollection[Id].IncomeFactor.ToString("0.00");
+                IncomeSilver = SubsidiaryCollection[Id].IncomeSilver.ToString("0.00");
+                IncomeBase = SubsidiaryCollection[Id].IncomeBase.ToString("0.00");
+                IncomeLuxury = SubsidiaryCollection[Id].IncomeLuxury.ToString("0.00");
+                DaysWorkBuild = SubsidiaryCollection[Id].DaysWorkBuild;
+                DaysWorkUpkeep = SubsidiaryCollection[Id].DaysWorkUpkeep;
+                Spring = SubsidiaryCollection[Id].Spring.ToString("0.00");
+                Summer = SubsidiaryCollection[Id].Summer.ToString("0.00");
+                Fall = SubsidiaryCollection[Id].Fall.ToString("0.00");
+                Winter = SubsidiaryCollection[Id].Winter.ToString("0.00");
+            }
+        }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

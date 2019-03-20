@@ -21,6 +21,8 @@ namespace FiefApp.Common.Infrastructure.Services
             LivingconditionsSettingsModel = LoadLivingconditionsSettingsFromXml();
             StableSettingsModel = LoadStableSettingsFromXml();
             ExpensesSettingsModel = LoadExpensesSettingsFromXml();
+            SubsidiarySettingsList = LoadSubsidiarySettingsFromXml();
+            ShipyardTypeSettingsList = LoadShipyardTypeSettingsFromXml();
         }
 
         public ArmySettingsModel ArmySettingsModel { get; private set; }
@@ -32,6 +34,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public LivingconditionsSettingsModel LivingconditionsSettingsModel { get; private set; }
         public StableSettingsModel StableSettingsModel { get; private set; }
         public ExpensesSettingsModel ExpensesSettingsModel { get; private set; }
+        public List<SubsidiarySettingsModel> SubsidiarySettingsList { get; private set; }
 
         #region Methods : Army Settings
 
@@ -1478,7 +1481,7 @@ namespace FiefApp.Common.Infrastructure.Services
                                 BuildCostWood = Convert.ToInt32(xmlAttributeCollection["BuildCostWood"].Value),
                                 BuildCostStone = Convert.ToInt32(xmlAttributeCollection["BuildCostStone"].Value),
                                 BuildCostIron = Convert.ToInt32(xmlAttributeCollection["BuildCostIron"].Value),
-                                DaysWork = Convert.ToInt32(xmlAttributeCollection["BuildTime"].Value),
+                                DaysWork = Convert.ToInt32(xmlAttributeCollection["DaysWork"].Value),
                                 TaxMod = Convert.ToDecimal(xmlAttributeCollection["TaxMod"].Value.Replace(".", ",")),
                                 Workers = Convert.ToString(xmlAttributeCollection["Workers"].Value)
                             });
@@ -1507,7 +1510,7 @@ namespace FiefApp.Common.Infrastructure.Services
                                 BuildCostWood = Convert.ToInt32(xmlAttributeCollection["BuildCostWood"].Value),
                                 BuildCostStone = Convert.ToInt32(xmlAttributeCollection["BuildCostStone"].Value),
                                 BuildCostIron = Convert.ToInt32(xmlAttributeCollection["BuildCostIron"].Value),
-                                DaysWork = Convert.ToInt32(xmlAttributeCollection["BuildTime"].Value),
+                                DaysWork = Convert.ToInt32(xmlAttributeCollection["DaysWork"].Value),
                                 TaxMod = Convert.ToDecimal(xmlAttributeCollection["TaxMod"].Value),
                                 Workers = Convert.ToString(xmlAttributeCollection["Workers"].Value)
                             });
@@ -1983,9 +1986,6 @@ namespace FiefApp.Common.Infrastructure.Services
                         foundError = true;
                     }
                 }
-
-                elemList = doc.GetElementsByTagName("Road");
-
                 roadList = InformationSettingsModel.RoadTypesList;
 
                 elemList = doc.GetElementsByTagName("DayWorkersBaseCost");
@@ -2054,8 +2054,8 @@ namespace FiefApp.Common.Infrastructure.Services
             }
             else
             {
-                return null;
                 CreateDefaultExpensesSettingsXmlFile();
+                return null;
             }
         }
 
@@ -2109,6 +2109,175 @@ namespace FiefApp.Common.Infrastructure.Services
             string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
             xmlDoc.Save(@filePath);
             ExpensesSettingsModel = LoadExpensesSettingsFromXml();
+        }
+
+        #endregion
+
+        #region Methods : Subsidiary Settings
+
+        public List<SubsidiarySettingsModel> LoadSubsidiarySettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
+            XmlDocument doc = new XmlDocument();
+            List<SubsidiarySettingsModel> settingsList = new List<SubsidiarySettingsModel>();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("Subsidiary");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            settingsList.Add(new SubsidiarySettingsModel()
+                            {
+                                Subsidiary = xmlAttributeCollection["Subsidiary"].Value,
+                                IncomeFactor = Convert.ToDecimal(xmlAttributeCollection["IncomeFactor"].Value.Replace(".", ",")),
+                                IncomeBase = Convert.ToDecimal(xmlAttributeCollection["IncomeBase"].Value.Replace(".", ",")),
+                                IncomeLuxury = Convert.ToDecimal(xmlAttributeCollection["IncomeLuxury"].Value.Replace(".", ",")),
+                                IncomeSilver = Convert.ToDecimal(xmlAttributeCollection["IncomeSilver"].Value.Replace(".", ",")),
+                                DaysWorkUpkeep = Convert.ToInt32(xmlAttributeCollection["DaysWorkUpkeep"].Value),
+                                DaysWorkBuild = Convert.ToInt32(xmlAttributeCollection["DaysWorkBuild"].Value),
+                                Spring = Convert.ToDecimal(xmlAttributeCollection["Spring"].Value.Replace(".", ",")),
+                                Summer = Convert.ToDecimal(xmlAttributeCollection["Summer"].Value.Replace(".", ",")),
+                                Fall = Convert.ToDecimal(xmlAttributeCollection["Fall"].Value.Replace(".", ",")),
+                                Winter = Convert.ToDecimal(xmlAttributeCollection["Winter"].Value.Replace(".", ","))
+                            });
+                        }
+                        else
+                        {
+                            settingsList.Add(new SubsidiarySettingsModel()
+                            {
+                                Subsidiary = xmlAttributeCollection["Subsidiary"].Value,
+                                IncomeFactor = Convert.ToDecimal(xmlAttributeCollection["IncomeFactor"].Value),
+                                IncomeBase = Convert.ToDecimal(xmlAttributeCollection["IncomeBase"].Value),
+                                IncomeLuxury = Convert.ToDecimal(xmlAttributeCollection["IncomeLuxury"].Value),
+                                IncomeSilver = Convert.ToDecimal(xmlAttributeCollection["IncomeSilver"].Value),
+                                DaysWorkUpkeep = Convert.ToInt32(xmlAttributeCollection["DaysWorkUpkeep"].Value),
+                                DaysWorkBuild = Convert.ToInt32(xmlAttributeCollection["DaysWorkBuild"].Value),
+                                Spring = Convert.ToDecimal(xmlAttributeCollection["Spring"].Value),
+                                Summer = Convert.ToDecimal(xmlAttributeCollection["Summer"].Value),
+                                Fall = Convert.ToDecimal(xmlAttributeCollection["Fall"].Value),
+                                Winter = Convert.ToDecimal(xmlAttributeCollection["Winter"].Value)
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (!foundError)
+            {
+                return settingsList;
+            }
+            else
+            {
+                CreateDefaultSubsidiarySettingsXmlFile();
+                return null;
+            }
+        }
+
+        public void CreateDefaultSubsidiarySettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("Subsidiary",
+                        new XAttribute("Subsidiary", "Biodling"),
+                        new XAttribute("IncomeFactor", "15"),
+                        new XAttribute("IncomeBase", "0.65"),
+                        new XAttribute("IncomeLuxury", "0.25"),
+                        new XAttribute("IncomeSilver", "1"),
+                        new XAttribute("DaysWorkUpkeep", "365"),
+                        new XAttribute("DaysWorkBuild", "730"),
+                        new XAttribute("Spring", "0.35"),
+                        new XAttribute("Summer", "0.5"),
+                        new XAttribute("Fall", "0.1"),
+                        new XAttribute("Winter", "0.05")
+                    ),
+                    new XElement("Subsidiary",
+                        new XAttribute("Subsidiary", "Fiskdammar"),
+                        new XAttribute("IncomeFactor", "0.2"),
+                        new XAttribute("IncomeBase", "1.0"),
+                        new XAttribute("IncomeLuxury", "0"),
+                        new XAttribute("IncomeSilver", "0"),
+                        new XAttribute("DaysWorkUpkeep", "365"),
+                        new XAttribute("DaysWorkBuild", "1095"),
+                        new XAttribute("Spring", "0.35"),
+                        new XAttribute("Summer", "0.35"),
+                        new XAttribute("Fall", "0.25"),
+                        new XAttribute("Winter", "0.05")
+                    ),
+                    new XElement("Subsidiary",
+                        new XAttribute("Subsidiary", "Glasbruk"),
+                        new XAttribute("IncomeFactor", "0.2"),
+                        new XAttribute("IncomeBase", "0"),
+                        new XAttribute("IncomeLuxury", "0.75"),
+                        new XAttribute("IncomeSilver", "0.25"),
+                        new XAttribute("DaysWorkUpkeep", "1095"),
+                        new XAttribute("DaysWorkBuild", "4225"),
+                        new XAttribute("Spring", "0"),
+                        new XAttribute("Summer", "0"),
+                        new XAttribute("Fall", "0"),
+                        new XAttribute("Winter", "0")
+                    ),
+                    new XElement("Subsidiary",
+                        new XAttribute("Subsidiary", "Olivlundar"),
+                        new XAttribute("IncomeFactor", "20"),
+                        new XAttribute("IncomeBase", "0.7"),
+                        new XAttribute("IncomeLuxury", "0.2"),
+                        new XAttribute("IncomeSilver", "0.1"),
+                        new XAttribute("DaysWorkUpkeep", "1460"),
+                        new XAttribute("DaysWorkBuild", "5320"),
+                        new XAttribute("Spring", "0.25"),
+                        new XAttribute("Summer", "0.35"),
+                        new XAttribute("Fall", "0.25"),
+                        new XAttribute("Winter", "0.15")
+                    ),
+                    new XElement("Subsidiary",
+                        new XAttribute("Subsidiary", "Vindistrikt"),
+                        new XAttribute("IncomeFactor", "20"),
+                        new XAttribute("IncomeBase", "0.3"),
+                        new XAttribute("IncomeLuxury", "0.4"),
+                        new XAttribute("IncomeSilver", "0.3"),
+                        new XAttribute("DaysWorkUpkeep", "2920"),
+                        new XAttribute("DaysWorkBuild", "5320"),
+                        new XAttribute("Spring", "0.25"),
+                        new XAttribute("Summer", "0.3"),
+                        new XAttribute("Fall", "0.25"),
+                        new XAttribute("Winter", "0.2")
+                    ),
+                    new XElement("Subsidiary",
+                        new XAttribute("Subsidiary", "Äppellundar"),
+                        new XAttribute("IncomeFactor", "20"),
+                        new XAttribute("IncomeBase", "1.0"),
+                        new XAttribute("IncomeLuxury", "0"),
+                        new XAttribute("IncomeSilver", "0"),
+                        new XAttribute("DaysWorkUpkeep", "730"),
+                        new XAttribute("DaysWorkBuild", "3285"),
+                        new XAttribute("Spring", "0.3"),
+                        new XAttribute("Summer", "0.3"),
+                        new XAttribute("Fall", "0.3"),
+                        new XAttribute("Winter", "0.1")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
+            xmlDoc.Save(@filePath);
+            SubsidiarySettingsList = LoadSubsidiarySettingsFromXml();
+
         }
 
         #endregion

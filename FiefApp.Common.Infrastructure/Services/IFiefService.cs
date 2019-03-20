@@ -1,5 +1,7 @@
 ﻿using FiefApp.Common.Infrastructure.DataModels;
 using System.Collections.Generic;
+using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -14,5 +16,8 @@ namespace FiefApp.Common.Infrastructure.Services
         List<ExpensesDataModel> ExpensesList { get; set; }
         List<StewardsDataModel> StewardsList { get; set; }
         List<SubsidiaryDataModel> SubsidiaryList { get; set; }
+        List<SubsidiaryModel> CustomSubsidiaryList { get; set; }
+        List<IncomeDataModel> IncomeList { get; set; }
+        List<BuildingsDataModel> BuildingsList { get; set; }
     }
 }

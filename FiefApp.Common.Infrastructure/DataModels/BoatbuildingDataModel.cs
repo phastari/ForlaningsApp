@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Common.Infrastructure.Services;
+using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Common.Infrastructure.Services;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
@@ -33,7 +34,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _canBuildShipyard = value;
-                Console.WriteLine($"CanBuildShipyard : {CanBuildShipyard}");
                 NotifyPropertyChanged();
             }
         }
@@ -45,7 +45,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _gotShipyard = value;
-                Console.WriteLine($"GotShipyard : {GotShipyard}");
                 NotifyPropertyChanged();
             }
         }
@@ -57,7 +56,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _buildingShipyard = value;
-                Console.WriteLine($"BuildingShipyard : {BuildingShipyard}");
                 NotifyPropertyChanged();
             }
         }
@@ -69,7 +67,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _upgradingShipyard = value;
-                Console.WriteLine($"UpgradingShipyard : {UpgradingShipyard}");
                 NotifyPropertyChanged();
             }
         }
@@ -85,6 +82,71 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private ObservableCollection<BoatModel> _boatsBuildingCollection = new ObservableCollection<BoatModel>();
+        public ObservableCollection<BoatModel> BoatsBuildingCollection
+        {
+            get => _boatsBuildingCollection;
+            set
+            {
+                _boatsBuildingCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<BoatModel> _boatTypeCollection = new ObservableCollection<BoatModel>();
+        public ObservableCollection<BoatModel> BoatTypeCollection
+        {
+            get => _boatTypeCollection;
+            set
+            {
+                _boatTypeCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<BoatbuilderModel> _boatBuildersCollection = new ObservableCollection<BoatbuilderModel>();
+        public ObservableCollection<BoatbuilderModel> BoatBuildersCollection
+        {
+            get => _boatBuildersCollection;
+            set
+            {
+                _boatBuildersCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _availableBoatBuilders;
+        public int AvailableBoatBuilders
+        {
+            get => _availableBoatBuilders;
+            set
+            {
+                _availableBoatBuilders = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _totalBoatBuilders;
+        public int TotalBoatBuilders
+        {
+            get => _totalBoatBuilders;
+            set
+            {
+                _totalBoatBuilders = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _boatsBuilding;
+        public int BoatsBuilding
+        {
+            get => _boatsBuilding;
+            set
+            {
+                _boatsBuilding = value;
+                NotifyPropertyChanged();
+            }
+        }
 
 
         #region INotifyPropertyChanged

@@ -279,7 +279,7 @@
                 Padding="0"/>
 
         <iTextBox:iTextBox
-                Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Value="{Binding Path=ShipyardModel.Bailiffs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Grid.Column="7"
                 Grid.Row="18">
         </iTextBox:iTextBox>
@@ -294,7 +294,7 @@
                 Padding="0"/>
 
         <iTextBox:iTextBox
-                Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Value="{Binding Path=ShipyardModel.Captains, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Grid.Column="7"
                 Grid.Row="20">
         </iTextBox:iTextBox>

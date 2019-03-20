@@ -59,6 +59,14 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return (T)Convert.ChangeType(_fiefService.SubsidiaryList[index].Clone(), typeof(SubsidiaryDataModel));
             }
+            else if (typeof(T) == typeof(IncomeDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.IncomeList[index].Clone(), typeof(IncomeDataModel));
+            }
+            else if (typeof(T) == typeof(BuildingsDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.IncomeList[index].Clone(), typeof(BuildingsDataModel));
+            }
             else
             {
                 return default(T);
@@ -106,6 +114,16 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 SubsidiaryDataModel tempDataModel = (SubsidiaryDataModel)dataModel;
                 _fiefService.SubsidiaryList[index] = (SubsidiaryDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(IncomeDataModel))
+            {
+                IncomeDataModel tempDataModel = (IncomeDataModel)dataModel;
+                _fiefService.IncomeList[index] = (IncomeDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(BuildingsDataModel))
+            {
+                BuildingsDataModel tempDataModel = (BuildingsDataModel)dataModel;
+                _fiefService.BuildingsList[index] = (BuildingsDataModel)tempDataModel.Clone();
             }
             else
             {

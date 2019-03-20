@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FiefApp.Module.Boatbuilding.UIElements.BoatsUI
+namespace FiefApp.Module.Buildings
 {
     /// <summary>
-    /// Interaction logic for BoatsUI.xaml
+    /// Interaction logic for BuildingsView.xaml
     /// </summary>
-    public partial class BoatsUI : UserControl
+    public partial class BuildingsView : UserControl
     {
-        public BoatsUI()
+        public BuildingsView()
         {
             InitializeComponent();
         }

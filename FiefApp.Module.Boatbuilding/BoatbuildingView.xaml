@@ -7,11 +7,18 @@
              xmlns:gotShipyardUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.GotShipyardUI"
              xmlns:canBuildShipyardUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.CanBuildShipyardUI"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:constructingBoatUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.ConstructingBoatUI"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:buildingBoatsUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI"
+             xmlns:boatBuilderUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.BoatBuilderUI"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
              d:DesignWidth="784">
 
-    <Grid Background="#FFE5E5E5">
+    <Grid>
+    <Grid 
+        x:Name="RootGrid"
+        Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="9"/>
             <RowDefinition Height="6"/>
@@ -64,21 +71,9 @@
             <ColumnDefinition Width="222"/>
             <ColumnDefinition Width="8"/>
 
-            <ColumnDefinition Width="41"/>
+            <ColumnDefinition Width="12"/>
 
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="510"/>
 
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -193,13 +188,18 @@
                 </buildingShipyardUI:BuildingShipyardUI.Style>
             </buildingShipyardUI:BuildingShipyardUI>
 
-            <gotShipyardUI:GotShipyardUI>
+            <gotShipyardUI:GotShipyardUI
+                Upgrading="{Binding Path=DataModel.UpgradingShipyard}"
+                ShipyardModel="{Binding Path=DataModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <gotShipyardUI:GotShipyardUI.Style>
                     <Style TargetType="{x:Type gotShipyardUI:GotShipyardUI}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Setter Property="CantEdit" Value="True"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
@@ -392,27 +392,435 @@
         </StackPanel>
 
         <Button
-            Content="Set GotShipyard"
+            Content="GotShipyard"
+            ToolTip="Set GotShipyard"
             Command="{Binding Path=SetGotShipyard}"
-            Grid.Column="6"
-            Grid.Row="3"></Button>
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"/>
 
         <Button
-            Content="Set UpgradingShipard"
+            Content="UpgradingShipard"
+            ToolTip="Set UpgradingShipard"
             Command="{Binding Path=SetUpgradingShipyard}"
-            Grid.Column="6"
-            Grid.Row="5"></Button>
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"
+            Margin="57,0,0,0"></Button>
 
         <Button
-            Content="Set BuildingShipard"
+            Content="BuildingShipard"
+            ToolTip="Set BuildingShipard"
             Command="{Binding Path=SetBuildingShipyard}"
-            Grid.Column="6"
-            Grid.Row="7"></Button>
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"
+            Margin="114, 0, 0, 0"></Button>
 
         <Button
-            Content="Set CanBuildShipyard"
+            Content="CanBuildShipyard"
+            ToolTip="Set CanBuildShipyard"
             Command="{Binding Path=SetCanBuildShipyard}"
-            Grid.Column="6"
-            Grid.Row="9"></Button>
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"
+            Margin="171,0,0,0"></Button>
+
+
+        <Frame 
+            Grid.Column="5" 
+            Grid.Row="1" 
+            Grid.RowSpan="6"
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5, 0.5, 0.5, 0.5"
+            IsTabStop="False"
+            Margin="0,0,0,15"/>
+
+        <Frame 
+            Grid.Column="5" 
+            Grid.Row="5" 
+            Grid.RowSpan="35"
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5, 0.5, 0.5, 0.5"
+            IsTabStop="False"
+            Margin="0,15,0,0"/>
+
+
+        <Label
+            Content="Båtbyggare"
+            Grid.Column="5"
+            Grid.Row="3"
+            Width="100"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="8,0,0,0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.TotalBoatBuilders}"
+            Grid.Column="5"
+            Grid.Row="3"
+            Width="51"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="114,0,0,0"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="True"/>
+
+        <Label
+            Content="Lediga båtbyggare"
+            Grid.Column="5"
+            Grid.Row="3"
+            Width="100"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="171,0,0,0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.AvailableBoatBuilders}"
+            Grid.Column="5"
+            Grid.Row="3"
+            Width="51"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="277,0,0,0"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="True"/>
+
+        <Label
+            Content="Pågående byggen"
+            Grid.Column="5"
+            Grid.Row="3"
+            Width="100"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="334,0,0,0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.BoatsBuilding}"
+            Grid.Column="5"
+            Grid.Row="3"
+            Width="51"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="440,0,0,0"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="True"/>
+
+
+            <StackPanel
+                Grid.Column="5"
+                Grid.Row="6"
+                Grid.RowSpan="35">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Grid
+                    Height="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="139"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="8"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Content="Båtbygge"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="3"
+                        Grid.Row="0"
+                        Content="Antal"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="5"
+                        Grid.Row="0"
+                        Content="Silver(klar)"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="7"
+                        Grid.Row="0"
+                        Content="Klar om"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="9"
+                        Grid.Row="0"
+                        Content="Båtbyggare"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="10"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        Content="Färdighet"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+                </Grid>
+
+                <ItemsControl
+                    ItemsSource="{Binding Path=DataModel.BoatsBuildingCollection}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <StackPanel>
+                                <ItemsPresenter />
+                                <Button 
+                                    Content="lägg till"
+                                    Height="21"
+                                    Width="51"
+                                    HorizontalAlignment="Right"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Padding="0"
+                                    Margin="0,3,8,0"
+                                    Template="{DynamicResource ButtonTemplate}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="False"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <constructingBoatUI:ConstructingBoatUI
+                                Id="{Binding Path=Id}"
+                                BoatType="{Binding Path=BoatType}"
+                                Amount="{Binding Path=Amount}"
+                                CostWhenFinished="{Binding Path=CostWhenFinishedSilver}"
+                                NextFinishedDays="{Binding Path=NextFinishedDays}"
+                                BoatBuildersCollection="{Binding Path=BoatBuildersCollection}"
+                                SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ConstructingBoatUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ConstructingBoatUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </constructingBoatUI:ConstructingBoatUI>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Rectangle
+                    Height="24"/>
+
+                <Grid
+                    Height="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="176"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="108"/>
+                        <ColumnDefinition Width="8"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Content="Båtbyggare"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="3"
+                        Grid.Row="0"
+                        Content="Ålder"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="4"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        Content="Färdighet"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="6"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        Content="Lojalitet"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="9"
+                        Grid.Row="0"
+                        Content="Resurser"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="11"
+                        Grid.Row="0"
+                        Content="Uppdrag"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        Padding="12,0,0,0"/>
+                </Grid>
+
+                <ItemsControl
+                    ItemsSource="{Binding Path=DataModel.BoatBuildersCollection}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel 
+                                IsItemsHost="True" 
+                                Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <StackPanel>
+                                <ItemsPresenter />
+                                <Button 
+                                    Content="lägg till"
+                                    Command="{Binding Path=AddBoatbuilderCommand}"
+                                    Height="21"
+                                    Width="51"
+                                    HorizontalAlignment="Right"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Padding="0"
+                                    Margin="0,3,8,0"
+                                    Template="{DynamicResource ButtonTemplate}">
+                                </Button>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <boatBuilderUI:BoatBuilderUI
+                                Id="{Binding Path=Id}"
+                                BoatBuilder="{Binding Path=Name}"
+                                Age="{Binding Path=Age}"
+                                Skill="{Binding Path=Skill}"
+                                Loyalty="{Binding Path=Loyalty}"
+                                BBResources="{Binding Path=Resources}"
+                                Assignment="{Binding Path=Assignment}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="BoatBuilderUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BoatBuilderUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </boatBuilderUI:BoatBuilderUI>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <buildingBoatsUI:BuildingBoatUI
+                x:Name="BuildingBoat"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BoatTypeCollection="{Binding Path=DataModel.BoatTypeCollection}">
+                <buildingBoatsUI:BuildingBoatUI.Style>
+                    <Style TargetType="{x:Type buildingBoatsUI:BuildingBoatUI}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=RootGrid, Path=IsEnabled}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </buildingBoatsUI:BuildingBoatUI.Style>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="BuildingBoatUIEvent">
+                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BuildingBoatUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                        <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="True"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </buildingBoatsUI:BuildingBoatUI>
+        </Grid>
     </Grid>
 </UserControl>

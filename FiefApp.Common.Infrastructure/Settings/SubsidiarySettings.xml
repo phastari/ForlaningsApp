@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings>
-  <Subsidiary Subsidiary="Biodling" Modifier="15" Base="0.65" Luxury="0.25" Silver="0.1"/>
-  <Subsidiary Subsidiary="Fiskdammar" Modifier="0.2" Base="1.0" Luxury="0.0" Silver="0.0" DaysWork="365"/>
-  <Subsidiary Subsidiary="Glasbruk" Modifier="0.2" Base="0.0" Luxury="1.0" Silver="0" DaysWork="365"/>
-  <Subsidiary Subsidiary="Olivlundar" Modifier="20" Base="0.7" Luxury="0.2" Silver="0.1" DaysWork="1460"/>
-  <Subsidiary Subsidiary="Vindistrikt" Modifier="20" Base="0.3" Luxury="0.4" Silver="0.3" DaysWork="2920"/>
-  <Subsidiary Subsidiary="Äppellundar" Modifier="20" Base="1.0" Luxury="0.0" Silver="0.0" DaysWork="730"/>
+  <Subsidiary Subsidiary="Biodling" IncomeFactor="15" IncomeBase="0.65" IncomeLuxury="0.25" IncomeSilver="0.1" DaysWorkUpkeep="365" DaysWorkBuild="730" Spring="0.35" Summer="0.5" Fall="0.1" Winter="0.05"/>
+  <Subsidiary Subsidiary="Fiskdammar" IncomeFactor="0.2" IncomeBase="1.0" IncomeLuxury="0.0" IncomeSilver="0.0" DaysWorkUpkeep="365" DaysWorkBuild="1095" Spring="0.35" Summer="0.35" Fall="0.25" Winter="0.05"/>
+  <Subsidiary Subsidiary="Glasbruk" IncomeFactor="0.2" IncomeBase="0.0" IncomeLuxury="1.0" IncomeSilver="0" DaysWorkUpkeep="365" DaysWorkBuild="4225" Spring="0" Summer="0" Fall="0" Winter="0"/>
+  <Subsidiary Subsidiary="Olivlundar" IncomeFactor="20" IncomeBase="0.7" IncomeLuxury="0.2" IncomeSilver="0.1" DaysWorkUpkeep="1460" DaysWorkBuild="5320" Spring="0.25" Summer="0.35" Fall="0.25" Winter="0.15"/>
+  <Subsidiary Subsidiary="Vindistrikt" IncomeFactor="20" IncomeBase="0.3" IncomeLuxury="0.4" IncomeSilver="0.3" DaysWorkUpkeep="2920" DaysWorkBuild="5320" Spring="0.25" Summer="0.3" Fall="0.25" Winter="0.2"/>
+  <Subsidiary Subsidiary="Äppellundar" IncomeFactor="20" IncomeBase="1.0" IncomeLuxury="0.0" IncomeSilver="0.0" DaysWorkUpkeep="730" DaysWorkBuild="3285" Spring="0.3" Summer="0.3" Fall="0.3" Winter="0.1"/>
 </Settings>

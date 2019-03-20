@@ -7,7 +7,7 @@ namespace FiefApp.Common.Infrastructure.Models
 {
     public class ShipyardModel : INotifyPropertyChanged
     {
-        private string _shipyard;
+        private string _shipyard = "";
         public string Shipyard
         {
             get => _shipyard;
@@ -40,8 +40,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _operationBaseCost;
-        public int OperationBaseCost
+        private decimal _operationBaseCost;
+        public decimal OperationBaseCost
         {
             get => _operationBaseCost;
             set
@@ -51,8 +51,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _operationBaseIncome;
-        public int OperationBaseIncome
+        private decimal _operationBaseIncome;
+        public decimal OperationBaseIncome
         {
             get => _operationBaseIncome;
             set
@@ -172,17 +172,6 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _guards;
-        public int Guards
-        {
-            get => _guards;
-            set
-            {
-                _guards = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         private int _daysWorkNeeded;
         public int DaysWorkNeeded
         {
@@ -205,52 +194,48 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private ShipyardTypeSettingsModel _shipyardTypeSettingsModel = null;
-        public ShipyardTypeSettingsModel ShipyardTypeSettingsModel
+        private int _bailiffs;
+        public int Bailiffs
         {
-            get => _shipyardTypeSettingsModel;
+            get => _bailiffs;
             set
             {
-                _shipyardTypeSettingsModel = value;
-                if (value != null)
-                {
-                    LoadInformationFromSettingsModel();
-                }
+                _bailiffs = value;
                 NotifyPropertyChanged();
             }
         }
 
-        private void LoadInformationFromSettingsModel()
+        private int _captains;
+        public int Captains
         {
-            Size = ShipyardTypeSettingsModel.DockType;
-            DockSmall = ShipyardTypeSettingsModel.DockSmall;
-            DockMedium = ShipyardTypeSettingsModel.DockMedium;
-            DockLarge = ShipyardTypeSettingsModel.DockLarge;
-        }
-
-        private int CalculateIncome()
-        {
-            if (ShipyardTypeSettingsModel != null)
+            get => _captains;
+            set
             {
-                // OperationBaseIncomeModifier
-                // Utvecklingsnivå hamn, sjöfart och utbildning
-                // Förvaltaren
-                // Vägnät
-                // Om Upgrading
-                // Skatt/Tull
-                // Väder
-                // Crime (UN militär)
-                // RPs rykte?
-
-                
+                _captains = value;
+                NotifyPropertyChanged();
             }
-
-            return 1;
         }
 
-        private int CalculateCost()
+        private int _guards;
+        public int Guards
         {
-            return 1;
+            get => _guards;
+            set
+            {
+                _guards = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private decimal _crimeRate;
+        public decimal CrimeRate
+        {
+            get => _crimeRate;
+            set
+            {
+                _crimeRate = value;
+                NotifyPropertyChanged();
+            }
         }
 
         #region INotifyPropertyChanged

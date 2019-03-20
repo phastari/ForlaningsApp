@@ -104,7 +104,7 @@ namespace FiefApp.Module.Employees.UIElements.EmployeeUI
                 "Id",
                 typeof(int),
                 typeof(EmployeeUI),
-                new PropertyMetadata(0)
+                new PropertyMetadata(-1)
             );
 
         public string Employee

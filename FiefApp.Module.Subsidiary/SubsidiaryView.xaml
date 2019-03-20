@@ -37,7 +37,8 @@
             Grid.Row="0"
             Grid.ZIndex="10"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            SubsidiaryCollection="{Binding Path=DataModel.SubsidiaryTypesCollection}">
             <addSubsidiaryUI:AddSubsidiaryUI.Style>
                 <Style TargetType="{x:Type addSubsidiaryUI:AddSubsidiaryUI}">
                     <Setter Property="Visibility" Value="Collapsed"/>

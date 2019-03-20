@@ -10,26 +10,32 @@ namespace FiefApp.Common.Infrastructure.Services
         InformationSettingsModel InformationSettingsModel { get; }
         ManorSettingsModel ManorSettingsModel { get; }
         List<ShipyardTypeSettingsModel> ShipyardTypeSettingsList { get; }
+        BoatbuildingSettingsModel BoatbuildingSettingsModel { get; }
         LivingconditionsSettingsModel LivingconditionsSettingsModel { get; }
         StableSettingsModel StableSettingsModel { get; }
         ExpensesSettingsModel ExpensesSettingsModel { get; }
+        List<SubsidiarySettingsModel> SubsidiarySettingsList { get; }
 
         ArmySettingsModel LoadArmySettingsFromXml();
         EmployeeSettingsModel LoadEmployeeSettingsFromXml();
         InformationSettingsModel LoadInformationSettingsFromXml();
         ManorSettingsModel LoadManorSettingsFromXml();
         BoatbuildingSettingsModel LoadBoatbuildingSettingsFromXml();
+        List<ShipyardTypeSettingsModel> LoadShipyardTypeSettingsFromXml();
         LivingconditionsSettingsModel LoadLivingconditionsSettingsFromXml();
         StableSettingsModel LoadStableSettingsFromXml();
         ExpensesSettingsModel LoadExpensesSettingsFromXml();
+        List<SubsidiarySettingsModel> LoadSubsidiarySettingsFromXml();
 
         void CreateDefaultArmySettingsXmlFile();
         void CreateDefaultEmployeeSettingsXmlFile();
         void CreateDefaultInformationSettingsXmlFile();
         void CreateDefaultManorSettingsXmlFile();
         void CreateDefaultBoatbuildingSettingsXmlFile();
+        void CreateDefaultShipyardTypeSettingsXmlFile();
         void CreateDefaultLivingconditionsSettingsXmlFile();
         void CreateDefaultStableSettingsXmlFile();
         void CreateDefaultExpensesSettingsXmlFile();
+        void CreateDefaultSubsidiarySettingsXmlFile();
     }
 }

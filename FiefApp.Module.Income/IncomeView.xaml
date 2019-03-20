@@ -2,12 +2,302 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:m="clr-namespace:FiefApp.Common.Infrastructure.Models;assembly=FiefApp.Common.Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:incomeUI="clr-namespace:FiefApp.Module.Income.UIElements.IncomeUI"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
 
-    <Grid>
-            
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="760"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle x:Name="InitialFocus" 
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Focusable="True"/>
+        <Frame 
+            Grid.Column="1" 
+            Grid.Row="1" 
+            Grid.RowSpan="39" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+
+        <ItemsControl
+            Grid.Column="1"
+            Grid.Row="3"
+            Grid.RowSpan="36"
+            Background="Transparent"
+            Grid.ZIndex="0">
+
+            <ItemsControl.Resources>
+                <CollectionViewSource 
+                    x:Key="Incomes" 
+                    Source="{Binding Path=DataModel.IncomesCollection}"/>
+
+                <DataTemplate DataType="{x:Type Rectangle}">
+                    <Rectangle/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type m:IncomeModel}">
+                    <incomeUI:IncomeUI
+                        Income="{Binding Path=Income}"
+                        Silver="{Binding Path=Silver}"
+                        Base="{Binding Path=Base}"
+                        Luxury="{Binding Path=Luxury}"
+                        Wood="{Binding Path=Wood}"
+                        Iron="{Binding Path=Iron}"
+                        Stone="{Binding Path=Stone}"
+                        StewardCollection="{Binding Path=DataModel.StewardsCollection}"
+                        IsStewardNeeded="{Binding Path=IsStewardNeeded}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="IncomeUIEvent">
+                                <customCommands:CustomCommandAction Command="{Binding Path=DataContext.IncomeUIEventUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </incomeUI:IncomeUI>
+                </DataTemplate>
+            </ItemsControl.Resources>
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+                    <Rectangle 
+                        x:Name="ItemRectangle"
+                        Height="72"
+                        Width="760"
+                        HorizontalAlignment="Left"
+                        Fill="Transparent"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource Incomes}}"/>
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </ItemsControl>
+
+
+        <Grid
+            x:Name="Container"
+            Background="Transparent"
+            Grid.Column="1"
+            Grid.Row="3"
+            Grid.RowSpan="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox 
+                x:Name="FiefComboBox"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Grid.Row="2"
+                Width="120"
+                ItemsSource="{Binding Path=FiefCollection}"
+                SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="6,0,0,0">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Label
+                    Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Left"
+                    Padding="6,0,0,0"
+                    ToolTip="Läge">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Hidden">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Label 
+                Grid.Column="1"
+                Grid.Row="4"
+                Content="Näring"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="3"
+                Grid.Row="4"
+                Content="Silver"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="5"
+                Grid.Row="4"
+                Content="Bas"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="7"
+                Grid.Row="4"
+                Content="Lyx"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="9"
+                Grid.Row="4"
+                Content="Järn"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="11"
+                Grid.Row="4"
+                Content="Sten"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="13"
+                Grid.Row="4"
+                Content="Timmer"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="15"
+                Grid.Row="4"
+                Content="Förvaltare"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="16"
+                Grid.ColumnSpan="3"
+                Grid.Row="4"
+                Content="Färdighet"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+
+
+        </Grid>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
@@ -36,7 +37,7 @@ namespace FiefApp.Module.Subsidiary
         public CustomDelegateCommand ConstructSubsidiaryCommand { get; set; }
         private void ExecuteConstructSubsidiaryCommand(object obj)
         {
-            Console.WriteLine($"ConstructSubsidiaryCommand!");
+            DataModel.SubsidiaryTypesCollection = _subsidiaryService.GetSubsidiaryTypesCollection();
         }
 
         #endregion
@@ -57,11 +58,44 @@ namespace FiefApp.Module.Subsidiary
 
             if (e.Action == "Save")
             {
+                if (e.SubsidiaryModel.Id == -1)
+                {
+                    if (e.SubsidiaryModel.Subsidiary != "")
+                    {
+                        e.SubsidiaryModel.Id = _subsidiaryService.GetNewIdForSubsidiary();
+                        _subsidiaryService.AddCustomSubsidiary(e.SubsidiaryModel);
+                        DataModel.ConstructingCollection.Add(e.SubsidiaryModel);
 
-            }
-            else if (e.Action == "Cancel")
-            {
-                Console.WriteLine($"AddSubsidiaryUIEventHandler!");
+                        Console.WriteLine($"e.Id : { e.SubsidiaryModel.Id }");
+                        Console.WriteLine($"Id : { e.Id }");
+                        Console.WriteLine($"Subsidiary : { e.SubsidiaryModel.Subsidiary }");
+                        Console.WriteLine($"IncomeFactor : { e.SubsidiaryModel.IncomeFactor }");
+                        Console.WriteLine($"IncomeSilver : { e.SubsidiaryModel.IncomeSilver }");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Du måste ange ett namn för binäringen!");
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
+                    {
+                        if (e.SubsidiaryModel.Id == DataModel.ConstructingCollection[x].Id)
+                        {
+                            DataModel.ConstructingCollection.RemoveAt(x);
+                            DataModel.ConstructingCollection.Insert(x, e.SubsidiaryModel);
+                            break;
+                        }
+                    }
+                    _subsidiaryService.EditCustomSubsidiary(e.SubsidiaryModel);
+
+                    Console.WriteLine($"e.Id : { e.SubsidiaryModel.Id }");
+                    Console.WriteLine($"Id : { e.Id }");
+                    Console.WriteLine($"Subsidiary : { e.SubsidiaryModel.Subsidiary }");
+                    Console.WriteLine($"IncomeFactor : { e.SubsidiaryModel.IncomeFactor }");
+                    Console.WriteLine($"IncomeSilver : { e.SubsidiaryModel.IncomeSilver }");
+                }
             }
         }
 
@@ -127,47 +161,50 @@ namespace FiefApp.Module.Subsidiary
 
         private void CreateFakeData()
         {
-            DataModel.ConstructingCollection.Add(
-                new SubsidiaryModel()
-                {
-                    Id = 0,
-                    Subsidiary = "Vingård",
-                    DaysWorkBuild = 5000,
-                    DaysWorkThisYear = 0
-                });
+            if (DataModel.ConstructingCollection.Count < 1)
+            {
+                DataModel.ConstructingCollection.Add(
+                    new SubsidiaryModel()
+                    {
+                        Id = 0,
+                        Subsidiary = "Vingård",
+                        DaysWorkBuild = 5000,
+                        DaysWorkThisYear = 0
+                    });
 
-            DataModel.ConstructingCollection.Add(
-                new SubsidiaryModel()
-                {
-                    Id = 1,
-                    Subsidiary = "Tegelbruk",
-                    DaysWorkBuild = 4000,
-                    DaysWorkThisYear = 0
-                });
+                DataModel.ConstructingCollection.Add(
+                    new SubsidiaryModel()
+                    {
+                        Id = 1,
+                        Subsidiary = "Tegelbruk",
+                        DaysWorkBuild = 4000,
+                        DaysWorkThisYear = 0
+                    });
 
-            DataModel.SubsidiaryCollection.Add(
-                new SubsidiaryModel()
-                {
-                    Id = 0,
-                    Subsidiary = "Olivlund",
-                    DaysWorkUpkeep = 500
-                });
+                DataModel.SubsidiaryCollection.Add(
+                    new SubsidiaryModel()
+                    {
+                        Id = 0,
+                        Subsidiary = "Olivlund",
+                        DaysWorkUpkeep = 500
+                    });
 
-            DataModel.SubsidiaryCollection.Add(
-                new SubsidiaryModel()
-                {
-                    Id = 0,
-                    Subsidiary = "Fiskdamm",
-                    DaysWorkUpkeep = 100
-                });
+                DataModel.SubsidiaryCollection.Add(
+                    new SubsidiaryModel()
+                    {
+                        Id = 0,
+                        Subsidiary = "Fiskdamm",
+                        DaysWorkUpkeep = 100
+                    });
 
-            DataModel.SubsidiaryCollection.Add(
-                new SubsidiaryModel()
-                {
-                    Id = 0,
-                    Subsidiary = "Vingård",
-                    DaysWorkUpkeep = 1000
-                });
+                DataModel.SubsidiaryCollection.Add(
+                    new SubsidiaryModel()
+                    {
+                        Id = 0,
+                        Subsidiary = "Vingård",
+                        DaysWorkUpkeep = 1000
+                    });
+            }
         }
 
         #endregion

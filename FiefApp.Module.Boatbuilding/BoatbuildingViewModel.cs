@@ -1,7 +1,12 @@
 ﻿using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.Boatbuilding.RoutedEvents;
 using Prism.Commands;
+using System;
+using System.Collections.ObjectModel;
 
 namespace FiefApp.Module.Boatbuilding
 {
@@ -9,14 +14,17 @@ namespace FiefApp.Module.Boatbuilding
     {
         private readonly IBaseService _baseService;
         private readonly IBoatbuildingService _boatbuildingService;
+        private readonly ISettingsService _settingsService;
 
         public BoatbuildingViewModel(
             IBaseService baseService,
-            IBoatbuildingService boatbuildingService
+            IBoatbuildingService boatbuildingService,
+            ISettingsService settingsService
             ) : base(baseService)
         {
             _baseService = baseService;
             _boatbuildingService = boatbuildingService;
+            _settingsService = settingsService;
 
             TabName = "Skeppsbygge";
 
@@ -27,7 +35,162 @@ namespace FiefApp.Module.Boatbuilding
             SetBuildingShipyard = new DelegateCommand(ExecuteSetBuildingShipyard);
             SetUpgradingShipyard = new DelegateCommand(ExecuteSetUpgradingShipyard);
             SetCanBuildShipyard = new DelegateCommand(ExecuteSetCanBuildShipyard);
+
+            BuildingBoatUIEventHandler = new CustomDelegateCommand(ExecuteBuildingBoatUIEventHandler, o => true);
+            BoatBuilderUIEventHandler = new CustomDelegateCommand(ExecuteBoatBuilderUIEventHandler, o => true);
+            ConstructingBoatUIEventHandler = new CustomDelegateCommand(ExecuteConstructingBoatUIEventHandler, o => true);
+
+            AddBoatbuilderCommand = new DelegateCommand(ExecuteAddBoatbuilderCommand);
         }
+
+        #region CustomDelegateCommand : BuildingBoatUIEventHandler
+
+        public CustomDelegateCommand BuildingBoatUIEventHandler { get; set; }
+        private void ExecuteBuildingBoatUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is BuildingBoatUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Save")
+            {
+                e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                SaveData();
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : BoatBuilderUIEventHandler
+
+        public CustomDelegateCommand BoatBuilderUIEventHandler { get; set; }
+        private void ExecuteBoatBuilderUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is BoatBuilderUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                {
+                    if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
+                    {
+                        DataModel.BoatBuildersCollection.RemoveAt(x);
+                        break;
+                    }
+                }
+            }
+
+            if (e.Action == "Save")
+            {
+                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                {
+                    if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
+                    {
+                        DataModel.BoatBuildersCollection[x].Name = e.BoatbuilderModel.Name;
+                        DataModel.BoatBuildersCollection[x].Loyalty = e.BoatbuilderModel.Loyalty;
+                        DataModel.BoatBuildersCollection[x].Skill = e.BoatbuilderModel.Skill;
+                        DataModel.BoatBuildersCollection[x].Resources = e.BoatbuilderModel.Resources;
+                        DataModel.BoatBuildersCollection[x].Age = e.BoatbuilderModel.Age;
+                    }
+                }
+
+                for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                {
+                    DataModel.BoatsBuildingCollection[x].BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                }
+
+                SaveData();
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : ConstructingBoatUIEventHandler
+
+        public CustomDelegateCommand ConstructingBoatUIEventHandler { get; set; }
+        private void ExecuteConstructingBoatUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is ConstructingBoatUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Update")
+            {
+                int index = -1;
+
+                for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                {
+                    if (DataModel.BoatsBuildingCollection[x].Id == e.ConstructingBoatId)
+                    {
+                        DataModel.BoatsBuildingCollection[x].BoatbuilderId = e.BoatbuilderId;
+                        index = x;
+                    } else if (DataModel.BoatsBuildingCollection[x].BoatbuilderId == e.BoatbuilderId)
+                    {
+                        DataModel.BoatsBuildingCollection[x].BoatbuilderId = -1;
+                        DataModel.BoatsBuildingCollection[x].SelectedIndex = -1;
+                    }
+                }
+
+                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                {
+                    if (DataModel.BoatBuildersCollection[x].Id == e.BoatbuilderId)
+                    {
+                        DataModel.BoatBuildersCollection[x].BuildingBoatId = e.ConstructingBoatId;
+                        DataModel.BoatBuildersCollection[x].Assignment = DataModel.BoatsBuildingCollection[index].BoatType;
+                    }
+                    else
+                    {
+                        if (DataModel.BoatBuildersCollection[x].BuildingBoatId == e.ConstructingBoatId)
+                        {
+                            DataModel.BoatBuildersCollection[x].BuildingBoatId = -1;
+                            DataModel.BoatBuildersCollection[x].Assignment = "";
+                        }
+                    }
+                }
+            }
+
+            if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                {
+                    if (DataModel.BoatsBuildingCollection[x].Id == e.ConstructingBoatId)
+                    {
+                        DataModel.BoatsBuildingCollection.RemoveAt(x);
+                        break;
+                    }
+                }
+
+                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                {
+                    if (DataModel.BoatBuildersCollection[x].BuildingBoatId == e.ConstructingBoatId)
+                    {
+                        DataModel.BoatBuildersCollection[x].BuildingBoatId = -1;
+                        DataModel.BoatBuildersCollection[x].Assignment = "";
+                    }
+                }
+            }
+
+            SaveData();
+        }
+
+        #endregion
 
         #region Test DelegateCommands
 
@@ -78,7 +241,39 @@ namespace FiefApp.Module.Boatbuilding
 
             DataModel.BuildingShipyard = true;
             DataModel.CanBuildShipyard = false;
-            DataModel.Shipyard.DaysWorkNeeded = 2500;
+            DataModel.Shipyard = new ShipyardModel()
+            {
+                Shipyard = "",
+                Size = _settingsService.ShipyardTypeSettingsList[0].DockType,
+                UN = "1",
+                OperationBaseCost = _settingsService.ShipyardTypeSettingsList[0].OperationBaseCostModifier,
+                OperationBaseIncome = _settingsService.ShipyardTypeSettingsList[0].OperationBaseIncomeModifier,
+                IsBeingUpgraded = false,
+                DockSmall = _settingsService.ShipyardTypeSettingsList[0].DockSmall,
+                DockSmallFree = _settingsService.ShipyardTypeSettingsList[0].DockSmall,
+                DockMedium = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
+                DockMediumFree = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
+                DockLarge = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
+                DockLargeFree = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
+                Taxes = "20"
+            };
+
+            SaveData();
+        }
+
+        #endregion
+        #region DelegateCommand : AddBoatbuilderCommand
+
+        public DelegateCommand AddBoatbuilderCommand { get; set; }
+        private void ExecuteAddBoatbuilderCommand()
+        {
+            SaveData();
+
+            DataModel.BoatBuildersCollection.Add(
+                new BoatbuilderModel()
+                {
+                    Id = _boatbuildingService.GetNewBoatbuilderId(Index)
+                });
         }
 
         #endregion
@@ -109,6 +304,8 @@ namespace FiefApp.Module.Boatbuilding
             {
                 DataModel.CanBuildShipyard = _boatbuildingService.CheckShipyardPossibility(Index);
             }
+
+            DataModel.BoatTypeCollection = new ObservableCollection<BoatModel>(_settingsService.BoatbuildingSettingsModel.BoatSettingsList);
 
             UpdateFiefCollection();
         }

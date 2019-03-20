@@ -30,6 +30,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private ObservableCollection<SubsidiaryModel> _subsidiaryTypesCollection = new ObservableCollection<SubsidiaryModel>();
+        public ObservableCollection<SubsidiaryModel> SubsidiaryTypesCollection
+        {
+            get => _subsidiaryTypesCollection;
+            set
+            {
+                _subsidiaryTypesCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<SubsidiaryModel> _constructingCollection = new ObservableCollection<SubsidiaryModel>();
         public ObservableCollection<SubsidiaryModel> ConstructingCollection
         {

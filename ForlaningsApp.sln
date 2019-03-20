@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiefApp.Module.Stewards", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiefApp.Module.Subsidiary", "FiefApp.Module.Subsidiary\FiefApp.Module.Subsidiary.csproj", "{DF745520-D1EE-4A4C-9A43-C06490D5A466}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiefApp.Module.Buildings", "FiefApp.Module.Buildings\FiefApp.Module.Buildings.csproj", "{C29DCABD-3168-480E-9793-572D2DDD1F88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{DF745520-D1EE-4A4C-9A43-C06490D5A466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF745520-D1EE-4A4C-9A43-C06490D5A466}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF745520-D1EE-4A4C-9A43-C06490D5A466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29DCABD-3168-480E-9793-572D2DDD1F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29DCABD-3168-480E-9793-572D2DDD1F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29DCABD-3168-480E-9793-572D2DDD1F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29DCABD-3168-480E-9793-572D2DDD1F88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{06C1DE55-1B0D-483A-AB8F-9860E143C62D} = {7D8A25D8-6377-4A59-AAEE-F4A9DBE2C7F3}
 		{00355DAE-84DD-4F5D-9E40-D1C4A768E0CB} = {7D8A25D8-6377-4A59-AAEE-F4A9DBE2C7F3}
 		{DF745520-D1EE-4A4C-9A43-C06490D5A466} = {7D8A25D8-6377-4A59-AAEE-F4A9DBE2C7F3}
+		{C29DCABD-3168-480E-9793-572D2DDD1F88} = {7D8A25D8-6377-4A59-AAEE-F4A9DBE2C7F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EB83255-042E-4EE9-B020-B80418319084}

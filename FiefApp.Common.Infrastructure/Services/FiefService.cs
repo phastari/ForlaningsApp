@@ -1,6 +1,7 @@
 ﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using System.Collections.Generic;
+using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -84,6 +85,12 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 );
             }
+
+            if (IncomeList.Count < 2)
+            {
+                IncomeList.Add(new IncomeDataModel());
+                IncomeList.Add(new IncomeDataModel());
+            }
         }
 
         public int Index { get; set; } = 1;
@@ -121,6 +128,20 @@ namespace FiefApp.Common.Infrastructure.Services
                 Id = 0
             },
             new SubsidiaryDataModel()
+            {
+                Id = 1
+            }
+        };
+
+        public List<SubsidiaryModel> CustomSubsidiaryList { get; set; } = new List<SubsidiaryModel>();
+        public List<IncomeDataModel> IncomeList { get; set; } = new List<IncomeDataModel>();
+        public List<BuildingsDataModel> BuildingsList { get; set; } = new List<BuildingsDataModel>()
+        {
+            new BuildingsDataModel()
+            {
+                Id = 0
+            },
+            new BuildingsDataModel()
             {
                 Id = 1
             }

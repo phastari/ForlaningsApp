@@ -57,5 +57,20 @@ namespace FiefApp.Module.Boatbuilding.UIElements.GotShipyardUI
                 typeof(GotShipyardUI),
                 new PropertyMetadata(null)
             );
+
+        public bool Upgrading
+        {
+            get => (bool)GetValue(UpgradingProperty);
+            set => SetValue(UpgradingProperty, value);
+        }
+
+        public static readonly DependencyProperty UpgradingProperty =
+            DependencyProperty.Register(
+                "Upgrading",
+                typeof(bool),
+                typeof(GotShipyardUI),
+                new PropertyMetadata(
+                    true)
+            );
     }
 }
