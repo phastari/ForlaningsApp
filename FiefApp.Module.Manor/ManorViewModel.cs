@@ -68,7 +68,7 @@ namespace FiefApp.Module.Manor
                     {
                         if (DataModel.ResidentsList[x].Id == e.Id)
                         {
-                            DataModel.ResidentsList[x].Name = e.Model.Name;
+                            DataModel.ResidentsList[x].PersonName = e.Model.PersonName;
                             DataModel.ResidentsList[x].Position = e.Model.Position;
                             DataModel.ResidentsList[x].Age = e.Model.Age;
                         }
@@ -107,7 +107,7 @@ namespace FiefApp.Module.Manor
                 DataModel.ResidentsList.Add( new ResidentModel()
                 {
                     Id = _manorService.GetPeopleId(Index),
-                    Name = e.ResidentModel.Name,
+                    PersonName = e.ResidentModel.PersonName,
                     Position = "Boende",
                     Age = e.ResidentModel.Age
                 });
@@ -316,7 +316,7 @@ namespace FiefApp.Module.Manor
                 Id = 0,
                 Age = 32,
                 Type = "Resident",
-                Name = "Karl Gunnar",
+                PersonName = "Karl Gunnar",
                 Position = "Boende"
             });
 
@@ -325,7 +325,7 @@ namespace FiefApp.Module.Manor
                 Id = 1,
                 Age = 43,
                 Type = "Resident",
-                Name = "Sune Svensson",
+                PersonName = "Sune Svensson",
                 Position = "Boende"
             });
 

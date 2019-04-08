@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Subsidiary.RoutedEvents;
 
 namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
 {
@@ -65,7 +67,25 @@ namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
         public int DaysWorkThisYear
         {
             get => (int)GetValue(DaysWorkThisYearProperty);
-            set => SetValue(DaysWorkThisYearProperty, value);
+            set
+            {
+                if (value > -1 && value <= DaysWorkLeft)
+                {
+                    SetValue(DaysWorkThisYearProperty, value);
+                    RaiseUpdateEvent();
+                }
+                else
+                {
+                    if (value < 0)
+                    {
+                        SetValue(DaysWorkThisYearProperty, 0);
+                    }
+                    if (value > DaysWorkLeft)
+                    {
+                        SetValue(DaysWorkThisYearProperty, DaysWorkLeft);
+                    }
+                }
+            }
         }
 
         public static readonly DependencyProperty DaysWorkThisYearProperty =
@@ -90,11 +110,25 @@ namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
                 new PropertyMetadata(new ObservableCollection<StewardModel>())
             );
 
+        public int StewardId
+        {
+            get => (int)GetValue(StewardIdProperty);
+            set => SetValue(StewardIdProperty, value);
+        }
+
+        public static readonly DependencyProperty StewardIdProperty =
+            DependencyProperty.Register(
+                "StewardId",
+                typeof(int),
+                typeof(ConstructingUI),
+                new PropertyMetadata(-1)
+            );
+
         #endregion
 
         #region UI Properties
 
-        private int _stewardIndex;
+        private int _stewardIndex = -1;
         public int StewardIndex
         {
             get => _stewardIndex;
@@ -105,6 +139,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
             }
         }
 
+        private bool _loaded = false;
+
         #endregion
 
         #region INotifyPropertyChanged
@@ -114,6 +150,72 @@ namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        private void RaiseUpdateEvent()
+        {
+            ConstructingUIEventArgs newEventArgs =
+                new ConstructingUIEventArgs(
+                    ConstructingUIRoutedEvent,
+                    "DaysWorkThisYearChanged",
+                    Id,
+                    Subsidiary,
+                    StewardsCollection[StewardIndex].Id,
+                    StewardsCollection[StewardIndex].PersonName,
+                    DaysWorkThisYear
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        private void ConstructingUI_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            for (int x = 0; x < StewardsCollection.Count; x++)
+            {
+                if (StewardsCollection[x].Id == StewardId)
+                {
+                    index = x;
+                }
+            }
+
+            StewardIndex = index;
+            _loaded = true;
+        }
+        private void StewardComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_loaded && StewardIndex != -1)
+            {
+                ConstructingUIEventArgs newEventArgs =
+                    new ConstructingUIEventArgs(
+                        ConstructingUIRoutedEvent,
+                        "Changed",
+                        Id,
+                        Subsidiary,
+                        StewardsCollection[StewardIndex].Id,
+                        StewardsCollection[StewardIndex].PersonName
+                    );
+
+                RaiseEvent(newEventArgs);
+            }
+        }
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent ConstructingUIRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "ConstructingUIEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(ConstructingUI)
+            );
+
+        public event RoutedEventHandler ConstructingUIEvent
+        {
+            add => AddHandler(ConstructingUIRoutedEvent, value);
+            remove => RemoveHandler(ConstructingUIRoutedEvent, value);
         }
 
         #endregion

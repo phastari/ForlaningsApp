@@ -132,7 +132,7 @@
         <ComboBox
                 x:Name="StewardComboBox"
                 ItemsSource="{Binding Path=StewardList}"
-                DisplayMemberPath="Name"
+                DisplayMemberPath="PersonName"
                 Grid.Column="3"
                 Grid.ColumnSpan="5"
                 Grid.Row="6"

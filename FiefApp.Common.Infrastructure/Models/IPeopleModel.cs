@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FiefApp.Common.Infrastructure.Models
 {
@@ -6,7 +8,7 @@ namespace FiefApp.Common.Infrastructure.Models
 
     {
         int Id { get; set; }
-        string Name { get; set; }
+        string PersonName { get; set; }
         string Type { get; set; }
         string Position { get; set; }
         int Age { get; set; }

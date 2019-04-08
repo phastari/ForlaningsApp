@@ -1,6 +1,11 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.Buildings.RoutedEvents;
 
 namespace FiefApp.Module.Buildings
 {
@@ -18,7 +23,46 @@ namespace FiefApp.Module.Buildings
             _buildingsService = buildingsService;
 
             TabName = "Byggnadsverk";
+
+            AddBuildingUIEventHandler = new CustomDelegateCommand(ExecuteAddBuildingUIEventHandler, o => true);
         }
+
+        #region CustomDelegateCommand : AddBuildingUIEvent
+
+        public CustomDelegateCommand AddBuildingUIEventHandler { get; set; }
+        private void ExecuteAddBuildingUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is AddBuildingUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Save")
+            {
+                List<int> tempList = new List<int>();
+                for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+                {
+                    tempList.Add(DataModel.BuildsCollection[x].Id);
+                }
+                if (tempList.Count > 0)
+                {
+                    e.Model.Id = tempList.Max();
+                }
+                else
+                {
+                    e.Model.Id = 0;
+                }
+
+                DataModel.BuildsCollection.Add(e.Model);
+                SaveData();
+            }
+        }
+
+        #endregion
 
         #region View Data Model Properties
 

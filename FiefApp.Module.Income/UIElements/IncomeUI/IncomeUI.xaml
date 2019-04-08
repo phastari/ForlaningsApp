@@ -6,7 +6,8 @@
              xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="24" 
-             d:DesignWidth="760">
+             d:DesignWidth="760"
+             Loaded="IncomeUI_OnLoaded">
 
     <Grid
         x:Name="RootGrid">
@@ -16,7 +17,7 @@
             </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="169"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="65"/>
             <ColumnDefinition Width="6"/>
@@ -30,7 +31,9 @@
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="8"/>
@@ -171,10 +174,15 @@
         </TextBox>
 
         <ComboBox
+            x:Name="StewardsComboBox"
             Grid.Column="15"
             Grid.Row="0"
-            ItemsSource="{Binding Path=StewardCollection}"
-            DisplayMemberPath="Steward">
+            ItemsSource="{Binding Path=StewardsCollection}"
+            DisplayMemberPath="PersonName"
+            SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectionChanged="StewardsComboBox_OnSelectionChanged"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}">
             <ComboBox.Style>
                 <Style TargetType="{x:Type ComboBox}">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -187,10 +195,31 @@
             </ComboBox.Style>
         </ComboBox>
 
-        <t6TextBox:T6TextBox
+        <TextBox
             Grid.Column="17"
             Grid.Row="0"
-            T6Value="{Binding Path=Skill}"
+            Text="{Binding Path=Difficulty}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsStewardNeeded}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="19"
+            Grid.Row="0"
+            T6Value="{Binding ElementName=StewardsComboBox, Path=SelectedItem.Skill}"
             ReadOnly="True">
             <t6TextBox:T6TextBox.Style>
                 <Style TargetType="{x:Type t6TextBox:T6TextBox}">

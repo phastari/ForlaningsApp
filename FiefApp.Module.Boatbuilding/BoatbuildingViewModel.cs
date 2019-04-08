@@ -28,14 +28,6 @@ namespace FiefApp.Module.Boatbuilding
 
             TabName = "Skeppsbygge";
 
-            ConstructShipyardCommand = new DelegateCommand(ExecuteConstructShipyardCommand);
-
-            // Test Delegate Commands
-            SetGotShipyard = new DelegateCommand(ExecuteSetGotShipyard);
-            SetBuildingShipyard = new DelegateCommand(ExecuteSetBuildingShipyard);
-            SetUpgradingShipyard = new DelegateCommand(ExecuteSetUpgradingShipyard);
-            SetCanBuildShipyard = new DelegateCommand(ExecuteSetCanBuildShipyard);
-
             BuildingBoatUIEventHandler = new CustomDelegateCommand(ExecuteBuildingBoatUIEventHandler, o => true);
             BoatBuilderUIEventHandler = new CustomDelegateCommand(ExecuteBoatBuilderUIEventHandler, o => true);
             ConstructingBoatUIEventHandler = new CustomDelegateCommand(ExecuteConstructingBoatUIEventHandler, o => true);
@@ -99,7 +91,7 @@ namespace FiefApp.Module.Boatbuilding
                 {
                     if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
                     {
-                        DataModel.BoatBuildersCollection[x].Name = e.BoatbuilderModel.Name;
+                        DataModel.BoatBuildersCollection[x].PersonName = e.BoatbuilderModel.PersonName;
                         DataModel.BoatBuildersCollection[x].Loyalty = e.BoatbuilderModel.Loyalty;
                         DataModel.BoatBuildersCollection[x].Skill = e.BoatbuilderModel.Skill;
                         DataModel.BoatBuildersCollection[x].Resources = e.BoatbuilderModel.Resources;
@@ -191,77 +183,7 @@ namespace FiefApp.Module.Boatbuilding
         }
 
         #endregion
-
-        #region Test DelegateCommands
-
-        public DelegateCommand SetGotShipyard { get; set; }
-        private void ExecuteSetGotShipyard()
-        {
-            DataModel.UpgradingShipyard = false;
-            DataModel.BuildingShipyard = false;
-            DataModel.CanBuildShipyard = false;
-            DataModel.GotShipyard = true;
-        }
-
-        public DelegateCommand SetBuildingShipyard { get; set; }
-        private void ExecuteSetBuildingShipyard()
-        {
-            DataModel.UpgradingShipyard = false;
-            DataModel.BuildingShipyard = true;
-            DataModel.CanBuildShipyard = false;
-            DataModel.GotShipyard = false;
-        }
-
-        public DelegateCommand SetUpgradingShipyard { get; set; }
-        private void ExecuteSetUpgradingShipyard()
-        {
-            DataModel.UpgradingShipyard = true;
-            DataModel.BuildingShipyard = false;
-            DataModel.CanBuildShipyard = false;
-            DataModel.GotShipyard = false;
-        }
-
-        public DelegateCommand SetCanBuildShipyard { get; set; }
-        private void ExecuteSetCanBuildShipyard()
-        {
-            DataModel.UpgradingShipyard = false;
-            DataModel.BuildingShipyard = false;
-            DataModel.CanBuildShipyard = true;
-            DataModel.GotShipyard = false;
-        }
-
-        #endregion
-
-        #region DelegateCommand : ConstructShipyardCommand
-
-        public DelegateCommand ConstructShipyardCommand { get; set; }
-        private void ExecuteConstructShipyardCommand()
-        {
-            // TA BETALT FÖR BYGGET!
-
-            DataModel.BuildingShipyard = true;
-            DataModel.CanBuildShipyard = false;
-            DataModel.Shipyard = new ShipyardModel()
-            {
-                Shipyard = "",
-                Size = _settingsService.ShipyardTypeSettingsList[0].DockType,
-                UN = "1",
-                OperationBaseCost = _settingsService.ShipyardTypeSettingsList[0].OperationBaseCostModifier,
-                OperationBaseIncome = _settingsService.ShipyardTypeSettingsList[0].OperationBaseIncomeModifier,
-                IsBeingUpgraded = false,
-                DockSmall = _settingsService.ShipyardTypeSettingsList[0].DockSmall,
-                DockSmallFree = _settingsService.ShipyardTypeSettingsList[0].DockSmall,
-                DockMedium = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
-                DockMediumFree = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
-                DockLarge = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
-                DockLargeFree = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
-                Taxes = "20"
-            };
-
-            SaveData();
-        }
-
-        #endregion
+        
         #region DelegateCommand : AddBoatbuilderCommand
 
         public DelegateCommand AddBoatbuilderCommand { get; set; }
@@ -299,11 +221,6 @@ namespace FiefApp.Module.Boatbuilding
             DataModel = Index
                         == 0 ? _boatbuildingService.GetAllBoatbuildingDataModel()
                 : _baseService.GetDataModel<BoatbuildingDataModel>(Index);
-
-            if (!DataModel.BuildingShipyard && !DataModel.GotShipyard)
-            {
-                DataModel.CanBuildShipyard = _boatbuildingService.CheckShipyardPossibility(Index);
-            }
 
             DataModel.BoatTypeCollection = new ObservableCollection<BoatModel>(_settingsService.BoatbuildingSettingsModel.BoatSettingsList);
 

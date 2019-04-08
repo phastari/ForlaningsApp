@@ -1,5 +1,6 @@
 ﻿using FiefApp.Common.Infrastructure.DataModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace FiefApp.Common.Infrastructure.Services
@@ -65,7 +66,23 @@ namespace FiefApp.Common.Infrastructure.Services
             }
             else if (typeof(T) == typeof(BuildingsDataModel))
             {
-                return (T)Convert.ChangeType(_fiefService.IncomeList[index].Clone(), typeof(BuildingsDataModel));
+                return (T)Convert.ChangeType(_fiefService.BuildingsList[index].Clone(), typeof(BuildingsDataModel));
+            }
+            else if (typeof(T) == typeof(WeatherDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.WeatherList[index].Clone(), typeof(WeatherDataModel));
+            }
+            else if (typeof(T) == typeof(PortDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.PortsList[index].Clone(), typeof(PortDataModel));
+            }
+            else if (typeof(T) == typeof(MinesDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.MinesList[index].Clone(), typeof(MinesDataModel));
+            }
+            else if (typeof(T) == typeof(TradeDataModel))
+            {
+                return (T)Convert.ChangeType(_fiefService.TradeList[index].Clone(), typeof(TradeDataModel));
             }
             else
             {
@@ -108,7 +125,10 @@ namespace FiefApp.Common.Infrastructure.Services
             else if (dataModel.GetType() == typeof(StewardsDataModel))
             {
                 StewardsDataModel tempDataModel = (StewardsDataModel)dataModel;
-                _fiefService.StewardsList[index] = (StewardsDataModel)tempDataModel.Clone();
+                for (int x = 0; x < _fiefService.StewardsList.Count; x++)
+                {
+                    _fiefService.StewardsList[x] = (StewardsDataModel)tempDataModel.Clone();
+                }
             }
             else if (dataModel.GetType() == typeof(SubsidiaryDataModel))
             {
@@ -124,6 +144,26 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 BuildingsDataModel tempDataModel = (BuildingsDataModel)dataModel;
                 _fiefService.BuildingsList[index] = (BuildingsDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(WeatherDataModel))
+            {
+                WeatherDataModel tempDataModel = (WeatherDataModel)dataModel;
+                _fiefService.WeatherList[index] = (WeatherDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(MinesDataModel))
+            {
+                MinesDataModel tempDataModel = (MinesDataModel)dataModel;
+                _fiefService.MinesList[index] = (MinesDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(PortDataModel))
+            {
+                PortDataModel tempDataModel = (PortDataModel)dataModel;
+                _fiefService.PortsList[index] = (PortDataModel)tempDataModel.Clone();
+            }
+            else if (dataModel.GetType() == typeof(TradeDataModel))
+            {
+                TradeDataModel tempDataModel = (TradeDataModel)dataModel;
+                _fiefService.TradeList[index] = (TradeDataModel)tempDataModel.Clone();
             }
             else
             {
@@ -171,6 +211,60 @@ namespace FiefApp.Common.Infrastructure.Services
             }
 
             return tempCollection;
+        }
+
+        public int RollObDice(int skill)
+        {
+            int total = 0;
+            int nrDice = Convert.ToInt32(Math.Floor((decimal)skill / 4));
+            int temp = nrDice;
+            int mod = skill - nrDice * 4;
+            List<int> tempList = new List<int>();
+            string str = "";
+
+            while (nrDice > 0)
+            {
+                int roll = _fiefService.GetRandom(1, 7);
+
+                if (roll == 6)
+                {
+                    tempList.Add(6);
+                    nrDice++;
+                }
+                else
+                {
+                    total += roll;
+                    tempList.Add(roll);
+                    nrDice--;
+                }
+            }
+
+            total += mod;
+
+            if (mod > 0)
+            {
+                str += $"Tärningsslag: { temp }T6+{ mod } = ";
+            }
+            else
+            {
+                str += $"Tärningsslag: { temp }T6 = ";
+            }
+            
+            for (int i = 0; i < tempList.Count; i++)
+            {
+                if (i == 0)
+                {
+                    str += $"{ tempList[i] } ";
+                }
+                else
+                {
+                    str +=$",{ tempList[i] } ";
+                }
+            }
+
+            str += $"Totalt={ total }";
+            Console.WriteLine(str);
+            return total;
         }
     }
 }

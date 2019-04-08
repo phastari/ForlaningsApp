@@ -31,7 +31,7 @@ namespace FiefApp.Common.Infrastructure.Controls.iTextBox
                         "Increase",
                         new SoldierModel()
                         {
-                            Name = "",
+                            PersonName = "",
                             Age = 0,
                             Type = "Soldier",
                             Position = ResidentType

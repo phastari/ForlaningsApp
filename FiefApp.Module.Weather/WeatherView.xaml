@@ -1,0 +1,1325 @@
+﻿<UserControl x:Class="FiefApp.Module.Weather.WeatherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:behaviors="clr-namespace:FiefApp.Common.Infrastructure.Behaviors;assembly=FiefApp.Common.Infrastructure"
+             xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" 
+             d:DesignWidth="778">
+
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <!-- WIDTH 768 -->
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="55"/>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="14"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="14"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="9"/>
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle 
+            x:Name="InitialFocus" 
+            Grid.Column="0"
+            Grid.Row="0"
+            Focusable="True"/>
+
+        <Frame 
+            Grid.Column="9" 
+            Grid.ColumnSpan="9"
+            HorizontalAlignment="Stretch" 
+            Height="Auto" 
+            VerticalAlignment="Stretch" 
+            Width="Auto" 
+            Background="LightGray" 
+            Grid.RowSpan="39" 
+            Grid.Row="1" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+
+        <!-- COLUMN 1 -->
+        <!-- FÖRLÄNING -->
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="7"
+            Grid.Row="1"
+            Grid.RowSpan="4"
+            HorizontalAlignment="Stretch" 
+            Height="Auto" 
+            VerticalAlignment="Stretch" 
+            Width="Auto" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <ComboBox 
+            x:Name="FiefComboBox"
+            Grid.Column="2"
+            Grid.ColumnSpan="5"
+            Grid.Row="3"
+            Width="120"
+            ItemsSource="{Binding Path=FiefCollection}"
+            SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0">
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <!-- VÄDER -->
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="7"
+            Grid.Row="6"
+            Grid.RowSpan="13"
+            HorizontalAlignment="Stretch" 
+            Height="Auto" 
+            VerticalAlignment="Stretch" 
+            Width="Auto" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="7"
+            Content="Väder"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Left"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="20,0,0,0"/>
+
+        <Label 
+            Grid.Column="4"
+            Grid.Row="9"
+            Content="Slag"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="6"
+            Grid.Row="9"
+            Content="Mod."
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="9"
+            Content="Vår"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="9"
+            Text="{Binding Path=DataModel.SpringRoll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="9"
+            T6Value="{Binding Path=DataModel.SpringShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="11"
+            Content="Sommar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="11"
+            Text="{Binding Path=DataModel.SummerRoll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="11"
+            T6Value="{Binding Path=DataModel.SummerShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="13"
+            Content="Höst"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="13"
+            Text="{Binding Path=DataModel.FallRoll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="13"
+            T6Value="{Binding Path=DataModel.FallShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="15"
+            Content="Vinter"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="15"
+            Text="{Binding Path=DataModel.WinterRoll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="15"
+            T6Value="{Binding Path=DataModel.WinterShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.Row="17"
+            Content="Annat"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="17"
+            T6Value="{Binding Path=DataModel.OtherMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- UMBÄRANDE -->
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="7"
+            Grid.Row="20"
+            Grid.RowSpan="20"
+            HorizontalAlignment="Stretch" 
+            Height="Auto" 
+            VerticalAlignment="Stretch" 
+            Width="Auto" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="21"
+            Content="Umbärande"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="20,0,0,0"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="23"
+            Content="Brottslighet"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="23"
+            T6Value="{Binding Path=DataModel.HappinessCrime}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="25"
+            Content="Byggnader"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="25"
+            T6Value="{Binding Path=DataModel.HappinessBuildings}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="27"
+            Content="Dagsverk"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="27"
+            T6Value="{Binding Path=DataModel.HappinessDaysWorkRequired}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="29"
+            Content="Krig/Fred"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="29"
+            T6Value="{Binding Path=DataModel.HappinessWar}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="31"
+            Content="Skatter"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="31"
+            T6Value="{Binding Path=DataModel.HappinessTaxes}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="33"
+            Content="Utvecklingsnivåer"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="33"
+            T6Value="{Binding Path=DataModel.HappinessDevelopmentLevels}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="35"
+            Content="Väder"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="35"
+            T6Value="{Binding Path=DataModel.HappinessWeather}"
+            ReadOnly="True"/>
+
+        <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="37"
+            Content="Totalt"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="6"
+            Grid.Row="37"
+            T6Value="{Binding Path=DataModel.HappinessTotal}"
+            ReadOnly="True"/>
+
+        <!-- COLUMN 2 -->
+        <!-- DAGSVERK -->
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="3"
+            Content="Dagsverk"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="5"
+            Content="Antal"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="14"
+            Grid.Row="5"
+            Content="# Dagsverk"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="16"
+            Grid.Row="5"
+            Content="st / år"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="7"
+            Content="Daglönare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.Dayworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="12"
+            Grid.Row="7"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DayworkersDayswork}"
+            Grid.Column="14"
+            Grid.Row="7"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="16"
+            Grid.Row="7"
+            Content="280"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="9"
+            Content="Ofriabönder"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.Serfs}"
+            Grid.Column="12"
+            Grid.Row="9"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.SerfsDayswork}"
+            Grid.Column="14"
+            Grid.Row="9"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="16"
+            Grid.Row="9"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="11"
+            Content="Slavar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.Slaves}"
+            Grid.Column="12"
+            Grid.Row="11"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.SlavesDayswork}"
+            Grid.Column="14"
+            Grid.Row="11"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Background="WhiteSmoke"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="16"
+            Grid.Row="11"
+            Content="300"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="13"
+            Content="Annat"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkOther, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="14"
+            Grid.Row="13"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="15"
+            Content="Totalt"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkTotal}"
+            Grid.Column="14"
+            Grid.Row="15"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="17"
+            Content="Sysslor"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="12"
+            Grid.Row="17"
+            Content="Antal"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="14"
+            Grid.Row="17"
+            Content="# Dagsverk"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="16"
+            Grid.Row="17"
+            Content="Kvar"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="19"
+            Content="Domänjorden"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ManorDaysWork}"
+            Grid.Column="14"
+            Grid.Row="19"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="21"
+            Content="Binäringar"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.NumberOfSubsidiaries}"
+            Grid.Column="12"
+            Grid.Row="21"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.SubsidiariesDayswork}"
+            Grid.Column="14"
+            Grid.Row="21"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Grid
+            Grid.Column="10"
+            Grid.Row="23"
+            Height="21">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                Grid.Column="1"
+                Grid.Row="0"
+                Content="Fiskebåtar("
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="2"
+                Grid.Row="0"
+                Content="{Binding Path=DataModel.NumberOfFishingBoats}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="3"
+                Grid.Row="0"
+                Content=")"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+        </Grid>
+
+        <iTextBox:iTextBox
+            Value="{Binding Path=DataModel.NumberUsedFishingBoats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="12"
+            Grid.Row="23"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkFishingBoats}"
+            Grid.Column="14"
+            Grid.Row="23"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkFishingBoatsRemaining}"
+            Grid.Column="16"
+            Grid.Row="23"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="25"
+            Content="Landbrytning"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Value="{Binding Path=DataModel.LandClearing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="12"
+            Grid.Row="25"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkLandClearing}"
+            Grid.Column="14"
+            Grid.Row="25"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkLandClearingRemaining}"
+            Grid.Column="16"
+            Grid.Row="25"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="9"
+            Grid.ColumnSpan="2"
+            Grid.Row="27"
+            Content="Landbrytning, avverkat"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Value="{Binding Path=DataModel.LandClearingOfFelling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="12"
+            Grid.Row="27"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkLandClearingOfFelling}"
+            Grid.Column="14"
+            Grid.Row="27"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkLandClearingOfFellingRemaining}"
+            Grid.Column="16"
+            Grid.Row="27"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="9"
+            Grid.ColumnSpan="2"
+            Grid.Row="29"
+            Content="Röj obrukbarmark"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Value="{Binding Path=DataModel.ClearUseless, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="12"
+            Grid.Row="29"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkClearUseless}"
+            Grid.Column="14"
+            Grid.Row="29"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ClearUselessRemaining}"
+            Grid.Column="16"
+            Grid.Row="29"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="31"
+            Content="Skogsavverkning"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Value="{Binding Path=DataModel.Felling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="12"
+            Grid.Row="31"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkFelling}"
+            Grid.Column="14"
+            Grid.Row="31"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.FellingRemaining}"
+            Grid.Column="16"
+            Grid.Row="31"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="33"
+            Content="Underhåll av godset"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ManorUpkeep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="14"
+            Grid.Row="33"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="35"
+            Content="Annat"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkOtherExpend}"
+            Grid.Column="14"
+            Grid.Row="35"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
+            Padding="0,0,6,0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.ColumnSpan="3"
+            Grid.Row="37"
+            Content="Dagsverk kvar i år"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.DaysworkLeft}"
+            Grid.Column="14"
+            Grid.Row="37"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="AntiqueWhite"
+            IsReadOnly="True"/>
+
+        <!-- COLUMN 3 -->
+
+        <Frame 
+            Grid.Column="19" 
+            Grid.ColumnSpan="12"
+            Grid.Row="1" 
+            Grid.RowSpan="16" 
+            Height="Auto" 
+            Width="Auto" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="3"
+            Content="Prognos"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="25"
+            Grid.ColumnSpan="3"
+            Width="60"
+            Grid.Row="3"
+            Content="I år"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="27"
+            Grid.ColumnSpan="3"
+            Width="62"
+            Grid.Row="3"
+            Content="Förra året"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Margin="23,0,0,0"
+            Padding="0"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="5"
+            Content="Silver"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ThisYearSilver}"
+            Grid.Column="25"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="5"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.LastYearSilver}"
+            Grid.Column="27"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="5"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Margin="23,0,0,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="7"
+            Content="Bas"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ThisYearBase}"
+            Grid.Column="25"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="7"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.LastYearBase}"
+            Grid.Column="27"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="7"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Margin="23,0,0,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="9"
+            Content="Lyx"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ThisYearLuxury}"
+            Grid.Column="25"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="9"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.LastYearLuxury}"
+            Grid.Column="27"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="9"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Margin="23,0,0,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="11"
+            Content="Järn"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ThisYearIron}"
+            Grid.Column="25"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="11"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.LastYearIron}"
+            Grid.Column="27"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="11"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Margin="23,0,0,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="13"
+            Content="Sten"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ThisYearStone}"
+            Grid.Column="25"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="13"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.LastYearStone}"
+            Grid.Column="27"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="13"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Margin="23,0,0,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="15"
+            Content="Timmer"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.ThisYearWood}"
+            Grid.Column="25"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="15"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.LastYearWood}"
+            Grid.Column="27"
+            Grid.ColumnSpan="4"
+            Width="63"
+            Grid.Row="15"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            Margin="23,0,0,0"
+            Background="WhiteSmoke"
+            IsReadOnly="True"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="19" 
+            Grid.ColumnSpan="12"
+            Grid.Row="18" 
+            Grid.RowSpan="22" 
+            HorizontalAlignment="Stretch" 
+            Height="Auto" 
+            VerticalAlignment="Stretch" 
+            Width="Auto" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="3"
+            Grid.Row="19"
+            Content="Skatter"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+
+
+        <Button
+            Content="Bokslut"
+            Grid.Column="28"
+            Grid.ColumnSpan="2"
+            Grid.Row="37"
+            Padding="0"/>
+
+
+    </Grid>
+</UserControl>

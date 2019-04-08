@@ -5,7 +5,7 @@ namespace FiefApp.Common.Infrastructure.Models
     public class SoldierModel : IPeopleModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string PersonName { get; set; }
         public string Type { get; set; } = "Soldier";
         private string _position = "Soldat";
         public string Position

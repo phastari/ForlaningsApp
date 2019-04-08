@@ -21,19 +21,9 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService = fiefService;
         }
 
-        public bool CheckShipyardPossibility(int index)
-        {
-            return _fiefService.InformationList[index].River == "Ja" || _fiefService.InformationList[index].Coast == "Ja";
-        }
-
         public BoatbuildingDataModel GetAllBoatbuildingDataModel()
         {
             return null;
-        }
-
-        public ShipyardTypeSettingsModel GetShipyardTypeSettingsModel(int size)
-        {
-            return _settingsService.ShipyardTypeSettingsList[size];
         }
 
         public int GetNewBuildingBoatId(int index)

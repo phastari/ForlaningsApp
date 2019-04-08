@@ -11,5 +11,10 @@ namespace FiefApp.Common.Infrastructure.Services
         void AddCustomSubsidiary(SubsidiaryModel model);
         int GetNewIdForSubsidiary();
         void EditCustomSubsidiary(SubsidiaryModel model);
+        ObservableCollection<StewardModel> GetAllStewards();
+        void ChangeSteward(int stewardId, int subsidiaryId, string subsidiary);
+        ObservableCollection<SubsidiaryModel> GetSubsidiaryCollection(int index);
+        ObservableCollection<SubsidiaryModel> GetConstructingCollection(int index);
+        void ShowConstructingCollection();
     }
 }

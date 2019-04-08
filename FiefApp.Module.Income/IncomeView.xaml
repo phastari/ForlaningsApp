@@ -99,8 +99,11 @@
                         Wood="{Binding Path=Wood}"
                         Iron="{Binding Path=Iron}"
                         Stone="{Binding Path=Stone}"
-                        StewardCollection="{Binding Path=DataModel.StewardsCollection}"
-                        IsStewardNeeded="{Binding Path=IsStewardNeeded}">
+                        Difficulty="{Binding Path=Difficulty}"
+                        ManorId="{Binding Path=ManorId}"
+                        StewardsCollection="{Binding Path=StewardsCollection}"
+                        IsStewardNeeded="{Binding Path=IsStewardNeeded}"
+                        StewardId="{Binding Path=StewardId}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="IncomeUIEvent">
                                 <customCommands:CustomCommandAction Command="{Binding Path=DataContext.IncomeUIEventUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -148,7 +151,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="169"/>
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="65"/>
                 <ColumnDefinition Width="6"/>
@@ -162,7 +165,9 @@
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="8"/>
@@ -201,15 +206,15 @@
             </ComboBox>
 
             <Label
-                    Content="{Binding ElementName=FiefComboBox, Path=Text}"
-                    Grid.Column="1"
-                    Grid.Row="0"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    HorizontalAlignment="Left"
-                    HorizontalContentAlignment="Left"
-                    Padding="6,0,0,0"
-                    ToolTip="Läge">
+                Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                Grid.Column="1"
+                Grid.Row="0"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                Padding="6,0,0,0"
+                ToolTip="Läge">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -221,6 +226,66 @@
                     </Style>
                 </Label.Style>
             </Label>
+
+            <TextBox
+                Grid.Column="3"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.TotalSilver}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Background="AntiqueWhite"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="5"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.TotalBase}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Background="AntiqueWhite"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="7"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.TotalLuxury}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Background="AntiqueWhite"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="9"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.TotalIron}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Background="AntiqueWhite"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="11"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.TotalStone}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Background="AntiqueWhite"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="13"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.TotalWood}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Background="AntiqueWhite"
+                IsReadOnly="True"/>
 
             <Label 
                 Grid.Column="1"
@@ -288,16 +353,26 @@
                 Padding="0"/>
 
             <Label 
-                Grid.Column="16"
+                Grid.Column="17"
+                Grid.Row="4"
+                Content="SG"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label 
+                Grid.Column="18"
                 Grid.ColumnSpan="3"
                 Grid.Row="4"
                 Content="Färdighet"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
-
-
-
         </Grid>
+        <Button
+            Content="Tärning"
+            Grid.Column="1"
+            Grid.Row="37"
+            Command="{Binding Path=RollDie}"/>
     </Grid>
 </UserControl>

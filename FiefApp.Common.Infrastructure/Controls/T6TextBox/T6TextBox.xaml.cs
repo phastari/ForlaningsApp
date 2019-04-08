@@ -231,18 +231,56 @@ namespace FiefApp.Common.Infrastructure.Controls.T6TextBox
         {
             var temp = (string)GetValue(T6ValueProperty);
             string value;
+            bool isNegative;
+
+            if (temp.IndexOf('-') != -1)
+            {
+                temp = temp.Substring(1);
+                isNegative = true;
+            }
+            else
+            {
+                isNegative = false;
+            }
+
 
             var y = Convert.ToInt32(temp);
             var i = y / 4;
             var x = y - i * 4;
 
-            if (x > 0)
+            if (!isNegative)
             {
-                value = i + "T6+" + x;
+                if (x > 0)
+                {
+                    if (i != 0)
+                        value = i + "T6+" + x;
+                    else
+                        value = "+" + x;
+                }
+                else
+                {
+                    if (i != 0)
+                        value = i + "T6";
+                    else
+                        value = "0";
+                }
             }
             else
             {
-                value = i + "T6";
+                if (x > 0)
+                {
+                    if (i != 0)
+                        value = "-" + i + "T6+" + x;
+                    else
+                        value = "-" + x;
+                }
+                else
+                {
+                    if (i != 0)
+                        value = "-" + i + "T6";
+                    else
+                        value = "0";
+                }
             }
             SetValue(T6ValueProperty, value);
         }

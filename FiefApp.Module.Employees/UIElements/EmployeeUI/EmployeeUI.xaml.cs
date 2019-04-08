@@ -41,7 +41,7 @@ namespace FiefApp.Module.Employees.UIElements.EmployeeUI
         public DelegateCommand EditEmployee { get; set; }
         private void ExecuteEditEmployee()
         {
-            _oldValues.Name = Employee;
+            _oldValues.PersonName = Employee;
             _oldValues.BaseCost = BaseCost;
             _oldValues.Base = Base;
             _oldValues.LuxuryCost = LuxuryCost;
@@ -53,7 +53,7 @@ namespace FiefApp.Module.Employees.UIElements.EmployeeUI
         public DelegateCommand CancelCommand { get; set; }
         private void ExecuteCancelCommand()
         {
-            Employee = _oldValues.Name;
+            Employee = _oldValues.PersonName;
             BaseCost = _oldValues.BaseCost;
             Base = _oldValues.Base;
             LuxuryCost = _oldValues.LuxuryCost;
@@ -73,7 +73,7 @@ namespace FiefApp.Module.Employees.UIElements.EmployeeUI
                     new EmployeeModel()
                     {
                         Id = Id,
-                        Name = Employee,
+                        PersonName = Employee,
                         BaseCost = BaseCost,
                         Base = BaseCost * Number,
                         LuxuryCost = LuxuryCost,

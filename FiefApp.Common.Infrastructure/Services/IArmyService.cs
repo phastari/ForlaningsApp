@@ -7,5 +7,7 @@ namespace FiefApp.Common.Infrastructure.Services
     {
         ArmyDataModel GetAllArmyDataModel();
         int GetPeopleId(int index);
+        void UpdateSilverExpenses(int index, int silver);
+        void UpdateBaseExpenses(int index, int abase);
     }
 }

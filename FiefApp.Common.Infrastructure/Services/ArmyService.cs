@@ -139,5 +139,19 @@ namespace FiefApp.Common.Infrastructure.Services
                 return 0;
             }
         }
+
+        public void UpdateSilverExpenses(int index, int silver)
+        {
+            int oldSilver = _fiefService.ExpensesList[index].ArmySilver;
+            _fiefService.ExpensesList[index].ArmySilver = silver;
+            _fiefService.ExpensesList[index].ExpensesSilver += -oldSilver + silver;
+        }
+
+        public void UpdateBaseExpenses(int index, int abase)
+        {
+            int oldBase = _fiefService.ExpensesList[index].ArmyBase;
+            _fiefService.ExpensesList[index].ArmyBase = abase;
+            _fiefService.ExpensesList[index].ExpensesBase += -oldBase + abase;
+        }
     }
 }

@@ -301,10 +301,11 @@
                         <DataTemplate>
                             <constructionUI:ConstructingUI
                                 Id="{Binding Path=Id}"
-                                Subsidiary="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                DaysWorkLeft="{Binding Path=DaysWorkBuild, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Subsidiary="{Binding Path=Subsidiary}"
+                                DaysWorkLeft="{Binding Path=DaysWorkBuild}"
                                 DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                StewardsCollection="{Binding Path=StewardsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                StewardsCollection="{Binding Path=StewardsCollection}"
+                                StewardId="{Binding Path=StewardId}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="ConstructingUIEvent">
                                         <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ConstructingUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -381,7 +382,7 @@
                         HorizontalAlignment="Left"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
-                        Margin="187,0,0,0"
+                        Margin="180,0,0,0"
                         Padding="0"/>
 
                     <Label
@@ -403,7 +404,7 @@
                         HorizontalAlignment="Left"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
-                        Margin="304,0,0,0"
+                        Margin="297,0,0,0"
                         Padding="0"/>
 
                     <Label
@@ -414,7 +415,7 @@
                         HorizontalAlignment="Left"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
-                        Margin="355,0,0,0"
+                        Margin="348,0,0,0"
                         Padding="0"/>
 
                     <Label
@@ -425,7 +426,7 @@
                         HorizontalAlignment="Left"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
-                        Margin="406,0,0,0"
+                        Margin="399,0,0,0"
                         Padding="0"/>
 
                     <Label
@@ -531,15 +532,17 @@
                         <DataTemplate>
                             <subsidiaryUI:SubsidiaryUI
                                 Id="{Binding Path=Id}"
-                                Subsidiary="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Quality="{Binding Path=Quality}"
-                                DevelopmentLevel="{Binding Path=DevelopmentLevel}"
+                                Subsidiary="{Binding Path=Subsidiary}"
+                                Quality="{Binding Path=Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DevelopmentLevel="{Binding Path=DevelopmentLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Silver="{Binding Path=Silver}"
                                 Base="{Binding Path=Base}"
                                 Luxury="{Binding Path=Luxury}"
-                                DaysWorkLeft="{Binding Path=DaysWorkUpkeep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DaysWorkLeft="{Binding Path=DaysWorkUpkeep}"
                                 DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                StewardsCollection="{Binding Path=StewardsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                StewardsCollection="{Binding Path=StewardsCollection}"
+                                StewardId="{Binding Path=StewardId}"
+                                Difficulty="{Binding Path=Difficulty}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SubsidiaryUIEvent">
                                         <customCommands:CustomCommandAction Command="{Binding Path=DataContext.SubsidiaryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

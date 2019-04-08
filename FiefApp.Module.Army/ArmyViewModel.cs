@@ -130,6 +130,8 @@ namespace FiefApp.Module.Army
         protected override void SaveData(int index = -1)
         {
             _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            _armyService.UpdateSilverExpenses(Index, DataModel.TotalSilver);
+            _armyService.UpdateBaseExpenses(Index, DataModel.TotalBase);
         }
 
         protected override void LoadData()

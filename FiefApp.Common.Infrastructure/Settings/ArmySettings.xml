@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings>
-  <Army Name="ArmyCrossbowmen" Silver="320" Base="2" Accommodation="False"/>
-  <Army Name="ArmyBowmen" Silver="160" Base="2" Accommodation="False"/>
-  <Army Name="ArmyMedics" Silver="2920" Base="2" Accommodation="False"/>
-  <Army Name="ArmyMedicsSkilled" Silver="4480" Base="2" Accommodation="False"/>
-  <Army Name="ArmyInfantry" Silver="320" Base="2" Accommodation="False"/>
-  <Army Name="ArmyInfantryMedium" Silver="480" Base="2" Accommodation="False"/>
-  <Army Name="ArmyInfantryHeavy" Silver="800" Base="2" Accommodation="False"/>
-  <Army Name="ArmyInfantryElite" Silver="1360" Base="2" Accommodation="False"/>
-  <Army Name="ArmyLongbowmen" Silver="320" Base="2" Accommodation="False"/>
-  <Army Name="ArmyMercenary" Silver="560" Base="2" Accommodation="False"/>
-  <Army Name="ArmyMercenaryElite" Silver="1840" Base="2" Accommodation="False"/>
-  <Army Name="ArmyMercenaryBowmen" Silver="480" Base="2" Accommodation="False"/>
-  <Army Name="ArmyEngineers" Silver="1360" Base="2" Accommodation="False"/>
-  <Army Name="ArmySpearmen" Silver="320" Base="2" Accommodation="False"/>
-  <Army Name="ArmyScouts" Silver="320" Base="2" Accommodation="False"/>
-  <Army Name="ArmyScoutsSkilled" Silver="480" Base="2" Accommodation="False"/>
-  <Army Name="ArmyKnightTemplars" Silver="2360" Base="0" Accommodation="True"/>
-  <Army Name="ArmyGuards" Silver="320" Base="2" Accommodation="False"/>
-  <Army Name="ArmyWeaponmasters" Silver="2400" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyCrossbowmen" Silver="320" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyBowmen" Silver="160" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyMedics" Silver="2920" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyMedicsSkilled" Silver="4480" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyInfantry" Silver="320" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyInfantryMedium" Silver="480" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyInfantryHeavy" Silver="800" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyInfantryElite" Silver="1360" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyLongbowmen" Silver="320" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyMercenary" Silver="560" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyMercenaryElite" Silver="1840" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyMercenaryBowmen" Silver="480" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyEngineers" Silver="1360" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmySpearmen" Silver="320" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyScouts" Silver="320" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyScoutsSkilled" Silver="480" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyKnightTemplars" Silver="2360" Base="0" Accommodation="True"/>
+  <Army PersonName="ArmyGuards" Silver="320" Base="2" Accommodation="False"/>
+  <Army PersonName="ArmyWeaponmasters" Silver="2400" Base="2" Accommodation="False"/>
 
-  <Cavalry Name="CavalryBowmen" Silver="320" Base="6" Accommodation="False"/>
-  <Cavalry Name="CavalryCourier" Silver="320" Base="6" Accommodation="False"/>
-  <Cavalry Name="CavalryLight" Silver="320" Base="6" Accommodation="False"/>
-  <Cavalry Name="CavalryKnights" Silver="3260" Base="4" Accommodation="True"/>
-  <Cavalry Name="CavalryScouts" Silver="480" Base="6" Accommodation="False"/>
-  <Cavalry Name="CavalryKnightTemplars" Silver="2360" Base="4" Accommodation="True"/>
-  <Cavalry Name="CavalryHeavy" Silver="1660" Base="6" Accommodation="False"/>
-  <Cavalry Name="CavalryElite" Silver="2040" Base="6" Accommodation="False"/>
+  <Cavalry PersonName="CavalryBowmen" Silver="320" Base="6" Accommodation="False"/>
+  <Cavalry PersonName="CavalryCourier" Silver="320" Base="6" Accommodation="False"/>
+  <Cavalry PersonName="CavalryLight" Silver="320" Base="6" Accommodation="False"/>
+  <Cavalry PersonName="CavalryKnights" Silver="3260" Base="4" Accommodation="True"/>
+  <Cavalry PersonName="CavalryScouts" Silver="480" Base="6" Accommodation="False"/>
+  <Cavalry PersonName="CavalryKnightTemplars" Silver="2360" Base="4" Accommodation="True"/>
+  <Cavalry PersonName="CavalryHeavy" Silver="1660" Base="6" Accommodation="False"/>
+  <Cavalry PersonName="CavalryElite" Silver="2040" Base="6" Accommodation="False"/>
 
-  <Officers Name="OfficersCorporal" Silver="2340" Base="0" Accommodation="True"/>
-  <Officers Name="OfficersSergeant" Silver="3120" Base="0" Accommodation="True"/>
-  <Officers Name="OfficersCaptain" Silver="4680" Base="0" Accommodation="True"/>
+  <Officers PersonName="OfficersCorporal" Silver="2340" Base="0" Accommodation="True"/>
+  <Officers PersonName="OfficersSergeant" Silver="3120" Base="0" Accommodation="True"/>
+  <Officers PersonName="OfficersCaptain" Silver="4680" Base="0" Accommodation="True"/>
 </Settings>

@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
-             xmlns:fakeComboBox="clr-namespace:FiefApp.Common.Infrastructure.UIElements.FakeComboBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="24" 
-             d:DesignWidth="394">
+             d:DesignWidth="394"
+             Loaded="ConstructingUI_OnLoaded">
     <Grid
         x:Name="RootGrid">
         <Grid.RowDefinitions>
@@ -37,13 +37,12 @@
             BorderThickness="0.5, 0, 0.5, 0"
             IsTabStop="False"/>
 
-        <TextBox
+        <Label
             Grid.Column="1"
             Grid.Row="0"
-            Text="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Content="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
             Padding="6,0,0,0"/>
 
         <TextBox
@@ -66,16 +65,12 @@
             Grid.Column="7"
             Grid.Row="0"
             ItemsSource="{Binding Path=StewardsCollection}"
-            DisplayMemberPath="Steward"
+            DisplayMemberPath="PersonName"
             SelectedIndex="{Binding Path=StewardIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectionChanged="StewardComboBox_OnSelectionChanged"
             Template="{DynamicResource ComboBoxControlTemplate}"
-            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
-
-        <fakeComboBox:FakeComboBox
-            Grid.Column="7"
-            Grid.Row="0"
-            TextBoxText="{Binding ElementName=StewardComboBox, Path=Text}">
-
-        </fakeComboBox:FakeComboBox>
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0"/>
     </Grid>
 </UserControl>

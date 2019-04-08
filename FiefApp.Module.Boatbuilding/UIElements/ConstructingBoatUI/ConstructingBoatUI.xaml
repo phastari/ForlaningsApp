@@ -124,7 +124,7 @@
             SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource ComboBoxControlTemplate}"
             ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
-            DisplayMemberPath="Name"
+            DisplayMemberPath="PersonName"
             SelectionChanged="Selector_OnSelectionChanged"
             VerticalContentAlignment="Center"
             Padding="6,0,0,0"/>

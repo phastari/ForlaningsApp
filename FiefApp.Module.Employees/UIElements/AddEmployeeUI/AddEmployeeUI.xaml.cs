@@ -41,7 +41,7 @@ namespace FiefApp.Module.Employees.UIElements.AddEmployeeUI
                     "Save",
                     new EmployeeModel()
                     {
-                        Name = Employee,
+                        PersonName = Employee,
                         BaseCost = Base,
                         LuxuryCost = Luxury
                     }

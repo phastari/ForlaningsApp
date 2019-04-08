@@ -21,17 +21,18 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TreeView Grid.ColumnSpan="1"
-                  Grid.RowSpan="3"
-                  VerticalContentAlignment="Center"
-                  Padding="0,3,0,0"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  Background="LightGray"
-                  BorderBrush="Gray"
-                  BorderThickness="0"
-                  Name="TreeView"
-                  IsTabStop="False">
+        <TreeView 
+            Grid.ColumnSpan="1"
+            Grid.RowSpan="3"
+            VerticalContentAlignment="Center"
+            Padding="0,3,0,0"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            Background="LightGray"
+            BorderBrush="Gray"
+            BorderThickness="0"
+            Name="TreeView"
+            IsTabStop="False">
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                                  Color="Transparent"/>

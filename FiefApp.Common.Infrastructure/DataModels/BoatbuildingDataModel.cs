@@ -27,61 +27,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private bool _canBuildShipyard;
-        public bool CanBuildShipyard
-        {
-            get => _canBuildShipyard;
-            set
-            {
-                _canBuildShipyard = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private bool _gotShipyard;
-        public bool GotShipyard
-        {
-            get => _gotShipyard;
-            set
-            {
-                _gotShipyard = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private bool _buildingShipyard;
-        public bool BuildingShipyard
-        {
-            get => _buildingShipyard;
-            set
-            {
-                _buildingShipyard = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private bool _upgradingShipyard;
-        public bool UpgradingShipyard
-        {
-            get => _upgradingShipyard;
-            set
-            {
-                _upgradingShipyard = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private ShipyardModel _shipyard = new ShipyardModel();
-        public ShipyardModel Shipyard
-        {
-            get => _shipyard;
-            set
-            {
-                _shipyard = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         private ObservableCollection<BoatModel> _boatsBuildingCollection = new ObservableCollection<BoatModel>();
         public ObservableCollection<BoatModel> BoatsBuildingCollection
         {
@@ -115,13 +60,13 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _availableBoatBuilders;
-        public int AvailableBoatBuilders
+        private int _villageBoatBuilders;
+        public int VillageBoatBuilders
         {
-            get => _availableBoatBuilders;
+            get => _villageBoatBuilders;
             set
             {
-                _availableBoatBuilders = value;
+                _villageBoatBuilders = value;
                 NotifyPropertyChanged();
             }
         }

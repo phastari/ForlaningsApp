@@ -1,7 +1,6 @@
-﻿using System.Windows;
-using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Module.Boatbuilding.RoutedEvents;
+﻿using FiefApp.Module.Port.RoutedEvents;
 using Prism.Commands;
+using System.Windows;
 
 namespace FiefApp.Module.Boatbuilding.UIElements.CanBuildShipyardUI
 {

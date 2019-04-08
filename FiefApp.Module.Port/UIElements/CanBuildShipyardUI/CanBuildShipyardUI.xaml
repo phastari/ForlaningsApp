@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="FiefApp.Module.Port.UIElements.CanBuildShipyardUI.CanBuildShipyardUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="81" 
+             d:DesignWidth="238">
+    <Grid
+            x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame 
+                Grid.Column="0" 
+                Grid.ColumnSpan="7"
+                Grid.Row="0" 
+                Grid.RowSpan="7"
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5, 0, 0.5, 0.5"
+                IsTabStop="False"/>
+
+        <Label
+                Grid.Column="1"
+                Grid.Row="0"
+                Content="Anlägg en byhamn"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                Margin="8,0,0,0"
+                Padding="0"/>
+
+        <Label
+                Grid.Column="1"
+                Grid.Row="2"
+                Content="Kostnad"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                Margin="8,0,0,0"
+                Padding="0"/>
+
+        <Label
+                Grid.Column="3"
+                Grid.Row="0"
+                Content="Bas"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <Label
+                Grid.Column="5"
+                Grid.Row="0"
+                Content="Timmer"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+        <TextBox
+                Text="25"
+                Grid.Column="3"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                IsReadOnly="True"
+                Template="{DynamicResource TextBoxTemplate}"/>
+
+        <TextBox
+                Text="30"
+                Grid.Column="5"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                IsReadOnly="True"
+                Template="{DynamicResource TextBoxTemplate}"/>
+
+        <Button
+                Command="{Binding Path=ConstructShipyardCommand}"
+                Grid.Column="4"
+                Grid.ColumnSpan="2"
+                Grid.Row="4"
+                Content="anlägg"
+                Height="21"
+                Width="51"
+                Template="{DynamicResource ButtonTemplate}"
+                HorizontalAlignment="Right"/>
+    </Grid>
+</UserControl>

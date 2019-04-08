@@ -76,8 +76,8 @@
     <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net47\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.8.13.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Container.5.8.13\lib\net47\Unity.Container.dll</HintPath>
+    <Reference Include="Unity.Container, Version=5.8.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.8.11\lib\net47\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -145,9 +145,17 @@
       <Project>{fb5ed1df-3d98-426c-bcd9-6355e514b239}</Project>
       <Name>FiefApp.Module.Boatbuilding</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Buildings\FiefApp.Module.Buildings.csproj">
+      <Project>{c29dcabd-3168-480e-9793-572d2ddd1f88}</Project>
+      <Name>FiefApp.Module.Buildings</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FiefApp.Module.Employees\FiefApp.Module.Employees.csproj">
       <Project>{67cc9daf-baf9-454b-9e51-579d25b19617}</Project>
       <Name>FiefApp.Module.Employees</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.EndOfYear\FiefApp.Module.EndOfYear.csproj">
+      <Project>{fd8180a6-53c7-4c1c-88dd-63d6f04ac45e}</Project>
+      <Name>FiefApp.Module.EndOfYear</Name>
     </ProjectReference>
     <ProjectReference Include="..\FiefApp.Module.Expenses\FiefApp.Module.Expenses.csproj">
       <Project>{06c1de55-1b0d-483a-ab8f-9860e143c62d}</Project>
@@ -165,6 +173,14 @@
       <Project>{a7ccd305-aad8-43a7-bb94-70aa91f181e5}</Project>
       <Name>FiefApp.Module.Manor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Mines\FiefApp.Module.Mines.csproj">
+      <Project>{b26f1953-951b-4f2f-b20f-1bbe9c4c8580}</Project>
+      <Name>FiefApp.Module.Mines</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Port\FiefApp.Module.Port.csproj">
+      <Project>{d2462406-6408-4caa-a45a-e8349f88371c}</Project>
+      <Name>FiefApp.Module.Port</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FiefApp.Module.Stewards\FiefApp.Module.Stewards.csproj">
       <Project>{00355dae-84dd-4f5d-9e40-d1c4a768e0cb}</Project>
       <Name>FiefApp.Module.Stewards</Name>
@@ -172,6 +188,18 @@
     <ProjectReference Include="..\FiefApp.Module.Subsidiary\FiefApp.Module.Subsidiary.csproj">
       <Project>{df745520-d1ee-4a4c-9a43-c06490d5a466}</Project>
       <Name>FiefApp.Module.Subsidiary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Supply\FiefApp.Module.Supply.csproj">
+      <Project>{a9deb087-65ea-41de-9fc6-87b2ea69f26a}</Project>
+      <Name>FiefApp.Module.Supply</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Trade\FiefApp.Module.Trade.csproj">
+      <Project>{2fac5ad8-b95b-4bd0-8616-87d4eb945a22}</Project>
+      <Name>FiefApp.Module.Trade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Weather\FiefApp.Module.Weather.csproj">
+      <Project>{c5a32c68-0e88-4db9-ab52-1a65a7567732}</Project>
+      <Name>FiefApp.Module.Weather</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

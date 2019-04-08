@@ -56,7 +56,7 @@ namespace FiefApp.Module.Stewards
                         DataModel.StewardsCollection[x].Bonus = e.StewardModel.Bonus;
                         DataModel.StewardsCollection[x].Family = e.StewardModel.Family;
                         DataModel.StewardsCollection[x].Loyalty = e.StewardModel.Loyalty;
-                        DataModel.StewardsCollection[x].Name = e.StewardModel.Name;
+                        DataModel.StewardsCollection[x].PersonName = e.StewardModel.PersonName;
                         DataModel.StewardsCollection[x].Resources = e.StewardModel.Resources;
                         DataModel.StewardsCollection[x].Skill = e.StewardModel.Skill;
                         DataModel.StewardsCollection[x].Speciality = e.StewardModel.Speciality;
@@ -142,7 +142,7 @@ namespace FiefApp.Module.Stewards
                     Bonus = 0,
                     Speciality = "",
                     Family = "Vitfjäder",
-                    Name = "Kalle",
+                    PersonName = "Kalle",
                     Loyalty = "3T6",
                     Resources = "2T6+3",
                     Skill = "4T6"
@@ -157,7 +157,7 @@ namespace FiefApp.Module.Stewards
                     Bonus = 1,
                     Speciality = "Jordbruk",
                     Family = "Svensson",
-                    Name = "Gunilla",
+                    PersonName = "Gunilla",
                     Loyalty = "2T6",
                     Resources = "4T6+3",
                     Skill = "3T6"

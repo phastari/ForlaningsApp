@@ -1,7 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.Income.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Income
 {
@@ -19,7 +23,42 @@ namespace FiefApp.Module.Income
             _incomeService = incomeService;
 
             TabName = "Inkomst";
+
+            RollDie = new DelegateCommand(ExecuteRollDie);
+            IncomeUIEventUIEventHandler = new CustomDelegateCommand(ExecuteIncomeUIEventUIEventHandler, o => true);
         }
+
+        public DelegateCommand RollDie { get; set; }
+
+        private void ExecuteRollDie()
+        {
+            _baseService.RollObDice(12);
+        }
+
+        #region CustomDelegateCommand : IncomeUIEventUIEventHandler
+
+        public CustomDelegateCommand IncomeUIEventUIEventHandler { get; set; }
+        private void ExecuteIncomeUIEventUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is IncomeUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Changed")
+            {
+                ChangeStewardInIncomeCollection(e.StewardModel.Id, e.StewardModel.PersonName, e.FiefId, e.Income);
+                _incomeService.ChangeSteward(e.StewardModel.Id, e.FiefId, e.Income);
+                DataModel.IncomesCollection.Clear();
+                DataModel.IncomesCollection = _incomeService.GetAllIncomes(Index);
+            }
+        }
+
+        #endregion
 
         #region DataModel
 
@@ -36,6 +75,13 @@ namespace FiefApp.Module.Income
         {
             DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
             DataModel.IncomesCollection = _incomeService.GetAllIncomes(Index);
+            DataModel.UpdateTotals();
+            DataModel.StewardsCollection = _incomeService.GetAllStewards(Index);
+
+            for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+            {
+                DataModel.IncomesCollection[x].StewardsCollection = DataModel.StewardsCollection;
+            }
 
             UpdateFiefCollection();
         }
@@ -44,5 +90,32 @@ namespace FiefApp.Module.Income
         {
             _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
         }
+
+        #region Methods
+
+        private void ChangeStewardInIncomeCollection(int stewardId, string steward, int manorId, string income)
+        {
+            for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+            {
+                if (stewardId == DataModel.IncomesCollection[x].StewardId)
+                {
+                    DataModel.IncomesCollection[x].StewardId = -1;
+                    DataModel.IncomesCollection[x].Steward = "";
+                }
+            }
+
+            for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+            {
+                if (DataModel.IncomesCollection[x].Income == income && DataModel.IncomesCollection[x].ManorId == manorId)
+                {
+                    DataModel.IncomesCollection[x].StewardId = stewardId;
+                    DataModel.IncomesCollection[x].Steward = steward;
+                }
+            }
+
+            SaveData();
+        }
+
+        #endregion
     }
 }

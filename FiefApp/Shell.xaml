@@ -6,7 +6,7 @@
         xmlns:prism="http://prismlibrary.com/"
         mc:Ignorable="d"
         Title="Shell" 
-        Height="600" 
+        Height="626" 
         Width="800">
 
     <Window.Resources>
@@ -20,7 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <ContentControl Grid.Column="0"

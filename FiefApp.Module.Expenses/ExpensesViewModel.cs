@@ -1,11 +1,10 @@
-﻿using System;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
+using Prism.Commands;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Prism.Commands;
 
 namespace FiefApp.Module.Expenses
 {
@@ -106,6 +105,8 @@ namespace FiefApp.Module.Expenses
             DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
             DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
             DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
+            GetInformationSetDataModel();
+            DataModel.CalculateTotals();
         }
 
         private void DataModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -152,6 +153,33 @@ namespace FiefApp.Module.Expenses
                     DataModel.ImproveRoadsStone = 0;
                 }
             }
+        }
+
+        #endregion
+
+        #region GetInformationSetDataModel
+
+        private void GetInformationSetDataModel()
+        {
+            GetManorUpkeep();
+            CalculateUpkeepManor();
+            CalculateFeedingCosts();
+        }
+
+        public void GetManorUpkeep()
+        {
+            DataModel.ManorMaintenance = _expensesService.GetManorUpkeep(Index);
+        }
+
+        public void CalculateUpkeepManor()
+        {
+            DataModel.ManorMaintenanceBase = _expensesService.CalculateManorUpkeepBaseCost(Index);
+        }
+
+        public void CalculateFeedingCosts()
+        {
+            DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(Index);
+            DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(Index);
         }
 
         #endregion

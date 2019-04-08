@@ -1,0 +1,430 @@
+﻿<UserControl x:Class="FiefApp.Module.Port.PortView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:buildingShipyardUI="clr-namespace:FiefApp.Module.Port.UIElements.BuildingShipyardUI"
+             xmlns:gotShipyardUI="clr-namespace:FiefApp.Module.Port.UIElements.GotShipyardUI"
+             xmlns:canBuildShipyardUI="clr-namespace:FiefApp.Module.Port.UIElements.CanBuildShipyardUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" 
+             d:DesignWidth="778">
+
+    <Grid 
+        x:Name="RootGrid"
+        Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="222"/>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="12"/>
+
+            <ColumnDefinition Width="510"/>
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle 
+            x:Name="InitialFocus" 
+            Grid.Column="0"
+            Grid.Row="0"
+            Focusable="True"/>
+
+        <CheckBox
+            x:Name="GotShipyard"
+            IsChecked="{Binding Path=DataModel.GotShipyard}"
+            Grid.Column="0"
+            Grid.Row="0"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            IsTabStop="False"/>
+
+        <CheckBox
+            x:Name="UpgradingShipyard"
+            IsChecked="{Binding Path=DataModel.UpgradingShipyard}"
+            Grid.Column="0"
+            Grid.Row="0"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            IsTabStop="False"/>
+
+        <CheckBox
+            x:Name="BuildingShipyard"
+            IsChecked="{Binding Path=DataModel.BuildingShipyard}"
+            Grid.Column="1"
+            Grid.Row="1"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            IsTabStop="False"/>
+
+        <CheckBox
+            x:Name="CanBuildShipyard"
+            IsChecked="{Binding Path=DataModel.CanBuildShipyard}"
+            Grid.Column="1"
+            Grid.Row="1"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="3"
+            Grid.Row="1" 
+            Grid.RowSpan="4"
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5, 0.5, 0.5, 0"
+            IsTabStop="False"/>
+
+        <ComboBox 
+            x:Name="FiefComboBox"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="3"
+            Width="120"
+            ItemsSource="{Binding Path=FiefCollection}"
+            SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Margin="8,0,0,0"
+            Padding="6,0,0,0">
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <StackPanel
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="5"
+            Grid.RowSpan="37">
+
+            <buildingShipyardUI:BuildingShipyardUI
+                DaysWorkNeeded="{Binding Path=DataModel.Shipyard.DaysWorkNeeded}"
+                DaysWorkThisYear="{Binding Path=DataModel.Shipyard.DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <buildingShipyardUI:BuildingShipyardUI.Style>
+                    <Style TargetType="{x:Type buildingShipyardUI:BuildingShipyardUI}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="CantEdit" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=BuildingShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                <Setter Property="CantEdit" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </buildingShipyardUI:BuildingShipyardUI.Style>
+            </buildingShipyardUI:BuildingShipyardUI>
+
+            <gotShipyardUI:GotShipyardUI
+                Upgrading="{Binding Path=DataModel.UpgradingShipyard}"
+                ShipyardModel="{Binding Path=DataModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <gotShipyardUI:GotShipyardUI.Style>
+                    <Style TargetType="{x:Type gotShipyardUI:GotShipyardUI}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="CantEdit" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                <Setter Property="CantEdit" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </gotShipyardUI:GotShipyardUI.Style>
+            </gotShipyardUI:GotShipyardUI>
+
+            <canBuildShipyardUI:CanBuildShipyardUI>
+                <canBuildShipyardUI:CanBuildShipyardUI.Style>
+                    <Style TargetType="{x:Type canBuildShipyardUI:CanBuildShipyardUI}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CanBuildShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </canBuildShipyardUI:CanBuildShipyardUI.Style>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="ConstructShipyardEvent">
+                        <i:InvokeCommandAction Command="{Binding Path=DataContext.ConstructShipyardCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </canBuildShipyardUI:CanBuildShipyardUI>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CanBuildShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=BuildingShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Frame 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="3"
+                    Grid.Row="0" 
+                    Grid.RowSpan="4"
+                    Background="LightGray" 
+                    BorderBrush="Gray" 
+                    BorderThickness="0.5, 0, 0.5, 0.5"
+                    IsTabStop="False"/>
+
+                <TextBlock
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.RowSpan="3"
+                    Text="Det går inte att bygga en hamn i den här förläningen."
+                    TextWrapping="Wrap"
+                    TextAlignment="Left"
+                    VerticalAlignment="Center"/>
+
+            </Grid>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                </Grid.RowDefinitions>
+                <ToggleButton 
+                    x:Name="EditButton"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Content="redigera"
+                    Command="{Binding Path=EditButtonCommand}"
+                    Height="21"
+                    Width="51"
+                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    Margin="0,0,6,0"
+                    HorizontalAlignment="Right" 
+                    Template="{DynamicResource ToggleButtonTemplate}">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CancelEditButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=SaveEditButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=BuildingShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
+                <ToggleButton 
+                    x:Name="CancelEditButton"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Content="avbryt"
+                    Command="{Binding Path=CancelEditButton}"
+                    Height="21"
+                    Width="51"
+                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center"
+                    Margin="0,0,6,0"
+                    Padding="0"
+                    HorizontalAlignment="Right" 
+                    Template="{DynamicResource ToggleButtonTemplate}">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
+                <ToggleButton 
+                    x:Name="SaveEditButton"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Content="spara"
+                    Command="{Binding Path=SaveEditButton}"
+                    Template="{DynamicResource ToggleButtonTemplate}"
+                    Height="21"
+                    Width="51"
+                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    Margin="0,0,65,0"
+                    HorizontalAlignment="Right" >
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+            </Grid>
+        </StackPanel>
+
+        <Button
+            Content="GotShipyard"
+            ToolTip="Set GotShipyard"
+            Command="{Binding Path=SetGotShipyard}"
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"/>
+
+        <Button
+            Content="UpgradingShipard"
+            ToolTip="Set UpgradingShipard"
+            Command="{Binding Path=SetUpgradingShipyard}"
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"
+            Margin="57,0,0,0"></Button>
+
+        <Button
+            Content="BuildingShipard"
+            ToolTip="Set BuildingShipard"
+            Command="{Binding Path=SetBuildingShipyard}"
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"
+            Margin="114, 0, 0, 0"></Button>
+
+        <Button
+            Content="CanBuildShipyard"
+            ToolTip="Set CanBuildShipyard"
+            Command="{Binding Path=SetCanBuildShipyard}"
+            Grid.Column="2"
+            Grid.Row="41"
+            Width="51"
+            HorizontalAlignment="Left"
+            Margin="171,0,0,0"></Button>
+
+
+    </Grid>
+</UserControl>

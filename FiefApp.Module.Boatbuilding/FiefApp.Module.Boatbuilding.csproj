@@ -67,8 +67,8 @@
     <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net47\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.8.13.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Container.5.8.13\lib\net47\Unity.Container.dll</HintPath>
+    <Reference Include="Unity.Container, Version=5.8.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.8.11\lib\net47\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -82,9 +82,11 @@
     <Compile Include="RoutedEvents\BoatBuilderUIEventArgs.cs" />
     <Compile Include="RoutedEvents\BuildingBoatUIEventArgs.cs" />
     <Compile Include="RoutedEvents\ConstructingBoatUIEventArgs.cs" />
-    <Compile Include="RoutedEvents\ConstructShipyardEventArgs.cs" />
     <Compile Include="UIElements\BoatBuilderUI\BoatBuilderUI.xaml.cs">
       <DependentUpon>BoatBuilderUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UIElements\BoatUI\BoatUI.xaml.cs">
+      <DependentUpon>BoatUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIElements\BuildingBoatUI\BuildingBoatUI.xaml.cs">
       <DependentUpon>BuildingBoatUI.xaml</DependentUpon>
@@ -111,6 +113,10 @@
       <Project>{4532eaa9-7d4b-46c9-81c1-4e7362f23883}</Project>
       <Name>FiefApp.Common.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FiefApp.Module.Port\FiefApp.Module.Port.csproj">
+      <Project>{D2462406-6408-4CAA-A45A-E8349F88371C}</Project>
+      <Name>FiefApp.Module.Port</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="BoatbuildingView.xaml">
@@ -118,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UIElements\BoatBuilderUI\BoatBuilderUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\BoatUI\BoatUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

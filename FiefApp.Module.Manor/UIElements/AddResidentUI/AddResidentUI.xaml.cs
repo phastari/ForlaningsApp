@@ -56,7 +56,7 @@ namespace FiefApp.Module.Manor.UIElements.AddResidentUI
                     new ResidentModel()
                     {
                         Age = Age,
-                        Name = Resident,
+                        PersonName = Resident,
                         Position = "Boende"
                     }
                 );

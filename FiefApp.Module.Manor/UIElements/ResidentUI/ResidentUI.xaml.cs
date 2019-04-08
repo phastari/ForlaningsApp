@@ -58,7 +58,7 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
                 tempModel = new ResidentModel()
                 {
                     Age = Age,
-                    Name = Resident,
+                    PersonName = Resident,
                     Position = Position,
                     Type = "Resident"
                 };
@@ -68,7 +68,7 @@ namespace FiefApp.Module.Manor.UIElements.ResidentUI
                 tempModel = new SoldierModel()
                 {
                     Age = Age,
-                    Name = Resident,
+                    PersonName = Resident,
                     Position = Position,
                     Type = "Soldier"
                 };

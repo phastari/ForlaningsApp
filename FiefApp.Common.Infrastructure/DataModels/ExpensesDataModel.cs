@@ -504,6 +504,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _slaves = value;
+                SlavesBase = value * 2;
                 NotifyPropertyChanged();
             }
         }

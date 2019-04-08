@@ -59,13 +59,13 @@ namespace FiefApp.Common.Infrastructure.Services
             List<EmployeeModel> employeeList = tempEmployeesList
                 .GroupBy(so => new
                 {
-                    so.Name,
+                    Name = so.PersonName,
                     so.BaseCost,
                     so.LuxuryCost
                 })
                 .Select(g => new EmployeeModel
                 {
-                    Name = g.Key.Name,
+                    PersonName = g.Key.Name,
                     BaseCost = g.Key.BaseCost,
                     LuxuryCost = g.Key.LuxuryCost,
                     Number = g.Sum(so => so.Number)

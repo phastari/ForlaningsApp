@@ -129,7 +129,7 @@
                 <DataTemplate DataType="{x:Type m:EmployeeModel}">
                     <eui:EmployeeUI 
                         Id="{Binding Path=Id}"
-                        Employee="{Binding Path=Name}"
+                        Employee="{Binding Path=PersonName}"
                         Number="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Base="{Binding Path=Base}"
                         BaseCost="{Binding Path=BaseCost}"

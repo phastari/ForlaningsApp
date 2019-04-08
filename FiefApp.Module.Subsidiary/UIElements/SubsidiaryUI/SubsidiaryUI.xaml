@@ -2,10 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="24" 
-             d:DesignWidth="784">
+             d:DesignWidth="784"
+             Loaded="SubsidiaryUI_OnLoaded">
 
     <Grid
         x:Name="RootGrid">
@@ -50,13 +53,12 @@
             BorderThickness="0.5, 0, 0.5, 0"
             IsTabStop="False"/>
 
-        <TextBox
+        <Label
             Grid.Column="1"
             Grid.Row="0"
-            Text="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Content="{Binding Path=Subsidiary}"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
             Padding="6,0,0,0"/>
 
         <TextBox
@@ -80,74 +82,74 @@
         <TextBox
             Grid.Column="7"
             Grid.Row="0"
-            Text="{Binding Path=Silver, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Silver}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            Padding="0"
+            IsReadOnly="True"/>
 
         <TextBox
             Grid.Column="9"
             Grid.Row="0"
-            Text="{Binding Path=Base, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Base}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            Padding="0"
+            IsReadOnly="True"/>
 
         <TextBox
             Grid.Column="11"
             Grid.Row="0"
-            Text="{Binding Path=Luxury, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Luxury}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            Padding="0"
+            IsReadOnly="True"/>
 
         <TextBox
             Grid.Column="13"
             Grid.Row="0"
-            Text="{Binding Path=DaysWorkLeft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=DaysWorkLeft}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            Padding="0"
+            IsReadOnly="True"/>
 
-        <TextBox
+        <iTextBox:iTextBox
             Grid.Column="15"
             Grid.Row="0"
-            Text="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            Value="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBox
+        <ComboBox
+            x:Name="StewardsComboBox"
             Grid.Column="17"
             Grid.Row="0"
-            Text="{Binding Path=Steward, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="6,0,0,0"/>
+            ItemsSource="{Binding Path=StewardsCollection}"
+            DisplayMemberPath="PersonName"
+            SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectionChanged="StewardsComboBox_OnSelectionChanged"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
 
         <TextBox
             Grid.Column="19"
             Grid.Row="0"
-            Text="{Binding Path=Difficulty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Difficulty}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            Padding="0"
+            IsReadOnly="True"/>
 
-        <TextBox
+        <t6TextBox:T6TextBox
             Grid.Column="21"
             Grid.Row="0"
-            Text="{Binding Path=Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
-            Padding="0"/>
+            T6Value="{Binding Path=Skill}"
+            ReadOnly="True"/>
 
     </Grid>
 </UserControl>

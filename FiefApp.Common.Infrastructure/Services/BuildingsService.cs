@@ -18,7 +18,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public BuildingsDataModel GetAllBuildingsDataModel()
         {
-            return new BuildingsDataModel();
+            return null;
         }
     }
 }

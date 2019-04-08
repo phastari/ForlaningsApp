@@ -986,11 +986,23 @@
         <TextBox
             Grid.Column="16"
             Grid.Row="9"
-            Text="{Binding Path=DataModel.Slaves}"
+            Text="{Binding Path=DataModel.Slaves, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            behavior:TextBoxBehavior.SelectAllTextOnFocus="True"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            IsReadOnly="True"
-            Padding="0"/>
+            Padding="0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="IsReadOnly" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
         <TextBox
             Grid.Column="18"

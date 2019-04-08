@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -72,7 +73,20 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public void AddCustomSubsidiary(SubsidiaryModel model)
         {
-            _fiefService.CustomSubsidiaryList.Add(model);
+            bool addNew = true;
+
+            for (int x = 0; x < _fiefService.CustomSubsidiaryList.Count; x++)
+            {
+                if (model.Subsidiary == _fiefService.CustomSubsidiaryList[x].Subsidiary)
+                {
+                    addNew = false;
+                }
+            }
+
+            if (addNew)
+            {
+                _fiefService.CustomSubsidiaryList.Add(model);
+            }
         }
 
         public int GetNewIdForSubsidiary()
@@ -89,6 +103,14 @@ namespace FiefApp.Common.Infrastructure.Services
                 tempList.Add(_fiefService.CustomSubsidiaryList[x].Id);
             }
 
+            for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count; y++)
+                {
+                    tempList.Add(_fiefService.SubsidiaryList[x].SubsidiaryCollection[y].Id);
+                }
+            }
+
             return tempList.Max() + 1;
         }
 
@@ -103,6 +125,66 @@ namespace FiefApp.Common.Infrastructure.Services
                     break;
                 }
             }
+        }
+
+        public ObservableCollection<StewardModel> GetAllStewards()
+        {
+            return _fiefService.StewardsList[0].StewardsCollection;
+        }
+
+        public void ChangeSteward(int stewardId, int subsidiaryId, string subsidiary)
+        {
+            for (int x = 0; x < _fiefService.StewardsList[0].StewardsCollection.Count; x++)
+            {
+                if (_fiefService.StewardsList[0].StewardsCollection[x].IndustryId == subsidiaryId && _fiefService.StewardsList[0].StewardsCollection[x].Industry == subsidiary)
+                {
+                    _fiefService.StewardsList[0].StewardsCollection[x].IndustryId = -1;
+                    _fiefService.StewardsList[0].StewardsCollection[x].ManorId = -1;
+                    _fiefService.StewardsList[0].StewardsCollection[x].Industry = "";
+                }
+            }
+
+            for (int x = 0; x < _fiefService.StewardsList[0].StewardsCollection.Count; x++)
+            {
+                if (_fiefService.StewardsList[0].StewardsCollection[x].Id == stewardId)
+                {
+                    _fiefService.StewardsList[0].StewardsCollection[x].IndustryId = subsidiaryId;
+                    _fiefService.StewardsList[0].StewardsCollection[x].ManorId = -1;
+                    _fiefService.StewardsList[0].StewardsCollection[x].Industry = subsidiary;
+                }
+            }
+
+            for (int x = 1; x < _fiefService.StewardsList.Count; x++)
+            {
+                _fiefService.StewardsList[x].StewardsCollection = _fiefService.StewardsList[0].StewardsCollection;
+            }
+
+            for (int x = 1; x < _fiefService.IncomeList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.IncomeList[x].IncomesCollection.Count; y++)
+                {
+                    if (_fiefService.IncomeList[x].IncomesCollection[y].StewardId == stewardId)
+                    {
+                        _fiefService.IncomeList[x].IncomesCollection[y].StewardId = -1;
+                        _fiefService.IncomeList[x].IncomesCollection[y].Steward = "";
+                    }
+                }
+            }
+        }
+
+        public ObservableCollection<SubsidiaryModel> GetSubsidiaryCollection(int index)
+        {
+            return _fiefService.SubsidiaryList[index].SubsidiaryCollection;
+        }
+
+        public ObservableCollection<SubsidiaryModel> GetConstructingCollection(int index)
+        {
+            return _fiefService.SubsidiaryList[index].ConstructingCollection;
+        }
+
+        public void ShowConstructingCollection()
+        {
+            Console.WriteLine($"_fiefService.SubsidiaryList[1].ConstructingCollection.Count : { _fiefService.SubsidiaryList[1].ConstructingCollection.Count }");
         }
     }
 }

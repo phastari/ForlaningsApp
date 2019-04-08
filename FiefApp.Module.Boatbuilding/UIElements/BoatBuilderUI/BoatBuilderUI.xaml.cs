@@ -49,7 +49,7 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BoatBuilderUI
             MouseArea.Visibility = Visibility.Collapsed;
             OldBoatbuilderModel = new BoatbuilderModel()
             {
-                Name = BoatBuilder,
+                PersonName = BoatBuilder,
                 Age = Age,
                 Skill = Skill,
                 Resources = BBResources,
@@ -60,7 +60,7 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BoatBuilderUI
         public DelegateCommand EditBoatBuilderCancelCommand { get; set; }
         private void ExecuteEditBoatBuilderCancelCommand()
         {
-            BoatBuilder = OldBoatbuilderModel.Name;
+            BoatBuilder = OldBoatbuilderModel.PersonName;
             Age = OldBoatbuilderModel.Age;
             Skill = OldBoatbuilderModel.Skill;
             BBResources = OldBoatbuilderModel.Resources;
@@ -78,7 +78,7 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BoatBuilderUI
                     new BoatbuilderModel()
                     {
                         Id = Id,
-                        Name = BoatBuilder,
+                        PersonName = BoatBuilder,
                         Age = Age,
                         Skill = Skill,
                         Resources = BBResources,

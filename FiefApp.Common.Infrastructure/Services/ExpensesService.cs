@@ -185,5 +185,22 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             return _fiefService.EmployeesList[index].TotalLuxury;
         }
+
+        public int GetManorUpkeep(int index)
+        {
+            return _fiefService.WeatherList[index].ManorUpkeep;
+        }
+
+        public int CalculateManorUpkeepBaseCost(int index)
+        {
+            if (_fiefService.WeatherList[index].ManorUpkeep > 0)
+            {
+                return Convert.ToInt32(Math.Ceiling((decimal)_fiefService.ManorList[index].ManorAcres / 40 * _fiefService.ManorList[index].ManorAcres / _fiefService.WeatherList[index].ManorUpkeep));
+            }
+            else
+            {
+                return Convert.ToInt32(Math.Ceiling((decimal)_fiefService.ManorList[index].ManorAcres / 40 * _fiefService.ManorList[index].ManorAcres));
+            }
+        }
     }
 }

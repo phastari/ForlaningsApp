@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,7 +7,7 @@ namespace FiefApp.Common.Infrastructure.Models
     public class StewardModel : IPeopleModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string PersonName { get; set; }
         public string Type { get; set; }
         public string Position { get; set; }
         public int Age { get; set; }
@@ -21,6 +20,7 @@ namespace FiefApp.Common.Infrastructure.Models
 
         public string Industry { get; set; }
         public int IndustryId { get; set; }
+        public int ManorId { get; set; } = -1;
 
         private bool _treeViewIsExpanded;
         public bool TreeViewIsExpanded
@@ -32,7 +32,7 @@ namespace FiefApp.Common.Infrastructure.Models
                 NotifyPropertyChanged();
             }
         }
-        
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

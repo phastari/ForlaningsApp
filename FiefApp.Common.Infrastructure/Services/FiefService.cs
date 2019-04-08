@@ -1,4 +1,5 @@
-﻿using FiefApp.Common.Infrastructure.DataModels;
+﻿using System;
+using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using System.Collections.Generic;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
@@ -55,7 +56,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     Liegelord = new LiegelordModel()
                     {
                         Title = "Storfurste",
-                        Name = "Thamas Vitfjäder",
+                        PersonName = "Thamas Vitfjäder",
                         Family = "Vitfjäder",
                         Fief = "Damarien",
                         Stronghold = "Slottet Pelgrinmarac",
@@ -146,5 +147,64 @@ namespace FiefApp.Common.Infrastructure.Services
                 Id = 1
             }
         };
+
+        public List<WeatherDataModel> WeatherList { get; set; } = new List<WeatherDataModel>()
+        {
+            new WeatherDataModel()
+            {
+                Id = 0
+            },
+            new WeatherDataModel()
+            {
+                Id = 1
+            }
+        };
+
+        public List<MinesDataModel> MinesList { get; set; } = new List<MinesDataModel>()
+        {
+            new MinesDataModel()
+            {
+                Id = 0
+            },
+            new MinesDataModel()
+            {
+                Id = 1
+            }
+        };
+
+        public List<PortDataModel> PortsList { get; set; } = new List<PortDataModel>()
+        {
+            new PortDataModel()
+            {
+                Id = 0
+            },
+            new PortDataModel()
+            {
+                Id = 1
+            }
+        };
+
+        public List<TradeDataModel> TradeList { get; set; } = new List<TradeDataModel>()
+        {
+            new TradeDataModel()
+            {
+                Id = 0
+            },
+            new TradeDataModel()
+            {
+                Id = 1
+            }
+        };
+
+        public SupplyDataModel SupplyDataModel { get; set; } = new SupplyDataModel();
+
+        private readonly Random _getRandom = new Random();
+        public int GetRandom(int min, int max)
+        {
+            lock (_getRandom)
+            {
+                return _getRandom.Next(min, max);
+            }
+        }
     }
 }

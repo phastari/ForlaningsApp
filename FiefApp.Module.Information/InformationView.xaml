@@ -303,11 +303,11 @@
                   ItemsSource="{Binding Path=SettingsModel.TypeTextList}"
                   SelectedIndex="{Binding Path=DataModel.FiefTypeIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Text="{Binding Path=DataModel.FiefType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Template="{DynamicResource ComboBoxControlTemplate}"
                   ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
                   HorizontalContentAlignment="Left"
                   VerticalContentAlignment="Center"
-                  Padding="6,0,0,0" 
-                  Template="{DynamicResource ComboBoxControlTemplate}">
+                  Padding="6,0,0,0" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding Path=DataContext.UpdateInformationTextCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}}"/>

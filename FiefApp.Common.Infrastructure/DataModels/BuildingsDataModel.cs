@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Common.Infrastructure.Settings.SettingsModels;
+using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -17,7 +20,49 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private ObservableCollection<BuildingsSettingsModel> _buildingsSettings;
+        public ObservableCollection<BuildingsSettingsModel> BuildingsSettings
+        {
+            get => _buildingsSettings;
+            set
+            {
+                _buildingsSettings = value;
+                NotifyPropertyChanged();
+            }
+        }
 
+        private ObservableCollection<BuildingModel> _buildingsCollection = new ObservableCollection<BuildingModel>();
+        public ObservableCollection<BuildingModel> BuildingsCollection
+        {
+            get => _buildingsCollection;
+            set
+            {
+                _buildingsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<BuilderModel> _buildersCollection = new ObservableCollection<BuilderModel>();
+        public ObservableCollection<BuilderModel> BuildersCollection
+        {
+            get => _buildersCollection;
+            set
+            {
+                _buildersCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<BuildingModel> _buildsCollection = new ObservableCollection<BuildingModel>();
+        public ObservableCollection<BuildingModel> BuildsCollection
+        {
+            get => _buildsCollection;
+            set
+            {
+                _buildsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #region INotifyPropertyChanged
 

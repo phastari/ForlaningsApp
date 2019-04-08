@@ -1,13 +1,18 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Subsidiary.RoutedEvents;
 
 namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
 {
     /// <summary>
     /// Interaction logic for SubsidiaryUI.xaml
     /// </summary>
-    public partial class SubsidiaryUI
+    public partial class SubsidiaryUI : INotifyPropertyChanged
     {
         public SubsidiaryUI()
         {
@@ -169,6 +174,20 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 new PropertyMetadata(new ObservableCollection<StewardModel>())
             );
 
+        public int StewardId
+        {
+            get => (int)GetValue(StewardIdProperty);
+            set => SetValue(StewardIdProperty, value);
+        }
+
+        public static readonly DependencyProperty StewardIdProperty =
+            DependencyProperty.Register(
+                "StewardId",
+                typeof(int),
+                typeof(SubsidiaryUI),
+                new PropertyMetadata(-1)
+            );
+
         public int Difficulty
         {
             get => (int)GetValue(DifficultyProperty);
@@ -196,5 +215,78 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 typeof(SubsidiaryUI),
                 new PropertyMetadata("")
             );
+
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #region Event Handler For Selection Changed
+
+        private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SubsidiaryUIEventArgs newEventArgs =
+                new SubsidiaryUIEventArgs(
+                    SubsidiaryUIRoutedEvent,
+                    "Changed",
+                    StewardsCollection[SelectedIndex].Id,
+                    StewardsCollection[SelectedIndex].PersonName,
+                    Id,
+                    Subsidiary
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent SubsidiaryUIRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "SubsidiaryUIEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(SubsidiaryUI)
+            );
+
+        public event RoutedEventHandler SubsidiaryUIEvent
+        {
+            add => AddHandler(SubsidiaryUIRoutedEvent, value);
+            remove => RemoveHandler(SubsidiaryUIRoutedEvent, value);
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        private void SubsidiaryUI_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            for (int x = 0; x < StewardsCollection.Count; x++)
+            {
+                if (StewardsCollection[x].Id == StewardId)
+                {
+                    index = x;
+                }
+            }
+
+            SelectedIndex = index;
+        }
     }
 }

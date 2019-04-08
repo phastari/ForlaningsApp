@@ -18,7 +18,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private string _name;
-        public string Name
+        public string PersonName
         {
             get => _name;
             set

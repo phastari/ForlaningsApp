@@ -15,6 +15,7 @@ namespace FiefApp.Common.Infrastructure.Services
         StableSettingsModel StableSettingsModel { get; }
         ExpensesSettingsModel ExpensesSettingsModel { get; }
         List<SubsidiarySettingsModel> SubsidiarySettingsList { get; }
+        List<BuildingsSettingsModel> BuildingsSettingsList { get; }
 
         ArmySettingsModel LoadArmySettingsFromXml();
         EmployeeSettingsModel LoadEmployeeSettingsFromXml();
@@ -26,6 +27,7 @@ namespace FiefApp.Common.Infrastructure.Services
         StableSettingsModel LoadStableSettingsFromXml();
         ExpensesSettingsModel LoadExpensesSettingsFromXml();
         List<SubsidiarySettingsModel> LoadSubsidiarySettingsFromXml();
+        List<BuildingsSettingsModel> LoadBuildingsSettingsFromXml();
 
         void CreateDefaultArmySettingsXmlFile();
         void CreateDefaultEmployeeSettingsXmlFile();
@@ -37,5 +39,6 @@ namespace FiefApp.Common.Infrastructure.Services
         void CreateDefaultStableSettingsXmlFile();
         void CreateDefaultExpensesSettingsXmlFile();
         void CreateDefaultSubsidiarySettingsXmlFile();
+        void CreateDefaultBuildingsSettingsXmlFile();
     }
 }

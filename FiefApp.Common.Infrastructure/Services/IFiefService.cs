@@ -1,7 +1,7 @@
-﻿using FiefApp.Common.Infrastructure.DataModels;
-using System.Collections.Generic;
+﻿using System;
+using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Common.Infrastructure.Settings.SettingsModels;
+using System.Collections.Generic;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -19,5 +19,13 @@ namespace FiefApp.Common.Infrastructure.Services
         List<SubsidiaryModel> CustomSubsidiaryList { get; set; }
         List<IncomeDataModel> IncomeList { get; set; }
         List<BuildingsDataModel> BuildingsList { get; set; }
+        List<WeatherDataModel> WeatherList { get; set; }
+        List<TradeDataModel> TradeList { get; set; }
+        List<PortDataModel> PortsList { get; set; }
+        List<MinesDataModel> MinesList { get; set; }
+
+        SupplyDataModel SupplyDataModel { get; set; }
+
+        int GetRandom(int min, int max);
     }
 }

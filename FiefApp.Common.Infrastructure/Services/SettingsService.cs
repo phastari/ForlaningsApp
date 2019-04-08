@@ -2,6 +2,7 @@
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -23,6 +24,7 @@ namespace FiefApp.Common.Infrastructure.Services
             ExpensesSettingsModel = LoadExpensesSettingsFromXml();
             SubsidiarySettingsList = LoadSubsidiarySettingsFromXml();
             ShipyardTypeSettingsList = LoadShipyardTypeSettingsFromXml();
+            BuildingsSettingsList = LoadBuildingsSettingsFromXml();
         }
 
         public ArmySettingsModel ArmySettingsModel { get; private set; }
@@ -35,6 +37,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public StableSettingsModel StableSettingsModel { get; private set; }
         public ExpensesSettingsModel ExpensesSettingsModel { get; private set; }
         public List<SubsidiarySettingsModel> SubsidiarySettingsList { get; private set; }
+        public List<BuildingsSettingsModel> BuildingsSettingsList { get; private set; }
 
         #region Methods : Army Settings
 
@@ -54,7 +57,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
                     if (xmlAttributeCollection != null)
                     {
-                        switch (xmlAttributeCollection["Name"].Value)
+                        switch (xmlAttributeCollection["PersonName"].Value)
                         {
                             case "ArmyCrossbowmen":
                                 tempModel.ArmyCrossbowmenSilver =
@@ -187,7 +190,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
                         if (xmlAttributeCollection != null)
                         {
-                            switch (xmlAttributeCollection["Name"].Value)
+                            switch (xmlAttributeCollection["PersonName"].Value)
                             {
                                 case "CavalryBowmen":
                                     tempModel.CavalryBowmenSilver =
@@ -264,7 +267,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
                         if (xmlAttributeCollection != null)
                         {
-                            switch (xmlAttributeCollection["Name"].Value)
+                            switch (xmlAttributeCollection["PersonName"].Value)
                             {
                                 case "OfficersCorporal":
                                     tempModel.OfficersCorporalSilver =
@@ -327,181 +330,181 @@ namespace FiefApp.Common.Infrastructure.Services
                 new XDeclaration("1.0", "utf-8", string.Empty),
                 new XElement("Settings",
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyCrossbowmen"),
+                        new XAttribute("PersonName", "ArmyCrossbowmen"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyBowmen"),
+                        new XAttribute("PersonName", "ArmyBowmen"),
                         new XAttribute("Silver", 160),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyMedics"),
+                        new XAttribute("PersonName", "ArmyMedics"),
                         new XAttribute("Silver", 2920),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyMedicsSkilled"),
+                        new XAttribute("PersonName", "ArmyMedicsSkilled"),
                         new XAttribute("Silver", 4480),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyInfantry"),
+                        new XAttribute("PersonName", "ArmyInfantry"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyInfantryMedium"),
+                        new XAttribute("PersonName", "ArmyInfantryMedium"),
                         new XAttribute("Silver", 480),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyInfantryHeavy"),
+                        new XAttribute("PersonName", "ArmyInfantryHeavy"),
                         new XAttribute("Silver", 800),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyInfantryElite"),
+                        new XAttribute("PersonName", "ArmyInfantryElite"),
                         new XAttribute("Silver", 1360),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyLongbowmen"),
+                        new XAttribute("PersonName", "ArmyLongbowmen"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyMercenary"),
+                        new XAttribute("PersonName", "ArmyMercenary"),
                         new XAttribute("Silver", 560),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyMercenaryElite"),
+                        new XAttribute("PersonName", "ArmyMercenaryElite"),
                         new XAttribute("Silver", 1840),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyMercenaryBowmen"),
+                        new XAttribute("PersonName", "ArmyMercenaryBowmen"),
                         new XAttribute("Silver", 480),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyEngineers"),
+                        new XAttribute("PersonName", "ArmyEngineers"),
                         new XAttribute("Silver", 1360),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmySpearmen"),
+                        new XAttribute("PersonName", "ArmySpearmen"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyScouts"),
+                        new XAttribute("PersonName", "ArmyScouts"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyScoutsSkilled"),
+                        new XAttribute("PersonName", "ArmyScoutsSkilled"),
                         new XAttribute("Silver", 1620),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyKnightTemplars"),
+                        new XAttribute("PersonName", "ArmyKnightTemplars"),
                         new XAttribute("Silver", 2360),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", true)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyGuards"),
+                        new XAttribute("PersonName", "ArmyGuards"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Army",
-                        new XAttribute("Name", "ArmyWeaponmasters"),
+                        new XAttribute("PersonName", "ArmyWeaponmasters"),
                         new XAttribute("Silver", 2400),
                         new XAttribute("Base", 2),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryBowmen"),
+                        new XAttribute("PersonName", "CavalryBowmen"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 6),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryCourier"),
+                        new XAttribute("PersonName", "CavalryCourier"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 6),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryLight"),
+                        new XAttribute("PersonName", "CavalryLight"),
                         new XAttribute("Silver", 320),
                         new XAttribute("Base", 6),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryKnights"),
+                        new XAttribute("PersonName", "CavalryKnights"),
                         new XAttribute("Silver", 3260),
                         new XAttribute("Base", 4),
                         new XAttribute("Accommodation", true)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryScouts"),
+                        new XAttribute("PersonName", "CavalryScouts"),
                         new XAttribute("Silver", 540),
                         new XAttribute("Base", 6),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryKnightTemplars"),
+                        new XAttribute("PersonName", "CavalryKnightTemplars"),
                         new XAttribute("Silver", 2360),
                         new XAttribute("Base", 4),
                         new XAttribute("Accommodation", true)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryHeavy"),
+                        new XAttribute("PersonName", "CavalryHeavy"),
                         new XAttribute("Silver", 1660),
                         new XAttribute("Base", 6),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Cavalry",
-                        new XAttribute("Name", "CavalryElite"),
+                        new XAttribute("PersonName", "CavalryElite"),
                         new XAttribute("Silver", 2040),
                         new XAttribute("Base", 6),
                         new XAttribute("Accommodation", false)
                     ),
                     new XElement("Officers",
-                        new XAttribute("Name", "OfficersCorporal"),
+                        new XAttribute("PersonName", "OfficersCorporal"),
                         new XAttribute("Silver", 2340),
                         new XAttribute("Base", 0),
                         new XAttribute("Accommodation", true)
                     ),
                     new XElement("Officers",
-                        new XAttribute("Name", "OfficersSergeant"),
+                        new XAttribute("PersonName", "OfficersSergeant"),
                         new XAttribute("Silver", 3120),
                         new XAttribute("Base", 0),
                         new XAttribute("Accommodation", true)
                     ),
                     new XElement("Officers",
-                        new XAttribute("Name", "OfficersCaptain"),
+                        new XAttribute("PersonName", "OfficersCaptain"),
                         new XAttribute("Silver", 4680),
                         new XAttribute("Base", 0),
                         new XAttribute("Accommodation", true)
@@ -534,7 +537,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
                     if (xmlAttributeCollection != null)
                     {
-                        switch (xmlAttributeCollection["Name"].Value)
+                        switch (xmlAttributeCollection["PersonName"].Value)
                         {
                             case "Falconer":
                                 tempModel.FalconerBase =
@@ -624,42 +627,42 @@ namespace FiefApp.Common.Infrastructure.Services
                 new XDeclaration("1.0", "utf-8", string.Empty),
                 new XElement("Settings",
                     new XElement("Employee",
-                        new XAttribute("Name", "Falconer"),
+                        new XAttribute("PersonName", "Falconer"),
                         new XAttribute("Base", 2),
                         new XAttribute("Luxury", 1)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Bailiff"),
+                        new XAttribute("PersonName", "Bailiff"),
                         new XAttribute("Base", 3),
                         new XAttribute("Luxury", 1)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Herald"),
+                        new XAttribute("PersonName", "Herald"),
                         new XAttribute("Base", 4),
                         new XAttribute("Luxury", 1)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Hunter"),
+                        new XAttribute("PersonName", "Hunter"),
                         new XAttribute("Base", 2),
                         new XAttribute("Luxury", 0)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Physician"),
+                        new XAttribute("PersonName", "Physician"),
                         new XAttribute("Base", 3),
                         new XAttribute("Luxury", 3)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Scholar"),
+                        new XAttribute("PersonName", "Scholar"),
                         new XAttribute("Base", 3),
                         new XAttribute("Luxury", 1)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Cupbearer"),
+                        new XAttribute("PersonName", "Cupbearer"),
                         new XAttribute("Base", 2),
                         new XAttribute("Luxury", 0)
                     ),
                     new XElement("Employee",
-                        new XAttribute("Name", "Prospector"),
+                        new XAttribute("PersonName", "Prospector"),
                         new XAttribute("Base", 2),
                         new XAttribute("Luxury", "^2,8/13-1")
                     )
@@ -2277,6 +2280,391 @@ namespace FiefApp.Common.Infrastructure.Services
             string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
             xmlDoc.Save(@filePath);
             SubsidiarySettingsList = LoadSubsidiarySettingsFromXml();
+
+        }
+
+        #endregion
+
+        #region Methods : Building Settings
+
+        public List<BuildingsSettingsModel> LoadBuildingsSettingsFromXml()
+        {
+            bool foundError = false;
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BuildingsSettings.xml";
+            XmlDocument doc = new XmlDocument();
+            List<BuildingsSettingsModel> settingsList = new List<BuildingsSettingsModel>();
+            if (File.Exists(filePath))
+            {
+                doc.Load(filePath);
+                XmlNodeList elemList = doc.GetElementsByTagName("Building");
+
+                for (int i = 0; i < elemList.Count; i++)
+                {
+                    XmlAttributeCollection xmlAttributeCollection = elemList[i].Attributes;
+                    if (xmlAttributeCollection != null)
+                    {
+                        if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                        {
+                            settingsList.Add(new BuildingsSettingsModel()
+                            {
+                                Building = xmlAttributeCollection["Building"].Value,
+                                Woodwork = Convert.ToInt32(xmlAttributeCollection["Woodwork"].Value),
+                                Stonework = Convert.ToInt32(xmlAttributeCollection["Stonework"].Value),
+                                Smithwork = Convert.ToInt32(xmlAttributeCollection["Smithswork"].Value),
+                                Wood = Convert.ToInt32(xmlAttributeCollection["Wood"].Value),
+                                Stone = Convert.ToInt32(xmlAttributeCollection["Stone"].Value),
+                                Iron = Convert.ToInt32(xmlAttributeCollection["Iron"].Value),
+                                Upkeep = Convert.ToDecimal(xmlAttributeCollection["Upkeep"].Value.Replace(".", ","))
+                            });
+                        }
+                        else
+                        {
+                            settingsList.Add(new BuildingsSettingsModel()
+                            {
+                                Building = xmlAttributeCollection["Building"].Value,
+                                Woodwork = Convert.ToInt32(xmlAttributeCollection["Woodwork"].Value),
+                                Stonework = Convert.ToInt32(xmlAttributeCollection["Stonework"].Value),
+                                Smithwork = Convert.ToInt32(xmlAttributeCollection["Smithswork"].Value),
+                                Wood = Convert.ToInt32(xmlAttributeCollection["Wood"].Value),
+                                Stone = Convert.ToInt32(xmlAttributeCollection["Stone"].Value),
+                                Iron = Convert.ToInt32(xmlAttributeCollection["Iron"].Value),
+                                Upkeep = Convert.ToDecimal(xmlAttributeCollection["Upkeep"].Value)
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foundError = true;
+                    }
+                }
+            }
+            else
+            {
+                foundError = true;
+            }
+
+            if (!foundError)
+            {
+                return settingsList;
+            }
+            else
+            {
+                CreateDefaultBuildingsSettingsXmlFile();
+                return null;
+            }
+        }
+
+        public void CreateDefaultBuildingsSettingsXmlFile()
+        {
+            XDocument xmlDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", string.Empty),
+                new XElement("Settings",
+                    new XElement("Building",
+                        new XAttribute("Building", "Vall"),
+                        new XAttribute("Woodwork", "0"),
+                        new XAttribute("Stonework", "40"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "0"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.1")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Vall och grav"),
+                        new XAttribute("Woodwork", "0"),
+                        new XAttribute("Stonework", "60"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "0"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.2")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Palissad"),
+                        new XAttribute("Woodwork", "20"),
+                        new XAttribute("Stonework", "0"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "5"),
+                        new XAttribute("Stone", "0"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.1")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Dubbel palissad"),
+                        new XAttribute("Woodwork", "60"),
+                        new XAttribute("Stonework", "0"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "15"),
+                        new XAttribute("Stone", "0"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.2")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Mur"),
+                        new XAttribute("Woodwork", "53"),
+                        new XAttribute("Stonework", "1100"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "53"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.4")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Dubbel mur"),
+                        new XAttribute("Woodwork", "150"),
+                        new XAttribute("Stonework", "3000"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "150"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.6")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Tjock mur"),
+                        new XAttribute("Woodwork", "750"),
+                        new XAttribute("Stonework", "5000"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "750"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.8")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Massiv mur"),
+                        new XAttribute("Woodwork", "4000"),
+                        new XAttribute("Stonework", "35000"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "4000"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "1")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Mur med stävpelare"),
+                        new XAttribute("Woodwork", "58"),
+                        new XAttribute("Stonework", "1200"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "0"),
+                        new XAttribute("Stone", "58"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.45")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Litet porttorn"),
+                        new XAttribute("Woodwork", "92"),
+                        new XAttribute("Stonework", "1400"),
+                        new XAttribute("Smithswork", "12"),
+                        new XAttribute("Wood", "6"),
+                        new XAttribute("Stone", "68"),
+                        new XAttribute("Iron", "12"),
+                        new XAttribute("Upkeep", "1")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Porttorn"),
+                        new XAttribute("Woodwork", "270"),
+                        new XAttribute("Stonework", "4400"),
+                        new XAttribute("Smithswork", "24"),
+                        new XAttribute("Wood", "12"),
+                        new XAttribute("Stone", "220"),
+                        new XAttribute("Iron", "24"),
+                        new XAttribute("Upkeep", "2")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stort porttorn"),
+                        new XAttribute("Woodwork", "1500"),
+                        new XAttribute("Stonework", "28000"),
+                        new XAttribute("Smithswork", "42"),
+                        new XAttribute("Wood", "21"),
+                        new XAttribute("Stone", "1400"),
+                        new XAttribute("Iron", "42"),
+                        new XAttribute("Upkeep", "4")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Trätorn"),
+                        new XAttribute("Woodwork", "88"),
+                        new XAttribute("Stonework", "0"),
+                        new XAttribute("Smithswork", "44"),
+                        new XAttribute("Wood", "22"),
+                        new XAttribute("Stone", "1400"),
+                        new XAttribute("Iron", "44"),
+                        new XAttribute("Upkeep", "1")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Litet stentorn, fyrkantigt"),
+                        new XAttribute("Woodwork", "110"),
+                        new XAttribute("Stonework", "1700"),
+                        new XAttribute("Smithswork", "12"),
+                        new XAttribute("Wood", "6"),
+                        new XAttribute("Stone", "87"),
+                        new XAttribute("Iron", "12"),
+                        new XAttribute("Upkeep", "1")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stentorn, fyrkantigt"),
+                        new XAttribute("Woodwork", "370"),
+                        new XAttribute("Stonework", "5400"),
+                        new XAttribute("Smithswork", "52"),
+                        new XAttribute("Wood", "26"),
+                        new XAttribute("Stone", "270"),
+                        new XAttribute("Iron", "52"),
+                        new XAttribute("Upkeep", "2")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stort stentorn, fyrkantigt"),
+                        new XAttribute("Woodwork", "1600"),
+                        new XAttribute("Stonework", "30000"),
+                        new XAttribute("Smithswork", "80"),
+                        new XAttribute("Wood", "40"),
+                        new XAttribute("Stone", "1500"),
+                        new XAttribute("Iron", "80"),
+                        new XAttribute("Upkeep", "4")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Litet stentorn, runt"),
+                        new XAttribute("Woodwork", "80"),
+                        new XAttribute("Stonework", "1300"),
+                        new XAttribute("Smithswork", "8"),
+                        new XAttribute("Wood", "4"),
+                        new XAttribute("Stone", "63"),
+                        new XAttribute("Iron", "8"),
+                        new XAttribute("Upkeep", "4")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stentorn, runt"),
+                        new XAttribute("Woodwork", "290"),
+                        new XAttribute("Stonework", "4200"),
+                        new XAttribute("Smithswork", "42"),
+                        new XAttribute("Wood", "21"),
+                        new XAttribute("Stone", "210"),
+                        new XAttribute("Iron", "42"),
+                        new XAttribute("Upkeep", "2")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stort stentorn, runt"),
+                        new XAttribute("Woodwork", "1250"),
+                        new XAttribute("Stonework", "23500"),
+                        new XAttribute("Smithswork", "60"),
+                        new XAttribute("Wood", "31"),
+                        new XAttribute("Stone", "1175"),
+                        new XAttribute("Iron", "60"),
+                        new XAttribute("Upkeep", "4")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Borgkärna, fyrkantig"),
+                        new XAttribute("Woodwork", "2500"),
+                        new XAttribute("Stonework", "44000"),
+                        new XAttribute("Smithswork", "160"),
+                        new XAttribute("Wood", "74"),
+                        new XAttribute("Stone", "2200"),
+                        new XAttribute("Iron", "160"),
+                        new XAttribute("Upkeep", "8")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stor borgkärna, fyrkantig"),
+                        new XAttribute("Woodwork", "4000"),
+                        new XAttribute("Stonework", "68000"),
+                        new XAttribute("Smithswork", "280"),
+                        new XAttribute("Wood", "140"),
+                        new XAttribute("Stone", "3400"),
+                        new XAttribute("Iron", "280"),
+                        new XAttribute("Upkeep", "16")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Borgkärna, rund"),
+                        new XAttribute("Woodwork", "1900"),
+                        new XAttribute("Stonework", "34000"),
+                        new XAttribute("Smithswork", "120"),
+                        new XAttribute("Wood", "58"),
+                        new XAttribute("Stone", "1700"),
+                        new XAttribute("Iron", "120"),
+                        new XAttribute("Upkeep", "8")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Sammansatt borgkärna"),
+                        new XAttribute("Woodwork", "5700"),
+                        new XAttribute("Stonework", "102000"),
+                        new XAttribute("Smithswork", "340"),
+                        new XAttribute("Wood", "170"),
+                        new XAttribute("Stone", "5100"),
+                        new XAttribute("Iron", "340"),
+                        new XAttribute("Upkeep", "16")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Trähus"),
+                        new XAttribute("Woodwork", "24"),
+                        new XAttribute("Stonework", "0"),
+                        new XAttribute("Smithswork", "0"),
+                        new XAttribute("Wood", "6"),
+                        new XAttribute("Stone", "0"),
+                        new XAttribute("Iron", "0"),
+                        new XAttribute("Upkeep", "0.025")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stenhus"),
+                        new XAttribute("Woodwork", "16"),
+                        new XAttribute("Stonework", "440"),
+                        new XAttribute("Smithswork", "8"),
+                        new XAttribute("Wood", "4"),
+                        new XAttribute("Stone", "22"),
+                        new XAttribute("Iron", "8"),
+                        new XAttribute("Upkeep", "0.025")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Tvåvånings trähus"),
+                        new XAttribute("Woodwork", "48"),
+                        new XAttribute("Stonework", "0"),
+                        new XAttribute("Smithswork", "8"),
+                        new XAttribute("Wood", "12"),
+                        new XAttribute("Stone", "0"),
+                        new XAttribute("Iron", "8"),
+                        new XAttribute("Upkeep", "0.05")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Tvåvånings stenhus"),
+                        new XAttribute("Woodwork", "60"),
+                        new XAttribute("Stonework", "880"),
+                        new XAttribute("Smithswork", "8"),
+                        new XAttribute("Wood", "4"),
+                        new XAttribute("Stone", "44"),
+                        new XAttribute("Iron", "8"),
+                        new XAttribute("Upkeep", "0.05")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Tempel/Kyrka"),
+                        new XAttribute("Woodwork", "1700"),
+                        new XAttribute("Stonework", "47000"),
+                        new XAttribute("Smithswork", "130"),
+                        new XAttribute("Wood", "66"),
+                        new XAttribute("Stone", "1200"),
+                        new XAttribute("Iron", "130"),
+                        new XAttribute("Upkeep", "0")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Stort tempel/kyrka"),
+                        new XAttribute("Woodwork", "5100"),
+                        new XAttribute("Stonework", "140000"),
+                        new XAttribute("Smithswork", "400"),
+                        new XAttribute("Wood", "200"),
+                        new XAttribute("Stone", "3500"),
+                        new XAttribute("Iron", "400"),
+                        new XAttribute("Upkeep", "0")
+                    ),
+                    new XElement("Building",
+                        new XAttribute("Building", "Katedral"),
+                        new XAttribute("Woodwork", "26000"),
+                        new XAttribute("Stonework", "700000"),
+                        new XAttribute("Smithswork", "2000"),
+                        new XAttribute("Wood", "1000"),
+                        new XAttribute("Stone", "18000"),
+                        new XAttribute("Iron", "2000"),
+                        new XAttribute("Upkeep", "0")
+                    )
+                )
+            );
+
+            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BuildingsSettings.xml";
+            xmlDoc.Save(@filePath);
+            BuildingsSettingsList = LoadBuildingsSettingsFromXml();
 
         }
 

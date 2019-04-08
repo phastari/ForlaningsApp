@@ -68,7 +68,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 {
                     found = true;
                     _fiefService.ArmyList[index].TemplarKnightsList[x].Age = model.Age;
-                    _fiefService.ArmyList[index].TemplarKnightsList[x].Name = model.Name;
+                    _fiefService.ArmyList[index].TemplarKnightsList[x].PersonName = model.PersonName;
                     _fiefService.ArmyList[index].TemplarKnightsList[x].Position = model.Position;
                     break;
                 }
@@ -82,7 +82,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         found = true;
                         _fiefService.ArmyList[index].CavalryTemplarKnightsList[x].Age = model.Age;
-                        _fiefService.ArmyList[index].CavalryTemplarKnightsList[x].Name = model.Name;
+                        _fiefService.ArmyList[index].CavalryTemplarKnightsList[x].PersonName = model.PersonName;
                         _fiefService.ArmyList[index].CavalryTemplarKnightsList[x].Position = model.Position;
                         break;
                     }
@@ -97,7 +97,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         found = true;
                         _fiefService.ArmyList[index].KnightsList[x].Age = model.Age;
-                        _fiefService.ArmyList[index].KnightsList[x].Name = model.Name;
+                        _fiefService.ArmyList[index].KnightsList[x].PersonName = model.PersonName;
                         _fiefService.ArmyList[index].KnightsList[x].Position = model.Position;
                         break;
                     }
@@ -112,7 +112,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         found = true;
                         _fiefService.ArmyList[index].OfficerCorporalsList[x].Age = model.Age;
-                        _fiefService.ArmyList[index].OfficerCorporalsList[x].Name = model.Name;
+                        _fiefService.ArmyList[index].OfficerCorporalsList[x].PersonName = model.PersonName;
                         _fiefService.ArmyList[index].OfficerCorporalsList[x].Position = model.Position;
                         break;
                     }
@@ -127,7 +127,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         found = true;
                         _fiefService.ArmyList[index].OfficerSergeantsList[x].Age = model.Age;
-                        _fiefService.ArmyList[index].OfficerSergeantsList[x].Name = model.Name;
+                        _fiefService.ArmyList[index].OfficerSergeantsList[x].PersonName = model.PersonName;
                         _fiefService.ArmyList[index].OfficerSergeantsList[x].Position = model.Position;
                         break;
                     }
@@ -142,7 +142,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         found = true;
                         _fiefService.ArmyList[index].OfficerCaptainsList[x].Age = model.Age;
-                        _fiefService.ArmyList[index].OfficerCaptainsList[x].Name = model.Name;
+                        _fiefService.ArmyList[index].OfficerCaptainsList[x].PersonName = model.PersonName;
                         _fiefService.ArmyList[index].OfficerCaptainsList[x].Position = model.Position;
                         break;
                     }

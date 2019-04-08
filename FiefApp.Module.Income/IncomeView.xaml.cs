@@ -1,4 +1,6 @@
-﻿namespace FiefApp.Module.Income
+﻿using System.Windows;
+
+namespace FiefApp.Module.Income
 {
     /// <summary>
     /// Interaction logic for IncomeView.xaml

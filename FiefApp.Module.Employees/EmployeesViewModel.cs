@@ -50,7 +50,7 @@ namespace FiefApp.Module.Employees
                 {
                     if (DataModel.EmployeesCollection[x].Id == e.Id)
                     {
-                        DataModel.EmployeesCollection[x].Name = e.EmployeeModel.Name;
+                        DataModel.EmployeesCollection[x].PersonName = e.EmployeeModel.PersonName;
                         DataModel.EmployeesCollection[x].Base = e.EmployeeModel.Base;
                         DataModel.EmployeesCollection[x].BaseCost = e.EmployeeModel.BaseCost;
                         DataModel.EmployeesCollection[x].Luxury = e.EmployeeModel.Luxury;
@@ -126,7 +126,7 @@ namespace FiefApp.Module.Employees
                 DataModel.EmployeesCollection.Add(new EmployeeModel()
                 {
                     Id = max,
-                    Name = e.EmployeeModel.Name,
+                    PersonName = e.EmployeeModel.PersonName,
                     BaseCost = e.EmployeeModel.BaseCost,
                     LuxuryCost = e.EmployeeModel.LuxuryCost,
                     Number = 0,

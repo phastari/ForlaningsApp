@@ -19,6 +19,7 @@ namespace FiefApp
         {
             containerRegistry.RegisterSingleton<IFiefService, FiefService>();
             containerRegistry.RegisterSingleton<ISettingsService, SettingsService>();
+            containerRegistry.RegisterSingleton<ISupplyService, SupplyService>();
 
             containerRegistry.Register<IBaseService, BaseService>();
             containerRegistry.Register<IInformationService, InformationService>();
@@ -32,6 +33,10 @@ namespace FiefApp
             containerRegistry.Register<IIncomeService, IncomeService>();
             containerRegistry.Register<ICalculations, Calculations>();
             containerRegistry.Register<IBuildingsService, BuildingsService>();
+            containerRegistry.Register<IWeatherService, WeatherService>();
+            containerRegistry.Register<ITradeService, TradeService>();
+            containerRegistry.Register<IPortService, PortService>();
+            containerRegistry.Register<IMinesService, MinesService>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

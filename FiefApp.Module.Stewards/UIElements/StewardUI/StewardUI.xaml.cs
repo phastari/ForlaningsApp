@@ -36,7 +36,7 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                 Bonus = Bonus,
                 Family = Family,
                 Loyalty = Loyalty,
-                Name = Name,
+                PersonName = Name,
                 Resources = StewardResources,
                 Skill = Skill,
                 IndustryId = IndustryId,
@@ -54,7 +54,7 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
             Bonus = _oldStewardModel.Bonus;
             Family = _oldStewardModel.Family;
             Loyalty = _oldStewardModel.Loyalty;
-            Name = _oldStewardModel.Name;
+            Name = _oldStewardModel.PersonName;
             StewardResources = _oldStewardModel.Resources;
             Skill = _oldStewardModel.Skill;
             IndustryId = _oldStewardModel.IndustryId;
@@ -78,7 +78,7 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                         Bonus = Bonus,
                         Family = Family,
                         Loyalty = Loyalty,
-                        Name = Name,
+                        PersonName = Steward,
                         Resources = StewardResources,
                         Skill = Skill,
                         IndustryId = IndustryId,

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Income.RoutedEvents;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using FiefApp.Common.Infrastructure.Models;
+using System.Windows.Controls;
 
 namespace FiefApp.Module.Income.UIElements.IncomeUI
 {
@@ -32,6 +34,20 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
                 typeof(string),
                 typeof(IncomeUI),
                 new PropertyMetadata("")
+            );
+
+        public int ManorId
+        {
+            get => (int)GetValue(ManorIdProperty);
+            set => SetValue(ManorIdProperty, value);
+        }
+
+        public static readonly DependencyProperty ManorIdProperty =
+            DependencyProperty.Register(
+                "ManorId",
+                typeof(int),
+                typeof(IncomeUI),
+                new PropertyMetadata(-1)
             );
 
         public int Silver
@@ -118,15 +134,15 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
                 new PropertyMetadata(-1)
             );
 
-        public ObservableCollection<StewardModel> StewardCollection
+        public ObservableCollection<StewardModel> StewardsCollection
         {
-            get => (ObservableCollection<StewardModel>)GetValue(StewardCollectionProperty);
-            set => SetValue(StewardCollectionProperty, value);
+            get => (ObservableCollection<StewardModel>)GetValue(StewardsCollectionProperty);
+            set => SetValue(StewardsCollectionProperty, value);
         }
 
-        public static readonly DependencyProperty StewardCollectionProperty =
+        public static readonly DependencyProperty StewardsCollectionProperty =
             DependencyProperty.Register(
-                "StewardCollection",
+                "StewardsCollection",
                 typeof(ObservableCollection<StewardModel>),
                 typeof(IncomeUI),
                 new PropertyMetadata(new ObservableCollection<StewardModel>())
@@ -146,28 +162,41 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
                 new PropertyMetadata(false)
             );
 
-        #endregion
-
-        #region UI Properties
-
-        private int _stewardId = -1;
-        public int StewardId
+        public int Difficulty
         {
-            get => _stewardId;
-            set
-            {
-                _stewardId = value;
-                NotifyPropertyChanged();
-            }
+            get => (int)GetValue(DifficultyProperty);
+            set => SetValue(DifficultyProperty, value);
         }
 
-        private string _skill = "0";
-        public string Skill
+        public static readonly DependencyProperty DifficultyProperty =
+            DependencyProperty.Register(
+                "Difficulty",
+                typeof(int),
+                typeof(IncomeUI),
+                new PropertyMetadata(-1)
+            );
+
+        public int StewardId
         {
-            get => _skill;
+            get => (int)GetValue(StewardIdProperty);
+            set => SetValue(StewardIdProperty, value);
+        }
+
+        public static readonly DependencyProperty StewardIdProperty =
+            DependencyProperty.Register(
+                "StewardId",
+                typeof(int),
+                typeof(IncomeUI),
+                new PropertyMetadata(-1)
+            );
+
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
             set
             {
-                _skill = value;
+                _selectedIndex = value;
                 NotifyPropertyChanged();
             }
         }
@@ -184,5 +213,55 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
         }
 
         #endregion
+
+        #region Event Handler For Selection Changed
+
+        private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IncomeUIEventArgs newEventArgs =
+                new IncomeUIEventArgs(
+                    IncomeUIRoutedEvent,
+                    "Changed",
+                    (StewardModel)StewardsComboBox.SelectedItem,
+                    Income,
+                    ManorId
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent IncomeUIRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "IncomeUIEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(IncomeUI)
+            );
+
+        public event RoutedEventHandler IncomeUIEvent
+        {
+            add => AddHandler(IncomeUIRoutedEvent, value);
+            remove => RemoveHandler(IncomeUIRoutedEvent, value);
+        }
+
+        #endregion
+
+        private void IncomeUI_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            for (int x = 0; x < StewardsCollection.Count; x++)
+            {
+                if (StewardsCollection[x].Id == StewardId)
+                {
+                    index = x;
+                }
+            }
+
+            SelectedIndex = index;
+        }
     }
 }

@@ -70,8 +70,8 @@
     <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net47\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.8.13.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Container.5.8.13\lib\net47\Unity.Container.dll</HintPath>
+    <Reference Include="Unity.Container, Version=5.8.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.8.11\lib\net47\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -89,18 +89,26 @@
     <Compile Include="CustomCommands\CustomSetterAction.cs" />
     <Compile Include="DataModels\ArmyDataModel.cs" />
     <Compile Include="DataModels\BoatbuildingDataModel.cs" />
+    <Compile Include="DataModels\BuildingsDataModel.cs" />
     <Compile Include="DataModels\EmployeesDataModel.cs" />
     <Compile Include="DataModels\ExpensesDataModel.cs" />
     <Compile Include="DataModels\IDataModelBase.cs" />
     <Compile Include="DataModels\IncomeDataModel.cs" />
     <Compile Include="DataModels\ManorDataModel.cs" />
+    <Compile Include="DataModels\MinesDataModel.cs" />
+    <Compile Include="DataModels\PortDataModel.cs" />
     <Compile Include="DataModels\StewardsDataModel.cs" />
     <Compile Include="DataModels\SubsidiaryDataModel.cs" />
+    <Compile Include="DataModels\SupplyDataModel.cs" />
+    <Compile Include="DataModels\TradeDataModel.cs" />
+    <Compile Include="DataModels\WeatherDataModel.cs" />
     <Compile Include="EventAggregatorEvents\EmployeeModelToEmployeeDataModelEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
     <Compile Include="Models\BoatbuilderModel.cs" />
     <Compile Include="Models\BoatModel.cs" />
+    <Compile Include="Models\BuilderModel.cs" />
+    <Compile Include="Models\BuildingModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\IncomeModel.cs" />
@@ -116,25 +124,38 @@
     <Compile Include="Models\VillageModel.cs" />
     <Compile Include="Services\ArmyService.cs" />
     <Compile Include="Services\BoatbuildingService.cs" />
+    <Compile Include="Services\BuildingsService.cs" />
     <Compile Include="Services\Calculations.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\ExpensesService.cs" />
     <Compile Include="Services\IArmyService.cs" />
     <Compile Include="Services\IBoatbuildingService.cs" />
+    <Compile Include="Services\IBuildingsService.cs" />
     <Compile Include="Services\ICalculations.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
     <Compile Include="Services\IExpensesService.cs" />
     <Compile Include="Services\IIncomeService.cs" />
     <Compile Include="Services\IManorService.cs" />
+    <Compile Include="Services\IMinesService.cs" />
     <Compile Include="Services\IncomeService.cs" />
+    <Compile Include="Services\IPortService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IStewardsService.cs" />
     <Compile Include="Services\ISubsidiaryService.cs" />
+    <Compile Include="Services\ISupplyService.cs" />
+    <Compile Include="Services\ITradeService.cs" />
+    <Compile Include="Services\IWeatherService.cs" />
     <Compile Include="Services\ManorService.cs" />
+    <Compile Include="Services\MinesService.cs" />
+    <Compile Include="Services\PortService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StewardsService.cs" />
     <Compile Include="Services\SubsidiaryService.cs" />
+    <Compile Include="Services\SupplyService.cs" />
+    <Compile Include="Services\TradeService.cs" />
+    <Compile Include="Services\WeatherService.cs" />
     <Compile Include="Settings\SettingsModels\BoatbuildingSettingsModel.cs" />
+    <Compile Include="Settings\SettingsModels\BuildingsSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\ExpensesSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\InformationSettingsModel.cs" />
     <Compile Include="Settings\SettingsModels\ArmySettingsModel.cs" />
@@ -306,6 +327,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Settings\SubsidiarySettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Settings\BuildingsSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

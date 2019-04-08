@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace FiefApp.Module.Boatbuilding.RoutedEvents
+namespace FiefApp.Module.Port.RoutedEvents
 {
     public class ConstructShipyardEventArgs : RoutedEventArgs
     {
