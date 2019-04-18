@@ -1,0 +1,352 @@
+﻿<UserControl x:Class="FiefApp.Module.Port.UIElements.CrewBoatUI.CrewBoatUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="234" 
+             d:DesignWidth="345">
+
+    <Grid
+        x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame 
+            Grid.Column="0" 
+            Grid.ColumnSpan="11"
+            Grid.Row="0" 
+            Grid.RowSpan="21"
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="2"
+            Content="Bemanna fartyg"
+            FontWeight="Bold"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="4"
+            Content="Besättning som behövs"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="2"
+            Content="Bemanna fartyg"
+            FontWeight="Bold"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="5"
+            Grid.Row="4"
+            Text="{Binding Path=CrewNeeded}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="6"
+            Content="Roddare som behövs"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="5"
+            Grid.Row="6"
+            Text="{Binding Path=RowersNeeded}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="8"
+            Content="Besättnings typ"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="3"
+            Grid.Row="8"
+            Content="Finns"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="5"
+            Grid.Row="8"
+            Content="Utsatta"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="10"
+            Content="Sjömän"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="10"
+            Text="{Binding Path=AmountSailors}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="5"
+            Grid.Row="10"
+            Value="{Binding Path=CrewedSailors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="12"
+            Content="Flottister"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="12"
+            Text="{Binding Path=AmountSeamens}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="5"
+            Grid.Row="12"
+            Value="{Binding Path=CrewedSeamens, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="14"
+            Content="Marinsoldater"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="14"
+            Text="{Binding Path=AmountMariners}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="5"
+            Grid.Row="14"
+            Value="{Binding Path=CrewedMariners, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="16"
+            Content="Roddare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="16"
+            Text="{Binding Path=AmountRowers}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="5"
+            Grid.Row="16"
+            Value="{Binding Path=CrewedRowers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.ColumnSpan="3"
+            Grid.Row="2"
+            Content="Ytterligare besättning"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.Row="4"
+            Content="Officerare"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="9"
+            Grid.Row="4"
+            Value="{Binding Path=AmountOfficers}"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.Row="6"
+            Content="Långlotsar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="9"
+            Grid.Row="6"
+            Value="{Binding Path=AmountNavigators}"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.Row="8"
+            Content="Vakter"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="9"
+            Grid.Row="8"
+            Value="{Binding Path=AmountGuards}"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.Row="12"
+            Content="Sjövärdighet"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="9"
+            Grid.Row="12"
+            T6Value="{Binding Path=Seaworthiness}"
+            ReadOnly="True"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.Row="14"
+            Content="Försvar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <t6TextBox:T6TextBox
+            Grid.Column="9"
+            Grid.Row="14"
+            T6Value="{Binding Path=Defense}"
+            ReadOnly="True"/>
+
+        <Label
+            Grid.Column="7"
+            Grid.Row="16"
+            Content="Kostnad,silver"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="7"
+            Grid.ColumnSpan="3"
+            Grid.Row="16"
+            Width="60"
+            Text="{Binding Path=CostSilver}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalAlignment="Right"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Button
+            Grid.Column="7"
+            Grid.Row="18"
+            Width="51"
+            Command="{Binding Path=CancelCommand}"
+            Content="avbryt"
+            HorizontalAlignment="Right"
+            Template="{DynamicResource ButtonTemplate}"
+            Margin="0,0,6,0"/>
+
+        <Button
+            Grid.Column="8"
+            Grid.ColumnSpan="2"
+            Grid.Row="18"
+            Width="51"
+            Command="{Binding Path=SaveCommand}"
+            Content="spara"
+            HorizontalAlignment="Right"
+            Template="{DynamicResource ButtonTemplate}"/>
+    </Grid>
+</UserControl>

@@ -2,12 +2,25 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:p="clr-namespace:FiefApp.Properties"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Shell" 
-        Height="626" 
-        Width="800">
+        Title="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"
+        Height="{Binding Source={x:Static p:Settings.Default}, Path=WindowHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static p:Settings.Default}, Path=WindowWidth, Mode=TwoWay}"
+        Left="{Binding Source={x:Static p:Settings.Default}, Path=WindowLeft, Mode=TwoWay}"
+        Top="{Binding Source={x:Static p:Settings.Default}, Path=WindowTop, Mode=TwoWay}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=OnApplicationLoadedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Path=OnApplicationCloseCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Window.Resources>
         <Style TargetType="TabItem">
@@ -15,17 +28,114 @@
                     Value="{Binding DataContext.TabName}"/>
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding 
+            Key="N" 
+            Modifiers="Ctrl" 
+            Command="{Binding Path=NewFiefCommand}"/>
+        <KeyBinding
+            Key="O"
+            Modifiers="Ctrl"
+            Command="{Binding Path=OpenFiefCommand}"/>
+        <KeyBinding
+            Key="S"
+            Modifiers="Ctrl"
+            Command="{Binding Path=SaveFiefCommand}"/>
+        <KeyBinding
+            Key="F4"
+            Modifiers="Alt"
+            Command="{Binding Path=ExitApplicationCommand}"/>
+    </Window.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Column="0"
-                        Grid.Row="0"
-                        prism:RegionManager.RegionName="MenuRegion"/>
+        <Menu 
+            Padding="15,0,0,0">
+            <MenuItem 
+                Header="Arkiv" 
+                Height="30" 
+                Width="Auto">
+                <MenuItem 
+                    Header="Nytt" 
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Width="200" 
+                    InputGestureText="Ctrl+N"
+                    Command="{Binding Path=NewFiefCommand}"/>
+
+                <MenuItem 
+                    Header="Öppna" 
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Width="200" 
+                    InputGestureText="Ctrl+O"
+                    Command="{Binding Path=OpenFiefCommand}"/>
+
+                <MenuItem 
+                    Header="Spara" 
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Width="200" 
+                    InputGestureText="Ctrl+S" 
+                    Command="{Binding Path=SaveFiefCommand}"/>
+
+                <MenuItem 
+                    Header="Spara som" 
+                    HorizontalAlignment="Left"
+                    Height="30" 
+                    Width="200" 
+                    InputGestureText="Ctrl+M"
+                    Command="{Binding Path=SaveAsFiefCommand}"/>
+
+                <Separator
+                    BorderThickness="0.5"
+                    Margin="3,0,0,0"/>
+
+                <MenuItem
+                    Header="Avsluta" 
+                    HorizontalAlignment="Left"
+                    Height="30" 
+                    Width="200" 
+                    InputGestureText="Alt+F4"
+                    Command="{Binding Path=ExitApplicationCommand}"/>
+
+            </MenuItem>
+            <MenuItem 
+                Header="Inställningar" 
+                Height="30" 
+                Width="Auto">
+
+                <MenuItem 
+                    IsCheckable="True" 
+                    Header="Ladda senaste" 
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Width="200"
+                    IsChecked="{Binding Path=LoadLast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <MenuItem 
+                    IsCheckable="True"
+                    Header="Spara automatiskt" 
+                    HorizontalAlignment="Left" 
+                    Height="30" 
+                    Width="200"/>
+
+                <Separator/>
+
+                <MenuItem
+                    Header="Återställ storlek"
+                    HorizontalAlignment="Left"
+                    Height="30"
+                    Width="200"
+                    Command="{Binding Path=ResetSizeCommand}"/>
+
+            </MenuItem>
+        </Menu>
 
         <TabControl Grid.Column="0" 
                     Grid.Row="1"

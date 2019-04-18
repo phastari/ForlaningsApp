@@ -6,8 +6,9 @@ using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Employees.RoutedEvents;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using FiefApp.Common.Infrastructure.HelpClasses.StringToFormula;
 
 namespace FiefApp.Module.Employees
 {
@@ -15,14 +16,17 @@ namespace FiefApp.Module.Employees
     {
         private readonly IBaseService _baseService;
         private readonly IEmployeeService _employeeService;
+        private readonly ISettingsService _settingsService;
 
         public EmployeesViewModel(
             IBaseService baseService,
-            IEmployeeService employeeService
+            IEmployeeService employeeService,
+            ISettingsService settingsService
             ) : base(baseService)
         {
             _baseService = baseService;
             _employeeService = employeeService;
+            _settingsService = settingsService;
 
             TabName = "Anställda";
 
@@ -164,7 +168,64 @@ namespace FiefApp.Module.Employees
                         == 0 ? _employeeService.GetAllEmployeesDataModel()
                 : _baseService.GetDataModel<EmployeesDataModel>(Index);
 
+            DataModel.PropertyChanged += DataModelPropertyChanged;
+
             UpdateFiefCollection();
+        }
+
+        #endregion
+
+        #region DataModel PropertyChanged
+
+        private void DataModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Falconer":
+                    DataModel.BaseFalconer = _settingsService.EmployeeSettingsModel.FalconerBase * DataModel.Falconer;
+                    DataModel.LuxuryFalconer = _settingsService.EmployeeSettingsModel.FalconerLuxury * DataModel.Falconer;
+                    break;
+
+                case "Bailiff":
+                    DataModel.BaseBailiff = _settingsService.EmployeeSettingsModel.BailiffBase * DataModel.Bailiff;
+                    DataModel.LuxuryBailiff = _settingsService.EmployeeSettingsModel.BailiffLuxury * DataModel.Bailiff;
+                    break;
+
+                case "Herald":
+                    DataModel.BaseHerald = _settingsService.EmployeeSettingsModel.HeraldBase * DataModel.Herald;
+                    DataModel.LuxuryHerald = _settingsService.EmployeeSettingsModel.HeraldLuxury * DataModel.Herald;
+                    break;
+
+                case "Hunter":
+                    DataModel.BaseHunter = _settingsService.EmployeeSettingsModel.HunterBase * DataModel.Hunter;
+                    DataModel.LuxuryHunter = _settingsService.EmployeeSettingsModel.HunterLuxury * DataModel.Hunter;
+                    break;
+
+                case "Physician":
+                    DataModel.BasePhysician = _settingsService.EmployeeSettingsModel.PhysicianBase * DataModel.Physician;
+                    DataModel.LuxuryPhysician = _settingsService.EmployeeSettingsModel.PhysicianLuxury * DataModel.Physician;
+                    break;
+
+                case "Scholar":
+                    DataModel.BaseScholar = _settingsService.EmployeeSettingsModel.ScholarBase * DataModel.Scholar;
+                    DataModel.LuxuryScholar = _settingsService.EmployeeSettingsModel.ScholarLuxury * DataModel.Scholar;
+                    break;
+
+                case "Cupbearer":
+                    DataModel.BaseCupbearer = _settingsService.EmployeeSettingsModel.CupbearerBase * DataModel.Cupbearer;
+                    DataModel.LuxuryCupbearer = _settingsService.EmployeeSettingsModel.CupbearerLuxury * DataModel.Cupbearer;
+                    break;
+
+                case "Prospector":
+                    DataModel.BaseProspector = _settingsService.EmployeeSettingsModel.ProspectorBase * DataModel.Prospector;
+
+                    string formula = $"{DataModel.Prospector}{_settingsService.EmployeeSettingsModel.ProspectorLuxury}";
+                    StringToFormula stf = new StringToFormula();
+                    double result = stf.Eval(formula);
+                    result = Math.Ceiling(result);
+                    DataModel.LuxuryProspector = Convert.ToInt16(result);
+                    break;
+            }
         }
 
         #endregion

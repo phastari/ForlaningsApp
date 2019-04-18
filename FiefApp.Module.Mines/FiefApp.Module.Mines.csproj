@@ -78,7 +78,19 @@
       <DependentUpon>MinesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MinesViewModel.cs" />
+    <Compile Include="RoutedEvents\ConstructQuarryUIEventArgs.cs" />
+    <Compile Include="RoutedEvents\QuarryUIEventArgs.cs" />
+    <Compile Include="UIElements\ConstructQuarryUI\ConstructQuarryUI.xaml.cs">
+      <DependentUpon>ConstructQuarryUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UIElements\MineUI\MineUI.xaml.cs">
+      <DependentUpon>MineUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIElements\QuarryUI\QuarryUI.xaml.cs">
+      <DependentUpon>QuarryUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RoutedEvents\MineUIEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -92,6 +104,18 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MinesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\ConstructQuarryUI\ConstructQuarryUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\MineUI\MineUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\QuarryUI\QuarryUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

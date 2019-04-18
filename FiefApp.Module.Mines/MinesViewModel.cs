@@ -1,6 +1,11 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using System.ComponentModel;
+using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.Mines.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Mines
 {
@@ -18,7 +23,47 @@ namespace FiefApp.Module.Mines
 
             _baseService = baseService;
             _minesService = minesService;
+
+            AddQuarryCommand = new DelegateCommand(ExecuteAddQuarryCommand);
+            ConstructQuarryUIEventHandler = new CustomDelegateCommand(ExecuteConstructQuarryUIEventHandler, o => true);
         }
+
+        #region DelegateCommand : AddQuarryCommand
+
+        public DelegateCommand AddQuarryCommand { get; set; }
+        private void ExecuteAddQuarryCommand()
+        {
+
+        }
+
+        #endregion
+
+        #region CustomDelegateCommand : ConstructQuarryUIEventHandler
+
+        public CustomDelegateCommand ConstructQuarryUIEventHandler { get; set; }
+        private void ExecuteConstructQuarryUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is ConstructQuarryUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Save")
+            {
+                e.Model.Id = _minesService.GetNewIdForQuarry(Index);
+
+                DataModel.QuarriesCollection.Add(e.Model);
+                DataModel.UpdateTotals();
+
+                SaveData();
+            }
+        }
+
+        #endregion
 
         #region DataModel
 
@@ -30,6 +75,8 @@ namespace FiefApp.Module.Mines
         }
 
         #endregion
+
+        #region Methods
 
         protected override void SaveData(int index = -1)
         {
@@ -44,5 +91,7 @@ namespace FiefApp.Module.Mines
 
             UpdateFiefCollection();
         }
+
+        #endregion
     }
 }

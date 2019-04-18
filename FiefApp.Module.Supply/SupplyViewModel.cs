@@ -33,7 +33,13 @@ namespace FiefApp.Module.Supply
         {
             if (DataModel.AmountSilver != 0)
             {
-                if (DataModel.SupplySilver - DataModel.AmountSilver >= 0)
+                if (DataModel.AmountSilver > 0)
+                {
+                    DataModel.SupplySilver += DataModel.AmountSilver;
+                    DataModel.TransactionSilver = "";
+                    DataModel.AmountSilver = 0;
+                }
+                else if (DataModel.SupplySilver - DataModel.AmountSilver >= 0)
                 {
                     DataModel.SupplySilver += DataModel.AmountSilver;
                     DataModel.TransactionSilver = "";
@@ -54,7 +60,13 @@ namespace FiefApp.Module.Supply
         {
             if (DataModel.AmountBase != 0)
             {
-                if (DataModel.SupplyBase - DataModel.AmountBase >= 0)
+                if (DataModel.AmountBase > 0)
+                {
+                    DataModel.SupplyBase += DataModel.AmountBase;
+                    DataModel.TransactionBase = "";
+                    DataModel.AmountBase = 0;
+                }
+                else if (DataModel.SupplyBase - DataModel.AmountBase >= 0)
                 {
                     DataModel.SupplyBase += DataModel.AmountBase;
                     DataModel.TransactionBase = "";
@@ -75,7 +87,13 @@ namespace FiefApp.Module.Supply
         {
             if (DataModel.AmountLuxury != 0)
             {
-                if (DataModel.SupplyLuxury - DataModel.AmountLuxury >= 0)
+                if (DataModel.AmountLuxury > 0)
+                {
+                    DataModel.SupplyLuxury += DataModel.AmountLuxury;
+                    DataModel.TransactionLuxury = "";
+                    DataModel.AmountLuxury = 0;
+                }
+                else if (DataModel.SupplyLuxury - DataModel.AmountLuxury >= 0)
                 {
                     DataModel.SupplyLuxury += DataModel.AmountLuxury;
                     DataModel.TransactionLuxury = "";
@@ -96,7 +114,13 @@ namespace FiefApp.Module.Supply
         {
             if (DataModel.AmountIron != 0)
             {
-                if (DataModel.SupplyIron - DataModel.AmountIron >= 0)
+                if (DataModel.AmountIron > 0)
+                {
+                    DataModel.SupplyIron += DataModel.AmountIron;
+                    DataModel.TransactionIron = "";
+                    DataModel.AmountIron = 0;
+                }
+                else if (DataModel.SupplyIron - DataModel.AmountIron >= 0)
                 {
                     DataModel.SupplyIron += DataModel.AmountIron;
                     DataModel.TransactionIron = "";
@@ -117,7 +141,13 @@ namespace FiefApp.Module.Supply
         {
             if (DataModel.AmountStone != 0)
             {
-                if (DataModel.SupplyStone - DataModel.AmountStone >= 0)
+                if (DataModel.AmountStone > 0)
+                {
+                    DataModel.SupplyStone += DataModel.AmountStone;
+                    DataModel.TransactionStone = "";
+                    DataModel.AmountStone = 0;
+                }
+                else if (DataModel.SupplyStone - DataModel.AmountStone >= 0)
                 {
                     DataModel.SupplyStone += DataModel.AmountStone;
                     DataModel.TransactionStone = "";
@@ -138,7 +168,13 @@ namespace FiefApp.Module.Supply
         {
             if (DataModel.AmountWood != 0)
             {
-                if (DataModel.SupplyWood - DataModel.AmountWood >= 0)
+                if (DataModel.AmountWood > 0)
+                {
+                    DataModel.SupplyWood += DataModel.AmountWood;
+                    DataModel.TransactionWood = "";
+                    DataModel.AmountWood = 0;
+                }
+                else if (DataModel.SupplyWood - DataModel.AmountWood >= 0)
                 {
                     DataModel.SupplyWood += DataModel.AmountWood;
                     DataModel.TransactionWood = "";

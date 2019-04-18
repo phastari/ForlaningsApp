@@ -208,7 +208,7 @@
             <Label
                 Content="{Binding ElementName=FiefComboBox, Path=Text}"
                 Grid.Column="1"
-                Grid.Row="0"
+                Grid.Row="2"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Center"
                 HorizontalAlignment="Left"

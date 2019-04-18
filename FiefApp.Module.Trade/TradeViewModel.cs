@@ -1,6 +1,11 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.Trade.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Trade
 {
@@ -18,7 +23,87 @@ namespace FiefApp.Module.Trade
 
             _baseService = baseService;
             _tradeService = tradeService;
+
+            AddMerchant = new DelegateCommand(ExecuteAddMerchant);
+            MerchantUIEventHandler = new CustomDelegateCommand(ExecuteMerchantUIEventHandler, o => true);
         }
+
+        #region DelegateCommand : AddMerchant
+
+        public DelegateCommand AddMerchant { get; set; }
+        private void ExecuteAddMerchant()
+        {
+            DataModel.MerchantsCollection.Add(new MerchantModel()
+            {
+                Id = _tradeService.GetNewMerchantId()
+            });
+        }
+
+        #endregion
+        #region CustomDelegateCommand : MerchantUIEventHandler
+
+        public CustomDelegateCommand MerchantUIEventHandler { get; set; }
+        private void ExecuteMerchantUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is MerchantUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.MerchantsCollection.Count; x++)
+                {
+                    if (e.Id == DataModel.MerchantsCollection[x].Id)
+                    {
+                        DataModel.MerchantsCollection.RemoveAt(x);
+                        break;
+                    }
+                }
+            }
+
+            if (e.Action == "Save")
+            {
+                for (int x = 0; x < DataModel.MerchantsCollection.Count; x++)
+                {
+                    if (e.Id == DataModel.MerchantsCollection[x].Id)
+                    {
+                        DataModel.MerchantsCollection[x].PersonName = e.Model.PersonName;
+                        DataModel.MerchantsCollection[x].Age = e.Model.Age;
+                        DataModel.MerchantsCollection[x].Skill = e.Model.Skill;
+                        DataModel.MerchantsCollection[x].Resources = e.Model.Resources;
+                        DataModel.MerchantsCollection[x].Loyalty = e.Model.Loyalty;
+                        break;
+                    }
+                }
+            }
+
+            if (e.Action == "Change")
+            {
+                for (int x = 0; x < DataModel.MerchantsCollection.Count; x++)
+                {
+                    if (DataModel.MerchantsCollection[x].OnBoardBoatId == e.BoatId)
+                    {
+                        if (DataModel.MerchantsCollection[x].Id != e.Id)
+                        {
+                            DataModel.MerchantsCollection[x].OnBoardBoatId = -1;
+                            DataModel.MerchantsCollection[x].OnBoardBoatName = "";
+                        }
+                        else
+                        {
+                            DataModel.MerchantsCollection[x].OnBoardBoatId = e.BoatId;
+                            DataModel.MerchantsCollection[x].OnBoardBoatName = e.BoatName;
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         #region DataModel
 

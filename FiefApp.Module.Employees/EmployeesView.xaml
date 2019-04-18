@@ -254,15 +254,15 @@
             </ComboBox>
 
             <Label
-                    Content="{Binding ElementName=FiefComboBox, Path=Text}"
-                    Grid.Column="1"
-                    Grid.Row="0"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    HorizontalAlignment="Left"
-                    HorizontalContentAlignment="Left"
-                    Padding="6,0,0,0"
-                    ToolTip="Läge">
+                Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                Grid.Column="1"
+                Grid.Row="0"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                Padding="6,0,0,0"
+                ToolTip="Läge">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -276,380 +276,373 @@
             </Label>
 
             <Label 
-                    Grid.Column="5"
-                    Grid.Row="2"
-                    Content="Bas"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="2"
+                Content="Bas"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="7"
-                    Grid.Row="2"
-                    Content="Lyx"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="2"
+                Content="Lyx"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="3"
-                    Grid.Row="4"
-                    Content="Totalt"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="3"
+                Grid.Row="4"
+                Content="Totalt"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="4"
-                    Text="{Binding Path=DataModel.TotalBase}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="#FAE1D7"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="4"
+                Text="{Binding Path=DataModel.TotalBase}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="#FAE1D7"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="4"
-                    Text="{Binding Path=DataModel.TotalLuxury}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Padding="0" 
-                    Background="#FAE1D7"/>
+                Grid.Column="7"
+                Grid.Row="4"
+                Text="{Binding Path=DataModel.TotalLuxury}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Padding="0" 
+                Background="#FAE1D7"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="6"
-                    Content="Anställda"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Padding="0" 
-                    FontWeight="Bold"/>
+                Grid.Column="1"
+                Grid.Row="6"
+                Content="Anställda"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0" 
+                FontWeight="Bold"/>
 
             <Label 
-                    Grid.Column="3"
-                    Grid.Row="6"
-                    Content="Antal"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="3"
+                Grid.Row="6"
+                Content="Antal"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="5"
-                    Grid.Row="6"
-                    Content="Bas"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="6"
+                Content="Bas"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="7"
-                    Grid.Row="6"
-                    Content="Lyx"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="6"
+                Content="Lyx"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="8"
-                    Content="Falkenerare"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="8"
+                Content="Falkenerare"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="8"
-                    Value="{Binding Path=DataModel.Falconer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="8"
+                Value="{Binding Path=DataModel.Falconer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="8"
-                    Text="{Binding Path=DataModel.BaseFalconer}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="8"
+                Text="{Binding Path=DataModel.BaseFalconer}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="8"
-                    Text="{Binding Path=DataModel.LuxuryFalconer}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="8"
+                Text="{Binding Path=DataModel.LuxuryFalconer}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="10"
-                    Content="Fogde"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="10"
+                Content="Fogde"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="10"
-                    Value="{Binding Path=DataModel.Bailiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="10"
+                Value="{Binding Path=DataModel.Bailiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="10"
-                    Text="{Binding Path=DataModel.BaseBailiff}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="10"
+                Text="{Binding Path=DataModel.BaseBailiff}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="10"
-                    Text="{Binding Path=DataModel.LuxuryBailiff}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="10"
+                Text="{Binding Path=DataModel.LuxuryBailiff}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="12"
-                    Content="Härold"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="12"
+                Content="Härold"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="12"
-                    Value="{Binding Path=DataModel.Herald, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="12"
+                Value="{Binding Path=DataModel.Herald, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="12"
-                    Text="{Binding Path=DataModel.BaseHerald}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="12"
+                Text="{Binding Path=DataModel.BaseHerald}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="12"
-                    Text="{Binding Path=DataModel.LuxuryHerald}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="12"
+                Text="{Binding Path=DataModel.LuxuryHerald}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="14"
-                    Content="Jägare"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="14"
+                Content="Jägare"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="14"
-                    Value="{Binding Path=DataModel.Hunter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="14"
+                Value="{Binding Path=DataModel.Hunter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="14"
-                    Text="{Binding Path=DataModel.BaseHunter}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="14"
+                Text="{Binding Path=DataModel.BaseHunter}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="14"
-                    Text="{Binding Path=DataModel.LuxuryHunter}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="14"
+                Text="{Binding Path=DataModel.LuxuryHunter}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="16"
-                    Content="Livmedikus"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="16"
+                Content="Livmedikus"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="16"
-                    Value="{Binding Path=DataModel.Physician, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="16"
+                Value="{Binding Path=DataModel.Physician, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="16"
-                    Text="{Binding Path=DataModel.BasePhysician}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="16"
+                Text="{Binding Path=DataModel.BasePhysician}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="16"
-                    Text="{Binding Path=DataModel.LuxuryPhysician}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="16"
+                Text="{Binding Path=DataModel.LuxuryPhysician}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="18"
-                    Content="Lärd"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="18"
+                Content="Lärd"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="18"
-                    Value="{Binding Path=DataModel.Scholar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="18"
+                Value="{Binding Path=DataModel.Scholar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="18"
-                    Text="{Binding Path=DataModel.BaseScholar}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="18"
+                Text="{Binding Path=DataModel.BaseScholar}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="18"
-                    Text="{Binding Path=DataModel.LuxuryScholar}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="18"
+                Text="{Binding Path=DataModel.LuxuryScholar}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="20"
-                    Content="Munskänk"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="20"
+                Content="Munskänk"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="20"
-                    Value="{Binding Path=DataModel.Cupbearer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="20"
+                Value="{Binding Path=DataModel.Cupbearer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="20"
-                    Text="{Binding Path=DataModel.BaseCupbearer}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="20"
+                Text="{Binding Path=DataModel.BaseCupbearer}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="20"
-                    Text="{Binding Path=DataModel.LuxuryCupbearer}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="20"
+                Text="{Binding Path=DataModel.LuxuryCupbearer}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <Label 
-                    Grid.Column="1"
-                    Grid.Row="22"
-                    Content="Prospektor"
-                    HorizontalContentAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    Padding="0"/>
+                Grid.Column="1"
+                Grid.Row="22"
+                Content="Prospektor"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
 
             <itb:iTextBox
-                    Grid.Column="3"
-                    Grid.Row="22"
-                    Value="{Binding Path=DataModel.Prospector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Grid.Column="3"
+                Grid.Row="22"
+                Value="{Binding Path=DataModel.Prospector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox
-                    Grid.Column="5"
-                    Grid.Row="22"
-                    Text="{Binding Path=DataModel.BaseProspector}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="5"
+                Grid.Row="22"
+                Text="{Binding Path=DataModel.BaseProspector}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
             <TextBox
-                    Grid.Column="7"
-                    Grid.Row="22"
-                    Text="{Binding Path=DataModel.LuxuryProspector}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    IsTabStop="False"
-                    Background="WhiteSmoke"
-                    Padding="0"/>
+                Grid.Column="7"
+                Grid.Row="22"
+                Text="{Binding Path=DataModel.LuxuryProspector}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                IsTabStop="False"
+                Background="WhiteSmoke"
+                Padding="0"/>
 
         </Grid>
-
-
-
-
-
-
-
     </Grid>
 </UserControl>

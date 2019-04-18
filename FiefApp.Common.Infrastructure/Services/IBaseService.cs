@@ -14,5 +14,6 @@ namespace FiefApp.Common.Infrastructure.Services
         ObservableCollection<string> GetFiefCollection();
 
         int RollObDice(int skill);
+        int RollDie(int x, int y);
     }
 }

@@ -1,4 +1,5 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
@@ -12,14 +13,17 @@ namespace FiefApp.Module.Expenses
     {
         private readonly IBaseService _baseService;
         private readonly IExpensesService _expensesService;
+        private readonly ISettingsService _settingsService;
 
         public ExpensesViewModel(
             IBaseService baseService,
-            IExpensesService expensesService
+            IExpensesService expensesService,
+            ISettingsService settingsService
             ) : base(baseService)
         {
             _baseService = baseService;
             _expensesService = expensesService;
+            _settingsService = settingsService;
 
             TabName = "Utgifter";
 
@@ -111,21 +115,21 @@ namespace FiefApp.Module.Expenses
 
         private void DataModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "FeedingPoor")
+            switch (e.PropertyName)
             {
-                DataModel.FeedingPoorBase = DataModel.FeedingPoor
-                    ? _expensesService.CalculateFeedingPoorBaseCost(Index)
-                    : 0;
-            }
-            else if (e.PropertyName == "FeedingDayworkers")
-            {
-                DataModel.FeedingDayworkersBase = DataModel.FeedingDayworkers
-                    ? _expensesService.CalculateFeedingDayworkers(Index)
-                    : 0;
-            }
-            else if (e.PropertyName == "ImproveRoads")
-            {
-                if (DataModel.ImproveRoads)
+                case "FeedingPoor":
+                    DataModel.FeedingPoorBase = DataModel.FeedingPoor
+                        ? _expensesService.CalculateFeedingPoorBaseCost(Index)
+                        : 0;
+                    break;
+
+                case "FeedingDayworkers":
+                    DataModel.FeedingDayworkersBase = DataModel.FeedingDayworkers
+                        ? _expensesService.CalculateFeedingDayworkers(Index)
+                        : 0;
+                    break;
+
+                case "ImproveRoads" when DataModel.ImproveRoads:
                 {
                     RoadModel tempRoadModel = _expensesService.CheckRoadUpgradeCost(Index);
                     if (tempRoadModel != null)
@@ -146,12 +150,53 @@ namespace FiefApp.Module.Expenses
                         DataModel.ImproveRoadsBase = 0;
                         DataModel.ImproveRoadsStone = 0;
                     }
+                    break;
                 }
-                else
-                {
+
+                case "ImproveRoads":
                     DataModel.ImproveRoadsBase = 0;
                     DataModel.ImproveRoadsStone = 0;
-                }
+                    break;
+
+                case "StableRidingHorses":
+                    DataModel.StableRidingHorsesBase = DataModel.StableRidingHorses * Convert.ToInt32(_settingsService.StableSettingsModel.StableList[0].BaseCost);
+                    break;
+
+                case "StableWarHorses":
+                    DataModel.StableWarHorsesBase = DataModel.StableWarHorses * Convert.ToInt32(_settingsService.StableSettingsModel.StableList[1].BaseCost);
+                    break;
+
+                case "Feasts":
+                    DataModel.FeastsBase = DataModel.Feasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Feast")].BaseCost;
+                    DataModel.FeastsLuxury = DataModel.Feasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Feast")].LuxuryCost;
+                    break;
+
+                case "PeopleFeasts":
+                    DataModel.PeopleFeastsBase = DataModel.PeopleFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "PeopleFeasts")].BaseCost;
+                    DataModel.PeopleFeastsLuxury = DataModel.PeopleFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "PeopleFeasts")].LuxuryCost;
+                    break;
+
+                case "ReligiousFeasts":
+                    DataModel.ReligiousFeastsSilver = DataModel.ReligiousFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Religious")].SilverCost;
+                    DataModel.ReligiousFeastsBase = DataModel.ReligiousFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Religious")].BaseCost;
+                    DataModel.ReligiousFeastsLuxury = DataModel.ReligiousFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Religious")].LuxuryCost;
+                    break;
+
+                case "Tournaments":
+                    DataModel.TournamentsSilver = DataModel.Tournaments * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Tourney")].SilverCost;
+                    DataModel.TournamentsBase = DataModel.Tournaments * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Tourney")].BaseCost;
+                    DataModel.TournamentsLuxury = DataModel.Tournaments * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Tourney")].LuxuryCost;
+                    break;
+
+                case "CalculateAdultResidentsCost":
+                    DataModel.ResidentAdultsBase = DataModel.ResidentAdults * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[DataModel.LivingconditionIndex].BaseCost;
+                    DataModel.ResidentAdultsLuxury = DataModel.ResidentAdults * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[DataModel.LivingconditionIndex].LuxuryCost;
+                    break;
+
+                case "CalculateChildrenResidentsCost":
+                    DataModel.ResidentChildrenBase = Convert.ToInt32(Math.Ceiling(DataModel.ResidentChildren * (decimal)_settingsService.LivingconditionsSettingsModel.LivingconditionsList[DataModel.LivingconditionIndex].BaseCost));
+                    DataModel.ResidentChildrenLuxury = Convert.ToInt32(Math.Floor(DataModel.ResidentChildren * (decimal)_settingsService.LivingconditionsSettingsModel.LivingconditionsList[DataModel.LivingconditionIndex].LuxuryCost));
+                    break;
             }
         }
 

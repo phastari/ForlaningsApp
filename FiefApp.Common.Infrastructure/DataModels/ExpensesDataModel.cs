@@ -1,20 +1,11 @@
-﻿using FiefApp.Common.Infrastructure.Services;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
     public class ExpensesDataModel : INotifyPropertyChanged, IDataModelBase, ICloneable
     {
-        private readonly ISettingsService _settingsService;
-
-        public ExpensesDataModel(ISettingsService settingsService)
-        {
-            _settingsService = settingsService;
-        }
-
         private int _id;
         public int Id
         {
@@ -201,9 +192,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 else
                 {
                     _stableRidingHorses = value;
-                    StableRidingHorsesBase = StableRidingHorses * Convert.ToInt32(_settingsService.StableSettingsModel.StableList[0].BaseCost);
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -234,9 +224,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 else
                 {
                     _stableWarHorses = value;
-                    StableWarHorsesBase = StableWarHorses * Convert.ToInt32(_settingsService.StableSettingsModel.StableList[1].BaseCost);
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -412,7 +401,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 {
                     _manorMaintenance = value;
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -557,10 +546,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 else
                 {
                     _feasts = value;
-                    FeastsBase = Feasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Feast")].BaseCost;
-                    FeastsLuxury = Feasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Feast")].LuxuryCost;
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -603,10 +590,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 else
                 {
                     _peopleFeasts = value;
-                    PeopleFeastsBase = PeopleFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "People")].BaseCost;
-                    PeopleFeastsLuxury = PeopleFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "People")].LuxuryCost;
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -650,11 +635,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 else
                 {
                     _religiousFeastses = value;
-                    ReligiousFeastsSilver = ReligiousFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Religious")].SilverCost;
-                    ReligiousFeastsBase = ReligiousFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Religious")].BaseCost;
-                    ReligiousFeastsLuxury = ReligiousFeasts * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Religious")].LuxuryCost;
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -709,11 +691,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 else
                 {
                     _tournaments = value;
-                    TournamentsSilver = Tournaments * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Tourney")].SilverCost;
-                    TournamentsBase = Tournaments * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Tourney")].BaseCost;
-                    TournamentsLuxury = Tournaments * _settingsService.ExpensesSettingsModel.EventList[_settingsService.ExpensesSettingsModel.EventList.FindIndex(o => o.EventName == "Tourney")].LuxuryCost;
                 }
-                
+
                 CalculateTotals();
                 NotifyPropertyChanged();
             }
@@ -766,7 +745,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 {
                     _others = value;
                 }
-                
+
                 NotifyPropertyChanged();
             }
         }
@@ -1045,8 +1024,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
         {
             if (LivingconditionIndex != -1)
             {
-                ResidentAdultsBase = ResidentAdults * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[LivingconditionIndex].BaseCost;
-                ResidentAdultsLuxury = ResidentAdults * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[LivingconditionIndex].LuxuryCost;
+                NotifyPropertyChanged("CalculateAdultResidentsCost");
             }
         }
 
@@ -1054,8 +1032,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
         {
             if (LivingconditionIndex != -1)
             {
-                ResidentChildrenBase = Convert.ToInt32(Math.Ceiling(ResidentChildren * (decimal)_settingsService.LivingconditionsSettingsModel.LivingconditionsList[LivingconditionIndex].BaseCost));
-                ResidentChildrenLuxury = Convert.ToInt32(Math.Floor(ResidentChildren * (decimal)_settingsService.LivingconditionsSettingsModel.LivingconditionsList[LivingconditionIndex].LuxuryCost));
+                NotifyPropertyChanged("CalculateChildrenResidentsCost");
             }
         }
 

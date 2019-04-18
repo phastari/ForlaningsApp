@@ -1,21 +1,13 @@
-﻿using FiefApp.Common.Infrastructure.Services;
+﻿using FiefApp.Common.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
     public class ArmyDataModel : INotifyPropertyChanged, IDataModelBase, ICloneable
     {
-        private readonly ISettingsService _settingsService;
-
-        public ArmyDataModel(ISettingsService settingsService)
-        {
-            _settingsService = settingsService;
-        }
-
         private int _id;
         public int Id
         {
@@ -36,8 +28,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyCrossbowmen = value;
-                    ArmyCrossbowmenSilver = _settingsService.ArmySettingsModel.ArmyCrossbowmenSilver * value;
-                    ArmyCrossbowmenBase = _settingsService.ArmySettingsModel.ArmyCrossbowmenBase * value;
                 }
                 else
                 {
@@ -81,8 +71,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyBowmen = value;
-                    ArmyBowmenSilver = _settingsService.ArmySettingsModel.ArmyBowmenSilver * value;
-                    ArmyBowmenBase = _settingsService.ArmySettingsModel.ArmyBowmenBase * value;
                 }
                 else
                 {
@@ -126,8 +114,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyMedics = value;
-                    ArmyMedicsSilver = _settingsService.ArmySettingsModel.ArmyMedicsSilver * value;
-                    ArmyMedicsBase = _settingsService.ArmySettingsModel.ArmyMedicsBase * value;
                 }
                 else
                 {
@@ -171,8 +157,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyMedicsSkilled = value;
-                    ArmyMedicsSkilledSilver = _settingsService.ArmySettingsModel.ArmyMedicsSkilledSilver * value;
-                    ArmyMedicsSkilledBase = _settingsService.ArmySettingsModel.ArmyMedicsSkilledBase * value;
                 }
                 else
                 {
@@ -216,8 +200,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyInfantry = value;
-                    ArmyInfantrySilver = _settingsService.ArmySettingsModel.ArmyInfantrySilver * value;
-                    ArmyInfantryBase = _settingsService.ArmySettingsModel.ArmyInfantryBase * value;
                 }
                 else
                 {
@@ -261,8 +243,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyInfantryMedium = value;
-                    ArmyInfantryMediumSilver = _settingsService.ArmySettingsModel.ArmyInfantryMediumSilver * value;
-                    ArmyInfantryMediumBase = _settingsService.ArmySettingsModel.ArmyInfantryMediumBase * value;
                 }
                 else
                 {
@@ -306,8 +286,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyInfantryHeavy = value;
-                    ArmyInfantryHeavySilver = _settingsService.ArmySettingsModel.ArmyInfantryHeavySilver * value;
-                    ArmyInfantryHeavyBase = _settingsService.ArmySettingsModel.ArmyInfantryHeavyBase * value;
                 }
                 else
                 {
@@ -351,8 +329,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyInfantryElite = value;
-                    ArmyInfantryEliteSilver = _settingsService.ArmySettingsModel.ArmyInfantryEliteSilver * value;
-                    ArmyInfantryEliteBase = _settingsService.ArmySettingsModel.ArmyInfantryEliteBase * value;
                 }
                 else
                 {
@@ -396,8 +372,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyLongbowmen = value;
-                    ArmyLongbowmenSilver = _settingsService.ArmySettingsModel.ArmyLongbowmenSilver * value;
-                    ArmyLongbowmenBase = _settingsService.ArmySettingsModel.ArmyLongbowmenBase * value;
                 }
                 else
                 {
@@ -441,8 +415,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyMercenary = value;
-                    ArmyMercenarySilver = _settingsService.ArmySettingsModel.ArmyMercenarySilver * value;
-                    ArmyMercenaryBase = _settingsService.ArmySettingsModel.ArmyMercenaryBase * value;
                 }
                 else
                 {
@@ -486,8 +458,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyMercenaryElite = value;
-                    ArmyMercenaryEliteSilver = _settingsService.ArmySettingsModel.ArmyMercenaryEliteSilver * value;
-                    ArmyMercenaryEliteBase = _settingsService.ArmySettingsModel.ArmyMercenaryEliteBase * value;
                 }
                 else
                 {
@@ -531,8 +501,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyMercenaryBowmen = value;
-                    ArmyMercenaryBowmenSilver = _settingsService.ArmySettingsModel.ArmyMercenaryBowmenSilver * value;
-                    ArmyMercenaryBowmenBase = _settingsService.ArmySettingsModel.ArmyMercenaryBowmenBase * value;
                 }
                 else
                 {
@@ -576,8 +544,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyEngineers = value;
-                    ArmyEngineersSilver = _settingsService.ArmySettingsModel.ArmyEngineersSilver * value;
-                    ArmyEngineersBase = _settingsService.ArmySettingsModel.ArmyEngineersBase * value;
                 }
                 else
                 {
@@ -621,8 +587,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armySpearmen = value;
-                    ArmySpearmenSilver = _settingsService.ArmySettingsModel.ArmySpearmenSilver * value;
-                    ArmySpearmenBase = _settingsService.ArmySettingsModel.ArmySpearmenBase * value;
                 }
                 else
                 {
@@ -666,8 +630,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyScouts = value;
-                    ArmyScoutsSilver = _settingsService.ArmySettingsModel.ArmyScoutsSilver * value;
-                    ArmyScoutsBase = _settingsService.ArmySettingsModel.ArmyScoutsBase * value;
                 }
                 else
                 {
@@ -711,8 +673,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyScoutsSkilled = value;
-                    ArmyScoutsSkilledSilver = _settingsService.ArmySettingsModel.ArmyScoutsSkilledSilver * value;
-                    ArmyScoutsSkilledBase = _settingsService.ArmySettingsModel.ArmyScoutsSkilledBase * value;
                 }
                 else
                 {
@@ -756,8 +716,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyKnightTemplars = value;
-                    ArmyKnightTemplarsSilver = _settingsService.ArmySettingsModel.ArmyKnightTemplarsSilver * value;
-                    ArmyKnightTemplarsBase = _settingsService.ArmySettingsModel.ArmyKnightTemplarsBase * value;
                 }
                 else
                 {
@@ -801,8 +759,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyGuards = value;
-                    ArmyGuardsSilver = _settingsService.ArmySettingsModel.ArmyGuardsSilver * value;
-                    ArmyGuardsBase = _settingsService.ArmySettingsModel.ArmyGuardsBase * value;
                 }
                 else
                 {
@@ -846,8 +802,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _armyWeaponmasters = value;
-                    ArmyWeaponmastersSilver = _settingsService.ArmySettingsModel.ArmyWeaponmastersSilver * value;
-                    ArmyWeaponmastersBase = _settingsService.ArmySettingsModel.ArmyWeaponmastersBase * value;
                 }
                 else
                 {
@@ -891,8 +845,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryBowmen = value;
-                    CavalryBowmenSilver = _settingsService.ArmySettingsModel.CavalryBowmenSilver * value;
-                    CavalryBowmenBase = _settingsService.ArmySettingsModel.CavalryBowmenBase * value;
                 }
                 else
                 {
@@ -936,8 +888,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryCourier = value;
-                    CavalryCourierSilver = _settingsService.ArmySettingsModel.CavalryCourierSilver * value;
-                    CavalryCourierBase = _settingsService.ArmySettingsModel.CavalryCourierBase * value;
                 }
                 else
                 {
@@ -981,8 +931,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryLight = value;
-                    CavalryLightSilver = _settingsService.ArmySettingsModel.CavalryLightSilver * value;
-                    CavalryLightBase = _settingsService.ArmySettingsModel.CavalryLightBase * value;
                 }
                 else
                 {
@@ -1026,8 +974,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryKnights = value;
-                    CavalryKnightsSilver = _settingsService.ArmySettingsModel.CavalryKnightsSilver * value;
-                    CavalryKnightsBase = _settingsService.ArmySettingsModel.CavalryKnightsBase * value;
                 }
                 else
                 {
@@ -1071,8 +1017,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryScouts = value;
-                    CavalryScoutsSilver = _settingsService.ArmySettingsModel.CavalryScoutsSilver * value;
-                    CavalryScoutsBase = _settingsService.ArmySettingsModel.CavalryScoutsBase * value;
                 }
                 else
                 {
@@ -1116,8 +1060,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryKnightTemplars = value;
-                    CavalryKnightTemplarsSilver = _settingsService.ArmySettingsModel.CavalryKnightTemplarsSilver * value;
-                    CavalryKnightTemplarsBase = _settingsService.ArmySettingsModel.CavalryKnightTemplarsBase * value;
                 }
                 else
                 {
@@ -1161,8 +1103,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryHeavy = value;
-                    CavalryHeavySilver = _settingsService.ArmySettingsModel.CavalryHeavySilver * value;
-                    CavalryHeavyBase = _settingsService.ArmySettingsModel.CavalryHeavyBase * value;
                 }
                 else
                 {
@@ -1206,8 +1146,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cavalryElite = value;
-                    CavalryEliteSilver = _settingsService.ArmySettingsModel.CavalryEliteSilver * value;
-                    CavalryEliteBase = _settingsService.ArmySettingsModel.CavalryEliteBase * value;
                 }
                 else
                 {
@@ -1251,9 +1189,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _officersCorporal = value;
-                    OfficersCorporalSilver = _settingsService.ArmySettingsModel.OfficersCorporalSilver * value;
                 }
-                
+
                 NotifyPropertyChanged();
                 UpdateTotals();
             }
@@ -1279,7 +1216,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _officersSergeant = value;
-                    OfficersSergeantSilver = _settingsService.ArmySettingsModel.OfficersSergeantSilver * value;
                 }
                 else
                 {
@@ -1311,7 +1247,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _officersCaptain = value;
-                    OfficersCaptainSilver = _settingsService.ArmySettingsModel.OfficersCaptainSilver * value;
                 }
                 else
                 {

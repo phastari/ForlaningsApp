@@ -3,9 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:buildingShipyardUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.BuildingShipyardUI"
-             xmlns:gotShipyardUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.GotShipyardUI"
-             xmlns:canBuildShipyardUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.CanBuildShipyardUI"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:constructingBoatUI="clr-namespace:FiefApp.Module.Boatbuilding.UIElements.ConstructingBoatUI"
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
@@ -80,97 +77,375 @@
 
 
             <Frame 
+                Grid.Column="1" 
+                Grid.ColumnSpan="3"
+                Grid.Row="1" 
+                Grid.RowSpan="28"
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5"
+                IsTabStop="False"
+                Margin="0,0,0,15"/>
+
+            <Frame 
                 Grid.Column="5" 
                 Grid.Row="1" 
                 Grid.RowSpan="6"
                 Background="LightGray" 
                 BorderBrush="Gray" 
-                BorderThickness="0.5, 0.5, 0.5, 0.5"
+                BorderThickness="0.5"
                 IsTabStop="False"
                 Margin="0,0,0,15"/>
 
             <Frame 
-            Grid.Column="5" 
-            Grid.Row="5" 
-            Grid.RowSpan="35"
-            Background="LightGray" 
-            BorderBrush="Gray" 
-            BorderThickness="0.5, 0.5, 0.5, 0.5"
-            IsTabStop="False"
-            Margin="0,15,0,0"/>
+                Grid.Column="5" 
+                Grid.Row="5" 
+                Grid.RowSpan="35"
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5"
+                IsTabStop="False"
+                Margin="0,15,0,0"/>
+
+            <Rectangle x:Name="InitialFocus" 
+                       Grid.Column="0"
+                       Grid.Row="0"
+                       Focusable="True"/>
+
+
+            <ComboBox 
+                x:Name="FiefComboBox"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                Grid.Row="3"
+                Width="120"
+                ItemsSource="{Binding Path=FiefCollection}"
+                SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="6,0,0,0">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Label
+                Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                Grid.Column="2"
+                Grid.ColumnSpan="5"
+                Grid.Row="3"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                Padding="6,0,0,0"
+                Width="120"
+                ToolTip="Läge">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Collapsed">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+
+            <Grid
+                Grid.Column="2"
+                Grid.Row="7"
+                Grid.RowSpan="20">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="6"/>
+                    <ColumnDefinition Width="45"/>
+                    <ColumnDefinition Width="6"/>
+                    <ColumnDefinition Width="45"/>
+                </Grid.ColumnDefinitions>
+
+
+                <Label
+                    Content="Dockplatser"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    FontWeight="Bold"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="I hamnen"
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="Typ"
+                    Grid.Column="0"
+                    Grid.Row="4"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0,0,20,0"/>
+
+                <Label
+                    Content="Finns"
+                    Grid.Column="2"
+                    Grid.Row="4"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="Lediga"
+                    Grid.Column="4"
+                    Grid.Row="4"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="Små, &lt; 11 meter"
+                    Grid.Column="0"
+                    Grid.Row="6"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksSmall}"
+                    Grid.Column="2"
+                    Grid.Row="6"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksSmallFree}"
+                    Grid.Column="4"
+                    Grid.Row="6"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <Label
+                    Content="Medel, &lt; 21 meter"
+                    Grid.Column="0"
+                    Grid.Row="8"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksMedium}"
+                    Grid.Column="2"
+                    Grid.Row="8"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksMediumFree}"
+                    Grid.Column="4"
+                    Grid.Row="8"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <Label
+                    Content="Stora, 21+ meter"
+                    Grid.Column="0"
+                    Grid.Row="10"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksLarge}"
+                    Grid.Column="2"
+                    Grid.Row="10"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksLargeFree}"
+                    Grid.Column="4"
+                    Grid.Row="10"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <Label
+                    Content="I byarna"
+                    Grid.Column="0"
+                    Grid.Row="14"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="Typ"
+                    Grid.Column="0"
+                    Grid.Row="16"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0,0,20,0"/>
+
+                <Label
+                    Content="Finns"
+                    Grid.Column="2"
+                    Grid.Row="16"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="Lediga"
+                    Grid.Column="4"
+                    Grid.Row="16"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Content="Bybåtbyggare (små)"
+                    Grid.Column="0"
+                    Grid.Row="18"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksVillage}"
+                    Grid.Column="2"
+                    Grid.Row="18"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Text="{Binding Path=DataModel.DocksVillageFree}"
+                    Grid.Column="4"
+                    Grid.Row="18"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Template="{DynamicResource TextBoxTemplate}"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                
+            </Grid>
 
 
             <Label
-            Content="Båtbyggare"
-            Grid.Column="5"
-            Grid.Row="3"
-            Width="100"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"
-            Margin="8,0,0,0"/>
+                Content="Båtbyggare"
+                Grid.Column="5"
+                Grid.Row="3"
+                Width="100"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="8,0,0,0"/>
 
             <TextBox
-            Text="{Binding Path=DataModel.VillageBoatBuilders}"
-            Grid.Column="5"
-            Grid.Row="3"
-            Width="51"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Padding="0"
-            Margin="114,0,0,0"
-            Template="{DynamicResource TextBoxTemplate}"
-            IsReadOnly="True"/>
+                Text="{Binding Path=DataModel.VillageBoatBuilders}"
+                Grid.Column="5"
+                Grid.Row="3"
+                Width="51"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="114,0,0,0"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"/>
 
             <Label
-            Content="Skeppsbyggare"
-            Grid.Column="5"
-            Grid.Row="3"
-            Width="100"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"
-            Margin="171,0,0,0"/>
+                Content="Skeppsbyggare"
+                Grid.Column="5"
+                Grid.Row="3"
+                Width="100"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="171,0,0,0"/>
 
             <TextBox
-            Text="{Binding Path=DataModel.TotalBoatBuilders}"
-            Grid.Column="5"
-            Grid.Row="3"
-            Width="51"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Padding="0"
-            Margin="277,0,0,0"
-            Template="{DynamicResource TextBoxTemplate}"
-            IsReadOnly="True"/>
-
-            <Label
-            Content="Pågående byggen"
-            Grid.Column="5"
-            Grid.Row="3"
-            Width="100"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"
-            Margin="334,0,0,0"/>
-
-            <TextBox
-            Text="{Binding Path=DataModel.BoatsBuilding}"
-            Grid.Column="5"
-            Grid.Row="3"
-            Width="51"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Padding="0"
-            Margin="440,0,0,0"
-            Template="{DynamicResource TextBoxTemplate}"
-            IsReadOnly="True"/>
+                Text="{Binding Path=DataModel.TotalBoatBuilders}"
+                Grid.Column="5"
+                Grid.Row="3"
+                Width="51"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                Margin="277,0,0,0"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"/>
 
 
             <StackPanel
@@ -318,7 +593,8 @@
                 </ItemsControl>
 
                 <Rectangle
-                    Height="24"/>
+                    Height="24"
+                    Focusable="False"/>
 
                 <Grid
                     Height="24">

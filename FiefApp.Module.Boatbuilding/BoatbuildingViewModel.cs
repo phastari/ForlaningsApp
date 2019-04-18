@@ -194,7 +194,7 @@ namespace FiefApp.Module.Boatbuilding
             DataModel.BoatBuildersCollection.Add(
                 new BoatbuilderModel()
                 {
-                    Id = _boatbuildingService.GetNewBoatbuilderId(Index)
+                    Id = _boatbuildingService.GetNewBoatbuilderId()
                 });
         }
 
@@ -223,8 +223,15 @@ namespace FiefApp.Module.Boatbuilding
                 : _baseService.GetDataModel<BoatbuildingDataModel>(Index);
 
             DataModel.BoatTypeCollection = new ObservableCollection<BoatModel>(_settingsService.BoatbuildingSettingsModel.BoatSettingsList);
+            SetDataModelInformation();
 
             UpdateFiefCollection();
+        }
+
+        private void SetDataModelInformation()
+        {
+            DataModel.VillageBoatBuilders = _boatbuildingService.GetNrVillageBoatbuilders(Index);
+            DataModel.DocksVillage = _boatbuildingService.GetNrVillageBoatbuilders(Index);
         }
     }
 }

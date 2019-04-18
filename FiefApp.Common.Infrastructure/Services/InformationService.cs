@@ -234,5 +234,34 @@ namespace FiefApp.Common.Infrastructure.Services
 
             return tempDataModel;
         }
+
+        public void SetupPopulationReligion(int index)
+        {
+            int population = 0;
+            int gotReligion = 0;
+
+            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
+            {
+                population += _fiefService.ManorList[index].VillagesCollection[x].Population;
+            }
+
+            for (int y = 0; y < _fiefService.InformationList[index].ReligionsList.Count; y++)
+            {
+                if (_fiefService.InformationList[index].ReligionsList[y].Religion != "" || _fiefService.InformationList[index].ReligionsList[y].Religion != null)
+                {
+                    gotReligion++;
+                }
+            }
+
+            for (int i = 0; i > population - gotReligion; i++)
+            {
+                int z = _fiefService.GetRandom(1, 100);
+
+                if (z < 8)
+                {
+                    _fiefService.InformationList[index].ReligionsList[]
+                }
+            }
+        }
     }
 }

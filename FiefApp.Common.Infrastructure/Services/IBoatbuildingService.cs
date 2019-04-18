@@ -6,6 +6,7 @@ namespace FiefApp.Common.Infrastructure.Services
     {
         BoatbuildingDataModel GetAllBoatbuildingDataModel();
         int GetNewBuildingBoatId(int index);
-        int GetNewBoatbuilderId(int index);
+        int GetNewBoatbuilderId();
+        int GetNrVillageBoatbuilders(int index);
     }
 }

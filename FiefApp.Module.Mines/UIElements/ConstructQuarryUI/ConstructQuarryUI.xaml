@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="FiefApp.Module.Mines.UIElements.ConstructQuarryUI.ConstructQuarryUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="156" 
+             d:DesignWidth="235">
+
+    <Grid
+        x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="95"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="9"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame 
+            Grid.Column="0" 
+            Grid.ColumnSpan="8"
+            Grid.Row="0"
+            Grid.RowSpan="13" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="1"
+            Content="Anlägg stenbrott"
+            FontWeight="Bold"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="3"
+            Content="Storlek"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <ComboBox
+            x:Name="QuarryComboBox"
+            Grid.Column="3"
+            Grid.ColumnSpan="4"
+            Grid.Row="3"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}">
+            <ComboBoxItem>Litet</ComboBoxItem>
+            <ComboBoxItem>Medium</ComboBoxItem>
+            <ComboBoxItem>Stort</ComboBoxItem>
+        </ComboBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="5"
+            Content="Kostnad/år"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="5"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Text" Value="-"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="Text" Value="25"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="1">
+                            <Setter Property="Text" Value="62"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="2">
+                            <Setter Property="Text" Value="250"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="7"
+            Content="Stenproduktion"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Grid.Row="7"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Text" Value="-"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="Text" Value="10T6*15"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="1">
+                            <Setter Property="Text" Value="30T6*13"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="2">
+                            <Setter Property="Text" Value="100T6*25"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="9"
+            Content="Sten(uppskattat)"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Grid.Row="9"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Text" Value="-"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="0">
+                            <Setter Property="Text" Value="525"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="1">
+                            <Setter Property="Text" Value="1365"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=QuarryComboBox, Path=SelectedIndex}" Value="2">
+                            <Setter Property="Text" Value="5250"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Button
+            Grid.Column="6"
+            Grid.Row="11"
+            Width="51"
+            Content="anlägg"
+            Command="{Binding Path=SaveCommand}"
+            Template="{DynamicResource ButtonTemplate}"
+            HorizontalAlignment="Right"
+            Padding="0"/>
+
+        <Button
+            Grid.Column="2"
+            Grid.ColumnSpan="5"
+            Grid.Row="11"
+            Width="51"
+            Content="avbryt"
+            Command="{Binding Path=CancelCommand}"
+            Template="{DynamicResource ButtonTemplate}"
+            HorizontalAlignment="Right"
+            Margin="0,0,57,0"
+            Padding="0"/>
+    </Grid>
+</UserControl>

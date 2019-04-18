@@ -60,24 +60,36 @@ namespace FiefApp.Common.Infrastructure.Services
             return new ObservableCollection<IPeopleModel>(tempList);
         }
 
-        public int GetNewBoatbuilderId(int index)
+        public int GetNewBoatbuilderId()
         {
             List<int> tempList = new List<int>();
 
-            for (int x = 0; x < _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count; x++)
+            for (int x = 0; x < _fiefService.BoatbuildingList.Count; x++)
             {
-                tempList.Add(_fiefService.BoatbuildingList[index].BoatBuildersCollection[x].Id);
+                for (int y = 0; y < _fiefService.BoatbuildingList[x].BoatBuildersCollection.Count; y++)
+                {
+                    tempList.Add(_fiefService.BoatbuildingList[x].BoatBuildersCollection[y].Id);
+                }
             }
 
             if (tempList.Count > 0)
             {
                 return tempList.Max() + 1;
             }
-            else
+            return 0;
+
+        }
+
+        public int GetNrVillageBoatbuilders(int index)
+        {
+            int i = 0;
+
+            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
             {
-                return 0;
+                i += _fiefService.ManorList[index].VillagesCollection[x].Boatbuilders;
             }
-            
+
+            return i;
         }
     }
 }

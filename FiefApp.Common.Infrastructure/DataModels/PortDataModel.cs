@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
@@ -85,6 +86,205 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private ObservableCollection<CaptainModel> _captainsCollection = new ObservableCollection<CaptainModel>();
+        public ObservableCollection<CaptainModel> CaptainsCollection
+        {
+            get => _captainsCollection;
+            set
+            {
+                _captainsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _sailors;
+        public int Sailors
+        {
+            get => _sailors;
+            set
+            {
+                _sailors = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _sailorsSilver;
+        public int SailorsSilver
+        {
+            get => _sailorsSilver;
+            set
+            {
+                _sailorsSilver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _sailorsBase;
+        public int SailorsBase
+        {
+            get => _sailorsBase;
+            set
+            {
+                _sailorsBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _seaman;
+        public int Seaman
+        {
+            get => _seaman;
+            set
+            {
+                _seaman = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _seamanSilver;
+        public int SeamanSilver
+        {
+            get => _seamanSilver;
+            set
+            {
+                _seamanSilver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _seamanBase;
+        public int SeamanBase
+        {
+            get => _seamanBase;
+            set
+            {
+                _seamanBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _guards;
+        public int Guards
+        {
+            get => _guards;
+            set
+            {
+                _guards = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _guardsSilver;
+        public int GuardsSilver
+        {
+            get => _guardsSilver;
+            set
+            {
+                _guardsSilver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _guardsBase;
+        public int GuardsBase
+        {
+            get => _guardsBase;
+            set
+            {
+                _guardsBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _mariner;
+        public int Mariner
+        {
+            get => _mariner;
+            set
+            {
+                _mariner = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _marinerSilver;
+        public int MarinerSilver
+        {
+            get => _marinerSilver;
+            set
+            {
+                _marinerSilver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _marinerBase;
+        public int MarinerBase
+        {
+            get => _marinerBase;
+            set
+            {
+                _marinerBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _rowers;
+        public int Rowers
+        {
+            get => _rowers;
+            set
+            {
+                _rowers = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _totalSilver;
+        public int TotalSilver
+        {
+            get => _totalSilver;
+            set
+            {
+                _totalSilver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _totalBase;
+        public int TotalBase
+        {
+            get => _totalBase;
+            set
+            {
+                _totalBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _totalLuxury;
+        public int TotalLuxury
+        {
+            get => _totalLuxury;
+            set
+            {
+                _totalLuxury = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private BoatModel _crewBoat = new BoatModel();
+        public BoatModel CrewBoat
+        {
+            get => _crewBoat;
+            set
+            {
+                _crewBoat = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        
 
 
         #region INotifyPropertyChanged

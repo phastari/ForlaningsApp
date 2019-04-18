@@ -8,5 +8,6 @@ namespace FiefApp.Common.Infrastructure.Services
         PortDataModel GetAllPortDataModel();
         bool CheckShipyardPossibility(int index);
         ShipyardTypeSettingsModel GetShipyardTypeSettingsModel(int size);
+        int GetNewCaptainId(int index);
     }
 }

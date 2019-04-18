@@ -19,8 +19,17 @@ namespace FiefApp.Common.Infrastructure.Models
         public decimal BL { get; set; }
         public decimal DB { get; set; }
         public decimal Crew { get; set; }
+        public int CrewNeeded { get; set; }
+        public int CrewedSailors { get; set; }
+        public int CrewedSeamens { get; set; }
+        public int CrewedMariners { get; set; }
+        public int CrewedRowers { get; set; }
+        public int CrewOnBoard { get; set; }
+        public int CostSilver { get; set; }
         public string Rower { get; set; }
+        public int RowersNeeded { get; set; }
         public decimal Cargo { get; set; }
+        public int CargoTotal { get; set; }
         public int BenchMod { get; set; }
         public decimal BenchMulti { get; set; }
         public int OarsMulti { get; set; }
@@ -28,6 +37,13 @@ namespace FiefApp.Common.Infrastructure.Models
         public string IMGSource { get; set; }
         public string Seaworthiness { get; set; }
         public int Amount { get; set; } = 1;
+        public int AmountSailors { get; set; }
+        public int AmountSeamen { get; set; }
+        public int AmountRowers { get; set; }
+        public int AmountMariners { get; set; }
+        public int AmountOfficers { get; set; }
+        public int AmountNavigators { get; set; }
+        public int AmountGuards { get; set; }
         public int CostNowSilver { get; set; }
         public int CostNowBase { get; set; }
         public int CostNowWood { get; set; }
@@ -35,6 +51,9 @@ namespace FiefApp.Common.Infrastructure.Models
         public int NextFinishedDays { get; set; }
         public int BuildTimeInDays { get; set; }
         public int BuildTimeInDaysAll { get; set; }
+        public string BoatStatus { get; set; } = "-";
+        public int BackIn { get; set; }
+        public string Defense { get; set; }
 
         private int _selectedIndex = -1;
         public int SelectedIndex
@@ -65,6 +84,17 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _boatBuildersCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<CaptainModel> _captainsCollection = new ObservableCollection<CaptainModel>();
+        public ObservableCollection<CaptainModel> CaptainsCollection
+        {
+            get => _captainsCollection;
+            set
+            {
+                _captainsCollection = value;
                 NotifyPropertyChanged();
             }
         }

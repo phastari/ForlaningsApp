@@ -2,11 +2,462 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:merchantUI="clr-namespace:FiefApp.Module.Trade.UIElements.MerchantUI"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
-    <Grid>
-            
+
+    <Grid
+        x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="104"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="8"/>
+
+            <ColumnDefinition Width="12"/>
+
+            <ColumnDefinition Width="510"/>
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="7" 
+            Grid.Row="1" 
+            Grid.RowSpan="20" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"
+            Margin="0,0,0,15"/>
+
+        <Frame 
+            Grid.Column="9" 
+            Grid.Row="1" 
+            Grid.RowSpan="38" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Rectangle 
+            x:Name="InitialFocus" 
+            Grid.Column="0"
+            Grid.Row="0"
+            Focusable="True"/>
+
+        <ComboBox 
+            x:Name="FiefComboBox"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="3"
+            Width="120"
+            ItemsSource="{Binding Path=FiefCollection}"
+            SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Margin="8,0,0,0"
+            Padding="6,0,0,0">
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <Label
+            Content="{Binding ElementName=FiefComboBox, Path=Text}"
+            Grid.Column="2"
+            Grid.ColumnSpan="5"
+            Grid.Row="3"
+            VerticalContentAlignment="Center"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            Padding="6,0,0,0"
+            Width="120"
+            ToolTip="Läge">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+
+        <Label
+            Content="Lokala marknaden"
+            Grid.Column="2"
+            Grid.Row="7"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <Label
+            Content="Finns"
+            Grid.Column="4"
+            Grid.Row="7"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <Label
+            Content="Silver"
+            Grid.Column="6"
+            Grid.Row="7"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <Label
+            Content="Bas"
+            Grid.Column="2"
+            Grid.Row="9"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="9"
+            Text="{Binding Path=MarketAvailableBase}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="9"
+            Text="{Binding Path=MarketCostBase}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label
+            Content="Lyx"
+            Grid.Column="2"
+            Grid.Row="11"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="11"
+            Text="{Binding Path=MarketAvailableLuxury}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="11"
+            Text="{Binding Path=MarketCostLuxury}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label
+            Content="Järn"
+            Grid.Column="2"
+            Grid.Row="13"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="13"
+            Text="{Binding Path=MarketAvailableIron}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="13"
+            Text="{Binding Path=MarketCostIron}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label
+            Content="Sten"
+            Grid.Column="2"
+            Grid.Row="15"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="15"
+            Text="{Binding Path=MarketAvailableStone}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="15"
+            Text="{Binding Path=MarketCostStone}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+        <Label
+            Content="Timmer"
+            Grid.Column="2"
+            Grid.Row="17"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
+            Padding="0"
+            ToolTip="Läge"/>
+
+        <TextBox
+            Grid.Column="4"
+            Grid.Row="17"
+            Text="{Binding Path=MarketAvailableWood}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="17"
+            Text="{Binding Path=MarketCostWood}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
+
+
+        <Grid
+            Grid.Column="9"
+            Grid.Row="3"
+            Height="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="135"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="159"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="1"
+                Grid.Row="0"
+                Content="Köpman"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="3"
+                Grid.Row="0"
+                Content="Ålder"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="4"
+                Grid.ColumnSpan="3"
+                Grid.Row="0"
+                Content="Färdighet"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="7"
+                Grid.Row="0"
+                Content="Resurser"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="9"
+                Grid.Row="0"
+                Content="Lojalitet"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="11"
+                Grid.Row="0"
+                Content="På skepp"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+        </Grid>
+
+        <ItemsControl
+            Grid.Column="9"
+            Grid.Row="5"
+            Grid.RowSpan="34"
+            ItemsSource="{Binding Path=DataModel.MerchantsCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <StackPanel>
+                        <ItemsPresenter />
+                        <Button 
+                            Content="lägg till"
+                            Height="21"
+                            Width="51"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Padding="0"
+                            Margin="0,0,8,0"
+                            Template="{DynamicResource ButtonTemplate}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AddMerchant, ElementName=RootGrid}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <merchantUI:MerchantUI
+                        Id="{Binding Path=Id}"
+                        PersonName="{Binding Path=PersonName}"
+                        Age="{Binding Path=Age}"
+                        Skill="{Binding Path=Skill}"
+                        MerchantsResources="{Binding Path=Resources}"
+                        Loyalty="{Binding Path=Loyalty}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MerchantUIEvent">
+                                <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MerchantUIEventHandler, ElementName=RootGrid}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </merchantUI:MerchantUI>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

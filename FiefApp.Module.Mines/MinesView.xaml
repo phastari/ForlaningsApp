@@ -2,12 +2,493 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mineUI="clr-namespace:FiefApp.Module.Mines.UIElements.MineUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:quarryUI="clr-namespace:FiefApp.Module.Mines.UIElements.QuarryUI"
+             xmlns:constructQuarryUI="clr-namespace:FiefApp.Module.Mines.UIElements.ConstructQuarryUI"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
              d:DesignWidth="784">
 
     <Grid>
-            
+        <Grid 
+            x:Name="RootGrid"
+            Background="#FFE5E5E5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="9"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="69"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="8"/>
+
+                <ColumnDefinition Width="32"/>
+
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="457"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle 
+                x:Name="InitialFocus" 
+                Grid.Column="0"
+                Grid.Row="0"
+                Focusable="True"/>
+
+            <Frame 
+                Grid.Column="1" 
+                Grid.ColumnSpan="9"
+                Grid.Row="1"
+                Grid.RowSpan="39" 
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5"
+                IsTabStop="False"/>
+
+            <Frame 
+                Grid.Column="11" 
+                Grid.ColumnSpan="3"
+                Grid.Row="1"
+                Grid.RowSpan="39" 
+                Background="LightGray" 
+                BorderBrush="Gray" 
+                BorderThickness="0.5"
+                IsTabStop="False"/>
+
+
+            <ComboBox 
+                x:Name="FiefComboBox"
+                Grid.Column="2"
+                Grid.ColumnSpan="5"
+                Grid.Row="3"
+                Width="120"
+                ItemsSource="{Binding Path=FiefCollection}"
+                SelectedIndex="{Binding Path=Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="6,0,0,0">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=FiefCollection.Count}" Value="2">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Label
+                Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                Grid.Column="2"
+                Grid.ColumnSpan="5"
+                Grid.Row="3"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                Padding="6,0,0,0"
+                Width="120"
+                ToolTip="Läge">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Collapsed">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Label
+                Grid.Column="4"
+                Grid.Row="7"
+                Content="Silver"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="6"
+                Grid.Row="7"
+                Content="Bas"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="8"
+                Grid.Row="7"
+                Content="Sten"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Grid.Column="2"
+                Grid.Row="9"
+                Content="Totalt"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="9"
+                Text="{Binding Path=DataModel.TotalSilver}"
+                Template="{DynamicResource TextBoxTemplate}"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0,0,6,0"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="6"
+                Grid.Row="9"
+                Text="{Binding Path=DataModel.TotalBase}"
+                Template="{DynamicResource TextBoxTemplate}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Grid.Column="8"
+                Grid.Row="9"
+                Text="{Binding Path=DataModel.TotalStone}"
+                Template="{DynamicResource TextBoxTemplate}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"
+                IsReadOnly="True"/>
+
+
+
+
+            <StackPanel
+                Grid.Column="12"
+                Grid.Row="3"
+                Grid.RowSpan="37">
+
+                <Grid
+                    Height="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="138"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="65"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Content="Gruvtyp"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Content="Silver"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="4"
+                        Grid.Row="0"
+                        Content="Vakter"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="6"
+                        Grid.Row="0"
+                        Content="Förvaltare"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="7"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="0"
+                        Content="Färdighet"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+                </Grid>
+
+                <ItemsControl
+                    ItemsSource="{Binding Path=DataModel.MinesCollection}"
+                    Background="Transparent"
+                    Grid.ZIndex="0">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel 
+                                IsItemsHost="True" 
+                                Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <StackPanel>
+                                <ItemsPresenter />
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <mineUI:MineUI
+                                Id="{Binding Path=Id}"
+                                Income="{Binding Path=Income}"
+                                Guards="{Binding Path=Guards}"
+                                StewardsCollection="{Binding Path=StewardsCollection}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MineUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MineUIEventHandler, ElementName=RootGrid}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </mineUI:MineUI>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Grid
+                Height="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="61"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Content="Stenbrott"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Content="Sten"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="3"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        Content="Dagsverk"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="5"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="0"
+                        Content="Utsatta"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="8"
+                        Grid.Row="0"
+                        Content="Bas"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="9"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="0"
+                        Content="Förvaltare"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+
+                    <Label
+                        Grid.Column="11"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="0"
+                        Content="Färdighet"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
+                </Grid>
+
+                <ItemsControl
+                    ItemsSource="{Binding Path=DataModel.QuarriesCollection}"
+                    Background="Transparent"
+                    Grid.ZIndex="0">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel 
+                                IsItemsHost="True" 
+                                Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <StackPanel>
+                                <ItemsPresenter />
+                                <Button 
+                                    Content="anlägg"
+                                    Command="{Binding Path=AddQuarryCommand}"
+                                    Height="21"
+                                    Width="51"
+                                    HorizontalAlignment="Right"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Padding="0"
+                                    Margin="0"
+                                    Template="{DynamicResource ButtonTemplate}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="False"/>
+                                            <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddQuarry}" Value="Visible"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <quarryUI:QuarryUI
+                                Id="{Binding Path=Id}"
+                                Income="{Binding Path=Approximate}"
+                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DaysWorkNeeded="{Binding Path=DaysWorkNeeded}"
+                                Upkeep="{Binding Path=Upkeep}"
+                                StewardsCollection="{Binding Path=StewardsCollection}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="QuarryUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.QuarryUIEventHandler, ElementName=RootGrid}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </quarryUI:QuarryUI>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+        </Grid>
+
+        <constructQuarryUI:ConstructQuarryUI
+            x:Name="AddQuarry"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="Collapsed">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="ConstructQuarryUIEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ConstructQuarryUIEventHandler, ElementName=RootGrid}"/>
+                    <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddQuarry}" Value="Collapsed"/>
+                    <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="True"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </constructQuarryUI:ConstructQuarryUI>
     </Grid>
 </UserControl>

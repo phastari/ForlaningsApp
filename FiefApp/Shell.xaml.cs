@@ -5,9 +5,10 @@
     /// </summary>
     public partial class Shell
     {
-        public Shell()
+        public Shell(ShellViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

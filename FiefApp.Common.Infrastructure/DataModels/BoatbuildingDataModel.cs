@@ -1,5 +1,4 @@
 ﻿using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Common.Infrastructure.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,13 +8,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
 {
     public class BoatbuildingDataModel : INotifyPropertyChanged, IDataModelBase, ICloneable
     {
-        private readonly ISettingsService _settingsService;
-
-        public BoatbuildingDataModel(ISettingsService settingsService)
-        {
-            _settingsService = settingsService;
-        }
-
         private int _id;
         public int Id
         {
@@ -82,13 +74,90 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _boatsBuilding;
-        public int BoatsBuilding
+        private int _docksSmall;
+        public int DocksSmall
         {
-            get => _boatsBuilding;
+            get => _docksSmall;
             set
             {
-                _boatsBuilding = value;
+                _docksSmall = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksSmallFree;
+        public int DocksSmallFree
+        {
+            get => _docksSmallFree;
+            set
+            {
+                _docksSmallFree = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksMedium;
+        public int DocksMedium
+        {
+            get => _docksMedium;
+            set
+            {
+                _docksMedium = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksMediumFree;
+        public int DocksMediumFree
+        {
+            get => _docksMediumFree;
+            set
+            {
+                _docksMediumFree = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksLarge;
+        public int DocksLarge
+        {
+            get => _docksLarge;
+            set
+            {
+                _docksLarge = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksLargeFree;
+        public int DocksLargeFree
+        {
+            get => _docksLargeFree;
+            set
+            {
+                _docksLargeFree = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksVillage;
+        public int DocksVillage
+        {
+            get => _docksVillage;
+            set
+            {
+                _docksVillage = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _docksVillageFree;
+        public int DocksVillageFree
+        {
+            get => _docksVillageFree;
+            set
+            {
+                _docksVillageFree = value;
                 NotifyPropertyChanged();
             }
         }

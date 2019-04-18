@@ -145,7 +145,6 @@
             Grid.Column="2"
             Grid.ColumnSpan="5"
             Grid.Row="3"
-            VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Left"

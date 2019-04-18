@@ -132,39 +132,6 @@ namespace FiefApp.Module.Stewards
             UpdateFiefCollection();
         }
 
-        private void CreateFakeData()
-        {
-            DataModel.StewardsCollection.Add(
-                new StewardModel()
-                {
-                    Id = 0,
-                    Age = 32,
-                    Bonus = 0,
-                    Speciality = "",
-                    Family = "Vitfjäder",
-                    PersonName = "Kalle",
-                    Loyalty = "3T6",
-                    Resources = "2T6+3",
-                    Skill = "4T6"
-                }
-            );
-
-            DataModel.StewardsCollection.Add(
-                new StewardModel()
-                {
-                    Id = 1,
-                    Age = 54,
-                    Bonus = 1,
-                    Speciality = "Jordbruk",
-                    Family = "Svensson",
-                    PersonName = "Gunilla",
-                    Loyalty = "2T6",
-                    Resources = "4T6+3",
-                    Skill = "3T6"
-                }
-            );
-        }
-
         #endregion
     }
 }

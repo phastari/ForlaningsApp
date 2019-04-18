@@ -79,12 +79,24 @@
     </Compile>
     <Compile Include="PortViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutedEvents\BoatUIEventArgs.cs" />
+    <Compile Include="RoutedEvents\CaptainUIEventArgs.cs" />
     <Compile Include="RoutedEvents\ConstructShipyardEventArgs.cs" />
+    <Compile Include="RoutedEvents\CrewBoatUIEventArgs.cs" />
+    <Compile Include="UIElements\BoatUI\BoatUI.xaml.cs">
+      <DependentUpon>BoatUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\BuildingShipyardUI\BuildingShipyardUI.xaml.cs">
       <DependentUpon>BuildingShipyardUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIElements\CanBuildShipyardUI\CanBuildShipyardUI.xaml.cs">
       <DependentUpon>CanBuildShipyardUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UIElements\CaptainUI\CaptainUI.xaml.cs">
+      <DependentUpon>CaptainUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UIElements\CrewBoatUI\CrewBoatUI.xaml.cs">
+      <DependentUpon>CrewBoatUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIElements\GotShipyardUI\GotShipyardUI.xaml.cs">
       <DependentUpon>GotShipyardUI.xaml</DependentUpon>
@@ -105,6 +117,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UIElements\BoatUI\BoatUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UIElements\BuildingShipyardUI\BuildingShipyardUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +128,14 @@
     <Page Include="UIElements\CanBuildShipyardUI\CanBuildShipyardUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIElements\CaptainUI\CaptainUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\CrewBoatUI\CrewBoatUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UIElements\GotShipyardUI\GotShipyardUI.xaml">
       <Generator>MSBuild:Compile</Generator>

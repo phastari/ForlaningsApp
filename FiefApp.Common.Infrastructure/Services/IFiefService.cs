@@ -8,6 +8,7 @@ namespace FiefApp.Common.Infrastructure.Services
     public interface IFiefService
     {
         int Index { get; set; }
+        int Year { get; set; }
         List<InformationDataModel> InformationList { get; set; }
         List<ArmyDataModel> ArmyList { get; set; }
         List<EmployeesDataModel> EmployeesList { get; set; }

@@ -1,7 +1,11 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using System.Windows;
+using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.Port.RoutedEvents;
 using Prism.Commands;
 
 namespace FiefApp.Module.Port
@@ -31,6 +35,11 @@ namespace FiefApp.Module.Port
             SetBuildingShipyard = new DelegateCommand(ExecuteSetBuildingShipyard);
             SetUpgradingShipyard = new DelegateCommand(ExecuteSetUpgradingShipyard);
             SetCanBuildShipyard = new DelegateCommand(ExecuteSetCanBuildShipyard);
+
+            AddCaptain = new DelegateCommand(ExecuteAddCaptain);
+            CaptainUIEventHandler = new CustomDelegateCommand(ExecuteCaptainUIEventHandler, o => true);
+            BoatUIEventHandler = new CustomDelegateCommand(ExecuteBoatUIEventHandler, o => true);
+            CrewBoatUIEventHandler = new CustomDelegateCommand(ExecuteCrewBoatUIEventHandler, o => true);
         }
 
         #region Test DelegateCommands
@@ -103,6 +112,179 @@ namespace FiefApp.Module.Port
         }
 
         #endregion
+        #region DelegateCommand : AddCaptain
+
+        public DelegateCommand AddCaptain { get; set; }
+        private void ExecuteAddCaptain()
+        {
+            DataModel.CaptainsCollection.Add(new CaptainModel()
+            {
+                Id = _portService.GetNewCaptainId(Index)
+            });
+        }
+
+        #endregion
+        #region CustomDelegateCommand : CaptainUIEventHandler
+
+        public CustomDelegateCommand CaptainUIEventHandler { get; set; }
+        private void ExecuteCaptainUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is CaptainUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.CaptainsCollection.Count; x++)
+                {
+                    if (e.Id == DataModel.CaptainsCollection[x].Id)
+                    {
+                        DataModel.CaptainsCollection.RemoveAt(x);
+                        break;
+                    }
+                }
+            }
+
+            if (e.Action == "Save")
+            {
+                for (int x = 0; x < DataModel.CaptainsCollection.Count; x++)
+                {
+                    if (e.Id == DataModel.CaptainsCollection[x].Id)
+                    {
+                        DataModel.CaptainsCollection[x].PersonName = e.Model.PersonName;
+                        DataModel.CaptainsCollection[x].Age = e.Model.Age;
+                        DataModel.CaptainsCollection[x].Skill = e.Model.Skill;
+                        DataModel.CaptainsCollection[x].Resources = e.Model.Resources;
+                        DataModel.CaptainsCollection[x].Loyalty = e.Model.Loyalty;
+                        break;
+                    }
+                }
+            }
+
+            if (e.Action == "Change")
+            {
+                for (int x = 0; x < DataModel.CaptainsCollection.Count; x++)
+                {
+                    if (DataModel.CaptainsCollection[x].CaptainOfId == e.BoatId)
+                    {
+                        if (DataModel.CaptainsCollection[x].Id != e.Id)
+                        {
+                            DataModel.CaptainsCollection[x].CaptainOfId = -1;
+                            DataModel.CaptainsCollection[x].CaptainOf = "";
+                        }
+                        else
+                        {
+                            DataModel.CaptainsCollection[x].CaptainOfId = e.BoatId;
+                            DataModel.CaptainsCollection[x].CaptainOf = e.BoatName;
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : CrewBoatUIEventHandler
+
+        public CustomDelegateCommand CrewBoatUIEventHandler { get; set; }
+        private void ExecuteCrewBoatUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is CrewBoatUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Cancel":
+                    CrewBoatVisibility = Visibility.Collapsed;
+                    break;
+
+                case "Save":
+                    CrewBoatVisibility = Visibility.Collapsed;
+
+                    for (int x = 0; x < DataModel.BoatsCollection.Count; x++)
+                    {
+                        if (e.Model.Id == DataModel.BoatsCollection[x].Id)
+                        {
+                            DataModel.BoatsCollection[x].CrewNeeded = e.Model.CrewNeeded;
+                            DataModel.BoatsCollection[x].RowersNeeded = e.Model.RowersNeeded;
+                            DataModel.BoatsCollection[x].CrewedSailors = e.Model.CrewedSailors;
+                            DataModel.BoatsCollection[x].CrewedMariners = e.Model.CrewedMariners;
+                            DataModel.BoatsCollection[x].CrewedRowers = e.Model.CrewedRowers;
+                            DataModel.BoatsCollection[x].CrewedSeamens = e.Model.CrewedSeamens;
+                            DataModel.BoatsCollection[x].AmountOfficers = e.Model.AmountOfficers;
+                            DataModel.BoatsCollection[x].AmountNavigators = e.Model.AmountNavigators;
+                            DataModel.BoatsCollection[x].AmountGuards = e.Model.AmountGuards;
+                            DataModel.BoatsCollection[x].Seaworthiness = e.Model.Seaworthiness;
+                            DataModel.BoatsCollection[x].Defense = e.Model.Defense;
+                            DataModel.BoatsCollection[x].CostSilver = e.Model.CostSilver;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : BoatUIEventHandler
+
+        public CustomDelegateCommand BoatUIEventHandler { get; set; }
+        private void ExecuteBoatUIEventHandler(object obj)
+
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is BoatUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Crew":
+                {
+                    int id = -1;
+
+                    for (int x = 0; x < DataModel.BoatsCollection.Count; x++)
+                    {
+                        if (DataModel.BoatsCollection[x].Id == e.Id)
+                        {
+                            id = x;
+                            break;
+                        }
+                    }
+
+                    if (id != -1)
+                    {
+                        DataModel.CrewBoat = DataModel.BoatsCollection[id];
+                        DataModel.CrewBoat.AmountSailors = DataModel.Sailors;
+                        DataModel.CrewBoat.AmountSeamen = DataModel.Seaman;
+                        DataModel.CrewBoat.AmountRowers = DataModel.Rowers;
+                        DataModel.CrewBoat.AmountMariners = DataModel.Mariner;
+
+                        CrewBoatVisibility = Visibility.Visible;
+                    }
+                    break;
+                }
+
+                case "Changed":
+                {
+                    break;
+                }
+            }
+        }
+
+        #endregion
 
         #region DataModel
 
@@ -111,6 +293,17 @@ namespace FiefApp.Module.Port
         {
             get => _dataModel;
             set => SetProperty(ref _dataModel, value);
+        }
+
+        #endregion
+
+        #region UI Properties
+
+        private Visibility _crewBoatVisibility = Visibility.Collapsed;
+        public Visibility CrewBoatVisibility
+        {
+            get => _crewBoatVisibility;
+            set => SetProperty(ref _crewBoatVisibility, value);
         }
 
         #endregion
@@ -129,6 +322,29 @@ namespace FiefApp.Module.Port
             if (!DataModel.BuildingShipyard && !DataModel.GotShipyard)
             {
                 DataModel.CanBuildShipyard = _portService.CheckShipyardPossibility(Index);
+            }
+
+            CreateFakeData();
+        }
+
+        private void CreateFakeData()
+        {
+            if (DataModel.BoatsCollection.Count == 0)
+            {
+                DataModel.BoatsCollection.Add(new BoatModel()
+                {
+                    Id = 0,
+                    BoatType = "Test",
+                    AmountRowers = -1,
+                    AmountGuards = 0,
+                    AmountMariners = 0,
+                    AmountNavigators = 0,
+                    AmountOfficers = 0,
+                    AmountSailors = 0,
+                    AmountSeamen = 0,
+                    CargoTotal = 50,
+                    CrewNeeded = 12
+                });
             }
         }
     }

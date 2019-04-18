@@ -1,6 +1,4 @@
-﻿using FiefApp.Common.Infrastructure.HelpClasses.StringToFormula;
-using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Common.Infrastructure.Services;
+﻿using FiefApp.Common.Infrastructure.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,15 +8,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
 {
     public class EmployeesDataModel : INotifyPropertyChanged, IDataModelBase, ICloneable
     {
-        private readonly ISettingsService _settingsService;
-
-        public EmployeesDataModel(
-            ISettingsService settingsService
-            )
-        {
-            _settingsService = settingsService;
-        }
-
         public bool CalculateTotal = true;
 
         private int _id;
@@ -41,8 +30,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _falconer = value;
-                    BaseFalconer = _settingsService.EmployeeSettingsModel.FalconerBase * value;
-                    LuxuryFalconer = _settingsService.EmployeeSettingsModel.FalconerLuxury * value;
                 }
                 else
                 {
@@ -51,8 +38,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryFalconer = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -87,8 +74,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _bailiff = value;
-                    BaseBailiff = _settingsService.EmployeeSettingsModel.BailiffBase * value;
-                    LuxuryBailiff = _settingsService.EmployeeSettingsModel.BailiffLuxury * value;
                 }
                 else
                 {
@@ -96,9 +81,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     BaseBailiff = 0;
                     LuxuryBailiff = 0;
                 }
-
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -133,8 +117,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _herald = value;
-                    BaseHerald = _settingsService.EmployeeSettingsModel.HeraldBase * value;
-                    LuxuryHerald = _settingsService.EmployeeSettingsModel.HeraldLuxury * value;
                 }
                 else
                 {
@@ -143,8 +125,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryHerald = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -179,8 +161,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _hunter = value;
-                    BaseHunter = _settingsService.EmployeeSettingsModel.HunterBase * value;
-                    LuxuryHunter = _settingsService.EmployeeSettingsModel.HunterLuxury * value;
                 }
                 else
                 {
@@ -189,8 +169,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryHunter = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -225,8 +205,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _physician = value;
-                    BasePhysician = _settingsService.EmployeeSettingsModel.PhysicianBase * value;
-                    LuxuryPhysician = _settingsService.EmployeeSettingsModel.PhysicianLuxury * value;
                 }
                 else
                 {
@@ -235,8 +213,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryPhysician = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -271,8 +249,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _scholar = value;
-                    BaseScholar = _settingsService.EmployeeSettingsModel.ScholarBase * value;
-                    LuxuryScholar = _settingsService.EmployeeSettingsModel.ScholarLuxury * value;
                 }
                 else
                 {
@@ -281,8 +257,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryScholar = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -317,8 +293,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _cupbearer = value;
-                    BaseCupbearer = _settingsService.EmployeeSettingsModel.CupbearerBase * value;
-                    LuxuryCupbearer = _settingsService.EmployeeSettingsModel.CupbearerLuxury * value;
                 }
                 else
                 {
@@ -327,8 +301,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryCupbearer = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 
@@ -363,13 +337,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 if (value > -1)
                 {
                     _prospector = value;
-                    BaseProspector = _settingsService.EmployeeSettingsModel.ProspectorBase * value;
-
-                    string formula = $"{value}{_settingsService.EmployeeSettingsModel.ProspectorLuxury}";
-                    StringToFormula stf = new StringToFormula();
-                    double result = stf.Eval(formula);
-                    result = Math.Ceiling(result);
-                    LuxuryProspector = Convert.ToInt16(result);
                 }
                 else
                 {
@@ -378,8 +345,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                     LuxuryProspector = 0;
                 }
 
-                UpdateTotalCosts();
                 NotifyPropertyChanged();
+                UpdateTotalCosts();
             }
         }
 

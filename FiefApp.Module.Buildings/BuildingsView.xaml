@@ -139,6 +139,29 @@
             </ComboBox>
 
             <Label
+                Content="{Binding ElementName=FiefComboBox, Path=Text}"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="3"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left"
+                Padding="6,0,0,0"
+                Width="120"
+                ToolTip="Läge">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=Visibility}" Value="Collapsed">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Label
                 Grid.Column="2"
                 Grid.Row="5"
                 Content="Antal byggnadsverk"
@@ -280,7 +303,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label
-                        Content="Båtbyggare"
+                        Content="Byggmästare"
                         Grid.Column="1"
                         Grid.Row="0"
                         HorizontalContentAlignment="Center"
@@ -398,7 +421,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label
-                        Content="Pågående båtbygge"
+                        Content="Pågående byggnationer"
                         Grid.Column="1"
                         Grid.Row="0"
                         HorizontalContentAlignment="Center"
@@ -422,7 +445,7 @@
                         Padding="0"/>
 
                     <Label
-                        Content="Båtbyggare"
+                        Content="Byggmästare"
                         Grid.Column="7"
                         Grid.Row="0"
                         HorizontalContentAlignment="Center"
