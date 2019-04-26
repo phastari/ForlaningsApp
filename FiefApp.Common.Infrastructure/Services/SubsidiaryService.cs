@@ -186,5 +186,26 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             Console.WriteLine($"_fiefService.SubsidiaryList[1].ConstructingCollection.Count : { _fiefService.SubsidiaryList[1].ConstructingCollection.Count }");
         }
+
+        public void SetSubsidiary(int index, int id, SubsidiaryModel model)
+        {
+            for (int x = 0; x < _fiefService.SubsidiaryList[index].SubsidiaryCollection.Count; x++)
+            {
+                if (_fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Id == id)
+                {
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].IncomeFactor = model.IncomeFactor;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].IncomeBase = model.IncomeBase;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].IncomeLuxury = model.IncomeLuxury;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].IncomeSilver = model.IncomeSilver;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].DaysWorkUpkeep = model.DaysWorkUpkeep;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Spring = model.Spring;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Summer = model.Summer;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Fall = model.Fall;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Winter = model.Winter;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Quality = model.Quality;
+                    _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].DevelopmentLevel = model.DevelopmentLevel;
+                }
+            }
+        }
     }
 }

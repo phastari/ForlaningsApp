@@ -3,9 +3,11 @@ using System.Collections.ObjectModel;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Income.RoutedEvents;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Income
 {
@@ -13,21 +15,25 @@ namespace FiefApp.Module.Income
     {
         private readonly IBaseService _baseService;
         private readonly IIncomeService _incomeService;
+        private readonly IEventAggregator _eventAggregator;
 
         public IncomeViewModel(
             IBaseService baseService, 
-            IIncomeService incomeService
+            IIncomeService incomeService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _incomeService = incomeService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Inkomst";
 
             RollDie = new DelegateCommand(ExecuteRollDie);
             IncomeUIEventUIEventHandler = new CustomDelegateCommand(ExecuteIncomeUIEventUIEventHandler, o => true);
-        }
 
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+        }
         public DelegateCommand RollDie { get; set; }
 
         private void ExecuteRollDie()
@@ -89,6 +95,12 @@ namespace FiefApp.Module.Income
         protected override void SaveData(int index = -1)
         {
             _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #region Methods

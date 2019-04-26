@@ -743,16 +743,6 @@
                 Padding="0"/>
 
             <TextBox
-                Grid.Column="4"
-                Grid.Row="6"
-                Text="{Binding Path=DataModel.BuildsBase}"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="True"
-                Padding="0"/>
-
-            <TextBox
                 Grid.Column="6"
                 Grid.Row="6"
                 Text="{Binding Path=DataModel.BuildsWood}"
@@ -786,7 +776,7 @@
             <Label
                 Grid.Column="0"
                 Grid.Row="8"
-                Content="Båtbyggen"
+                Content="Båtbyggen (silver)"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -803,33 +793,16 @@
 
             <TextBox
                 Grid.Column="4"
+                Grid.ColumnSpan="3"
                 Grid.Row="8"
-                Text="{Binding Path=DataModel.BoatBuildsBase}"
-                HorizontalContentAlignment="Center"
+                Width="60"
+                Text="{Binding Path=DataModel.BoatBuildsSilver}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
                 IsReadOnly="True"
-                Padding="0"/>
-
-            <TextBox
-                Grid.Column="6"
-                Grid.Row="8"
-                Text="{Binding Path=DataModel.BoatBuildsWood}"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="True"
-                Padding="0"/>
-
-            <TextBox
-                Grid.Column="10"
-                Grid.Row="8"
-                Text="{Binding Path=DataModel.BoatBuildsIron}"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="True"
-                Padding="0"/>
+                Padding="0,0,6,0"/>
 
 
             <Label

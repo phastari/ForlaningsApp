@@ -7,7 +7,9 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
+using Prism.Events;
 
 namespace FiefApp.Module.Subsidiary
 {
@@ -15,14 +17,17 @@ namespace FiefApp.Module.Subsidiary
     {
         private readonly IBaseService _baseService;
         private readonly ISubsidiaryService _subsidiaryService;
+        private readonly IEventAggregator _eventAggregator;
 
         public SubsidiaryViewModel(
             IBaseService baseService,
-            ISubsidiaryService subsidiaryService
+            ISubsidiaryService subsidiaryService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _subsidiaryService = subsidiaryService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Binäringar";
 
@@ -31,6 +36,9 @@ namespace FiefApp.Module.Subsidiary
             ConstructingUIEventHandler = new CustomDelegateCommand(ExecuteConstructingUIEventHandler, o => true);
             SubsidiaryUIEventHandler = new CustomDelegateCommand(ExecuteSubsidiaryUIEventHandler, o => true);
             AddSubsidiaryCommand = new DelegateCommand(ExecuteAddSubsidiaryCommand);
+            EditSubsidiaryUIEventHandler = new CustomDelegateCommand(ExecuteEditSubsidiaryUIEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : ConstructSubsidiaryCommand
@@ -141,6 +149,37 @@ namespace FiefApp.Module.Subsidiary
                 DataModel.SubsidiaryCollection.Clear();
                 DataModel.SubsidiaryCollection = new ObservableCollection<SubsidiaryModel>(tempSubsidiaryList);
             }
+            else if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                {
+                    if (e.SubsidiaryId == DataModel.SubsidiaryCollection[x].Id)
+                    {
+                        DataModel.SubsidiaryCollection.RemoveAt(x);
+                    }
+                }
+            }
+            else if (e.Action == "Edit")
+            {
+                for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                {
+                    if (DataModel.SubsidiaryCollection[x].Id == e.SubsidiaryId)
+                    {
+                        DataModel.EditModel.IncomeFactor = DataModel.SubsidiaryCollection[x].IncomeFactor;
+                        DataModel.EditModel.IncomeBase = DataModel.SubsidiaryCollection[x].IncomeBase;
+                        DataModel.EditModel.IncomeLuxury = DataModel.SubsidiaryCollection[x].IncomeLuxury;
+                        DataModel.EditModel.IncomeSilver = DataModel.SubsidiaryCollection[x].IncomeSilver;
+                        DataModel.EditModel.DaysWorkUpkeep = DataModel.SubsidiaryCollection[x].DaysWorkUpkeep;
+                        DataModel.EditModel.Spring = DataModel.SubsidiaryCollection[x].Spring;
+                        DataModel.EditModel.Summer = DataModel.SubsidiaryCollection[x].Summer;
+                        DataModel.EditModel.Fall = DataModel.SubsidiaryCollection[x].Fall;
+                        DataModel.EditModel.Winter = DataModel.SubsidiaryCollection[x].Winter;
+                        DataModel.EditModel.Quality = DataModel.SubsidiaryCollection[x].Quality;
+                        DataModel.EditModel.DevelopmentLevel = DataModel.SubsidiaryCollection[x].DevelopmentLevel;
+                        break;
+                    }
+                }
+            }
         }
 
         #endregion
@@ -151,6 +190,57 @@ namespace FiefApp.Module.Subsidiary
         private void ExecuteAddSubsidiaryCommand()
         {
 
+        }
+
+        #endregion
+
+        #region CustomDelegateCommand : EditSubsidiaryUIEventHandler
+
+        public CustomDelegateCommand EditSubsidiaryUIEventHandler { get; set; }
+
+        private void ExecuteEditSubsidiaryUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is EditSubsidiaryUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            if (e.Action == "Cancel")
+            {
+                DataModel.EditModel.Id = -1;
+                DataModel.EditModel.IncomeFactor = 0M;
+                DataModel.EditModel.IncomeBase = 0M;
+                DataModel.EditModel.IncomeLuxury = 0M;
+                DataModel.EditModel.IncomeSilver = 0M;
+                DataModel.EditModel.DaysWorkUpkeep = 0;
+                DataModel.EditModel.Spring = 0M;
+                DataModel.EditModel.Summer = 0M;
+                DataModel.EditModel.Fall = 0M;
+                DataModel.EditModel.Winter = 0M;
+                DataModel.EditModel.Quality = 0;
+                DataModel.EditModel.DevelopmentLevel = 0;
+            }
+            else if (e.Action == "Save")
+            {
+                _subsidiaryService.SetSubsidiary(Index, e.SubsidiaryModel.Id, e.SubsidiaryModel);
+
+                DataModel.EditModel.Id = -1;
+                DataModel.EditModel.IncomeFactor = 0M;
+                DataModel.EditModel.IncomeBase = 0M;
+                DataModel.EditModel.IncomeLuxury = 0M;
+                DataModel.EditModel.IncomeSilver = 0M;
+                DataModel.EditModel.DaysWorkUpkeep = 0;
+                DataModel.EditModel.Spring = 0M;
+                DataModel.EditModel.Summer = 0M;
+                DataModel.EditModel.Fall = 0M;
+                DataModel.EditModel.Winter = 0M;
+                DataModel.EditModel.Quality = 0;
+                DataModel.EditModel.DevelopmentLevel = 0;
+            }
         }
 
         #endregion
@@ -191,6 +281,12 @@ namespace FiefApp.Module.Subsidiary
             }
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

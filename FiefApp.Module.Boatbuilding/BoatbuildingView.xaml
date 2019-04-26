@@ -14,8 +14,8 @@
 
     <Grid>
         <Grid 
-        x:Name="RootGrid"
-        Background="#FFE5E5E5">
+            x:Name="RootGrid"
+            Background="#FFE5E5E5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="9"/>
                 <RowDefinition Height="6"/>
@@ -75,6 +75,24 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+
+            <CheckBox
+                x:Name="GotShipyard"
+                IsChecked="{Binding Path=DataModel.GotShipyard}"
+                Grid.Column="0"
+                Grid.Row="0"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsTabStop="False"/>
+
+            <CheckBox
+                x:Name="UpgradingShipyard"
+                IsChecked="{Binding Path=DataModel.UpgradingShipyard}"
+                Grid.Column="0"
+                Grid.Row="0"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsTabStop="False"/>
 
             <Frame 
                 Grid.Column="1" 

@@ -1,0 +1,320 @@
+﻿<UserControl x:Class="FiefApp.Module.Subsidiary.UIElements.EditSubsidiaryUI.EditSubsidiaryUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:behaviors="clr-namespace:FiefApp.Common.Infrastructure.Behaviors;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="363" 
+             d:DesignWidth="274">
+
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame
+            Grid.Column="0"
+            Grid.ColumnSpan="6"
+            Grid.Row="0"
+            Grid.RowSpan="32"
+            Background="LightGray"
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label
+            Content="Redigera binäring"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="3"
+            FontWeight="Bold"
+            VerticalContentAlignment="Center"
+            Padding="10,0,0,0"/>
+
+        <Label
+            Content="Binäring"
+            Grid.Column="1"
+            Grid.Row="5"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Grid.Row="5"
+            Text="{Binding Path=Subsidiary}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0"
+            IsReadOnly="True"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Inkomst faktor"
+            Grid.Column="1"
+            Grid.Row="7"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="7"
+            Text="{Binding Path=IncomeFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Inkomst del i silver"
+            Grid.Column="1"
+            Grid.Row="9"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="9"
+            Text="{Binding Path=IncomeSilver, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Inkomst del i bas"
+            Grid.Column="1"
+            Grid.Row="11"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="11"
+            Text="{Binding Path=IncomeBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Inkomst del i lyx"
+            Grid.Column="1"
+            Grid.Row="13"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="13"
+            Text="{Binding Path=IncomeLuxury, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Dagsverk för att driva"
+            Grid.Column="1"
+            Grid.Row="15"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Grid.Row="15"
+            Width="60"
+            Text="{Binding Path=DaysWorkUpkeep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            HorizontalAlignment="Left"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Påverkan av vårväder"
+            Grid.Column="1"
+            Grid.Row="17"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="17"
+            Text="{Binding Path=Spring, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Påverkan av sommarväder"
+            Grid.Column="1"
+            Grid.Row="19"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="19"
+            Text="{Binding Path=Summer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Påverkan av höstväder"
+            Grid.Column="1"
+            Grid.Row="21"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="21"
+            Text="{Binding Path=Fall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Påverkan av vinterväder"
+            Grid.Column="1"
+            Grid.Row="23"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="23"
+            Text="{Binding Path=Winter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Kvalitet"
+            Grid.Column="1"
+            Grid.Row="25"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="25"
+            Text="{Binding Path=Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Label
+            Content="Utvecklingsnivå"
+            Grid.Column="1"
+            Grid.Row="27"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="27"
+            Text="{Binding Path=DevelopmentLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"/>
+
+        <Button
+            Grid.Column="4"
+            Grid.Row="29"
+            Content="avbryt"
+            Click="ButtonCancel_OnClick"
+            Width="51"
+            HorizontalAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Template="{DynamicResource ButtonTemplate}"/>
+
+        <Button
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Grid.Row="29"
+            Content="spara"
+            Click="ButtonSave_OnClick"
+            Width="51"
+            HorizontalAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="0,0,57,0"
+            Template="{DynamicResource ButtonTemplate}"/>
+
+    </Grid>
+</UserControl>

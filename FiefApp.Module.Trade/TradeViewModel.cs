@@ -2,10 +2,12 @@
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Trade.RoutedEvents;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Trade
 {
@@ -13,19 +15,24 @@ namespace FiefApp.Module.Trade
     {
         private readonly IBaseService _baseService;
         private readonly ITradeService _tradeService;
+        private readonly IEventAggregator _eventAggregator;
 
         public TradeViewModel(
             IBaseService baseService,
-            ITradeService tradeService
+            ITradeService tradeService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             TabName = "Handel";
 
             _baseService = baseService;
             _tradeService = tradeService;
+            _eventAggregator = eventAggregator;
 
             AddMerchant = new DelegateCommand(ExecuteAddMerchant);
             MerchantUIEventHandler = new CustomDelegateCommand(ExecuteMerchantUIEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region DelegateCommand : AddMerchant
@@ -128,6 +135,12 @@ namespace FiefApp.Module.Trade
                 : _baseService.GetDataModel<TradeDataModel>(Index);
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
     }
 }

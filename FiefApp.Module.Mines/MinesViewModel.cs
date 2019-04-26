@@ -3,9 +3,11 @@ using System.ComponentModel;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Mines.RoutedEvents;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Mines
 {
@@ -13,19 +15,24 @@ namespace FiefApp.Module.Mines
     {
         private readonly IBaseService _baseService;
         private readonly IMinesService _minesService;
+        private readonly IEventAggregator _eventAggregator;
 
         public MinesViewModel(
             IBaseService baseService,
-            IMinesService minesService
+            IMinesService minesService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             TabName = "Stenbrott/Gruvor";
 
             _baseService = baseService;
             _minesService = minesService;
+            _eventAggregator = eventAggregator;
 
             AddQuarryCommand = new DelegateCommand(ExecuteAddQuarryCommand);
             ConstructQuarryUIEventHandler = new CustomDelegateCommand(ExecuteConstructQuarryUIEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region DelegateCommand : AddQuarryCommand
@@ -90,6 +97,12 @@ namespace FiefApp.Module.Mines
                 : _baseService.GetDataModel<MinesDataModel>(Index);
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

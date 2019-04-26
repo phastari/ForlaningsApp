@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Module.Subsidiary.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
 {
@@ -18,7 +19,55 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
         {
             InitializeComponent();
             RootGrid.DataContext = this;
+
+            DeleteSubsidiary = new DelegateCommand(ExecuteDeleteSubsidiary);
+            EditSubsidiary = new DelegateCommand(ExecuteEditSubsidiary);
         }
+
+        #region DelegateCommands
+
+        public DelegateCommand DeleteSubsidiary { get; set; }
+        private void ExecuteDeleteSubsidiary()
+        {
+            SubsidiaryUIEventArgs newEventArgs =
+                new SubsidiaryUIEventArgs(
+                    SubsidiaryUIRoutedEvent,
+                    "Delete",
+                    -1,
+                    "",
+                    Id
+                );
+            RaiseEvent(newEventArgs);
+        }
+
+        public DelegateCommand EditSubsidiary { get; set; }
+        private void ExecuteEditSubsidiary()
+        {
+            _oldValues.Id = Id;
+            _oldValues.Subsidiary = Subsidiary;
+            _oldValues.Quality = Quality;
+            _oldValues.DevelopmentLevel = DevelopmentLevel;
+            _oldValues.Silver = Silver;
+            _oldValues.Base = Base;
+            _oldValues.Luxury = Luxury;
+            _oldValues.DaysWorkUpkeep = DaysWorkLeft;
+            _oldValues.DaysWorkThisYear = DaysWorkThisYear;
+            _oldValues.Steward = Steward;
+            _oldValues.StewardId = StewardId;
+            _oldValues.Skill = Skill;
+
+            SubsidiaryUIEventArgs newEventArgs =
+                new SubsidiaryUIEventArgs(
+                    SubsidiaryUIRoutedEvent,
+                    "Edit",
+                    -1,
+                    "",
+                    Id
+                );
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
 
         public int Id
         {
@@ -226,6 +275,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 NotifyPropertyChanged();
             }
         }
+
+        private SubsidiaryModel _oldValues = new SubsidiaryModel();
 
         #region Event Handler For Selection Changed
 

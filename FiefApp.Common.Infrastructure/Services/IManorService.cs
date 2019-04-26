@@ -11,5 +11,6 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetPeopleId(int index);
         void DeletePeople(int id, int index);
         ManorDataModel GetAllManorDataModel();
+        string GetLivingcondition(int index);
     }
 }

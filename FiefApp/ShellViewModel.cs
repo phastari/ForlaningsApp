@@ -1,13 +1,14 @@
 ﻿using Prism.Commands;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace FiefApp
@@ -16,13 +17,16 @@ namespace FiefApp
     {
         private IFiefService _fiefService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public ShellViewModel(
             IFiefService fiefService,
-            ISettingsService settingsService)
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator)
         {
             _fiefService = fiefService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             // COMMANDS
             this.NewFiefCommand = new DelegateCommand(NewFiefCommandExecute);
@@ -96,6 +100,8 @@ namespace FiefApp
 
                 ForlaningsNamn = _fiefService.InformationList[1].FiefName;
                 ForlaningsAr = _fiefService.Year;
+
+                SendNewFiefLoadedEvent();
             }
         }
 
@@ -477,6 +483,11 @@ namespace FiefApp
                     new IncomeDataModel()
                 };
             }
+        }
+
+        private void SendNewFiefLoadedEvent()
+        {
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Publish();
         }
 
         #endregion

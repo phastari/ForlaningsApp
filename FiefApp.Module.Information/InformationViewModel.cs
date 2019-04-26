@@ -1,8 +1,12 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using System.Security.Cryptography;
+using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Information
 {
@@ -11,11 +15,13 @@ namespace FiefApp.Module.Information
         private readonly IInformationService _informationService;
         private readonly IBaseService _baseService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public InformationViewModel(
             IBaseService baseService,
             IInformationService informationService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             TabName = "Information";
@@ -23,6 +29,7 @@ namespace FiefApp.Module.Information
             _baseService = baseService;
             _informationService = informationService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             SettingsModel = _settingsService.InformationSettingsModel;
 
@@ -33,6 +40,8 @@ namespace FiefApp.Module.Information
             AddFiefCommand = new DelegateCommand(ExecuteAddFiefCommand);
             RemoveFiefCommand = new DelegateCommand(ExecuteRemoveFiefCommand);
             UpdateInformationTextCommand = new DelegateCommand(ExecuteUpdateInformationTextCommand);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region UI DelegateCommands
@@ -141,10 +150,18 @@ namespace FiefApp.Module.Information
                 {
                     RemovedFief = false;
                 }
+
+                _informationService.SetupPopulationReligion(Index);
                 DataModel = _baseService.GetDataModel<InformationDataModel>(Index);
                 DataModel?.SortReligionsListIntoReligionsShowCollection();
             }
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

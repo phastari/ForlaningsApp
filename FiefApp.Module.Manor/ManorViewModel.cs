@@ -4,11 +4,13 @@ using System.Linq;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using FiefApp.Module.Manor.RoutedEvents;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Manor
 {
@@ -17,16 +19,19 @@ namespace FiefApp.Module.Manor
         private readonly IBaseService _baseService;
         private readonly IManorService _manorService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public ManorViewModel(
             IBaseService baseService,
             IManorService manorService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _manorService = manorService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             SettingsModel = _settingsService.ManorSettingsModel;
 
@@ -39,6 +44,8 @@ namespace FiefApp.Module.Manor
             EditButtonCommand = new DelegateCommand(ExecuteEditButtonCommand);
             CancelEditButton = new DelegateCommand(ExecuteCancelEditButton);
             SaveEditButton = new DelegateCommand(ExecuteSaveEditButton);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : ResidentUIEventHandler
@@ -291,10 +298,22 @@ namespace FiefApp.Module.Manor
                 DataModel = _baseService.GetDataModel<ManorDataModel>(Index);
                 DataModel.ResidentsCollection.Clear();
                 DataModel.ResidentsCollection = new ObservableCollection<IPeopleModel>(_manorService.GetResidentsCollection(Index));
-                UpdateManorPopulationFromVillages();
+                GetInformationSetDataModel();
             }
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
+        }
+
+        private void GetInformationSetDataModel()
+        {
+            UpdateManorPopulationFromVillages();
+            GetLivingCondition();
         }
 
         private void UpdateManorPopulationFromVillages()
@@ -309,45 +328,9 @@ namespace FiefApp.Module.Manor
             DataModel.ManorPopulation = population;
         }
 
-        private void CreateFakeData()
+        private void GetLivingCondition()
         {
-            DataModel.ResidentsList.Add(new ResidentModel()
-            {
-                Id = 0,
-                Age = 32,
-                Type = "Resident",
-                PersonName = "Karl Gunnar",
-                Position = "Boende"
-            });
-
-            DataModel.ResidentsList.Add(new ResidentModel()
-            {
-                Id = 1,
-                Age = 43,
-                Type = "Resident",
-                PersonName = "Sune Svensson",
-                Position = "Boende"
-            });
-
-            DataModel.VillagesCollection.Add(new VillageModel()
-            {
-                Id = 0,
-                Village = "By1",
-                Population = 100,
-                Burgess = 15,
-                Farmers = 25,
-                Serfdoms = 60
-            });
-
-            DataModel.VillagesCollection.Add(new VillageModel()
-            {
-                Id = 1,
-                Village = "By2",
-                Population = 120,
-                Burgess = 25,
-                Farmers = 35,
-                Serfdoms = 60
-            });
+            DataModel.ManorLivingconditions = _manorService.GetLivingcondition(Index);
         }
 
         #endregion

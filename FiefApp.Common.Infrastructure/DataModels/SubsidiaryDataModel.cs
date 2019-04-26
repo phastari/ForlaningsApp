@@ -27,6 +27,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private SubsidiaryModel _editModel;
+        public SubsidiaryModel EditModel
+        {
+            get => _editModel;
+            set
+            {
+                _editModel = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<SubsidiaryModel> _subsidiaryCollection = new ObservableCollection<SubsidiaryModel>();
         public ObservableCollection<SubsidiaryModel> SubsidiaryCollection
         {

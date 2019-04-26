@@ -595,7 +595,7 @@
                     <DataTemplate>
                         <residentUi:ResidentUI
                         Id="{Binding Path=Id}"
-                        Resident="{Binding Path=Name}"
+                        Resident="{Binding Path=PersonName}"
                         Age="{Binding Path=Age}"
                         ResidentType="{Binding Path=Type}"
                         Position="{Binding Path=Position}">

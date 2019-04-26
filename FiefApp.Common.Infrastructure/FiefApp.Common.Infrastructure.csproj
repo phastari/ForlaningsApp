@@ -105,7 +105,7 @@
     <Compile Include="DataModels\SupplyDataModel.cs" />
     <Compile Include="DataModels\TradeDataModel.cs" />
     <Compile Include="DataModels\WeatherDataModel.cs" />
-    <Compile Include="EventAggregatorEvents\EmployeeModelToEmployeeDataModelEvent.cs" />
+    <Compile Include="EventAggregatorEvents\NewFiefLoadedEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
     <Compile Include="Models\BoatbuilderModel.cs" />

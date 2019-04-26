@@ -2,5 +2,5 @@
 
 namespace FiefApp.Common.Infrastructure.EventAggregatorEvents
 {
-    public class EmployeeModelToEmployeeDataModelEvent : PubSubEvent { }
+    public class NewFiefLoadedEvent : PubSubEvent { }
 }

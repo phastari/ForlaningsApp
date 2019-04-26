@@ -22,5 +22,12 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetEmployeeLuxuryCost(int index);
         int GetManorUpkeep(int index);
         int CalculateManorUpkeepBaseCost(int index);
+        string GetLivingcondition(int index);
+        int GetNumberOfBuildings(int index);
+        int GetIronCostOfBuildings(int index);
+        int GetWoodCostOfBuildings(int index);
+        int GetStoneCostOfBuildings(int index);
+        int GetNumberOfBoatsBuilding(int index);
+        int GetBoatbuildingSilverCost(int index);
     }
 }

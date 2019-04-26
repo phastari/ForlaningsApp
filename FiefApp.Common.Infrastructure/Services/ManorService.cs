@@ -372,5 +372,17 @@ namespace FiefApp.Common.Infrastructure.Services
 
             return tempDataModel;
         }
+
+        public string GetLivingcondition(int index)
+        {
+            if (string.IsNullOrEmpty(_fiefService.ExpensesList[index].Livingcondition))
+            {
+                return "";
+            }
+            else
+            {
+                return _fiefService.ExpensesList[index].Livingcondition;
+            }
+        }
     }
 }

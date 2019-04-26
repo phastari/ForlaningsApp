@@ -471,6 +471,15 @@ namespace FiefApp.Common.Infrastructure.DataModels
         {
             ReligionsList.Sort((x, y) => y.Followers.CompareTo(x.Followers));
             ReligionsShowCollection = new ObservableCollection<ReligionModel>(ReligionsList.GetRange(0, 4));
+
+            int total = 0;
+
+            for (int x = 0; x < ReligionsShowCollection.Count; x++)
+            {
+                total += ReligionsShowCollection[x].PercentOfPopulation;
+            }
+
+            OtherReligions = 100 - total;
         }
 
         #endregion

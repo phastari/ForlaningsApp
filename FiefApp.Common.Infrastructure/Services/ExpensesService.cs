@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 
@@ -201,6 +202,52 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return Convert.ToInt32(Math.Ceiling((decimal)_fiefService.ManorList[index].ManorAcres / 40 * _fiefService.ManorList[index].ManorAcres));
             }
+        }
+
+        public string GetLivingcondition(int index)
+        {
+            if (string.IsNullOrEmpty(_fiefService.ManorList[index].ManorLivingconditions))
+            {
+                return "";
+            }
+            else
+            {
+                return _fiefService.ManorList[index].ManorLivingconditions;
+            }
+        }
+
+        public int GetNumberOfBuildings(int index)
+        {
+
+            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.Amount);
+        }
+
+        public int GetIronCostOfBuildings(int index)
+        {
+
+            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.IronThisYear);
+        }
+
+        public int GetWoodCostOfBuildings(int index)
+        {
+
+            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.WoodThisYear);
+        }
+
+        public int GetStoneCostOfBuildings(int index)
+        {
+
+            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.StoneThisYear);
+        }
+
+        public int GetNumberOfBoatsBuilding(int index)
+        {
+            return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Sum(t => t.Amount);
+        }
+
+        public int GetBoatbuildingSilverCost(int index)
+        {
+            return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Where(t => t.BuildTimeInDaysAll < 365).Sum(t => t.CostWhenFinishedSilver);
         }
     }
 }

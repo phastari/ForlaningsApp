@@ -1,7 +1,9 @@
 ﻿using System;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
+using Prism.Events;
 
 namespace FiefApp.Module.Weather
 {
@@ -9,16 +11,21 @@ namespace FiefApp.Module.Weather
     {
         private readonly IBaseService _baseService;
         private readonly IWeatherService _weatherService;
+        private readonly IEventAggregator _eventAggregator;
 
         public WeatherViewModel(
             IBaseService baseService,
-            IWeatherService weatherService
+            IWeatherService weatherService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _weatherService = weatherService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Väder/Dagsverk";
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region DataModel
@@ -45,6 +52,12 @@ namespace FiefApp.Module.Weather
             
             GetInformationSetDataModel();
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         private void GetInformationSetDataModel()

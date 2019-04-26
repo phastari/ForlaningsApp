@@ -4,8 +4,10 @@ using System.Linq;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Buildings.RoutedEvents;
+using Prism.Events;
 
 namespace FiefApp.Module.Buildings
 {
@@ -13,18 +15,23 @@ namespace FiefApp.Module.Buildings
     {
         private readonly IBaseService _baseService;
         private readonly IBuildingsService _buildingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public BuildingsViewModel(
             IBaseService baseService,
-            IBuildingsService buildingsService
+            IBuildingsService buildingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _buildingsService = buildingsService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Byggnadsverk";
 
             AddBuildingUIEventHandler = new CustomDelegateCommand(ExecuteAddBuildingUIEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : AddBuildingUIEvent
@@ -87,6 +94,12 @@ namespace FiefApp.Module.Buildings
                 : _baseService.GetDataModel<BuildingsDataModel>(Index);
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
     }
 }

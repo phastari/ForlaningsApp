@@ -1,6 +1,7 @@
 ﻿using FiefApp.Common.Infrastructure.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -48,6 +49,28 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _boatBuildersCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _gotShipyard;
+        public bool GotShipyard
+        {
+            get => _gotShipyard;
+            set
+            {
+                _gotShipyard = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _upgradingShipyard;
+        public bool UpgradingShipyard
+        {
+            get => _upgradingShipyard;
+            set
+            {
+                _upgradingShipyard = value;
                 NotifyPropertyChanged();
             }
         }
@@ -162,6 +185,14 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        #region Methods
+
+        public void UpdateTotalBoatBuilders()
+        {
+            TotalBoatBuilders = BoatBuildersCollection.Count;
+        }
+
+        #endregion
 
         #region INotifyPropertyChanged
 

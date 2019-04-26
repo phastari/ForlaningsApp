@@ -20,6 +20,28 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _totalBuildings;
+        public int TotalBuildings
+        {
+            get => _totalBuildings;
+            set
+            {
+                _totalBuildings = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _totalUpkeep;
+        public int TotalUpkeep
+        {
+            get => _totalUpkeep;
+            set
+            {
+                _totalUpkeep = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<BuildingsSettingsModel> _buildingsSettings;
         public ObservableCollection<BuildingsSettingsModel> BuildingsSettings
         {

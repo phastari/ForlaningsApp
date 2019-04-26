@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.HelpClasses.StringToFormula;
+using Prism.Events;
 
 namespace FiefApp.Module.Employees
 {
@@ -17,21 +19,26 @@ namespace FiefApp.Module.Employees
         private readonly IBaseService _baseService;
         private readonly IEmployeeService _employeeService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public EmployeesViewModel(
             IBaseService baseService,
             IEmployeeService employeeService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _employeeService = employeeService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Anställda";
 
             EmployeeUIEventHandler = new CustomDelegateCommand(ExecuteEmployeeUIEventHandler, o => true);
             AddEmployeeUIEventHandler = new CustomDelegateCommand(ExecuteAddEmployeeUIEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : EmployeeUIEventHandler
@@ -171,6 +178,12 @@ namespace FiefApp.Module.Employees
             DataModel.PropertyChanged += DataModelPropertyChanged;
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

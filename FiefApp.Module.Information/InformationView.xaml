@@ -1387,7 +1387,7 @@
                VerticalContentAlignment="Center"
                Padding="0,0,6,0"/>
 
-        <TextBox Text="{Binding Path=DataModel.Liegelord.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox Text="{Binding Path=DataModel.Liegelord.PersonName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Grid.Column="21" 
                  Grid.ColumnSpan="5" 
                  Grid.Row="5" 

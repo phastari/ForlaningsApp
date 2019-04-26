@@ -9,7 +9,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Module.Stewards.UIElements.StewardUI;
+using Prism.Events;
 
 namespace FiefApp.Module.Stewards
 {
@@ -17,19 +19,24 @@ namespace FiefApp.Module.Stewards
     {
         private readonly IBaseService _baseService;
         private readonly IStewardsService _stewardsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public StewardsViewModel(
             IBaseService baseService,
-            IStewardsService stewardsService
+            IStewardsService stewardsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _stewardsService = stewardsService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Förvaltare";
 
             StewardUIEventHandler = new CustomDelegateCommand(ExecuteStewardUIEventHandler, o => true);
             AddStewardCommand = new DelegateCommand(ExecuteAddStewardCommand);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : StewardUIEventHandler
@@ -130,6 +137,12 @@ namespace FiefApp.Module.Stewards
                 : _baseService.GetDataModel<StewardsDataModel>(Index);
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

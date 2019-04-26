@@ -16,5 +16,6 @@ namespace FiefApp.Common.Infrastructure.Services
         ObservableCollection<SubsidiaryModel> GetSubsidiaryCollection(int index);
         ObservableCollection<SubsidiaryModel> GetConstructingCollection(int index);
         void ShowConstructingCollection();
+        void SetSubsidiary(int index, int id, SubsidiaryModel model);
     }
 }

@@ -8,5 +8,8 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetNewBuildingBoatId(int index);
         int GetNewBoatbuilderId();
         int GetNrVillageBoatbuilders(int index);
+        bool GetGotShipyard(int index);
+        bool GetUpgradingShipyard(int index);
+        int GetVillageBoatBuilders(int index);
     }
 }

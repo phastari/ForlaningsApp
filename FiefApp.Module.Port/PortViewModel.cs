@@ -3,10 +3,12 @@ using System.Windows;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Port.RoutedEvents;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Port
 {
@@ -15,11 +17,13 @@ namespace FiefApp.Module.Port
         private readonly IBaseService _baseService;
         private readonly IPortService _portService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public PortViewModel(
             IBaseService baseService,
             IPortService portService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             TabName = "Hamn";
@@ -27,6 +31,7 @@ namespace FiefApp.Module.Port
             _baseService = baseService;
             _portService = portService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             ConstructShipyardCommand = new DelegateCommand(ExecuteConstructShipyardCommand);
 
@@ -40,6 +45,8 @@ namespace FiefApp.Module.Port
             CaptainUIEventHandler = new CustomDelegateCommand(ExecuteCaptainUIEventHandler, o => true);
             BoatUIEventHandler = new CustomDelegateCommand(ExecuteBoatUIEventHandler, o => true);
             CrewBoatUIEventHandler = new CustomDelegateCommand(ExecuteCrewBoatUIEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region Test DelegateCommands
@@ -324,28 +331,13 @@ namespace FiefApp.Module.Port
                 DataModel.CanBuildShipyard = _portService.CheckShipyardPossibility(Index);
             }
 
-            CreateFakeData();
+            UpdateFiefCollection();
         }
 
-        private void CreateFakeData()
+        private void ExecuteNewFiefLoadedEvent()
         {
-            if (DataModel.BoatsCollection.Count == 0)
-            {
-                DataModel.BoatsCollection.Add(new BoatModel()
-                {
-                    Id = 0,
-                    BoatType = "Test",
-                    AmountRowers = -1,
-                    AmountGuards = 0,
-                    AmountMariners = 0,
-                    AmountNavigators = 0,
-                    AmountOfficers = 0,
-                    AmountSailors = 0,
-                    AmountSeamen = 0,
-                    CargoTotal = 50,
-                    CrewNeeded = 12
-                });
-            }
+            Index = 1;
+            LoadData();
         }
     }
 }

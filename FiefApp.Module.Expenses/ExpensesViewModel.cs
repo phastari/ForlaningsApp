@@ -6,6 +6,8 @@ using FiefApp.Common.Infrastructure.Services;
 using Prism.Commands;
 using System.Collections.Generic;
 using System.ComponentModel;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using Prism.Events;
 
 namespace FiefApp.Module.Expenses
 {
@@ -14,16 +16,19 @@ namespace FiefApp.Module.Expenses
         private readonly IBaseService _baseService;
         private readonly IExpensesService _expensesService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public ExpensesViewModel(
             IBaseService baseService,
             IExpensesService expensesService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _expensesService = expensesService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Utgifter";
 
@@ -32,6 +37,8 @@ namespace FiefApp.Module.Expenses
             EditButtonCommand = new DelegateCommand(ExecuteEditButtonCommand);
             CancelEditingButtonCommand = new DelegateCommand(ExecuteCancelEditingButtonCommand);
             SaveEditedButtonCommand = new DelegateCommand(ExecuteSaveEditedButtonCommand);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region DelegateCommand : EditButtonCommand
@@ -111,6 +118,12 @@ namespace FiefApp.Module.Expenses
             DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
             GetInformationSetDataModel();
             DataModel.CalculateTotals();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         private void DataModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -209,22 +222,44 @@ namespace FiefApp.Module.Expenses
             GetManorUpkeep();
             CalculateUpkeepManor();
             CalculateFeedingCosts();
+            GetLivingcondition();
+            GetBuildingsCosts();
+            GetBoatCosts();
         }
 
-        public void GetManorUpkeep()
+        private void GetBoatCosts()
+        {
+            DataModel.BoatBuilds = _expensesService.GetNumberOfBoatsBuilding(Index);
+            DataModel.BoatBuildsSilver = _expensesService.GetBoatbuildingSilverCost(Index);
+        }
+
+        private void GetBuildingsCosts()
+        {
+            DataModel.Builds = _expensesService.GetNumberOfBuildings(Index);
+            DataModel.BuildsIron = _expensesService.GetIronCostOfBuildings(Index);
+            DataModel.BuildsStone = _expensesService.GetStoneCostOfBuildings(Index);
+            DataModel.BuildsWood = _expensesService.GetWoodCostOfBuildings(Index);
+        }
+
+        private void GetManorUpkeep()
         {
             DataModel.ManorMaintenance = _expensesService.GetManorUpkeep(Index);
         }
 
-        public void CalculateUpkeepManor()
+        private void CalculateUpkeepManor()
         {
             DataModel.ManorMaintenanceBase = _expensesService.CalculateManorUpkeepBaseCost(Index);
         }
 
-        public void CalculateFeedingCosts()
+        private void CalculateFeedingCosts()
         {
             DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(Index);
             DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(Index);
+        }
+
+        private void GetLivingcondition()
+        {
+            DataModel.Livingcondition = _expensesService.GetLivingcondition(Index);
         }
 
         #endregion

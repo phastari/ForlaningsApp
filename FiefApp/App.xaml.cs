@@ -2,6 +2,7 @@
 using Prism.Modularity;
 using System.Windows;
 using FiefApp.Common.Infrastructure.Services;
+using Prism.Events;
 
 namespace FiefApp
 {
@@ -20,6 +21,7 @@ namespace FiefApp
             containerRegistry.RegisterSingleton<IFiefService, FiefService>();
             containerRegistry.RegisterSingleton<ISettingsService, SettingsService>();
             containerRegistry.RegisterSingleton<ISupplyService, SupplyService>();
+            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
 
             containerRegistry.Register<IBaseService, BaseService>();
             containerRegistry.Register<IInformationService, InformationService>();

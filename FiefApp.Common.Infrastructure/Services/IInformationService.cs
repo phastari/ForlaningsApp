@@ -7,5 +7,6 @@ namespace FiefApp.Common.Infrastructure.Services
         InformationDataModel GetInformationDataModel(int index);
         void SetInformationDataModel(InformationDataModel dataModel, int index);
         InformationDataModel GetAllInformationDataModel();
+        void SetupPopulationReligion(int index);
     }
 }

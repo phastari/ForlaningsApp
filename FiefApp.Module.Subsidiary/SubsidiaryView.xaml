@@ -8,6 +8,7 @@
              xmlns:addSubsidiaryUI="clr-namespace:FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:editSubsidiaryUI="clr-namespace:FiefApp.Module.Subsidiary.UIElements.EditSubsidiaryUI"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
@@ -24,6 +25,23 @@
                     <Setter Property="IsChecked" Value="False"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=AddSubsidiaryUI, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
+
+        <CheckBox
+            x:Name="EditSubsidiaryShowHolder"
+            Grid.Column="0"
+            Grid.Row="0"
+            Visibility="Collapsed">
+            <CheckBox.Style>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditSubsidiaryUI, Path=Visibility}" Value="Collapsed">
                             <Setter Property="IsChecked" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -585,7 +603,29 @@
 
             </StackPanel>
 
-
         </Grid>
+
+        <editSubsidiaryUI:EditSubsidiaryUI
+            x:Name="EditSubsidiaryUI"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <editSubsidiaryUI:EditSubsidiaryUI.Style>
+                <Style TargetType="{x:Type editSubsidiaryUI:EditSubsidiaryUI}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditSubsidiaryShowHolder, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </editSubsidiaryUI:EditSubsidiaryUI.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="EditSubsidiaryUIEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EditSubsidiaryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                    <customCommands:CustomSetterAction PropertyName="IsChecked" TargetObject="{Binding ElementName=EditSubsidiaryShowHolder}" Value="False" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </editSubsidiaryUI:EditSubsidiaryUI>
     </Grid>
 </UserControl>

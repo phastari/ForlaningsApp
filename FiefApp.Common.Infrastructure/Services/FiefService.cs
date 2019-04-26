@@ -28,7 +28,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<TradeDataModel> TradeList { get; set; } = new List<TradeDataModel>();
         public SupplyDataModel SupplyDataModel { get; set; } = new SupplyDataModel();
 
-        private readonly Random _getRandom = new Random();
+        private readonly Random _getRandom = new Random(Guid.NewGuid().GetHashCode() * Guid.NewGuid().GetHashCode());
         public int GetRandom(int min, int max)
         {
             lock (_getRandom)

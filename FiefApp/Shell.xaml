@@ -124,16 +124,6 @@
                     HorizontalAlignment="Left" 
                     Height="30" 
                     Width="200"/>
-
-                <Separator/>
-
-                <MenuItem
-                    Header="Återställ storlek"
-                    HorizontalAlignment="Left"
-                    Height="30"
-                    Width="200"
-                    Command="{Binding Path=ResetSizeCommand}"/>
-
             </MenuItem>
         </Menu>
 

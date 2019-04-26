@@ -299,17 +299,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _buildsBase;
-        public int BuildsBase
-        {
-            get => _buildsBase;
-            set
-            {
-                _buildsBase = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         private int _buildsWood;
         public int BuildsWood
         {
@@ -354,35 +343,13 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _boatBuildsBase;
-        public int BoatBuildsBase
+        private int _boatBuildsSilver;
+        public int BoatBuildsSilver
         {
-            get => _boatBuildsBase;
+            get => _boatBuildsSilver;
             set
             {
-                _boatBuildsBase = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _boatBuildsWood;
-        public int BoatBuildsWood
-        {
-            get => _boatBuildsWood;
-            set
-            {
-                _boatBuildsWood = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _boatBuildsIron;
-        public int BoatBuildsIron
-        {
-            get => _boatBuildsIron;
-            set
-            {
-                _boatBuildsIron = value;
+                _boatBuildsSilver = value;
                 NotifyPropertyChanged();
             }
         }
@@ -970,7 +937,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                              + TournamentsSilver
                              + OthersSilver
                              + ArmySilver
-                             + FleetSilver;
+                             + FleetSilver
+                             + BoatBuildsSilver;
 
             ExpensesBase = ResidentAdultsBase
                            + ResidentChildrenBase
@@ -978,8 +946,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                            + StableWarHorsesBase
                            + FeedingPoorBase
                            + FeedingDayworkersBase
-                           + BuildsBase
-                           + BoatBuildsBase
                            + ManorMaintenanceBase
                            + ImproveRoadsBase
                            + DayWorkersBase
@@ -1008,7 +974,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                              + FleetLuxury;
 
             ExpensesWood = BuildsWood
-                           + BoatBuildsWood
                            + SoldWood;
 
             ExpensesStone = BuildsStone
@@ -1016,7 +981,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                             + SoldStone;
 
             ExpensesIron = BuildsIron
-                           + BoatBuildsIron
                            + SoldIron;
         }
 

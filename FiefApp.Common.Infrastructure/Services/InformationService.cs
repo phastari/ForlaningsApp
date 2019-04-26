@@ -237,29 +237,160 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public void SetupPopulationReligion(int index)
         {
-            int population = 0;
-            int gotReligion = 0;
+            int population;
+            int gotReligion;
+            bool loop = true;
 
-            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
+            while (loop)
             {
-                population += _fiefService.ManorList[index].VillagesCollection[x].Population;
-            }
+                population = 0;
+                gotReligion = 0;
 
-            for (int y = 0; y < _fiefService.InformationList[index].ReligionsList.Count; y++)
-            {
-                if (_fiefService.InformationList[index].ReligionsList[y].Religion != "" || _fiefService.InformationList[index].ReligionsList[y].Religion != null)
+                for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
                 {
-                    gotReligion++;
+                    population += _fiefService.ManorList[index].VillagesCollection[x].Population;
                 }
-            }
 
-            for (int i = 0; i > population - gotReligion; i++)
-            {
-                int z = _fiefService.GetRandom(1, 100);
-
-                if (z < 8)
+                for (int y = 0; y < _fiefService.InformationList[index].ReligionsList.Count; y++)
                 {
-                    _fiefService.InformationList[index].ReligionsList[]
+                    if (_fiefService.InformationList[index].ReligionsList[y].Religion != "" || _fiefService.InformationList[index].ReligionsList[y].Religion != null)
+                    {
+                        gotReligion += _fiefService.InformationList[index].ReligionsList[y].Followers;
+                    }
+                }
+
+                if (population >= gotReligion)
+                {
+                    for (int i = 0; i < population - gotReligion; i++)
+                    {
+                        int z = _fiefService.GetRandom(1, 100);
+
+                        if (z < 10)
+                        {
+                            for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                            {
+                                if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Jordesoldatens vittnen"))
+                                {
+                                    _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (z > 9 && z < 25)
+                        {
+                            for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                            {
+                                if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Daakkyrkan"))
+                                {
+                                    _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (z > 24 && z < 47)
+                        {
+                            for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                            {
+                                if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Vindtron"))
+                                {
+                                    _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (z > 46 && z < 77)
+                        {
+                            for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                            {
+                                if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Hedendomen"))
+                                {
+                                    _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (z > 76 && z < 84)
+                        {
+                            for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                            {
+                                if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Samoriska läran"))
+                                {
+                                    _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (z > 83 && z < 93)
+                        {
+                            for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                            {
+                                if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Kristallorden"))
+                                {
+                                    _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int k = _fiefService.GetRandom(1, 7);
+
+                            if (k < 4)
+                            {
+                                for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                                {
+                                    if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Xinukulten"))
+                                    {
+                                        _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (k > 3 && k < 7)
+                            {
+                                for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                                {
+                                    if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Commersium lamia"))
+                                    {
+                                        _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (k > 6 && k < 8)
+                            {
+                                for (int b = 0; b < _fiefService.InformationList[index].ReligionsList.Count; b++)
+                                {
+                                    if (_fiefService.InformationList[index].ReligionsList[b].Religion.Equals("Övriga"))
+                                    {
+                                        _fiefService.InformationList[index].ReligionsList[b].Followers++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (int x = 0; x < _fiefService.InformationList[index].ReligionsList.Count; x++)
+                    {
+                        if (_fiefService.InformationList[index].ReligionsList[x].Followers == 0)
+                        {
+                            _fiefService.InformationList[index].ReligionsList[x].PercentOfPopulation = 0;
+                        }
+                        else
+                        {
+                            _fiefService.InformationList[index].ReligionsList[x].PercentOfPopulation = Convert.ToInt32(Math.Round(100 / (decimal)population * _fiefService.InformationList[index].ReligionsList[x].Followers));
+                        }
+                    }
+
+                    loop = false;
+                }
+                else
+                {
+                    for (int x = 0; x < _fiefService.InformationList[index].ReligionsList.Count; x++)
+                    {
+                        _fiefService.InformationList[index].ReligionsList[x].Followers = 0;
+                    }
                 }
             }
         }

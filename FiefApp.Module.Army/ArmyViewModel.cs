@@ -6,6 +6,8 @@ using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using System;
 using System.ComponentModel;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using Prism.Events;
 
 namespace FiefApp.Module.Army
 {
@@ -14,20 +16,25 @@ namespace FiefApp.Module.Army
         private readonly IBaseService _baseService;
         private readonly IArmyService _armyService;
         private readonly ISettingsService _settingsService;
+        private readonly IEventAggregator _eventAggregator;
 
         public ArmyViewModel(
             IBaseService baseService,
             IArmyService armyService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _armyService = armyService;
             _settingsService = settingsService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Arme";
 
             BoundToResidentEventHandler = new CustomDelegateCommand(ExecuteBoundToResidentEventHandler, o => true);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : BoundToResidentEventHandler
@@ -150,6 +157,12 @@ namespace FiefApp.Module.Army
             }
 
             UpdateFiefCollection();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

@@ -1,7 +1,10 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using Prism.Commands;
+using Prism.Events;
 
 namespace FiefApp.Module.Supply
 {
@@ -9,14 +12,17 @@ namespace FiefApp.Module.Supply
     {
         private readonly IBaseService _baseService;
         private readonly ISupplyService _supplyService;
+        private readonly IEventAggregator _eventAggregator;
 
         public SupplyViewModel(
             IBaseService baseService,
-            ISupplyService supplyService
+            ISupplyService supplyService,
+            IEventAggregator eventAggregator
             ) : base(baseService)
         {
             _baseService = baseService;
             _supplyService = supplyService;
+            _eventAggregator = eventAggregator;
 
             ModifySilverToSupply = new DelegateCommand(ExecuteModifySilverToSupply);
             ModifyBaseToSupply = new DelegateCommand(ExecuteModifyBaseToSupply);
@@ -24,6 +30,8 @@ namespace FiefApp.Module.Supply
             ModifyIronToSupply = new DelegateCommand(ExecuteModifyIronToSupply);
             ModifyStoneToSupply = new DelegateCommand(ExecuteModifyStoneToSupply);
             ModifyWoodToSupply = new DelegateCommand(ExecuteModifyWoodToSupply);
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region DelegateCommand : ModifySilverToSupply
@@ -209,6 +217,12 @@ namespace FiefApp.Module.Supply
         protected override void LoadData()
         {
             DataModel = _supplyService.GetDataModelFromFiefService();
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            LoadData();
         }
 
         #endregion

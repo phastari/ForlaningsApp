@@ -82,14 +82,23 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetNrVillageBoatbuilders(int index)
         {
-            int i = 0;
 
-            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
-            {
-                i += _fiefService.ManorList[index].VillagesCollection[x].Boatbuilders;
-            }
+            return _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Boatbuilders);
+        }
 
-            return i;
+        public bool GetGotShipyard(int index)
+        {
+            return _fiefService.PortsList[index].GotShipyard;
+        }
+
+        public bool GetUpgradingShipyard(int index)
+        {
+            return _fiefService.PortsList[index].UpgradingShipyard;
+        }
+
+        public int GetVillageBoatBuilders(int index)
+        {
+            return _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Boatbuilders);
         }
     }
 }
