@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings>
+  <Building Building="Bageri" Woodwork="920" Stonework="280" Smithswork="0" Iron="0" Stone="14" Wood="60" Upkeep="3"/>
+  <Building Building="Kvarn" Woodwork="1533" Stonework="540" Smithswork="8" Iron="8" Stone="27" Wood="100" Upkeep="4"/>
   <Building Building="Vall" Woodwork="0" Stonework="40" Smithswork="0" Iron="0" Stone="0" Wood="0" Upkeep="0.1"/>
   <Building Building="Vall och grav" Woodwork="0" Stonework="60" Smithswork="0" Iron="0" Stone="0" Wood="0" Upkeep="0.2"/>
   <Building Building="Palissad" Woodwork="20" Stonework="0" Smithswork="0" Iron="0" Stone="0" Wood="5" Upkeep="0.1"/>

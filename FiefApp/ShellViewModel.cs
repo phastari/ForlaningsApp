@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
@@ -10,6 +11,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Events;
 using Prism.Mvvm;
+using Squirrel;
 
 namespace FiefApp
 {
@@ -39,6 +41,7 @@ namespace FiefApp
 
             // INIT
             FileIsSaved = Properties.Settings.Default.IsSaved;
+            CheckForUpdate();
         }
 
         #region DelegateCommand : NewFiefCommand
@@ -488,6 +491,14 @@ namespace FiefApp
         private void SendNewFiefLoadedEvent()
         {
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Publish();
+        }
+
+        private async Task CheckForUpdate()
+        {
+            using (var manager = new UpdateManager($"{ System.AppDomain.CurrentDomain.BaseDirectory }"))
+            {
+                await manager.UpdateApp();
+            }
         }
 
         #endregion

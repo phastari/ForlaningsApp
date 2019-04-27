@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -8,7 +9,7 @@ namespace FiefApp.Common.Infrastructure.Services
         private readonly ISettingsService _settingsService;
 
         public Calculations(
-            IFiefService fiefService, 
+            IFiefService fiefService,
             ISettingsService settingsService
             )
         {
@@ -92,16 +93,65 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetAgricultureIncome(int index)
         {
+            decimal incomeFromBakery = 0;
+            decimal incomeFromWindmill = 0;
+            decimal temp;
+
+            int nrBakeries = _fiefService.BuildingsList[index].BuildingsCollection.Count(t => t.Building.Equals("Bageri"));
+            int nrWindmills = _fiefService.BuildingsList[index].BuildingsCollection.Count(t => t.Building.Equals("Kvarn"));
+
+            for (int y = 0; y < nrBakeries; y++)
+            {
+                temp = (Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
+                        * _fiefService.ManorList[index].ManorArable
+                        / 9
+                        / 100
+                        * 5)
+                       - (Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
+                          * _fiefService.ManorList[index].ManorArable
+                          / 9
+                          / 100
+                          * 5
+                          / ((int)(Math.Pow((double)y, (double)y))) + 1);
+
+                if (temp > 0)
+                {
+                    incomeFromBakery += temp;
+                }
+            }
+
+            for (int y = 0; y < nrWindmills; y++)
+            {
+                temp = (Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
+                        * _fiefService.ManorList[index].ManorArable
+                        / 9
+                        / 100
+                        * 5)
+                       - (Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
+                          * _fiefService.ManorList[index].ManorArable
+                          / 9
+                          / 100
+                          * 5
+                          / (int)(Math.Pow((double)y, (double)y)) + 1);
+
+                if (temp > 0)
+                {
+                    incomeFromWindmill += temp;
+                }
+            }
+
             return Convert.ToInt32(
                 Math.Floor(
-                    Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
-                    * _fiefService.ManorList[index].ManorArable
-                    / 9
-                    + Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
-                    * _fiefService.ManorList[index].ManorArable
-                    / 100
-                    * Convert.ToDecimal(_fiefService.InformationList[index].AgricultureDevelopmentLevel)
-                    * 5));
+                    incomeFromBakery
+                    + incomeFromWindmill
+                    + (Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
+                       * _fiefService.ManorList[index].ManorArable
+                       / 9)
+                    + (Convert.ToDecimal(_fiefService.InformationList[index].AgricultureQuality)
+                       * _fiefService.ManorList[index].ManorArable
+                       / 100
+                       * Convert.ToDecimal(_fiefService.InformationList[index].AgricultureDevelopmentLevel)
+                       * 5)));
         }
     }
 }
