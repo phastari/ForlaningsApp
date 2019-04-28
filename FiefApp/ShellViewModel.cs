@@ -65,6 +65,7 @@ namespace FiefApp
             if (openFileDialog.ShowDialog() == true)
             {
                 string json = File.ReadAllText(openFileDialog.FileName);
+                this.FileName= System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                 FiefService obj = JsonConvert.DeserializeObject<FiefService>(json);
 
                 _fiefService.Index = obj.Index;
@@ -316,12 +317,12 @@ namespace FiefApp
             {
                 if (SetProperty(ref _forlaningsAr, value))
                 {
-                    Title = ForlaningsNamn + "( anno: " + ForlaningsAr + " )";
+                    Title = ForlaningsNamn + "(" + this.FileName + " anno: " + ForlaningsAr + " )";
                 }
             }
         }
 
-        private string _title = "Shell";
+        private string _title = "FörläningsApp";
         public string Title
         {
             get { return _title; }
