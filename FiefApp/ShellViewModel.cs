@@ -41,6 +41,7 @@ namespace FiefApp
 
             // INIT
             FileIsSaved = Properties.Settings.Default.IsSaved;
+            _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
             CheckForUpdate();
         }
 
@@ -321,7 +322,7 @@ namespace FiefApp
             }
         }
 
-        private string _title = "Shell";
+        private string _title = "Förlänings applikation";
         public string Title
         {
             get { return _title; }
@@ -499,6 +500,11 @@ namespace FiefApp
             {
                 await manager.UpdateApp();
             }
+        }
+
+        private void ExecuteFiefNameChangedEvent()
+        {
+            ForlaningsNamn = _fiefService.InformationList[1].FiefName;
         }
 
         #endregion

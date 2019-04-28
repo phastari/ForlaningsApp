@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
@@ -136,6 +134,11 @@ namespace FiefApp.Module.Information
         protected override void SaveData(int index = -1)
         {
             _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+
+            if (Index == 1)
+            {
+                _eventAggregator.GetEvent<FiefNameChangedEvent>().Publish();
+            }
         }
 
         protected override void LoadData()

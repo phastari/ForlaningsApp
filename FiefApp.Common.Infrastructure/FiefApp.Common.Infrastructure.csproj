@@ -105,6 +105,7 @@
     <Compile Include="DataModels\SupplyDataModel.cs" />
     <Compile Include="DataModels\TradeDataModel.cs" />
     <Compile Include="DataModels\WeatherDataModel.cs" />
+    <Compile Include="EventAggregatorEvents\FiefNameChangedEvent.cs" />
     <Compile Include="EventAggregatorEvents\NewFiefLoadedEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Models\ManorModel.cs" />
     <Compile Include="Models\MerchantModel.cs" />
     <Compile Include="Models\MineModel.cs" />
+    <Compile Include="Models\PeopleBase.cs" />
     <Compile Include="Models\QuarryModel.cs" />
     <Compile Include="Models\ResidentModel.cs" />
     <Compile Include="Models\RoadModel.cs" />
