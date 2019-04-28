@@ -2,13 +2,13 @@
 
 namespace FiefApp.Common.Infrastructure.Models
 {
-    public class SoldierModel : PeopleBase
+    public class SoldierModel : IPeopleModel
     {
-        public override int Id { get; set; }
-        public override string PersonName { get; set; }
-        public override string Type { get; set; } = "Soldier";
+        public int Id { get; set; }
+        public string PersonName { get; set; }
+        public string Type { get; set; } = "Soldier";
         private string _position = "Soldat";
-        public override string Position
+        public string Position
         {
             get => _position;
             set
@@ -16,9 +16,9 @@ namespace FiefApp.Common.Infrastructure.Models
                 _position = value;
             }
         }
-        public override int Age { get; set; }
-        public override string Resources { get; set; }
-        public override string Loyalty { get; set; }
+        public int Age { get; set; }
+        public string Resources { get; set; }
+        public string Loyalty { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

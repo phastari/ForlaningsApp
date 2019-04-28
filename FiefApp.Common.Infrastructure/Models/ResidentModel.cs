@@ -4,10 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace FiefApp.Common.Infrastructure.Models
 {
-    public class ResidentModel : PeopleBase
+    public class ResidentModel : IPeopleModel
     {
         private int _id;
-        public override int Id
+        public int Id
         {
             get => _id;
             set
@@ -18,7 +18,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private string _name;
-        public override string PersonName
+        public string PersonName
         {
             get => _name;
             set
@@ -29,7 +29,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private string _type = "Resident";
-        public override string Type
+        public string Type
         {
             get => _type;
             set
@@ -40,7 +40,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private string _position = "Boende";
-        public override string Position
+        public string Position
         {
             get => _position;
             set
@@ -51,7 +51,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private int _age;
-        public override int Age
+        public int Age
         {
             get => _age;
             set
@@ -62,7 +62,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private string _resources = "0";
-        public override string Resources
+        public string Resources
         {
             get => _resources;
             set
@@ -73,7 +73,7 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         private string _loyalty = "0";
-        public override string Loyalty
+        public string Loyalty
         {
             get => _loyalty;
             set
