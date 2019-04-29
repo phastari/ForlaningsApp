@@ -62,26 +62,24 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int CalculateFeedingPoorBaseCost(int index)
         {
-            int pop = 0;
-
-            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
+            if (_fiefService.ExpensesList[index].FeedingPoor)
             {
-                pop += _fiefService.ManorList[index].VillagesCollection[x].Population;
-            }
+                int pop = _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Population);
 
-            return Convert.ToInt32(Math.Ceiling(pop * _settingsService.ExpensesSettingsModel.FeedingPoorFactor));
+                return Convert.ToInt32(Math.Ceiling(pop * _settingsService.ExpensesSettingsModel.FeedingPoorFactor));
+            }
+            return 0;
         }
 
         public int CalculateFeedingDayworkers(int index)
         {
-            int workers = 0;
-
-            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
+            if (_fiefService.ExpensesList[index].FeedingDayworkers)
             {
-                workers += _fiefService.ManorList[index].VillagesCollection[x].Serfdoms;
-            }
+                int workers = _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Serfdoms);
 
-            return Convert.ToInt32(Math.Ceiling(workers * _settingsService.ExpensesSettingsModel.FeedingDaysWorkFactor));
+                return Convert.ToInt32(Math.Ceiling(workers * _settingsService.ExpensesSettingsModel.FeedingDaysWorkFactor));
+            }
+            return 0;
         }
 
         public RoadModel CheckRoadUpgradeCost(int index)
@@ -174,17 +172,20 @@ namespace FiefApp.Common.Infrastructure.Services
                    + _fiefService.EmployeesList[index].Physician
                    + _fiefService.EmployeesList[index].Prospector
                    + _fiefService.EmployeesList[index].Scholar
-                   + _fiefService.EmployeesList[index].EmployeesCollection.Count;
+                   + _fiefService.EmployeesList[index].EmployeesCollection.Count
+                   + _fiefService.StewardsList[index].StewardsCollection.Count;
         }
 
         public int GetEmployeeBaseCost(int index)
         {
-            return _fiefService.EmployeesList[index].TotalBase;
+            return _fiefService.EmployeesList[index].TotalBase
+                   + _fiefService.StewardsList[index].StewardsCollection.Count * 4;
         }
 
         public int GetEmployeeLuxuryCost(int index)
         {
-            return _fiefService.EmployeesList[index].TotalLuxury;
+            return _fiefService.EmployeesList[index].TotalLuxury
+                   + _fiefService.StewardsList[index].StewardsCollection.Count * 2;
         }
 
         public int GetManorUpkeep(int index)

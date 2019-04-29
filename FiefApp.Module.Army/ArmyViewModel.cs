@@ -35,6 +35,7 @@ namespace FiefApp.Module.Army
             BoundToResidentEventHandler = new CustomDelegateCommand(ExecuteBoundToResidentEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : BoundToResidentEventHandler
@@ -57,64 +58,68 @@ namespace FiefApp.Module.Army
 
                 soldierModel.Id = _armyService.GetPeopleId(Index);
 
-                if (soldierModel.Position == "KnightTemplars")
+                switch (soldierModel.Position)
                 {
-                    soldierModel.Position = "Tempelriddare";
-                    DataModel.TemplarKnightsList.Add(soldierModel);
-                }
-                else if (soldierModel.Position == "Knights")
-                {
-                    soldierModel.Position = "Riddare";
-                    DataModel.KnightsList.Add(soldierModel);
-                }
-                else if (soldierModel.Position == "CavalryTemplarKnights")
-                {
-                    soldierModel.Position = "Tempelriddare";
-                    DataModel.CavalryTemplarKnightsList.Add(soldierModel);
-                }
-                else if (soldierModel.Position == "OfficerCorporals")
-                {
-                    soldierModel.Position = "Korpral";
-                    DataModel.OfficerCorporalsList.Add(soldierModel);
-                }
-                else if (soldierModel.Position == "OfficerSergeants")
-                {
-                    soldierModel.Position = "Sergeant";
-                    DataModel.OfficerSergeantsList.Add(soldierModel);
-                }
-                else if (soldierModel.Position == "OfficerCaptains")
-                {
-                    soldierModel.Position = "Kapten";
-                    DataModel.OfficerCaptainsList.Add(soldierModel);
+                    case "KnightTemplars":
+                        soldierModel.Position = "Tempelriddare";
+                        DataModel.TemplarKnightsList.Add(soldierModel);
+                        break;
+
+                    case "Knights":
+                        soldierModel.Position = "Riddare";
+                        DataModel.KnightsList.Add(soldierModel);
+                        break;
+
+                    case "CavalryTemplarKnights":
+                        soldierModel.Position = "Tempelriddare";
+                        DataModel.CavalryTemplarKnightsList.Add(soldierModel);
+                        break;
+
+                    case "OfficerCorporals":
+                        soldierModel.Position = "Korpral";
+                        DataModel.OfficerCorporalsList.Add(soldierModel);
+                        break;
+
+                    case "OfficerSergeants":
+                        soldierModel.Position = "Sergeant";
+                        DataModel.OfficerSergeantsList.Add(soldierModel);
+                        break;
+
+                    case "OfficerCaptains":
+                        soldierModel.Position = "Kapten";
+                        DataModel.OfficerCaptainsList.Add(soldierModel);
+                        break;
                 }
             }
             else if (e.Action == "Decrease")
             {
                 SoldierModel soldierModel = e.SoldierModel;
 
-                if (soldierModel.Position == "KnightTemplars")
+                switch (soldierModel.Position)
                 {
-                    DataModel.TemplarKnightsList.RemoveAt(DataModel.TemplarKnightsList.Count - 1);
-                }
-                else if (soldierModel.Position == "Knights")
-                {
-                    DataModel.KnightsList.RemoveAt(DataModel.KnightsList.Count - 1);
-                }
-                else if (soldierModel.Position == "CavalryTemplarKnights")
-                {
-                    DataModel.CavalryTemplarKnightsList.RemoveAt(DataModel.CavalryTemplarKnightsList.Count - 1);
-                }
-                else if (soldierModel.Position == "OfficerCorporals")
-                {
-                    DataModel.OfficerCorporalsList.RemoveAt(DataModel.OfficerCorporalsList.Count - 1);
-                }
-                else if (soldierModel.Position == "OfficerSergeants")
-                {
-                    DataModel.OfficerSergeantsList.RemoveAt(DataModel.OfficerSergeantsList.Count - 1);
-                }
-                else if (soldierModel.Position == "OfficerCaptains")
-                {
-                    DataModel.OfficerCaptainsList.RemoveAt(DataModel.OfficerCaptainsList.Count - 1);
+                    case "KnightTemplars":
+                        DataModel.TemplarKnightsList.RemoveAt(DataModel.TemplarKnightsList.Count - 1);
+                        break;
+
+                    case "Knights":
+                        DataModel.KnightsList.RemoveAt(DataModel.KnightsList.Count - 1);
+                        break;
+
+                    case "CavalryTemplarKnights":
+                        DataModel.CavalryTemplarKnightsList.RemoveAt(DataModel.CavalryTemplarKnightsList.Count - 1);
+                        break;
+
+                    case "OfficerCorporals":
+                        DataModel.OfficerCorporalsList.RemoveAt(DataModel.OfficerCorporalsList.Count - 1);
+                        break;
+
+                    case "OfficerSergeants":
+                        DataModel.OfficerSergeantsList.RemoveAt(DataModel.OfficerSergeantsList.Count - 1);
+                        break;
+
+                    case "OfficerCaptains":
+                        DataModel.OfficerCaptainsList.RemoveAt(DataModel.OfficerCaptainsList.Count - 1);
+                        break;
                 }
 
             }
@@ -163,6 +168,11 @@ namespace FiefApp.Module.Army
         {
             Index = 1;
             LoadData();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #endregion

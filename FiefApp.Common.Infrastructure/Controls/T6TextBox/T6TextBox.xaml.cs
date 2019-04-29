@@ -175,6 +175,71 @@ namespace FiefApp.Common.Infrastructure.Controls.T6TextBox
             string value;
             bool isNegative;
 
+            if (temp.Contains("T") || temp.Contains("t"))
+            {
+                if (((string)GetValue(T6ValueProperty)).IndexOf('T') != -1 || ((string)GetValue(T6ValueProperty)).Length < 3)
+                {
+                    if (((string)GetValue(T6ValueProperty)).IndexOf('-') == -1)
+                    {
+                        temp = (string)GetValue(T6ValueProperty);
+                        isNegative = false;
+                    }
+                    else
+                    {
+                        temp = (string)GetValue(T6ValueProperty);
+                        temp = temp.Substring(1);
+                        isNegative = true;
+                    }
+                    if (temp.IndexOf('+') == 0)
+                    {
+                        temp = temp.Substring(1);
+                    }
+
+
+                    string temp2;
+                    int v = 0;
+                    var loop = true;
+                    var holder = "";
+
+                    if (temp.Length < 3)
+                    {
+                        v = Convert.ToInt32(temp);
+                    }
+                    else
+                    {
+                        for (int xy = 0; xy < temp.Length && loop; xy++)
+                        {
+                            if (Char.IsDigit(temp[xy]))
+                            {
+                                temp2 = temp;
+                                holder = holder + temp2[xy];
+                            }
+                            else
+                            {
+                                v = Convert.ToInt32(holder);
+                                v = v * 4;
+                                loop = false;
+                            }
+                        }
+                    }
+                    if (temp.IndexOf('+') != -1)
+                    {
+                        var pos = temp.IndexOf('+');
+                        pos = pos + 1;
+                        var yx = temp.Substring(pos, 1);
+                        v = v + Convert.ToInt32(yx);
+                    }
+                    if (isNegative)
+                    {
+                        temp = $"-{v}";
+                    }
+                    else
+                    {
+                        temp = $"{v}";
+                    }
+                }
+            }
+
             if (temp.IndexOf('-') != -1)
             {
                 temp = temp.Substring(1);

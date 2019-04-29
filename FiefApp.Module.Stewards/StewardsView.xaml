@@ -223,7 +223,7 @@
                 <DataTemplate>
                     <stewardUI:StewardUI
                         Id="{Binding Path=Id}"
-                        Steward="{Binding Path=Name}"
+                        Steward="{Binding Path=PersonName}"
                         Age="{Binding Path=Age}"
                         Skill="{Binding Path=Skill}"
                         IndustryCollection="{Binding Path=DataContext.DataModel.IndustryCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

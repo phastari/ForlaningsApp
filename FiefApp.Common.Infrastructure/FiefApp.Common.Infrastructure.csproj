@@ -107,6 +107,7 @@
     <Compile Include="DataModels\WeatherDataModel.cs" />
     <Compile Include="EventAggregatorEvents\FiefNameChangedEvent.cs" />
     <Compile Include="EventAggregatorEvents\NewFiefLoadedEvent.cs" />
+    <Compile Include="EventAggregatorEvents\SaveDataModelBeforeSaveFileIsCreatedEvent.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
     <Compile Include="Models\BoatbuilderModel.cs" />

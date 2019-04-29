@@ -1,9 +1,7 @@
 ﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Xaml;
 
 namespace FiefApp.Common.Infrastructure.Services
 {

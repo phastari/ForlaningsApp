@@ -384,5 +384,10 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.ExpensesList[index].Livingcondition;
             }
         }
+
+        public void SetLivingconditions(int index, string livingcondition)
+        {
+            _fiefService.ExpensesList[index].Livingcondition = livingcondition;
+        }
     }
 }

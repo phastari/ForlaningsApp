@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
@@ -11,7 +10,6 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Events;
 using Prism.Mvvm;
-using Squirrel;
 
 namespace FiefApp
 {
@@ -42,7 +40,6 @@ namespace FiefApp
             // INIT
             FileIsSaved = Properties.Settings.Default.IsSaved;
             _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
-            CheckForUpdate();
         }
 
         #region DelegateCommand : NewFiefCommand
@@ -116,6 +113,7 @@ namespace FiefApp
 
         private void SaveFiefCommandExecute()
         {
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
             if (string.IsNullOrEmpty(Properties.Settings.Default.FileName))
             {
                 FileIsSaved = false;
@@ -176,6 +174,8 @@ namespace FiefApp
 
         private void SaveAsFiefCommandExecute()
         {
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Förlänings fil (*.forlaning)|*.forlaning";
             saveFileDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -271,6 +271,8 @@ namespace FiefApp
             {
                 CreateEmptyFief();
             }
+
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Publish();
         }
 
         #endregion
@@ -494,13 +496,6 @@ namespace FiefApp
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Publish();
         }
 
-        private async Task CheckForUpdate()
-        {
-            using (var manager = new UpdateManager($"{ System.AppDomain.CurrentDomain.BaseDirectory }"))
-            {
-                await manager.UpdateApp();
-            }
-        }
 
         private void ExecuteFiefNameChangedEvent()
         {

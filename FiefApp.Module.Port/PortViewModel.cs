@@ -275,7 +275,7 @@ namespace FiefApp.Module.Port
                     {
                         DataModel.CrewBoat = DataModel.BoatsCollection[id];
                         DataModel.CrewBoat.AmountSailors = DataModel.Sailors;
-                        DataModel.CrewBoat.AmountSeamen = DataModel.Seaman;
+                        DataModel.CrewBoat.AmountSeamens = DataModel.Seaman;
                         DataModel.CrewBoat.AmountRowers = DataModel.Rowers;
                         DataModel.CrewBoat.AmountMariners = DataModel.Mariner;
 

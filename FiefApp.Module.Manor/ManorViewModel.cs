@@ -280,10 +280,12 @@ namespace FiefApp.Module.Manor
             if (index == -1)
             {
                 _baseService.SetDataModel(DataModel, Index);
+                _manorService.SetLivingconditions(Index, DataModel.ManorLivingconditions);
             }
             else
             {
                 _baseService.SetDataModel(DataModel, index);
+                _manorService.SetLivingconditions(index, DataModel.ManorLivingconditions);
             }
         }
 

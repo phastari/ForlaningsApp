@@ -20,6 +20,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public decimal DB { get; set; }
         public decimal Crew { get; set; }
         public int CrewNeeded { get; set; }
+        public int CrewNeededTotal { get; set; }
         public int CrewedSailors { get; set; }
         public int CrewedSeamens { get; set; }
         public int CrewedMariners { get; set; }
@@ -28,6 +29,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public int CostSilver { get; set; }
         public string Rower { get; set; }
         public int RowersNeeded { get; set; }
+        public int RowersNeededTotal { get; set; }
         public decimal Cargo { get; set; }
         public int CargoTotal { get; set; }
         public int BenchMod { get; set; }
@@ -38,7 +40,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public string Seaworthiness { get; set; }
         public int Amount { get; set; } = 1;
         public int AmountSailors { get; set; }
-        public int AmountSeamen { get; set; }
+        public int AmountSeamens { get; set; }
         public int AmountRowers { get; set; }
         public int AmountMariners { get; set; }
         public int AmountOfficers { get; set; }
