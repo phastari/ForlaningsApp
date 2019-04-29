@@ -3,7 +3,6 @@
 TODO:  
   
 PRIO:  
-ExpensesModule: Förvaltarnas kostnad skall läggas till på utgifter -> anställda.  
 TradeModule: Skicka iväg handelsmän, karavaner, båtar.  
 BuildingsModule: Byggnadsverkslistan är tom!!!  
   
@@ -14,6 +13,7 @@ WeatherModule: Silver prognosen när IncomeModule ändras.
 StewardModule: Förvaltarnas namn sparas inte.  
 ManorModule: Levnadsstandard sparas inte.  
 WeatherModule: Binäringarnas dagsverk updateras inte.  
+ExpensesModule: Förvaltarnas kostnad skall läggas till på utgifter -> anställda.  
 
 EXTRA:  
 Kalla upp milisen.  
