@@ -8,7 +8,7 @@ ExpensesModule: Förvaltarnas kostnad skall läggas till på utgifter -> anstäl
 TradeModule: Skicka iväg handelsmän, karavaner, båtar.  
 BuildingsModule: Byggnadsverkslistan är tom!!!  
   
-BugFixar:  
+FIXADE BUGGAR:  
 T6TextBox: Crashar inte om man skriver in "3T6" istället för det numeriska värdet.  
 ArmyModule: Anställda trupper sparas inte!!!  
 WeatherModule: Silver prognosen när IncomeModule ändras.  
