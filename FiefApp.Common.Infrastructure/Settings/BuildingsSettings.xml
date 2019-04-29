@@ -26,7 +26,7 @@
   <Building Building="Borgkärna. rund" Woodwork="1900" Stonework="34000" Smithswork="120" Iron="120" Stone="1700" Wood="58" Upkeep="8"/>
   <Building Building="Sammansatt borgkärna" Woodwork="5700" Stonework="102000" Smithswork="340" Iron="340" Stone="5100" Wood="170" Upkeep="16"/>
   <Building Building="Trähus" Woodwork="24" Stonework="0" Smithswork="0" Iron="0" Stone="0" Wood="6" Upkeep="0.025"/>
-  <Building Building="Stonehus" Woodwork="16" Stonework="440" Smithswork="8" Iron="8" Stone="22" Wood="4" Upkeep="0.025"/>
+  <Building Building="Stenhus" Woodwork="16" Stonework="440" Smithswork="8" Iron="8" Stone="22" Wood="4" Upkeep="0.025"/>
   <Building Building="Tvåvånings trähus" Woodwork="48" Stonework="0" Smithswork="8" Iron="8" Stone="0" Wood="12" Upkeep="0.05"/>
   <Building Building="Tvåvånings stenhus" Woodwork="60" Stonework="880" Smithswork="8" Iron="8" Stone="44" Wood="4" Upkeep="0.05"/>
   <Building Building="Tempel/Kyrka" Woodwork="1700" Stonework="47000" Smithswork="130" Iron="130" Stone="1200" Wood="66" Upkeep="0"/>

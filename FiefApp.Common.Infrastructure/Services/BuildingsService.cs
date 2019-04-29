@@ -1,4 +1,8 @@
-﻿using FiefApp.Common.Infrastructure.DataModels;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Documents;
+using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -19,6 +23,22 @@ namespace FiefApp.Common.Infrastructure.Services
         public BuildingsDataModel GetAllBuildingsDataModel()
         {
             return null;
+        }
+
+        public List<BuildingModel> GetAvailableBuildings()
+        {
+            return _settingsService.BuildingsSettingsList.Select(t => new BuildingModel()
+                {
+                    Building = t.Building,
+                    Woodwork = t.Woodwork,
+                    Stonework = t.Stonework,
+                    Smithswork = t.Smithwork,
+                    Wood = t.Wood,
+                    Stone = t.Stone,
+                    Iron = t.Iron,
+                    Upkeep = t.Upkeep
+                })
+                .ToList();
         }
     }
 }

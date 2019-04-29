@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Buildings.RoutedEvents;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Module.Buildings
 {
@@ -93,6 +96,8 @@ namespace FiefApp.Module.Buildings
                         == 0 ? _buildingsService.GetAllBuildingsDataModel()
                 : _baseService.GetDataModel<BuildingsDataModel>(Index);
 
+            GetInformationSetDataModel();
+
             UpdateFiefCollection();
         }
 
@@ -100,6 +105,11 @@ namespace FiefApp.Module.Buildings
         {
             Index = 1;
             LoadData();
+        }
+
+        private void GetInformationSetDataModel()
+        {
+            DataModel.AvailableBuildings = new ObservableCollection<BuildingModel>(_buildingsService.GetAvailableBuildings());
         }
     }
 }

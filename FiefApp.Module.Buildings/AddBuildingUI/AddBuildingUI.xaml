@@ -59,6 +59,7 @@
             Grid.Column="3"
             Grid.Row="4"
             ItemsSource="{Binding Path=BuildingsCollection}"
+            DisplayMemberPath="Building"
             SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay}"
             SelectionChanged="BuildingsComboBox_OnSelectionChanged"/>
 
@@ -124,7 +125,7 @@
                 Padding="0"/>
 
             <TextBox
-                Text="{Binding Path=Woodwork}"
+                Text="{Binding ElementName=BuildingsComboBox, Path=SelectedItem.Woodwork}"
                 Grid.Column="2"
                 Grid.Row="2"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -134,7 +135,7 @@
                 IsReadOnly="True"/>
 
             <TextBox
-                Text="{Binding Path=Wood}"
+                Text="{Binding ElementName=BuildingsComboBox, Path=SelectedItem.Wood}"
                 Grid.Column="4"
                 Grid.Row="2"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -152,7 +153,7 @@
                 Padding="0"/>
 
             <TextBox
-                Text="{Binding Path=Stonework}"
+                Text="{Binding ElementName=BuildingsComboBox, Path=SelectedItem.Stonework}"
                 Grid.Column="2"
                 Grid.Row="4"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -162,7 +163,7 @@
                 IsReadOnly="True"/>
 
             <TextBox
-                Text="{Binding Path=Stone}"
+                Text="{Binding ElementName=BuildingsComboBox, Path=SelectedItem.Stone}"
                 Grid.Column="4"
                 Grid.Row="4"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -180,7 +181,7 @@
                 Padding="0"/>
 
             <TextBox
-                Text="{Binding Path=Smithswork}"
+                Text="{Binding ElementName=BuildingsComboBox, Path=SelectedItem.Smithswork}"
                 Grid.Column="2"
                 Grid.Row="6"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -190,7 +191,7 @@
                 IsReadOnly="True"/>
 
             <TextBox
-                Text="{Binding Path=Iron}"
+                Text="{Binding ElementName=BuildingsComboBox, Path=SelectedItem.Iron}"
                 Grid.Column="4"
                 Grid.Row="6"
                 Template="{DynamicResource TextBoxTemplate}"

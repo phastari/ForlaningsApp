@@ -42,13 +42,13 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private ObservableCollection<BuildingsSettingsModel> _buildingsSettings;
-        public ObservableCollection<BuildingsSettingsModel> BuildingsSettings
+        private ObservableCollection<BuildingModel> _availableBuildings;
+        public ObservableCollection<BuildingModel> AvailableBuildings
         {
-            get => _buildingsSettings;
+            get => _availableBuildings;
             set
             {
-                _buildingsSettings = value;
+                _availableBuildings = value;
                 NotifyPropertyChanged();
             }
         }

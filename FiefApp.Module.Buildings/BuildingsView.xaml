@@ -511,7 +511,8 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Gray"
-                BorderThickness="0.5">
+                BorderThickness="0.5"
+                BuildingsCollection="{Binding Path=DataModel.AvailableBuildings}">
                 <addBuildingUI:AddBuildingUI.Style>
                     <Style TargetType="{x:Type addBuildingUI:AddBuildingUI}">
                         <Setter Property="Visibility" Value="Collapsed"/>
