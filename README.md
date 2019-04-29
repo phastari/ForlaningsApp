@@ -5,7 +5,6 @@ TODO:
 PRIO:  
 TradeModule: Skicka iväg handelsmän, karavaner, båtar.  
 BuildingsModule: Byggnadsverkslistan är tom!!!  
-ExpensesModule: Bespisning av fattiga kostnaden är där fast checkboxen inte är i clickad.  
   
 FIXADE BUGGAR:  
 T6TextBox: Crashar inte om man skriver in "3T6" istället för det numeriska värdet.  
@@ -15,6 +14,7 @@ StewardModule: Förvaltarnas namn sparas inte.
 ManorModule: Levnadsstandard sparas inte.  
 WeatherModule: Binäringarnas dagsverk updateras inte.  
 ExpensesModule: Förvaltarnas kostnad skall läggas till på utgifter -> anställda.  
+ExpensesModule: Bespisning av fattiga kostnaden är där fast checkboxen inte är i clickad.  
 
 EXTRA:  
 Kalla upp milisen.  
