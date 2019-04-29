@@ -10,6 +10,7 @@ TradeModule: Skicka iväg handelsmän, karavaner, båtar.
 BuildingsModule: Byggnadsverkslistan är tom!!!  
 ArmyModule: Anställda trupper sparas inte!!! FIXAD  
 ManorModule: Levnadsstandard sparas inte.  
+StewardModule: Förvaltarnas namn sparas inte.  
   
 BugFixar:  
 T6TextBox: Crashar inte om man skriver in "3T6" istället för det numeriska värdet.  
