@@ -328,8 +328,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _buildingTime;
-        public int BuildingTime
+        private string _buildingTime = "-";
+        public string BuildingTime
         {
             get => _buildingTime;
             set

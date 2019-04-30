@@ -42,6 +42,13 @@
             IsTabStop="False"
             Margin="0"/>
 
+        <CheckBox
+            x:Name="EditableCheckBox"
+            Grid.Column="0"
+            Grid.Row="0"
+            IsChecked="{Binding Path=Editable}"
+            Visibility="Collapsed"/>
+
         <Grid 
             x:Name="MouseArea"
             Background="LightGray"
@@ -125,7 +132,18 @@
                 Grid.Row="0"
                 Content="{Binding Path=Builder}"
                 VerticalContentAlignment="Center"
-                Padding="6,0,0,0"/>
+                Padding="6,0,0,0">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
         </Grid>
 
         <TextBox
@@ -140,9 +158,8 @@
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
-                            <Setter Property="IsReadOnly" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -162,7 +179,7 @@
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="IsReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="IsReadOnly" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -178,7 +195,7 @@
                 <Style TargetType="{x:Type t6TextBox:T6TextBox}">
                     <Setter Property="ReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="ReadOnly" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -194,7 +211,7 @@
                 <Style TargetType="{x:Type t6TextBox:T6TextBox}">
                     <Setter Property="ReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="ReadOnly" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -210,7 +227,7 @@
                 <Style TargetType="{x:Type t6TextBox:T6TextBox}">
                     <Setter Property="ReadOnly" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="ReadOnly" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -229,7 +246,7 @@
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -250,7 +267,7 @@
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -272,7 +289,7 @@
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=EditableCheckBox, Path=IsChecked}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>

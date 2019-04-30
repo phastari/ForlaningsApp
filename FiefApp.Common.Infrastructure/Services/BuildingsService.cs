@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Documents;
-using FiefApp.Common.Infrastructure.DataModels;
+﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -39,6 +38,22 @@ namespace FiefApp.Common.Infrastructure.Services
                     Upkeep = t.Upkeep
                 })
                 .ToList();
+        }
+
+        public int GetNewIdForBuilder()
+        {
+            List<int> tempList = new List<int>();
+
+            for (int x = 0; x < _fiefService.BuildingsList.Count; x++)
+            {
+                tempList.AddRange(_fiefService.BuildingsList[x].BuildersCollection.Select(t => t.Id));
+            }
+
+            if (tempList.Count > 0)
+            {
+                return tempList.Max() + 1;
+            }
+            return 0;
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using FiefApp.Common.Infrastructure.DataModels;
+﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
+using System.Collections.Generic;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -8,5 +8,6 @@ namespace FiefApp.Common.Infrastructure.Services
     {
         BuildingsDataModel GetAllBuildingsDataModel();
         List<BuildingModel> GetAvailableBuildings();
+        int GetNewIdForBuilder();
     }
 }

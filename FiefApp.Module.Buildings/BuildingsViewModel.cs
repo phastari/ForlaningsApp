@@ -2,15 +2,16 @@
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Buildings.RoutedEvents;
+using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
-using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Module.Buildings
 {
@@ -33,6 +34,8 @@ namespace FiefApp.Module.Buildings
             TabName = "Byggnadsverk";
 
             AddBuildingUIEventHandler = new CustomDelegateCommand(ExecuteAddBuildingUIEventHandler, o => true);
+            BuilderUIEventHandler = new CustomDelegateCommand(ExecuteBuilderUIEventHandler, o => true);
+            AddBuilderCommand = new DelegateCommand(ExecuteAddBuilderCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
@@ -53,23 +56,76 @@ namespace FiefApp.Module.Buildings
 
             if (e.Action == "Save")
             {
-                List<int> tempList = new List<int>();
-                for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
-                {
-                    tempList.Add(DataModel.BuildsCollection[x].Id);
-                }
-                if (tempList.Count > 0)
-                {
-                    e.Model.Id = tempList.Max();
-                }
-                else
-                {
-                    e.Model.Id = 0;
-                }
+                List<int> tempList = DataModel.BuildsCollection.Select(t => t.Id).ToList();
+
+                e.Model.Id = tempList.Count > 0 ? tempList.Max() : 0;
+                e.Model.BuildersCollection = DataModel.BuildersCollection;
 
                 DataModel.BuildsCollection.Add(e.Model);
                 SaveData();
             }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : BuilderUIEvent
+
+        public CustomDelegateCommand BuilderUIEventHandler { get; set; }
+        private void ExecuteBuilderUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is BuilderUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Delete":
+                    {
+                        for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
+                        {
+                            if (DataModel.BuildersCollection[x].Id == e.Model.Id)
+                            {
+                                DataModel.BuildersCollection.RemoveAt(x);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+
+                case "Save":
+                    for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
+                    {
+                        if (DataModel.BuildersCollection[x].Id == e.Model.Id)
+                        {
+                            DataModel.BuildersCollection[x].PersonName = e.Model.PersonName;
+                            DataModel.BuildersCollection[x].Age = e.Model.Age;
+                            DataModel.BuildersCollection[x].Skill = e.Model.Skill;
+                            DataModel.BuildersCollection[x].Resources = e.Model.Resources;
+                            DataModel.BuildersCollection[x].Loyalty = e.Model.Loyalty;
+                            break;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region DelegateCommand : AddBuilderCommand
+
+        public DelegateCommand AddBuilderCommand { get; set; }
+        private void ExecuteAddBuilderCommand()
+        {
+            int id = _buildingsService.GetNewIdForBuilder();
+            DataModel.BuildersCollection.Add(new BuilderModel()
+            {
+                Id = id
+            });
+            SaveData();
         }
 
         #endregion
@@ -98,7 +154,19 @@ namespace FiefApp.Module.Buildings
 
             GetInformationSetDataModel();
 
+            DataModel.BuildersCollection.CollectionChanged += UpdateBuildersCollectionInBuildingsCollection;
+
             UpdateFiefCollection();
+        }
+
+        private void UpdateBuildersCollectionInBuildingsCollection(
+            object sender,
+            NotifyCollectionChangedEventArgs e)
+        {
+            for (int x = 0; x < DataModel.BuildingsCollection.Count; x++)
+            {
+                DataModel.BuildingsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+            }
         }
 
         private void ExecuteNewFiefLoadedEvent()
@@ -110,6 +178,11 @@ namespace FiefApp.Module.Buildings
         private void GetInformationSetDataModel()
         {
             DataModel.AvailableBuildings = new ObservableCollection<BuildingModel>(_buildingsService.GetAvailableBuildings());
+
+            for (int x = 0; x < DataModel.BuildingsCollection.Count; x++)
+            {
+                DataModel.BuildingsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+            }
         }
     }
 }

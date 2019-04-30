@@ -56,7 +56,8 @@ namespace FiefApp.Module.Buildings.AddBuildingUI
                 Smithswork = BuildingsCollection[SelectedIndex].Smithswork,
                 LeftSmithswork = BuildingsCollection[SelectedIndex].Smithswork * Amount,
                 Iron = BuildingsCollection[SelectedIndex].Iron,
-                LeftIron = BuildingsCollection[SelectedIndex].Iron * Amount
+                LeftIron = BuildingsCollection[SelectedIndex].Iron * Amount,
+                UpkeepTotal = BuildingsCollection[SelectedIndex].Upkeep
             };
 
             AddBuildingUIEventArgs newEventArgs =

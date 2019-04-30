@@ -1,11 +1,10 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Buildings.RoutedEvents;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Module.Buildings.RoutedEvents;
-using Prism.Commands;
 
 namespace FiefApp.Module.Buildings.BuildingBuildingUI
 {
@@ -62,7 +61,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 new PropertyMetadata(-1)
             );
 
-        public int Amount   
+        public int Amount
         {
             get => (int)GetValue(AmountProperty);
             set => SetValue(AmountProperty, value);
@@ -76,18 +75,32 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 new PropertyMetadata(-1)
             );
 
-        public int BuildingTime
+        public string BuildingTime
         {
-            get => (int)GetValue(BuildingTimeProperty);
+            get => (string)GetValue(BuildingTimeProperty);
             set => SetValue(BuildingTimeProperty, value);
         }
 
         public static readonly DependencyProperty BuildingTimeProperty =
             DependencyProperty.Register(
                 "BuildingTime",
-                typeof(int),
+                typeof(string),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata("-")
+            );
+
+        public string Building
+        {
+            get => (string)GetValue(BuildingProperty);
+            set => SetValue(BuildingProperty, value);
+        }
+
+        public static readonly DependencyProperty BuildingProperty =
+            DependencyProperty.Register(
+                "Building",
+                typeof(string),
+                typeof(BuildingBuildingUI),
+                new PropertyMetadata("")
             );
 
         public ObservableCollection<BuilderModel> BuildersCollection
@@ -129,7 +142,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 "SmithsworkThisYear",
                 typeof(int),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, UpdateIron)
             );
 
         public int LeftIron
@@ -157,7 +170,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 "IronThisYear",
                 typeof(int),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, CheckResources)
             );
 
         public int LeftWoodwork
@@ -185,7 +198,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 "WoodworkThisYear",
                 typeof(int),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, UpdateWood)
             );
 
         public int LeftWood
@@ -213,7 +226,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 "WoodThisYear",
                 typeof(int),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, CheckResources)
             );
 
         public int LeftStonework
@@ -241,7 +254,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 "StoneworkThisYear",
                 typeof(int),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, UpdateStone)
             );
 
         public int LeftStone
@@ -269,12 +282,23 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 "StoneThisYear",
                 typeof(int),
                 typeof(BuildingBuildingUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, CheckResources)
             );
 
         #endregion
 
         #region UI Properties
+
+        private int _selectedIndex = -1;
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value; 
+                NotifyPropertyChanged();
+            }
+        }
 
         private int _ironNeededThisYear;
         public int IronNeededThisYear
@@ -307,6 +331,151 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 _stoneNeededThisYear = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void UpdateIron(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BuildingBuildingUI c)
+                c.RaiseUpdateEvent("Iron");
+        }
+
+        private static void UpdateStone(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BuildingBuildingUI c)
+                c.RaiseUpdateEvent("Stone");
+        }
+
+        private static void UpdateWood(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BuildingBuildingUI c)
+                c.RaiseUpdateEvent("Wood");
+        }
+
+        private void RaiseUpdateEvent(string str)
+        {
+            decimal factor;
+            string buildTime;
+            int buildTimeN;
+
+            switch (str)
+            {
+                case "Iron":
+                    if ((int)GetValue(SmithsworkThisYearProperty) < 0)
+                    {
+                        SetValue(SmithsworkThisYearProperty, 0);
+                    }
+                    else if ((int)GetValue(SmithsworkThisYearProperty) > (int)GetValue(LeftSmithsworkProperty))
+                    {
+                        SetValue(SmithsworkThisYearProperty, (int)GetValue(LeftSmithsworkProperty));
+                    }
+
+                    factor = (decimal)SmithsworkThisYear / LeftSmithswork;
+                    IronNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftIron * factor));
+
+                    buildTime = CheckBuildTime();
+                    buildTimeN = buildTime == "-" ? 0 : Convert.ToInt32(buildTime);
+                    SetValue(BuildingTimeProperty, buildTimeN > 0 ? buildTime : "-");
+                    break;
+
+                case "Stone":
+                    if ((int)GetValue(StoneworkThisYearProperty) < 0)
+                    {
+                        SetValue(StoneworkThisYearProperty, 0);
+                    }
+                    else if ((int)GetValue(StoneworkThisYearProperty) > (int)GetValue(LeftStoneworkProperty))
+                    {
+                        SetValue(StoneworkThisYearProperty, (int)GetValue(LeftStoneworkProperty));
+                    }
+
+                    factor = (decimal)StoneworkThisYear / LeftStonework;
+                    StoneNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftStone * factor));
+
+                    buildTime = CheckBuildTime();
+                    buildTimeN = buildTime == "-" ? 0 : Convert.ToInt32(buildTime);
+                    SetValue(BuildingTimeProperty, buildTimeN > 0 ? buildTime : "-");
+                    break;
+
+                case "Wood":
+                    if ((int)GetValue(WoodworkThisYearProperty) < 0)
+                    {
+                        SetValue(WoodworkThisYearProperty, 0);
+                    }
+                    else if ((int)GetValue(WoodworkThisYearProperty) > (int)GetValue(LeftWoodworkProperty))
+                    {
+                        SetValue(WoodworkThisYearProperty, (int)GetValue(LeftWoodworkProperty));
+                    }
+
+                    factor = (decimal)WoodworkThisYear / LeftWoodwork;
+                    WoodNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftWood * factor));
+
+                    buildTime = CheckBuildTime();
+                    buildTimeN = buildTime == "-" ? 0 : Convert.ToInt32(buildTime);
+                    SetValue(BuildingTimeProperty, buildTimeN > 0 ? buildTime : "-");
+                    break;
+
+                case "CheckResources":
+                    if ((int)GetValue(StoneThisYearProperty) < 0)
+                    {
+                        SetValue(StoneThisYearProperty, 0);
+                    } 
+                    else if ((int)GetValue(StoneThisYearProperty) > (int)GetValue(LeftStoneProperty))
+                    {
+                        SetValue(StoneThisYearProperty, (int)GetValue(LeftStoneProperty));
+                    }
+
+                    if ((int)GetValue(WoodThisYearProperty) < 0)
+                    {
+                        SetValue(WoodThisYearProperty, 0);
+                    }
+                    else if ((int)GetValue(WoodThisYearProperty) > (int)GetValue(LeftWoodProperty))
+                    {
+                        SetValue(WoodThisYearProperty, (int)GetValue(LeftWoodProperty));
+                    }
+
+                    if ((int)GetValue(IronThisYearProperty) < 0)
+                    {
+                        SetValue(IronThisYearProperty, 0);
+                    }
+                    else if ((int)GetValue(IronThisYearProperty) > (int)GetValue(LeftIronProperty))
+                    {
+                        SetValue(IronThisYearProperty, (int)GetValue(LeftIronProperty));
+                    }
+                    break;
+            }
+        }
+
+        private static void CheckResources(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BuildingBuildingUI c)
+                c.RaiseUpdateEvent("CheckResources");
+        }
+
+        private string CheckBuildTime()
+        {
+            if (SelectedIndex != -1
+                && (int)GetValue(StoneworkThisYearProperty) != 0
+                && (int)GetValue(WoodworkThisYearProperty) != 0
+                && (int)GetValue(SmithsworkThisYearProperty) != 0)
+            {
+                int stonework = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftStoneworkProperty)) / (int)GetValue(StoneworkThisYearProperty)));
+                int woodwork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftWoodworkProperty)) / (int)GetValue(WoodworkThisYearProperty)));
+                int smithswork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftSmithsworkProperty)) / (int)GetValue(SmithsworkThisYearProperty)));
+
+                return Math.Max(Math.Max(stonework, woodwork), smithswork).ToString();
+            }
+            return "-";
         }
 
         #endregion

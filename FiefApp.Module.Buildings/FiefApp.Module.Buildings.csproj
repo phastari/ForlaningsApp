@@ -92,6 +92,7 @@
     <Compile Include="BuildingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutedEvents\AddBuildingUIEventArgs.cs" />
+    <Compile Include="RoutedEvents\BuilderUIEventArgs.cs" />
     <Compile Include="RoutedEvents\BuildingBuildingUIEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>

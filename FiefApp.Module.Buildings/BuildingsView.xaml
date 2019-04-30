@@ -11,7 +11,8 @@
              xmlns:addBuildingUI="clr-namespace:FiefApp.Module.Buildings.AddBuildingUI"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
-             d:DesignWidth="784">
+             d:DesignWidth="784"
+             x:Name="Self">
 
     <Grid
         Background="#FFE5E5E5">
@@ -370,6 +371,7 @@
                                 <ItemsPresenter />
                                 <Button 
                                     Content="lägg till"
+                                    Command="{Binding Path=AddBuilderCommand}"
                                     Height="21"
                                     Width="51"
                                     HorizontalAlignment="Right"
@@ -387,12 +389,17 @@
                         <DataTemplate>
                             <builderUI:BuilderUI
                                 Id="{Binding Path=Id}"
-                                Builder="{Binding Path=Builder}"
+                                Builder="{Binding Path=PersonName}"
                                 Age="{Binding Path=Age}"
                                 Skill="{Binding Path=Skill}"
                                 Loyalty="{Binding Path=Loyalty}"
                                 BBResources="{Binding Path=Resources}"
                                 Assignment="{Binding Path=Assignment}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="BuilderUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BuilderUIEventHandler, ElementName=Self}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </builderUI:BuilderUI>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -499,7 +506,21 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <buildingBuildingUI:BuildingBuildingUI
-                            >
+                                Amount="{Binding Path=Amount}"
+                                Building="{Binding Path=Building}"
+                                BuildingTime="{Binding Path=BuildingTime}"
+                                BuildersCollection="{Binding Path=BuildersCollection}"
+                                LeftSmithswork="{Binding Path=LeftSmithswork}"
+                                SmithsworkThisYear="{Binding Path=SmithsworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LeftIron="{Binding Path=LeftIron}"
+                                IronThisYear="{Binding Path=IronThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LeftWoodwork="{Binding Path=LeftWoodwork}"
+                                WoodworkThisYear="{Binding Path=WoodworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LeftWood="{Binding Path=LeftWood}"
+                                WoodThisYear="{Binding Path=WoodThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LeftStonework="{Binding Path=LeftStonework}"
+                                StoneworkThisYear="{Binding Path=StoneworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LeftStone="{Binding Path=LeftStone}">
                             </buildingBuildingUI:BuildingBuildingUI>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

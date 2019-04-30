@@ -149,9 +149,9 @@
                         Grid.Row="2"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
@@ -164,7 +164,7 @@
                         Content="Järn"
                         Grid.Column="6"
                         Grid.Row="2"
-                        HorizontalContentAlignment="Center"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
                         Padding="0"/>
 
@@ -174,9 +174,9 @@
                         Grid.Row="2"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <TextBox
@@ -185,9 +185,9 @@
                         Grid.Row="2"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
@@ -210,9 +210,9 @@
                         Grid.Row="4"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
@@ -225,7 +225,7 @@
                         Content="Timmer"
                         Grid.Column="6"
                         Grid.Row="4"
-                        HorizontalContentAlignment="Center"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
                         Padding="0"/>
 
@@ -235,9 +235,9 @@
                         Grid.Row="4"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <TextBox
@@ -246,9 +246,9 @@
                         Grid.Row="4"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
@@ -272,9 +272,9 @@
                         Grid.Row="6"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
@@ -287,7 +287,7 @@
                         Content="Sten"
                         Grid.Column="6"
                         Grid.Row="6"
-                        HorizontalContentAlignment="Center"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
                         Padding="0"/>
 
@@ -297,9 +297,9 @@
                         Grid.Row="6"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <TextBox
@@ -308,9 +308,9 @@
                         Grid.Row="6"
                         behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                         Template="{DynamicResource TextBoxTemplate}"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Center"
-                        Padding="0"
+                        Padding="0,0,6,0"
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
@@ -360,7 +360,7 @@
                 Grid.ZIndex="10"
                 behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                 Template="{DynamicResource TextBoxTemplate}"
-                HorizontalContentAlignment="Left"
+                HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Padding="0"
                 IsReadOnly="True"/>
@@ -372,7 +372,7 @@
                 Grid.ZIndex="10"
                 behaviors:TextBoxBehavior.SelectAllTextOnFocus="True"
                 Template="{DynamicResource TextBoxTemplate}"
-                HorizontalContentAlignment="Left"
+                HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Padding="0"
                 IsReadOnly="True"/>
@@ -383,13 +383,15 @@
                 Grid.Row="0"
                 ItemsSource="{Binding Path=BuildersCollection}"
                 DisplayMemberPath="PersonName"
+                SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
                 Template="{DynamicResource ComboBoxControlTemplate}"/>
 
             <t6TextBox:T6TextBox
                 T6Value="{Binding ElementName=BuilderComboBox, Path=SelectedItem.Skill}"
                 Grid.Column="8"
-                Grid.Row="0"/>
+                Grid.Row="0"
+                ReadOnly="True"/>
 
         </Grid>
 

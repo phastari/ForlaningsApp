@@ -1,4 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Buildings.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Buildings.BuilderUI
 {
@@ -11,7 +17,86 @@ namespace FiefApp.Module.Buildings.BuilderUI
         {
             InitializeComponent();
             RootGrid.DataContext = this;
+
+            DeleteBuilder = new DelegateCommand(ExecuteDeleteBuilder);
+            EditBuilder = new DelegateCommand(ExecuteEditBuilder);
+            EditBuilderCancelCommand = new DelegateCommand(ExecuteEditBuilderCancelCommand);
+            EditBuilderSaveCommand = new DelegateCommand(ExecuteEditBuilderSaveCommand);
         }
+
+        #region DelegateCommand : DeleteBuilder
+
+        public DelegateCommand DeleteBuilder { get; set; }
+        private void ExecuteDeleteBuilder()
+        {
+            BuilderUIEventArgs newEventArgs =
+                new BuilderUIEventArgs(
+                    BuilderUIRoutedEvent,
+                    "Delete",
+                    new BuilderModel()
+                    {
+                        Id = Id
+                    }
+                );
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+        #region DelegateCommand : EditBuilder
+
+        public DelegateCommand EditBuilder { get; set; }
+        private void ExecuteEditBuilder()
+        {
+            _oldModel.PersonName = Builder;
+            _oldModel.Age = Age;
+            _oldModel.Skill = Skill;
+            _oldModel.Resources = BBResources;
+            _oldModel.Loyalty = Loyalty;
+
+            EditableCheckBox.IsChecked = true;
+        }
+
+        #endregion
+        #region DelegateCommand : EditBuilderCancelCommand
+
+        public DelegateCommand EditBuilderCancelCommand { get; set; }
+        private void ExecuteEditBuilderCancelCommand()
+        {
+            Builder = _oldModel.PersonName;
+            Age = _oldModel.Age;
+            Skill = _oldModel.Skill;
+            BBResources = _oldModel.Resources;
+            Loyalty = _oldModel.Loyalty;
+
+            EditableCheckBox.IsChecked = false;
+        }
+
+        #endregion
+        #region DelegateCommand : EditBuilderSaveCommand
+
+        public DelegateCommand EditBuilderSaveCommand { get; set; }
+        private void ExecuteEditBuilderSaveCommand()
+        {
+            BuilderUIEventArgs newEventArgs =
+                new BuilderUIEventArgs(
+                    BuilderUIRoutedEvent,
+                    "Save",
+                    new BuilderModel()
+                    {
+                        Id = Id,
+                        PersonName = Builder,
+                        Age = Age,
+                        Skill = Skill,
+                        Resources = BBResources,
+                        Loyalty = Loyalty
+                    }
+                );
+            RaiseEvent(newEventArgs);
+
+            EditableCheckBox.IsChecked = false;
+        }
+
+        #endregion
 
         #region Dependency Properties
 
@@ -112,6 +197,52 @@ namespace FiefApp.Module.Buildings.BuilderUI
                 typeof(BuilderUI),
                 new PropertyMetadata("")
             );
+
+        #endregion
+
+        #region UI Properties
+
+        private bool _editable = false;
+        public bool Editable
+        {
+            get => _editable;
+            set
+            {
+                _editable = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private BuilderModel _oldModel = new BuilderModel();
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent BuilderUIRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "BuilderUIEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(BuilderUI)
+            );
+
+        public event RoutedEventHandler BuilderUIEvent
+        {
+            add => AddHandler(BuilderUIRoutedEvent, value);
+            remove => RemoveHandler(BuilderUIRoutedEvent, value);
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #endregion
     }
