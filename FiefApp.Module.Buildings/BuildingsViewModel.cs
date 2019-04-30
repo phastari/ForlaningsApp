@@ -35,6 +35,7 @@ namespace FiefApp.Module.Buildings
 
             AddBuildingUIEventHandler = new CustomDelegateCommand(ExecuteAddBuildingUIEventHandler, o => true);
             BuilderUIEventHandler = new CustomDelegateCommand(ExecuteBuilderUIEventHandler, o => true);
+            BuildingBuildingUIEventHandler = new CustomDelegateCommand(ExecuteBuildingBuildingUIEventHandler, o => true);
             AddBuilderCommand = new DelegateCommand(ExecuteAddBuilderCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
@@ -58,7 +59,7 @@ namespace FiefApp.Module.Buildings
             {
                 List<int> tempList = DataModel.BuildsCollection.Select(t => t.Id).ToList();
 
-                e.Model.Id = tempList.Count > 0 ? tempList.Max() : 0;
+                e.Model.Id = tempList.Count > 0 ? tempList.Max() + 1 : 0;
                 e.Model.BuildersCollection = DataModel.BuildersCollection;
 
                 DataModel.BuildsCollection.Add(e.Model);
@@ -84,17 +85,17 @@ namespace FiefApp.Module.Buildings
             switch (e.Action)
             {
                 case "Delete":
+                {
+                    for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
                     {
-                        for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
+                        if (DataModel.BuildersCollection[x].Id == e.Model.Id)
                         {
-                            if (DataModel.BuildersCollection[x].Id == e.Model.Id)
-                            {
-                                DataModel.BuildersCollection.RemoveAt(x);
-                                break;
-                            }
+                            DataModel.BuildersCollection.RemoveAt(x);
+                            break;
                         }
-                        break;
                     }
+                    break;
+                }
 
                 case "Save":
                     for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
@@ -108,6 +109,61 @@ namespace FiefApp.Module.Buildings
                             DataModel.BuildersCollection[x].Loyalty = e.Model.Loyalty;
                             break;
                         }
+                    }
+                    break;
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : BuildingBuildingUIEventHandler
+
+        public CustomDelegateCommand BuildingBuildingUIEventHandler { get; set; }
+        private void ExecuteBuildingBuildingUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is BuildingBuildingUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Expanded":
+                    for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+                    {
+                        if (e.Id != DataModel.BuildsCollection[x].Id)
+                        {
+                            DataModel.BuildsCollection[x].IsExpanded = false;
+                        }
+                    }
+                    break;
+
+                case "Updated":
+                    for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+                    {
+                        if (e.Id == DataModel.BuildsCollection[x].Id)
+                        {
+                            DataModel.BuildsCollection[x].SmithsworkThisYear = e.Model.SmithsworkThisYear;
+                            DataModel.BuildsCollection[x].IronThisYear = e.Model.IronThisYear;
+                            DataModel.BuildsCollection[x].WoodworkThisYear = e.Model.WoodworkThisYear;
+                            DataModel.BuildsCollection[x].WoodThisYear = e.Model.WoodThisYear;
+                            DataModel.BuildsCollection[x].StoneworkThisYear = e.Model.StoneworkThisYear;
+                            DataModel.BuildsCollection[x].StoneThisYear = e.Model.StoneThisYear;
+                            DataModel.BuildsCollection[x].BuilderId = e.Model.BuilderId;
+                            DataModel.BuildsCollection[x].BuildingTime = e.Model.BuildingTime;
+                        }
+                        else
+                        {
+                            if (e.Model.BuilderId == DataModel.BuildsCollection[x].BuilderId)
+                            {
+                                DataModel.BuildsCollection[x].BuilderId = -1;
+                            }
+                        }
+
+                        DataModel.SetDaysWorkLeft();
                     }
                     break;
             }

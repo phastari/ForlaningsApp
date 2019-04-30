@@ -306,7 +306,7 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _builderId;
+        private int _builderId = -1;
         public int BuilderId
         {
             get => _builderId;

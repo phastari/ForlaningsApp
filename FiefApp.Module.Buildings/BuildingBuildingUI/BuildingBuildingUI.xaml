@@ -44,11 +44,9 @@
                                  Color="Black" />
             </TreeView.Resources>
             <TreeViewItem 
-                Header="{Binding Path=Test}"
                 Background="LightGray"
                 Expanded="TreeViewItemIsExpandedCommand"
-                Collapsed="TreeViewItemIsCollapsedCommand"
-                IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay}">
+                IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -385,7 +383,8 @@
                 DisplayMemberPath="PersonName"
                 SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
-                Template="{DynamicResource ComboBoxControlTemplate}"/>
+                Template="{DynamicResource ComboBoxControlTemplate}"
+                SelectionChanged="BuilderComboBox_OnSelectionChanged"/>
 
             <t6TextBox:T6TextBox
                 T6Value="{Binding ElementName=BuilderComboBox, Path=SelectedItem.Skill}"

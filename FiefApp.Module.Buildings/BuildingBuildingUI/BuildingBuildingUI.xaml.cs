@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FiefApp.Module.Buildings.BuildingBuildingUI
 {
@@ -34,13 +35,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
 
         private void TreeViewItemIsCollapsedCommand(object sender, RoutedEventArgs e)
         {
-            BuildingBuildingUIEventArgs newEventArgs =
-                new BuildingBuildingUIEventArgs(
-                    BuildingBuildingUIRoutedEvent,
-                    "Collapsed",
-                    Id
-                );
-            RaiseEvent(newEventArgs);
+            
         }
 
         #endregion
@@ -285,6 +280,34 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 new PropertyMetadata(0, CheckResources)
             );
 
+        public bool IsExpanded
+        {
+            get => (bool)GetValue(IsExpandedProperty);
+            set => SetValue(IsExpandedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsExpandedProperty =
+            DependencyProperty.Register(
+                "IsExpanded",
+                typeof(bool),
+                typeof(BuildingBuildingUI),
+                new PropertyMetadata(false)
+            );
+
+        public int BuilderId
+        {
+            get => (int)GetValue(BuilderIdProperty);
+            set => SetValue(BuilderIdProperty, value);
+        }
+
+        public static readonly DependencyProperty BuilderIdProperty =
+            DependencyProperty.Register(
+                "BuilderId",
+                typeof(int),
+                typeof(BuildingBuildingUI),
+                new PropertyMetadata(-1)
+            );
+
         #endregion
 
         #region UI Properties
@@ -452,6 +475,34 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                     }
                     break;
             }
+
+            BuildingBuildingUIEventArgs newEventArgs =
+                new BuildingBuildingUIEventArgs(
+                    BuildingBuildingUIRoutedEvent,
+                    "Updated",
+                    Id,
+                    new BuildingModel()
+                    {
+                        SmithsworkThisYear = SmithsworkThisYear,
+                        IronThisYear = IronThisYear,
+                        StoneThisYear = StoneThisYear,
+                        StoneworkThisYear = StoneworkThisYear,
+                        WoodworkThisYear = WoodworkThisYear,
+                        WoodThisYear = WoodThisYear,
+                        BuildingTime = BuildingTime
+                    }
+                );
+
+            if (SelectedIndex == -1)
+            {
+                newEventArgs.Model.BuilderId = -1;
+            }
+            else
+            {
+                newEventArgs.Model.BuilderId = BuildersCollection[SelectedIndex].Id;
+            }
+
+            RaiseEvent(newEventArgs);
         }
 
         private static void CheckResources(
@@ -476,6 +527,38 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 return Math.Max(Math.Max(stonework, woodwork), smithswork).ToString();
             }
             return "-";
+        }
+
+        private void BuilderComboBox_OnSelectionChanged(
+            object sender, 
+            SelectionChangedEventArgs e)
+        {
+            BuildingBuildingUIEventArgs newEventArgs =
+                new BuildingBuildingUIEventArgs(
+                    BuildingBuildingUIRoutedEvent,
+                    "Updated",
+                    Id,
+                    new BuildingModel()
+                    {
+                        SmithsworkThisYear = SmithsworkThisYear,
+                        IronThisYear = IronThisYear,
+                        StoneThisYear = StoneThisYear,
+                        StoneworkThisYear = StoneworkThisYear,
+                        WoodworkThisYear = WoodworkThisYear,
+                        WoodThisYear = WoodThisYear,
+                        BuildingTime = BuildingTime
+                    });
+
+            if (SelectedIndex == -1)
+            {
+                newEventArgs.Model.BuilderId = -1;
+            }
+            else
+            {
+                newEventArgs.Model.BuilderId = BuildersCollection[SelectedIndex].Id;
+            }
+
+            RaiseEvent(newEventArgs);
         }
 
         #endregion
@@ -508,5 +591,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
         }
 
         #endregion
+
+        
     }
 }

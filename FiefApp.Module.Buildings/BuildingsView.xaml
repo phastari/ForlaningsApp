@@ -9,6 +9,7 @@
              xmlns:builderUI="clr-namespace:FiefApp.Module.Buildings.BuilderUI"
              xmlns:buildingBuildingUI="clr-namespace:FiefApp.Module.Buildings.BuildingBuildingUI"
              xmlns:addBuildingUI="clr-namespace:FiefApp.Module.Buildings.AddBuildingUI"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
              d:DesignWidth="784"
@@ -277,10 +278,268 @@
                 BorderThickness="0.5, 0.5, 0.5, 0.5"
                 IsTabStop="False"/>
 
-            <StackPanel
+            <Grid
                 Grid.Column="5"
                 Grid.Row="3"
-                Grid.RowSpan="36">
+                Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="49"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="49"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="49"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="49"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="49"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="49"/>
+                    <ColumnDefinition Width="8"/>
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="0"
+                    Content="Stenarbetare"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <iTextBox:iTextBox
+                    Grid.Column="5"
+                    Grid.Row="0"
+                    Value="{Binding Path=DataModel.Stoneworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label
+                    Grid.Column="7"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="0"
+                    Content="Timmermän"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <iTextBox:iTextBox
+                    Grid.Column="11"
+                    Grid.Row="0"
+                    Value="{Binding Path=DataModel.Woodworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label
+                    Grid.Column="13"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="0"
+                    Content="Smeder"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <iTextBox:iTextBox
+                    Grid.Column="17"
+                    Grid.Row="0"
+                    Value="{Binding Path=DataModel.Smiths, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid
+                Grid.Column="5"
+                Grid.Row="5"
+                Grid.RowSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="21"/>
+                    <RowDefinition Height="3"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="58"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="58"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="58"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="58"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="58"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="58"/>
+                    <ColumnDefinition Width="8"/>
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Content="Bas"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="3"
+                    Grid.Row="0"
+                    Content="Dagsverk"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="5"
+                    Grid.Row="0"
+                    Content="Kvar"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="7"
+                    Grid.Row="0"
+                    Content="Bas"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="9"
+                    Grid.Row="0"
+                    Content="Dagsverk"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="11"
+                    Grid.Row="0"
+                    Content="Kvar"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="13"
+                    Grid.Row="0"
+                    Content="Bas"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="15"
+                    Grid.Row="0"
+                    Content="Dagsverk"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <Label
+                    Grid.Column="17"
+                    Grid.Row="0"
+                    Content="Kvar"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.StoneworkersBase}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="3"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.StoneworkersDaysWork}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="5"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.StoneworkersDaysWorkLeft}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="7"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.WoodworkersBase}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="9"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.WoodworkersDaysWork}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="11"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.WoodworkersDaysWorkLeft}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="13"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.SmithsBase}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="15"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.SmithsDaysWork}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+
+                <TextBox
+                    Grid.Column="17"
+                    Grid.Row="2"
+                    Text="{Binding Path=DataModel.SmithsDaysWorkLeft}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
+                    IsReadOnly="True"/>
+            </Grid>
+
+            <StackPanel
+                Grid.Column="5"
+                Grid.Row="9"
+                Grid.RowSpan="30">
 
                 <Grid
                     Height="21">
@@ -506,21 +765,29 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <buildingBuildingUI:BuildingBuildingUI
+                                Id="{Binding Path=Id}"
                                 Amount="{Binding Path=Amount}"
                                 Building="{Binding Path=Building}"
                                 BuildingTime="{Binding Path=BuildingTime}"
                                 BuildersCollection="{Binding Path=BuildersCollection}"
+                                BuilderId="{Binding Path=BuilderId}"
                                 LeftSmithswork="{Binding Path=LeftSmithswork}"
-                                SmithsworkThisYear="{Binding Path=SmithsworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SmithsworkThisYear="{Binding Path=SmithsworkThisYear}"
                                 LeftIron="{Binding Path=LeftIron}"
-                                IronThisYear="{Binding Path=IronThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IronThisYear="{Binding Path=IronThisYear}"
                                 LeftWoodwork="{Binding Path=LeftWoodwork}"
-                                WoodworkThisYear="{Binding Path=WoodworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                WoodworkThisYear="{Binding Path=WoodworkThisYear}"
                                 LeftWood="{Binding Path=LeftWood}"
-                                WoodThisYear="{Binding Path=WoodThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                WoodThisYear="{Binding Path=WoodThisYear}"
                                 LeftStonework="{Binding Path=LeftStonework}"
-                                StoneworkThisYear="{Binding Path=StoneworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                LeftStone="{Binding Path=LeftStone}">
+                                StoneworkThisYear="{Binding Path=StoneworkThisYear}"
+                                LeftStone="{Binding Path=LeftStone}"
+                                IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="BuildingBuildingUIEvent">
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BuildingBuildingUIEventHandler, ElementName=Self}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </buildingBuildingUI:BuildingBuildingUI>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
