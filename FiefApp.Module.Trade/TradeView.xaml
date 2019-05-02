@@ -6,12 +6,16 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              xmlns:merchantUI="clr-namespace:FiefApp.Module.Trade.UIElements.MerchantUI"
+             xmlns:sendMerchantUI="clr-namespace:FiefApp.Module.Trade.UIElements.SendMerchantUI"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
 
     <Grid
         x:Name="RootGrid">
+    <Grid
+        x:Name="EnableGrid"
+        IsEnabled="{Binding Path=DataModel.RootGridIsEnabled}">
         <Grid.RowDefinitions>
             <RowDefinition Height="9"/>
             <RowDefinition Height="6"/>
@@ -340,7 +344,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="135"/>
+                <ColumnDefinition Width="129"/>
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="35"/>
                 <ColumnDefinition Width="6"/>
@@ -350,9 +354,11 @@
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="159"/>
+                <ColumnDefinition Width="108"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="51"/>
                 <ColumnDefinition Width="8"/>
-            </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>
 
             <Label
                 Grid.Column="1"
@@ -398,7 +404,7 @@
             <Label
                 Grid.Column="11"
                 Grid.Row="0"
-                Content="På skepp"
+                Content="Utsänd med/på"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -449,15 +455,29 @@
                         Age="{Binding Path=Age}"
                         Skill="{Binding Path=Skill}"
                         MerchantsResources="{Binding Path=Resources}"
-                        Loyalty="{Binding Path=Loyalty}">
+                        Loyalty="{Binding Path=Loyalty}"
+                        Assignment="{Binding Path=Assignment}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MerchantUIEvent">
-                                <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MerchantUIEventHandler, ElementName=RootGrid}"/>
-                            </i:EventTrigger>
+                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MerchantUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </merchantUI:MerchantUI>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+    </Grid>
+        <sendMerchantUI:SendMerchantUI
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Margin="200,-20,0,0"
+            Id="{Binding Path=DataModel.SendMerchantId}"
+            Visibility="{Binding Path=DataModel.SendMerchantVisibility}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SendMerchantUIEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.SendMerchantUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </sendMerchantUI:SendMerchantUI>
     </Grid>
 </UserControl>

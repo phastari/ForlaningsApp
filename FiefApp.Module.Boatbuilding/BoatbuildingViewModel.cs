@@ -141,7 +141,8 @@ namespace FiefApp.Module.Boatbuilding
                     {
                         DataModel.BoatsBuildingCollection[x].BoatbuilderId = e.BoatbuilderId;
                         index = x;
-                    } else if (DataModel.BoatsBuildingCollection[x].BoatbuilderId == e.BoatbuilderId)
+                    }
+                    else if (DataModel.BoatsBuildingCollection[x].BoatbuilderId == e.BoatbuilderId)
                     {
                         DataModel.BoatsBuildingCollection[x].BoatbuilderId = -1;
                         DataModel.BoatsBuildingCollection[x].SelectedIndex = -1;

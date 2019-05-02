@@ -24,6 +24,7 @@ namespace FiefApp.Module.Trade.UIElements.MerchantUI
             EditMerchant = new DelegateCommand(ExecuteEditMerchant);
             EditMerchantCancelCommand = new DelegateCommand(ExecuteEditMerchantCancelCommand);
             EditMerchantSaveCommand = new DelegateCommand(ExecuteEditMerchantSaveCommand);
+            SendMerchantCommand = new DelegateCommand(ExecuteSendMerchantCommand);
         }
 
         #region DelegateCommand : DeleteMerchant
@@ -96,6 +97,22 @@ namespace FiefApp.Module.Trade.UIElements.MerchantUI
 
             RaiseEvent(newEventArgs);
             MouseArea.Visibility = Visibility.Visible;
+        }
+
+        #endregion
+        #region DelegateCommand : SendMerchantCommand
+
+        public DelegateCommand SendMerchantCommand { get; set; }
+        private void ExecuteSendMerchantCommand()
+        {
+            MerchantUIEventArgs newEventArgs =
+                new MerchantUIEventArgs(
+                    MerchantUIRoutedEvent,
+                    Id,
+                    "Send"
+                );
+
+            RaiseEvent(newEventArgs);
         }
 
         #endregion
@@ -200,6 +217,20 @@ namespace FiefApp.Module.Trade.UIElements.MerchantUI
                 new PropertyMetadata(new ObservableCollection<BoatModel>())
             );
 
+        public string Assignment
+        {
+            get => (string)GetValue(AssignmentProperty);
+            set => SetValue(AssignmentProperty, value);
+        }
+
+        public static readonly DependencyProperty AssignmentProperty =
+            DependencyProperty.Register(
+                "Assignment",
+                typeof(string),
+                typeof(MerchantUI),
+                new PropertyMetadata("",SetSendButton)
+            );
+
         #endregion
 
         #region UI Properties
@@ -250,9 +281,34 @@ namespace FiefApp.Module.Trade.UIElements.MerchantUI
             }
         }
 
-        private void MerchantUI_OnLoaded(object sender, RoutedEventArgs e)
+        private void MerchantUI_OnLoaded(
+            object sender, 
+            RoutedEventArgs e)
         {
             _loaded = true;
+            RaiseSetSendButton();
+        }
+
+        private static void SetSendButton(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MerchantUI c)
+                c.RaiseSetSendButton();
+        }
+
+        private void RaiseSetSendButton()
+        {
+            if (string.IsNullOrEmpty(Assignment))
+            {
+                SendButton.Visibility = Visibility.Visible;
+                SendButton.IsEnabled = true;
+            }
+            else
+            {
+                SendButton.Visibility = Visibility.Collapsed;
+                SendButton.IsEnabled = false;
+            }
         }
 
         #endregion

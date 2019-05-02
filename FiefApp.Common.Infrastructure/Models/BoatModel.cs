@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace FiefApp.Common.Infrastructure.Models
 {
-    public class BoatModel : INotifyPropertyChanged
+    public class BoatModel : INotifyPropertyChanged, ICloneable
     {
         public int Id { get; set; }
         public string BoatType { get; set; }
@@ -108,6 +108,15 @@ namespace FiefApp.Common.Infrastructure.Models
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region ICloneable
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
 
         #endregion

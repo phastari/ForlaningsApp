@@ -1,0 +1,395 @@
+﻿<UserControl x:Class="FiefApp.Module.Trade.UIElements.SendMerchantUI.SendMerchantUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="411" 
+             d:DesignWidth="262"
+             x:Name="Self">
+
+    <Grid
+        x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="18"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Frame 
+            Grid.Column="0" 
+            Grid.ColumnSpan="9" 
+            Grid.Row="0" 
+            Grid.RowSpan="36" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5"
+            IsTabStop="False"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="3"
+            Content="Skicka iväg handelsman"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            FontWeight="Bold"
+            Padding="12,0,0,0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="5"
+            Content="På fartyg"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <ComboBox
+            Grid.Column="3"
+            Grid.ColumnSpan="5"
+            Grid.Row="5"
+            ItemsSource="{Binding Path=ShipsCollection}"
+            DisplayMemberPath="Ship"
+            SelectedIndex="{Binding Path=SelectedIndex}"
+            SelectionChanged="Selector_OnSelectionChanged">
+
+        </ComboBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="7"
+            Content="Med häst och vagn"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <CheckBox
+            Grid.Column="3"
+            Grid.Row="7"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=SendByCarriage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="9"
+            Content="I karavan"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <CheckBox
+            Grid.Column="3"
+            Grid.Row="9"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=SendWithCaravan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="3"
+            Grid.Row="11"
+            Content="Enheter"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="5"
+            Grid.Row="11"
+            Content="Kvar"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="13"
+            Content="Lastkapacitet"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="3"
+            Grid.Row="13"
+            Text="{Binding Path=Cargo}"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="True"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Grid.Column="5"
+            Grid.Row="13"
+            Text="{Binding Path=CargoLeft}"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="True"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="15"
+            Content="Vakter"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="3"
+            Grid.Row="15"
+            Value="{Binding Path=Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="17"
+            Content="Varor"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="3"
+            Grid.Row="17"
+            Content="Ta med"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="5"
+            Grid.Row="17"
+            Content="Tillbaka"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="19"
+            Content="Silver"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="0,0,14,0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="19"
+            Width="60"
+            HorizontalAlignment="Right"
+            Value="{Binding Path=SilverWith, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <CheckBox
+            Grid.Column="5"
+            Grid.Row="19"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=SilverBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="21"
+            Content="Bas"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="3"
+            Grid.Row="21"
+            Value="{Binding Path=BaseToSell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <CheckBox
+            Grid.Column="5"
+            Grid.Row="21"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=BuyBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="23"
+            Content="Lyx"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="3"
+            Grid.Row="23"
+            Value="{Binding Path=LuxuryToSell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <CheckBox
+            Grid.Column="5"
+            Grid.Row="23"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=BuyLuxury, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="25"
+            Content="Järn"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="3"
+            Grid.Row="25"
+            Value="{Binding Path=IronToSell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <CheckBox
+            Grid.Column="5"
+            Grid.Row="25"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=BuyIron, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="27"
+            Content="Sten"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="3"
+            Grid.Row="27"
+            Value="{Binding Path=StoneToSell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <CheckBox
+            Grid.Column="5"
+            Grid.Row="27"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=BuyStone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="29"
+            Content="Timmer"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="3"
+            Grid.Row="29"
+            Value="{Binding Path=WoodToSell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </iTextBox:iTextBox>
+
+        <CheckBox
+            Grid.Column="5"
+            Grid.Row="29"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=BuyWood, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </CheckBox>
+
+        <Button
+            Content="avbryt"
+            Command="{Binding Path=CancelCommand}"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="33"
+            Width="51"
+            Template="{DynamicResource ButtonTemplate}"
+            HorizontalAlignment="Right"
+            Margin="0,0,57,0">
+
+        </Button>
+
+        <Button
+            Content="skicka"
+            Command="{Binding Path=SendCommand}"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="33"
+            Width="51"
+            Template="{DynamicResource ButtonTemplate}"
+            HorizontalAlignment="Right">
+
+        </Button>
+
+    </Grid>
+</UserControl>

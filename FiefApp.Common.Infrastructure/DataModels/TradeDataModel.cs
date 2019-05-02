@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
@@ -74,6 +75,39 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _sendMerchantId = -1;
+        public int SendMerchantId
+        {
+            get => _sendMerchantId;
+            set
+            {
+                _sendMerchantId = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private Visibility _sendMerchantVisibility = Visibility.Collapsed;
+        public Visibility SendMerchantVisibility
+        {
+            get => _sendMerchantVisibility;
+            set
+            {
+                _sendMerchantVisibility = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _rootGridIsEnabled = true;
+        public bool RootGridIsEnabled
+        {
+            get => _rootGridIsEnabled;
+            set
+            {
+                _rootGridIsEnabled = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<MerchantModel> _merchantsCollection = new ObservableCollection<MerchantModel>();
         public ObservableCollection<MerchantModel> MerchantsCollection
         {
@@ -85,15 +119,11 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private ObservableCollection<MerchantModel> _merchantsOutCollection = new ObservableCollection<MerchantModel>();
-        public ObservableCollection<MerchantModel> MerchantsOutCollection
+        private ObservableCollection<BoatModel> _shipsCollection = new ObservableCollection<BoatModel>();
+        public ObservableCollection<BoatModel> ShipsCollection
         {
-            get => _merchantsOutCollection;
-            set
-            {
-                _merchantsOutCollection = value;
-                NotifyPropertyChanged();
-            }
+            get => _shipsCollection;
+            set => _shipsCollection = value;
         }
 
         #region INotifyPropertyChanged

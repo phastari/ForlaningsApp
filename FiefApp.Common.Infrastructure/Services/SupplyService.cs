@@ -33,7 +33,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
             if (amount <= _fiefService.SupplyDataModel.SupplySilver)
             {
-                _fiefService.SupplyDataModel.SupplySilver += amount;
+                _fiefService.SupplyDataModel.SupplySilver -= amount;
                 _fiefService.SupplyDataModel.TransactionSilver = "";
                 return true;
             }
@@ -65,7 +65,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
             if (amount <= _fiefService.SupplyDataModel.SupplyBase)
             {
-                _fiefService.SupplyDataModel.SupplyBase += amount;
+                _fiefService.SupplyDataModel.SupplyBase -= amount;
                 _fiefService.SupplyDataModel.TransactionBase = "";
                 return true;
             }
@@ -99,7 +99,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
             if (amount <= _fiefService.SupplyDataModel.SupplyLuxury)
             {
-                _fiefService.SupplyDataModel.SupplyLuxury += amount;
+                _fiefService.SupplyDataModel.SupplyLuxury -= amount;
                 _fiefService.SupplyDataModel.TransactionLuxury = "";
                 return true;
             }
@@ -131,7 +131,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
             if (amount <= _fiefService.SupplyDataModel.SupplyIron)
             {
-                _fiefService.SupplyDataModel.SupplyIron += amount;
+                _fiefService.SupplyDataModel.SupplyIron -= amount;
                 _fiefService.SupplyDataModel.TransactionIron = "";
                 return true;
             }
@@ -163,7 +163,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
             if (amount <= _fiefService.SupplyDataModel.SupplyStone)
             {
-                _fiefService.SupplyDataModel.SupplyStone += amount;
+                _fiefService.SupplyDataModel.SupplyStone -= amount;
                 _fiefService.SupplyDataModel.TransactionStone = "";
                 return true;
             }
@@ -195,7 +195,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
             if (amount <= _fiefService.SupplyDataModel.SupplyWood)
             {
-                _fiefService.SupplyDataModel.SupplyWood += amount;
+                _fiefService.SupplyDataModel.SupplyWood -= amount;
                 _fiefService.SupplyDataModel.TransactionWood = "";
                 return true;
             }

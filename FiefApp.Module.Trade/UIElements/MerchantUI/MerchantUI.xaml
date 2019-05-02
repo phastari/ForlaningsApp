@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="24" 
              d:DesignWidth="510"
-             Loaded="MerchantUI_OnLoaded">
+             Loaded="MerchantUI_OnLoaded"
+             x:Name="Self">
 
     <Grid
         x:Name="RootGrid">
@@ -17,7 +20,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="135"/>
+            <ColumnDefinition Width="129"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="35"/>
             <ColumnDefinition Width="6"/>
@@ -27,7 +30,9 @@
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="159"/>
+            <ColumnDefinition Width="108"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="51"/>
             <ColumnDefinition Width="8"/>
         </Grid.ColumnDefinitions>
 
@@ -80,7 +85,6 @@
             </Button>
 
             <Button 
-                Command="{Binding Path=EditMerchant}"
                 Grid.Column="2"
                 Grid.Row="0"
                 HorizontalAlignment="Left"
@@ -107,6 +111,11 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=MouseArea}" Value="Collapsed"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
 
             <Label
@@ -142,40 +151,80 @@
             Grid.Column="3"
             Grid.Row="0"
             Text="{Binding Path=Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Padding="0"/>
+            Padding="0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="IsReadOnly" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
         <t6TextBox:T6TextBox
             Grid.Column="5"
             Grid.Row="0"
             T6Value="{Binding Path=Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ReadOnly="True"/>
+            ReadOnly="True">
+            <t6TextBox:T6TextBox.Style>
+                <Style TargetType="{x:Type t6TextBox:T6TextBox}">
+                    <Setter Property="ReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="ReadOnly" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </t6TextBox:T6TextBox.Style>
+        </t6TextBox:T6TextBox>
 
         <t6TextBox:T6TextBox
             Grid.Column="7"
             Grid.Row="0"
-            T6Value="{Binding Path=MerchantsResources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ReadOnly="True"/>
+            T6Value="{Binding Path=MerchantsResources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <t6TextBox:T6TextBox.Style>
+                <Style TargetType="{x:Type t6TextBox:T6TextBox}">
+                    <Setter Property="ReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="ReadOnly" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </t6TextBox:T6TextBox.Style>
+        </t6TextBox:T6TextBox>
 
         <t6TextBox:T6TextBox
             Grid.Column="9"
             Grid.Row="0"
-            T6Value="{Binding Path=Loyalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ReadOnly="True"/>
+            T6Value="{Binding Path=Loyalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <t6TextBox:T6TextBox.Style>
+                <Style TargetType="{x:Type t6TextBox:T6TextBox}">
+                    <Setter Property="ReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="ReadOnly" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </t6TextBox:T6TextBox.Style>
+        </t6TextBox:T6TextBox>
 
-        <ComboBox
-            x:Name="BoatsComboBox"
+        <Label
             Grid.Column="11"
             Grid.Row="0"
-            ItemsSource="{Binding Path=BoatsCollection}"
-            DisplayMemberPath="BoatType"
-            SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            SelectionChanged="BoatsComboBox_OnSelectionChanged"
-            Template="{DynamicResource ComboBoxControlTemplate}"
-            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}">
-            <ComboBox.Style>
-                <Style TargetType="{x:Type ComboBox}">
+            Content="{Binding Path=Assignment}"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
@@ -183,8 +232,8 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </ComboBox.Style>
-        </ComboBox>
+            </Label.Style>
+        </Label>
 
         <Button
             Content="avbryt"
@@ -192,6 +241,7 @@
             Grid.Column="11"
             Grid.Row="0"
             Width="51"
+            Template="{DynamicResource ButtonTemplate}"
             HorizontalAlignment="Left"
             VerticalContentAlignment="Center"
             Padding="0">
@@ -213,6 +263,7 @@
             Grid.Column="11"
             Grid.Row="0"
             Width="51"
+            Template="{DynamicResource ButtonTemplate}"
             HorizontalAlignment="Left"
             VerticalContentAlignment="Center"
             Padding="0"
@@ -229,7 +280,27 @@
             </Button.Style>
         </Button>
 
-
-
+        <Button
+            x:Name="SendButton"
+            Content="skicka"
+            Command="{Binding Path=SendMerchantCommand}"
+            Grid.Column="13"
+            Grid.Row="0"
+            Width="51"
+            Template="{DynamicResource ButtonTemplate}"
+            HorizontalAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="0">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </UserControl>
