@@ -33,6 +33,23 @@
         </CheckBox>
 
         <CheckBox
+            x:Name="AddConstructSubsidiaryShowHolder"
+            Grid.Column="0"
+            Grid.Row="0"
+            Visibility="Collapsed">
+            <CheckBox.Style>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=AddSubsidiaryUI, Path=Visibility}" Value="Collapsed">
+                            <Setter Property="IsChecked" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
+
+        <CheckBox
             x:Name="EditSubsidiaryShowHolder"
             Grid.Column="0"
             Grid.Row="0"
@@ -56,13 +73,20 @@
             Grid.ZIndex="10"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            SubsidiaryCollection="{Binding Path=DataModel.SubsidiaryTypesCollection}">
+            SubsidiaryCollection="{Binding Path=DataModel.SubsidiaryTypesCollection}"
+            Tag="{Binding Path=AddSubsidiaryTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <addSubsidiaryUI:AddSubsidiaryUI.Style>
                 <Style TargetType="{x:Type addSubsidiaryUI:AddSubsidiaryUI}">
                     <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Tag" Value=""/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=AddSubsidiaryShowHolder, Path=IsChecked}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Tag" Value="AddSubsidiary"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=AddConstructSubsidiaryShowHolder, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Tag" Value="ConstructSubsidiary"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -72,6 +96,7 @@
                 <i:EventTrigger EventName="AddSubsidiaryUIEvent">
                     <customCommands:CustomCommandAction Command="{Binding Path=DataContext.AddSubsidiaryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                     <customCommands:CustomSetterAction PropertyName="IsChecked" TargetObject="{Binding ElementName=AddSubsidiaryShowHolder}" Value="False" />
+                    <customCommands:CustomSetterAction PropertyName="IsChecked" TargetObject="{Binding ElementName=AddConstructSubsidiaryShowHolder}" Value="False" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
@@ -323,7 +348,7 @@
                                         Grid.Row="0"
                                         Content="lägg till"
                                         Command="{Binding Path=ConstructSubsidiaryCommand}"
-                                        IsChecked="{Binding ElementName=AddSubsidiaryShowHolder, Path=IsChecked, Mode=TwoWay}"
+                                        IsChecked="{Binding ElementName=AddConstructSubsidiaryShowHolder, Path=IsChecked, Mode=TwoWay}"
                                         Height="21"
                                         Width="51"
                                         HorizontalAlignment="Right"
@@ -332,6 +357,16 @@
                                         Padding="0"
                                         Margin="0,0,8,0"
                                         Template="{DynamicResource ButtonTemplate}">
+                                        <ToggleButton.Style>
+                                            <Style TargetType="{x:Type ToggleButton}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
                                     </ToggleButton>
                                 </Grid>
                             </StackPanel>
@@ -540,11 +575,12 @@
                                         BorderBrush="Gray" 
                                         BorderThickness="0.5, 0, 0.5, 0"
                                         IsTabStop="False"/>
-                                    <Button 
+                                    <ToggleButton 
                                         Grid.Column="0"
                                         Grid.Row="0"
                                         Content="lägg till"
                                         Command="{Binding Path=AddSubsidiaryCommand}"
+                                        IsChecked="{Binding ElementName=AddSubsidiaryShowHolder, Path=IsChecked, Mode=TwoWay}"
                                         Height="21"
                                         Width="51"
                                         HorizontalAlignment="Right"
@@ -553,8 +589,8 @@
                                         Padding="0"
                                         Margin="0,0,8,0"
                                         Template="{DynamicResource ButtonTemplate}">
-                                        <Button.Style>
-                                            <Style TargetType="{x:Type Button}">
+                                        <ToggleButton.Style>
+                                            <Style TargetType="{x:Type ToggleButton}">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding ElementName=FiefComboBox, Path=SelectedIndex}" Value="0">
@@ -562,8 +598,8 @@
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Button.Style>
-                                    </Button>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
                                 </Grid>
                             </StackPanel>
                         </ControlTemplate>

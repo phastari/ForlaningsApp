@@ -39,6 +39,7 @@ namespace FiefApp
             containerRegistry.Register<ITradeService, TradeService>();
             containerRegistry.Register<IPortService, PortService>();
             containerRegistry.Register<IMinesService, MinesService>();
+            containerRegistry.Register<IEndOfYearService, EndOfYearService>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

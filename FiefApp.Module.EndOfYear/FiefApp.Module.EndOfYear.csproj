@@ -79,6 +79,12 @@
     </Compile>
     <Compile Include="EndOfYearViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIElements\EndOfYearIncomeUI\EndOfYearIncomeUI.xaml.cs">
+      <DependentUpon>EndOfYearIncomeUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UIElements\EndOfYearSubsidiaryUI\EndOfYearSubsidiaryUI.xaml.cs">
+      <DependentUpon>EndOfYearSubsidiaryUI.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiefApp.Common.Infrastructure\FiefApp.Common.Infrastructure.csproj">
@@ -88,6 +94,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="EndOfYearView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\EndOfYearIncomeUI\EndOfYearIncomeUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\EndOfYearSubsidiaryUI\EndOfYearSubsidiaryUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

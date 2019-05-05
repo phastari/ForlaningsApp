@@ -61,6 +61,7 @@ namespace FiefApp.Module.Income
                 _incomeService.ChangeSteward(e.StewardModel.Id, e.FiefId, e.Income);
                 DataModel.IncomesCollection.Clear();
                 DataModel.IncomesCollection = _incomeService.GetAllIncomes(Index);
+                SaveData();
             }
         }
 

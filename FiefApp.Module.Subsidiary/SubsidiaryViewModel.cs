@@ -65,14 +65,34 @@ namespace FiefApp.Module.Subsidiary
 
             e.Handled = true;
 
-            if (e.Action == "Save")
+
+            if (DataModel.AddSubsidiaryTag == "ConstructSubsidiary")
             {
-                e.SubsidiaryModel.Id = _subsidiaryService.GetNewIdForSubsidiary();
-                _subsidiaryService.AddCustomSubsidiary(e.SubsidiaryModel);
-                e.SubsidiaryModel.StewardsCollection = DataModel.StewardsCollection;
-                e.SubsidiaryModel.StewardId = -1;
-                e.SubsidiaryModel.Steward = "";
-                DataModel.ConstructingCollection.Add(e.SubsidiaryModel);
+                if (e.Action == "Save")
+                {
+                    e.SubsidiaryModel.Id = _subsidiaryService.GetNewIdForSubsidiary();
+                    _subsidiaryService.AddCustomSubsidiary(e.SubsidiaryModel);
+                    e.SubsidiaryModel.StewardsCollection = DataModel.StewardsCollection;
+                    e.SubsidiaryModel.StewardId = -1;
+                    e.SubsidiaryModel.Steward = "";
+                    DataModel.ConstructingCollection.Add(e.SubsidiaryModel);
+
+                    DataModel.AddSubsidiaryTag = "";
+                }
+            }
+            else if (DataModel.AddSubsidiaryTag == "AddSubsidiary")
+            {
+                if (e.Action == "Save")
+                {
+                    e.SubsidiaryModel.Id = _subsidiaryService.GetNewIdForSubsidiary();
+                    _subsidiaryService.AddCustomSubsidiary(e.SubsidiaryModel);
+                    e.SubsidiaryModel.StewardsCollection = DataModel.StewardsCollection;
+                    e.SubsidiaryModel.StewardId = -1;
+                    e.SubsidiaryModel.Steward = "";
+                    DataModel.SubsidiaryCollection.Add(e.SubsidiaryModel);
+
+                    DataModel.AddSubsidiaryTag = "";
+                }
             }
         }
 
@@ -189,7 +209,7 @@ namespace FiefApp.Module.Subsidiary
         public DelegateCommand AddSubsidiaryCommand { get; set; }
         private void ExecuteAddSubsidiaryCommand()
         {
-
+            DataModel.SubsidiaryTypesCollection = _subsidiaryService.GetSubsidiaryTypesCollection();
         }
 
         #endregion

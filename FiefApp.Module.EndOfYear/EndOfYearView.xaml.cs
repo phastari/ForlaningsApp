@@ -1,4 +1,6 @@
-﻿namespace FiefApp.Module.EndOfYear
+﻿using System.Windows;
+
+namespace FiefApp.Module.EndOfYear
 {
     /// <summary>
     /// Interaction logic for EndOfYearView.xaml

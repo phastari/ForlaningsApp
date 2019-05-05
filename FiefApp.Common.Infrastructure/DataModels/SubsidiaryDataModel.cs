@@ -38,6 +38,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private string _addSubsidiaryTag = "";
+        public string AddSubsidiaryTag
+        {
+            get => _addSubsidiaryTag;
+            set
+            {
+                _addSubsidiaryTag = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<SubsidiaryModel> _subsidiaryCollection = new ObservableCollection<SubsidiaryModel>();
         public ObservableCollection<SubsidiaryModel> SubsidiaryCollection
         {

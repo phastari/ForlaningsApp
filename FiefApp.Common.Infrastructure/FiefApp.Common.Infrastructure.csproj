@@ -94,6 +94,7 @@
     <Compile Include="DataModels\BoatbuildingDataModel.cs" />
     <Compile Include="DataModels\BuildingsDataModel.cs" />
     <Compile Include="DataModels\EmployeesDataModel.cs" />
+    <Compile Include="DataModels\EndOfYearDataModel.cs" />
     <Compile Include="DataModels\ExpensesDataModel.cs" />
     <Compile Include="DataModels\IDataModelBase.cs" />
     <Compile Include="DataModels\IncomeDataModel.cs" />
@@ -116,6 +117,9 @@
     <Compile Include="Models\BuildingModel.cs" />
     <Compile Include="Models\CaptainModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\EndOfYearIncomeFiefModel.cs" />
+    <Compile Include="Models\EndOfYearIncomeModel.cs" />
+    <Compile Include="Models\EndOfYearSubsidiaryModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\IncomeModel.cs" />
     <Compile Include="Models\IndustryModel.cs" />
@@ -137,12 +141,14 @@
     <Compile Include="Services\BuildingsService.cs" />
     <Compile Include="Services\Calculations.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\EndOfYearService.cs" />
     <Compile Include="Services\ExpensesService.cs" />
     <Compile Include="Services\IArmyService.cs" />
     <Compile Include="Services\IBoatbuildingService.cs" />
     <Compile Include="Services\IBuildingsService.cs" />
     <Compile Include="Services\ICalculations.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
+    <Compile Include="Services\IEndOfYearService.cs" />
     <Compile Include="Services\IExpensesService.cs" />
     <Compile Include="Services\IIncomeService.cs" />
     <Compile Include="Services\IManorService.cs" />
@@ -340,6 +346,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Settings\BuildingsSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Graphics\Miscellaneous\dice.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
