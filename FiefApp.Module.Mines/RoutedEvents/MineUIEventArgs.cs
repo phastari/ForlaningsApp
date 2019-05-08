@@ -16,12 +16,16 @@ namespace FiefApp.Module.Mines.RoutedEvents
         private readonly string _steward;
         public string Steward => _steward;
 
+        private readonly string _skill;
+        public string Skill => _skill;
+
         public MineUIEventArgs(
             RoutedEvent routedEvent,
             string action,
             int mineId,
             int stewardId,
-            string steward
+            string steward,
+            string skill = null
             )
             : base(routedEvent)
         {
@@ -29,6 +33,7 @@ namespace FiefApp.Module.Mines.RoutedEvents
             _mineId = mineId;
             _stewardId = stewardId;
             _steward = steward;
+            _skill = skill;
         }
     }
 }

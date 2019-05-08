@@ -119,6 +119,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EndOfYearIncomeFiefModel.cs" />
     <Compile Include="Models\EndOfYearIncomeModel.cs" />
+    <Compile Include="Models\EndOfYearMineModel.cs" />
     <Compile Include="Models\EndOfYearSubsidiaryModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\IncomeModel.cs" />

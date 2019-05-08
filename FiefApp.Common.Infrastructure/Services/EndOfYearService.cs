@@ -27,10 +27,12 @@ namespace FiefApp.Common.Infrastructure.Services
             _baseService = baseService;
         }
 
-        public List<EndOfYearIncomeFiefModel> InitializeIncomes()
+        public List<EndOfYearIncomeFiefModel> Initialize()
         {
             List<EndOfYearIncomeFiefModel> tempList = new List<EndOfYearIncomeFiefModel>();
             List<EndOfYearIncomeModel> incomeList = new List<EndOfYearIncomeModel>();
+            List<EndOfYearSubsidiaryModel> subsidiaryList = new List<EndOfYearSubsidiaryModel>();
+            List<MineModel> minesList = new List<MineModel>();
 
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
             {
@@ -60,33 +62,42 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
 
+                for (int j = 0; j < _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count; j++)
+                {
+                    subsidiaryList.Add(new EndOfYearSubsidiaryModel()
+                    {
+                        Subsidiary = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Subsidiary,
+                        Steward = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Steward,
+                        StewardId = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId,
+                        Skill = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Skill,
+                        Crewed = (decimal)_fiefService.SubsidiaryList[x].SubsidiaryCollection[j].DaysWorkThisYear / _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].DaysWorkUpkeep,
+                        Difficulty = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Difficulty,
+                        BaseIncomeSilver = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Silver,
+                        BaseIncomeBase = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Base,
+                        BaseIncomeLuxury = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Luxury
+                    });
+                }
+
+                for (int k = 0; k < _fiefService.MinesList[x].MinesCollection.Count; k++)
+                {
+                    minesList.Add(new MineModel()
+                    {
+                        MineType = _fiefService.MinesList[x].MinesCollection[k].MineType,
+                        Guards = _fiefService.MinesList[x].MinesCollection[k].Guards,
+                        Steward = _fiefService.MinesList[x].MinesCollection[k].Steward,
+                        StewardId = _fiefService.MinesList[x].MinesCollection[k].StewardId,
+                        Skill = _fiefService.MinesList[x].MinesCollection[k].Skill,
+                        Difficulty = _fiefService.MinesList[x].MinesCollection[k].Difficulty,
+                        BaseIncomeSilver = _fiefService.MinesList[x].MinesCollection[k].BaseIncomeSilver
+                    });
+                }
+
                 tempList.Add(new EndOfYearIncomeFiefModel()
                 {
                     FiefName = _fiefService.InformationList[x].FiefName,
-                    IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList)
-                });
-            }
-
-            return tempList;
-        }
-
-        public List<EndOfYearSubsidiaryModel> InitializeSubsidiaries(int index, string fief)
-        {
-            List<EndOfYearSubsidiaryModel> tempList = new List<EndOfYearSubsidiaryModel>();
-
-            for (int x = 0; x < _fiefService.SubsidiaryList[index].SubsidiaryCollection.Count; x++)
-            {
-                tempList.Add(new EndOfYearSubsidiaryModel()
-                {
-                    Subsidiary = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Subsidiary,
-                    Steward = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Steward,
-                    StewardId = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].StewardId,
-                    Skill = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Skill,
-                    Crewed = (decimal)_fiefService.SubsidiaryList[index].SubsidiaryCollection[x].DaysWorkThisYear / _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].DaysWorkUpkeep,
-                    Difficulty = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Difficulty,
-                    BaseIncomeSilver = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Silver,
-                    BaseIncomeBase = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Base,
-                    BaseIncomeLuxury = _fiefService.SubsidiaryList[index].SubsidiaryCollection[x].Luxury
+                    IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
+                    SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
+                    MinesCollection = new ObservableCollection<MineModel>(minesList)
                 });
             }
 

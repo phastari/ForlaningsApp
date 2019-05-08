@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Module.Subsidiary.RoutedEvents
 {
@@ -19,13 +20,21 @@ namespace FiefApp.Module.Subsidiary.RoutedEvents
         private readonly string _subsidiary;
         public string Subsidiary => _subsidiary;
 
+        private readonly string _skill;
+        public string Skill => _skill;
+
+        private readonly SubsidiaryModel _model;
+        public SubsidiaryModel Model => _model;
+
         public SubsidiaryUIEventArgs(
             RoutedEvent routedEvent,
             string action,
             int stewardId,
             string steward,
             int subsidiaryId,
-            string subsidiary = ""
+            string skill,
+            string subsidiary = "",
+            SubsidiaryModel model = null
             )
             : base(routedEvent)
         {
@@ -34,6 +43,8 @@ namespace FiefApp.Module.Subsidiary.RoutedEvents
             _action = action;
             _steward = steward;
             _subsidiary = subsidiary;
+            _skill = skill;
+            _model = model;
         }
     }
 }

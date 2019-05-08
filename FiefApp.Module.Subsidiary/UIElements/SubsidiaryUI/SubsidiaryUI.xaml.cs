@@ -1,12 +1,12 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Subsidiary.RoutedEvents;
+using Prism.Commands;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Module.Subsidiary.RoutedEvents;
-using Prism.Commands;
 
 namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
 {
@@ -35,7 +35,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                     "Delete",
                     -1,
                     "",
-                    Id
+                    Id,
+                    Skill
                 );
             RaiseEvent(newEventArgs);
         }
@@ -62,12 +63,15 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                     "Edit",
                     -1,
                     "",
-                    Id
+                    Id,
+                    Skill
                 );
             RaiseEvent(newEventArgs);
         }
 
         #endregion
+
+        #region Dependency Properties
 
         public int Id
         {
@@ -108,9 +112,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 "Quality",
                 typeof(int),
                 typeof(SubsidiaryUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, RaiseCalculateIncomes)
             );
-
         public int DevelopmentLevel
         {
             get => (int)GetValue(DevelopmentLevelProperty);
@@ -122,49 +125,63 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 "DevelopmentLevel",
                 typeof(int),
                 typeof(SubsidiaryUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(1, RaiseCalculateIncomes)
             );
 
-        public int Silver
+        public decimal IncomeFactor
         {
-            get => (int)GetValue(SilverProperty);
-            set => SetValue(SilverProperty, value);
+            get => (decimal)GetValue(IncomeFactorProperty);
+            set => SetValue(IncomeFactorProperty, value);
         }
 
-        public static readonly DependencyProperty SilverProperty =
+        public static readonly DependencyProperty IncomeFactorProperty =
             DependencyProperty.Register(
-                "Silver",
-                typeof(int),
+                "IncomeFactor",
+                typeof(decimal),
                 typeof(SubsidiaryUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0M)
             );
 
-        public int Base
+        public decimal IncomeSilver
         {
-            get => (int)GetValue(BaseProperty);
-            set => SetValue(BaseProperty, value);
+            get => (decimal)GetValue(IncomeSilverProperty);
+            set => SetValue(IncomeSilverProperty, value);
         }
 
-        public static readonly DependencyProperty BaseProperty =
+        public static readonly DependencyProperty IncomeSilverProperty =
             DependencyProperty.Register(
-                "Base",
-                typeof(int),
+                "IncomeSilver",
+                typeof(decimal),
                 typeof(SubsidiaryUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0M)
             );
 
-        public int Luxury
+        public decimal IncomeBase
         {
-            get => (int)GetValue(LuxuryProperty);
-            set => SetValue(LuxuryProperty, value);
+            get => (decimal)GetValue(IncomeBaseProperty);
+            set => SetValue(IncomeBaseProperty, value);
         }
 
-        public static readonly DependencyProperty LuxuryProperty =
+        public static readonly DependencyProperty IncomeBaseProperty =
             DependencyProperty.Register(
-                "Luxury",
-                typeof(int),
+                "IncomeBase",
+                typeof(decimal),
                 typeof(SubsidiaryUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0M)
+            );
+
+        public decimal IncomeLuxury
+        {
+            get => (decimal)GetValue(IncomeLuxuryProperty);
+            set => SetValue(IncomeLuxuryProperty, value);
+        }
+
+        public static readonly DependencyProperty IncomeLuxuryProperty =
+            DependencyProperty.Register(
+                "IncomeLuxury",
+                typeof(decimal),
+                typeof(SubsidiaryUI),
+                new PropertyMetadata(0M)
             );
 
         public int DaysWorkLeft
@@ -265,6 +282,10 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 new PropertyMetadata("")
             );
 
+        #endregion
+
+        #region UI Properties
+
         private int _selectedIndex;
         public int SelectedIndex
         {
@@ -278,21 +299,103 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
 
         private SubsidiaryModel _oldValues = new SubsidiaryModel();
 
-        #region Event Handler For Selection Changed
+        private int _silver;
+        public int Silver
+        {
+            get => _silver;
+            set
+            {
+                _silver = value;
+                NotifyPropertyChanged();
+            }
+        }
 
-        private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private int _base;
+        public int Base
+        {
+            get => _base;
+            set
+            {
+                _base = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _luxury;
+        public int Luxury
+        {
+            get => _luxury;
+            set
+            {
+                _luxury = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void RaiseCalculateIncomes(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SubsidiaryUI c)
+                c.CalculateIncomes();
+        }
+
+        private void CalculateIncomes()
+        {
+            Silver = Convert.ToInt32(Math.Floor(Quality * IncomeFactor * IncomeSilver + Quality * IncomeFactor * IncomeSilver / 20 * (DevelopmentLevel - 1)));
+            Base = Convert.ToInt32(Math.Floor(Quality * IncomeFactor * IncomeBase + Quality * IncomeFactor * IncomeBase / 20 * (DevelopmentLevel - 1)));
+            Luxury = Convert.ToInt32(Math.Floor(Quality * IncomeFactor * IncomeLuxury + Quality * IncomeFactor * IncomeLuxury / 20 * (DevelopmentLevel - 1)));
+            UpdateSubsidiary();
+        }
+
+        private void UpdateSubsidiary()
         {
             SubsidiaryUIEventArgs newEventArgs =
                 new SubsidiaryUIEventArgs(
                     SubsidiaryUIRoutedEvent,
-                    "Changed",
-                    StewardsCollection[SelectedIndex].Id,
-                    StewardsCollection[SelectedIndex].PersonName,
+                    "Update",
+                    -1,
+                    "",
                     Id,
-                    Subsidiary
+                    Skill,
+                    "",
+                    new SubsidiaryModel()
+                    {
+                        Silver = Silver,
+                        Base = Base,
+                        Luxury = Luxury
+                    }
                 );
-
             RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+
+        #region Event Handler For Selection Changed
+
+        private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SelectedIndex != -1)
+            {
+                SubsidiaryUIEventArgs newEventArgs =
+                    new SubsidiaryUIEventArgs(
+                        SubsidiaryUIRoutedEvent,
+                        "Changed",
+                        StewardsCollection[SelectedIndex].Id,
+                        StewardsCollection[SelectedIndex].PersonName,
+                        Id,
+                        StewardsCollection[SelectedIndex].Skill,
+                        Subsidiary
+                    );
+
+                RaiseEvent(newEventArgs);
+
+                CalculateIncomes();
+            }
         }
 
         #endregion

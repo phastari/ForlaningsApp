@@ -82,6 +82,9 @@
     <Compile Include="UIElements\EndOfYearIncomeUI\EndOfYearIncomeUI.xaml.cs">
       <DependentUpon>EndOfYearIncomeUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIElements\EndOfYearMineUI\EndOfYearMineUI.xaml.cs">
+      <DependentUpon>EndOfYearMineUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\EndOfYearSubsidiaryUI\EndOfYearSubsidiaryUI.xaml.cs">
       <DependentUpon>EndOfYearSubsidiaryUI.xaml</DependentUpon>
     </Compile>
@@ -98,6 +101,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UIElements\EndOfYearIncomeUI\EndOfYearIncomeUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\EndOfYearMineUI\EndOfYearMineUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -575,6 +575,7 @@
                                         BorderBrush="Gray" 
                                         BorderThickness="0.5, 0, 0.5, 0"
                                         IsTabStop="False"/>
+
                                     <ToggleButton 
                                         Grid.Column="0"
                                         Grid.Row="0"
@@ -612,9 +613,10 @@
                                 Subsidiary="{Binding Path=Subsidiary}"
                                 Quality="{Binding Path=Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 DevelopmentLevel="{Binding Path=DevelopmentLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Silver="{Binding Path=Silver}"
-                                Base="{Binding Path=Base}"
-                                Luxury="{Binding Path=Luxury}"
+                                IncomeFactor="{Binding Path=IncomeFactor}"
+                                IncomeSilver="{Binding Path=IncomeSilver}"
+                                IncomeBase="{Binding Path=IncomeBase}"
+                                IncomeLuxury="{Binding Path=IncomeLuxury}"
                                 DaysWorkLeft="{Binding Path=DaysWorkUpkeep}"
                                 DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 StewardsCollection="{Binding Path=StewardsCollection}"

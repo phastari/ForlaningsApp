@@ -1,21 +1,20 @@
-﻿using CommonServiceLocator;
-using FiefApp.Common.Infrastructure.Services;
-using Prism.Commands;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using CommonServiceLocator;
+using FiefApp.Common.Infrastructure.Services;
+using Prism.Commands;
 
-namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
+namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearMineUI
 {
     /// <summary>
-    /// Interaction logic for EndOfYearSubsidiaryUI.xaml
+    /// Interaction logic for EndOfYearMineUI.xaml
     /// </summary>
-    public partial class EndOfYearSubsidiaryUI : INotifyPropertyChanged
+    public partial class EndOfYearMineUI : INotifyPropertyChanged
     {
         private readonly IBaseService _baseService;
-
-        public EndOfYearSubsidiaryUI()
+        public EndOfYearMineUI()
         {
             InitializeComponent();
             RootGrid.DataContext = this;
@@ -52,31 +51,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
 
         #region Dependency Properties
 
-        public int Id
+        public string Type
         {
-            get => (int)GetValue(IdProperty);
-            set => SetValue(IdProperty, value);
+            get => (string)GetValue(TypeProperty);
+            set => SetValue(TypeProperty, value);
         }
 
-        public static readonly DependencyProperty IdProperty =
+        public static readonly DependencyProperty TypeProperty =
             DependencyProperty.Register(
-                "Id",
-                typeof(int),
-                typeof(EndOfYearSubsidiaryUI),
-                new PropertyMetadata(-1)
-            );
-
-        public string Subsidiary
-        {
-            get => (string)GetValue(SubsidiaryProperty);
-            set => SetValue(SubsidiaryProperty, value);
-        }
-
-        public static readonly DependencyProperty SubsidiaryProperty =
-            DependencyProperty.Register(
-                "Subsidiary",
+                "Type",
                 typeof(string),
-                typeof(EndOfYearSubsidiaryUI),
+                typeof(EndOfYearMineUI),
                 new PropertyMetadata("")
             );
 
@@ -90,7 +75,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             DependencyProperty.Register(
                 "StewardName",
                 typeof(string),
-                typeof(EndOfYearSubsidiaryUI),
+                typeof(EndOfYearMineUI),
                 new PropertyMetadata("")
             );
 
@@ -104,7 +89,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             DependencyProperty.Register(
                 "StewardId",
                 typeof(int),
-                typeof(EndOfYearSubsidiaryUI),
+                typeof(EndOfYearMineUI),
                 new PropertyMetadata(-1)
             );
 
@@ -118,22 +103,8 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             DependencyProperty.Register(
                 "Skill",
                 typeof(string),
-                typeof(EndOfYearSubsidiaryUI),
+                typeof(EndOfYearMineUI),
                 new PropertyMetadata("0", RaiseSkillChanged)
-            );
-
-        public decimal Crewed
-        {
-            get => (decimal)GetValue(CrewedProperty);
-            set => SetValue(CrewedProperty, value);
-        }
-
-        public static readonly DependencyProperty CrewedProperty =
-            DependencyProperty.Register(
-                "Crewed",
-                typeof(decimal),
-                typeof(EndOfYearSubsidiaryUI),
-                new PropertyMetadata(0.0M)
             );
 
         public int Difficulty
@@ -146,7 +117,35 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             DependencyProperty.Register(
                 "Difficulty",
                 typeof(int),
-                typeof(EndOfYearSubsidiaryUI),
+                typeof(EndOfYearMineUI),
+                new PropertyMetadata(0)
+            );
+
+        public int Crime
+        {
+            get => (int)GetValue(CrimeProperty);
+            set => SetValue(CrimeProperty, value);
+        }
+
+        public static readonly DependencyProperty CrimeProperty =
+            DependencyProperty.Register(
+                "Crime",
+                typeof(int),
+                typeof(EndOfYearMineUI),
+                new PropertyMetadata(0)
+            );
+
+        public int Guards
+        {
+            get => (int)GetValue(GuardsProperty);
+            set => SetValue(GuardsProperty, value);
+        }
+
+        public static readonly DependencyProperty GuardsProperty =
+            DependencyProperty.Register(
+                "Guards",
+                typeof(int),
+                typeof(EndOfYearMineUI),
                 new PropertyMetadata(0)
             );
 
@@ -160,35 +159,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             DependencyProperty.Register(
                 "BaseIncomeSilver",
                 typeof(int),
-                typeof(EndOfYearSubsidiaryUI),
-                new PropertyMetadata(0)
-            );
-
-        public int BaseIncomeBase
-        {
-            get => (int)GetValue(BaseIncomeBaseProperty);
-            set => SetValue(BaseIncomeBaseProperty, value);
-        }
-
-        public static readonly DependencyProperty BaseIncomeBaseProperty =
-            DependencyProperty.Register(
-                "BaseIncomeBase",
-                typeof(int),
-                typeof(EndOfYearSubsidiaryUI),
-                new PropertyMetadata(0)
-            );
-
-        public int BaseIncomeLuxury
-        {
-            get => (int)GetValue(BaseIncomeLuxuryProperty);
-            set => SetValue(BaseIncomeLuxuryProperty, value);
-        }
-
-        public static readonly DependencyProperty BaseIncomeLuxuryProperty =
-            DependencyProperty.Register(
-                "BaseIncomeLuxury",
-                typeof(int),
-                typeof(EndOfYearSubsidiaryUI),
+                typeof(EndOfYearMineUI),
                 new PropertyMetadata(0)
             );
 
@@ -254,28 +225,6 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             }
         }
 
-        private string _resultBase = "-";
-        public string ResultBase
-        {
-            get => _resultBase;
-            set
-            {
-                _resultBase = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private string _resultLuxury = "-";
-        public string ResultLuxury
-        {
-            get => _resultLuxury;
-            set
-            {
-                _resultLuxury = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Methods
@@ -284,7 +233,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            if (d is EndOfYearSubsidiaryUI c)
+            if (d is EndOfYearMineUI c)
                 c.ConvertToNumeric();
         }
 
@@ -312,8 +261,6 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
                 if (control == 0)
                 {
                     ResultSilver = "0";
-                    ResultBase = "0";
-                    ResultLuxury = "0";
                 }
                 else if (control < 3)
                 {
@@ -334,40 +281,28 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
                     {
                         k *= 15;
                     }
-                    int r = Convert.ToInt32(Math.Floor(BaseIncomeSilver + Convert.ToInt32(BaseIncomeSilver * ((decimal)(i + j + k) / 100)) * Crewed));
-                    int l = Convert.ToInt32(Math.Floor(BaseIncomeBase + Convert.ToInt32(BaseIncomeBase * ((decimal)(i + j + k) / 100)) * Crewed));
-                    int m = Convert.ToInt32(Math.Floor(BaseIncomeLuxury + Convert.ToInt32(BaseIncomeLuxury * ((decimal)(i + j + k) / 100)) * Crewed));
+                    int r = Convert.ToInt32(Math.Floor(BaseIncomeSilver + BaseIncomeSilver * (decimal)(i + j + k) / 100));
                     if (r <= 0)
                     {
                         ResultSilver = "0";
-                        ResultBase = "0";
-                        ResultLuxury = "0";
                     }
                     else
                     {
                         ResultSilver = Convert.ToString(r);
-                        ResultBase = Convert.ToString(l);
-                        ResultLuxury = Convert.ToString(m);
                     }
                 }
                 else if (control == 3)
                 {
-                    ResultSilver = Convert.ToInt32(Math.Floor(BaseIncomeSilver * Crewed)).ToString();
-                    ResultBase = Convert.ToInt32(Math.Floor(BaseIncomeBase * Crewed)).ToString();
-                    ResultLuxury = Convert.ToInt32(Math.Floor(BaseIncomeLuxury * Crewed)).ToString();
+                    ResultSilver = Convert.ToInt32(BaseIncomeSilver).ToString();
                 }
                 else
                 {
-                    ResultSilver = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncomeSilver * ((control - 3) * 0.25M + 1) * Crewed)));
-                    ResultBase = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncomeBase * ((control - 3) * 0.25M + 1) * Crewed)));
-                    ResultLuxury = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncomeLuxury * ((control - 3) * 0.25M + 1) * Crewed)));
+                    ResultSilver = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncomeSilver * ((control - 3) * 0.25M + 1))));
                 }
             }
             else
             {
                 ResultSilver = "-";
-                ResultBase = "-";
-                ResultLuxury = "-";
             }
         }
 

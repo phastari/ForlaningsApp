@@ -78,8 +78,12 @@
       <DependentUpon>MinesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MinesViewModel.cs" />
+    <Compile Include="RoutedEvents\AddMineUIEventArgs.cs" />
     <Compile Include="RoutedEvents\ConstructQuarryUIEventArgs.cs" />
     <Compile Include="RoutedEvents\QuarryUIEventArgs.cs" />
+    <Compile Include="UIElements\AddMineUI\AddMineUI.xaml.cs">
+      <DependentUpon>AddMineUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\ConstructQuarryUI\ConstructQuarryUI.xaml.cs">
       <DependentUpon>ConstructQuarryUI.xaml</DependentUpon>
     </Compile>
@@ -104,6 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MinesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\AddMineUI\AddMineUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

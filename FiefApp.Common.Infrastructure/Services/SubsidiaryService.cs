@@ -207,5 +207,47 @@ namespace FiefApp.Common.Infrastructure.Services
                 }
             }
         }
+
+        public int GetAndSetDifficulty(int index, decimal spring, decimal summer, decimal fall, decimal winter)
+        {
+            int difficulty = Convert.ToInt32(Math.Ceiling(spring * _fiefService.WeatherList[index].SpringRollMod
+                                                          + summer * _fiefService.WeatherList[index].SummerRollMod
+                                                          + fall * _fiefService.WeatherList[index].FallRollMod
+                                                          + winter * _fiefService.WeatherList[index].WinterRollMod
+                                                          + 9));
+
+            if (difficulty < 7)
+            {
+                return 6;
+            }
+            return difficulty;
+        }
+
+        public int GetSilverIncome(int quality, int developmentLevel, decimal incomeFactor, decimal silverFactor)
+        {
+            return Convert.ToInt32(Math.Floor(quality * incomeFactor * silverFactor
+                                              + (quality * incomeFactor * silverFactor
+                                                 / 100
+                                                 * (developmentLevel - 1)
+                                                 * 5)));
+        }
+
+        public int GetBaseIncome(int quality, int developmentLevel, decimal incomeFactor, decimal baseFactor)
+        {
+            return Convert.ToInt32(Math.Floor(quality * incomeFactor * baseFactor
+                                              + (quality * incomeFactor * baseFactor
+                                                 / 100
+                                                 * (developmentLevel - 1)
+                                                 * 5)));
+        }
+
+        public int GetLuxuryIncome(int quality, int developmentLevel, decimal incomeFactor, decimal luxuryFactor)
+        {
+            return Convert.ToInt32(Math.Floor(quality * incomeFactor * luxuryFactor
+                                              + (quality * incomeFactor * luxuryFactor
+                                                 / 100
+                                                 * (developmentLevel - 1)
+                                                 * 5)));
+        }
     }
 }

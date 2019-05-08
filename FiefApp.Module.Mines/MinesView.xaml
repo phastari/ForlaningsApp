@@ -8,9 +8,11 @@
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              xmlns:quarryUI="clr-namespace:FiefApp.Module.Mines.UIElements.QuarryUI"
              xmlns:constructQuarryUI="clr-namespace:FiefApp.Module.Mines.UIElements.ConstructQuarryUI"
+             xmlns:addMineUI="clr-namespace:FiefApp.Module.Mines.UIElements.AddMineUI"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
-             d:DesignWidth="784">
+             d:DesignWidth="784"
+             x:Name="Self">
 
     <Grid>
         <Grid 
@@ -242,13 +244,15 @@
                         <RowDefinition Height="3"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="138"/>
+                        <ColumnDefinition Width="87"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="45"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="45"/>
                     </Grid.ColumnDefinitions>
@@ -293,6 +297,15 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         Padding="0"/>
+
+                    <Label
+                        Grid.Column="10"
+                        Grid.Row="0"
+                        Content="SG"
+                        ToolTip="Svårighetsgrad"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Padding="0"/>
                 </Grid>
 
                 <ItemsControl
@@ -312,6 +325,23 @@
                         <ControlTemplate TargetType="ItemsControl">
                             <StackPanel>
                                 <ItemsPresenter />
+                                <Button 
+                                    Content="lägg till"
+                                    Height="21"
+                                    Width="51"
+                                    HorizontalAlignment="Right"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Padding="0"
+                                    Margin="0"
+                                    Template="{DynamicResource ButtonTemplate}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="False"/>
+                                            <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddMine}" Value="Visible"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
                             </StackPanel>
                         </ControlTemplate>
                     </ItemsControl.Template>
@@ -320,12 +350,15 @@
                         <DataTemplate>
                             <mineUI:MineUI
                                 Id="{Binding Path=Id}"
+                                MineType="{Binding Path=MineType}"
                                 Income="{Binding Path=Income}"
                                 Guards="{Binding Path=Guards}"
-                                StewardsCollection="{Binding Path=StewardsCollection}">
+                                Difficulty="{Binding Path=Difficulty}"
+                                StewardsCollection="{Binding Path=StewardsCollection}"
+                                StewardId="{Binding Path=StewardId}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MineUIEvent">
-                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MineUIEventHandler, ElementName=RootGrid}"/>
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MineUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </mineUI:MineUI>
@@ -334,7 +367,7 @@
                 </ItemsControl>
 
                 <Grid
-                Height="24">
+                    Height="24">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="21"/>
                         <RowDefinition Height="3"/>
@@ -466,7 +499,7 @@
                                 StewardsCollection="{Binding Path=StewardsCollection}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="QuarryUIEvent">
-                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.QuarryUIEventHandler, ElementName=RootGrid}"/>
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.QuarryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </quarryUI:QuarryUI>
@@ -478,6 +511,8 @@
         </Grid>
 
         <constructQuarryUI:ConstructQuarryUI
+            Grid.Column="0"
+            Grid.Row="0"
             x:Name="AddQuarry"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
@@ -486,9 +521,27 @@
                 <i:EventTrigger EventName="ConstructQuarryUIEvent">
                     <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ConstructQuarryUIEventHandler, ElementName=RootGrid}"/>
                     <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddQuarry}" Value="Collapsed"/>
+                    <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddMine}" Value="Collapsed"/>
                     <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="True"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </constructQuarryUI:ConstructQuarryUI>
+
+        <addMineUI:AddMineUI
+            Grid.Column="0"
+            Grid.Row="0"
+            x:Name="AddMine"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="Collapsed">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="AddMineUIEvent">
+                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.AddMineUIEventHandler, ElementName=RootGrid}"/>
+                    <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddQuarry}" Value="Collapsed"/>
+                    <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=AddMine}" Value="Collapsed"/>
+                    <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="True"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </addMineUI:AddMineUI>
     </Grid>
 </UserControl>

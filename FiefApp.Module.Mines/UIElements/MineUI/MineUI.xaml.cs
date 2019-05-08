@@ -78,6 +78,20 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                 new PropertyMetadata(-1)
             );
 
+        public int Difficulty
+        {
+            get => (int)GetValue(DifficultyProperty);
+            set => SetValue(DifficultyProperty, value);
+        }
+
+        public static readonly DependencyProperty DifficultyProperty =
+            DependencyProperty.Register(
+                "Difficulty",
+                typeof(int),
+                typeof(MineUI),
+                new PropertyMetadata(6)
+            );
+
         public ObservableCollection<StewardModel> StewardsCollection
         {
             get => (ObservableCollection<StewardModel>)GetValue(StewardsCollectionProperty);
@@ -90,6 +104,20 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                 typeof(ObservableCollection<StewardModel>),
                 typeof(MineUI),
                 new PropertyMetadata(new ObservableCollection<StewardModel>())
+            );
+
+        public int StewardId
+        {
+            get => (int)GetValue(StewardIdProperty);
+            set => SetValue(StewardIdProperty, value);
+        }
+
+        public static readonly DependencyProperty StewardIdProperty =
+            DependencyProperty.Register(
+                "StewardId",
+                typeof(int),
+                typeof(MineUI),
+                new PropertyMetadata(-1)
             );
 
         #endregion
@@ -130,7 +158,8 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                     "Changed",
                     Id,
                     StewardsCollection[SelectedIndex].Id,
-                    StewardsCollection[SelectedIndex].PersonName
+                    StewardsCollection[SelectedIndex].PersonName,
+                    StewardsCollection[SelectedIndex].Skill
                 );
 
             RaiseEvent(newEventArgs);
@@ -155,5 +184,19 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
         }
 
         #endregion
+
+        private void MineUI_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            for (int x = 0; x < StewardsCollection.Count; x++)
+            {
+                if (StewardsCollection[x].Id == StewardId)
+                {
+                    index = x;
+                }
+            }
+
+            SelectedIndex = index;
+        }
     }
 }

@@ -7,7 +7,9 @@
              xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="24" 
-             d:DesignWidth="457">
+             d:DesignWidth="457"
+             x:Name="Self"
+             Loaded="MineUI_OnLoaded">
 
     <Grid
         x:Name="RootGrid">
@@ -16,13 +18,15 @@
             <RowDefinition Height="3"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="138"/>
+            <ColumnDefinition Width="87"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="65"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
         </Grid.ColumnDefinitions>
@@ -66,6 +70,15 @@
             Grid.Row="0"
             T6Value="{Binding ElementName=StewardsComboBox, Path=SelectedItem.Skill}"
             ReadOnly="True"/>
-            
+
+        <TextBox
+            Grid.Column="10"
+            Grid.Row="0"
+            Text="{Binding Path=Difficulty}"
+            Background="AntiqueWhite"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            IsReadOnly="True"/>
     </Grid>
 </UserControl>

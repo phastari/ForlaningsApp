@@ -47,12 +47,7 @@ namespace FiefApp.Module.EndOfYear
 
         protected override void LoadData()
         {
-            DataModel.IncomeListFief = new ObservableCollection<EndOfYearIncomeFiefModel>(_endOfYearService.InitializeIncomes());
-
-            for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
-            {
-                DataModel.IncomeListFief[x].SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(_endOfYearService.InitializeSubsidiaries(x, DataModel.IncomeListFief[x].FiefName));
-            }
+            DataModel.IncomeListFief = new ObservableCollection<EndOfYearIncomeFiefModel>(_endOfYearService.Initialize());
         }
 
         #endregion

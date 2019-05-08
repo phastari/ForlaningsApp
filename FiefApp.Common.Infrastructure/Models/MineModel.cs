@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -39,8 +40,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private decimal _population;
-        public decimal Population
+        private int _population;
+        public int Population
         {
             get => _population;
             set
@@ -83,6 +84,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
+        public ObservableCollection<StewardModel> StewardsCollection
+        {
+            get => _stewardsCollection;
+            set
+            {
+                _stewardsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private string _steward;
         public string Steward
         {
@@ -105,6 +117,28 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private string _skill = "0";
+        public string Skill
+        {
+            get => _skill;
+            set
+            {
+                _skill = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _difficulty;
+        public int Difficulty
+        {
+            get => _difficulty;
+            set
+            {
+                _difficulty = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _guards;
         public int Guards
         {
@@ -112,6 +146,17 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _guards = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _baseIncomeSilver;
+        public int BaseIncomeSilver
+        {
+            get => _baseIncomeSilver;
+            set
+            {
+                _baseIncomeSilver = value;
                 NotifyPropertyChanged();
             }
         }

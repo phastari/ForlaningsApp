@@ -213,7 +213,9 @@
             SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionChanged="StewardsComboBox_OnSelectionChanged"
             Template="{DynamicResource ComboBoxControlTemplate}"
-            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0"/>
 
         <TextBox
             Grid.Column="19"
@@ -221,14 +223,14 @@
             Text="{Binding Path=Difficulty}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
+            Background="AntiqueWhite"
             Padding="0"
             IsReadOnly="True"/>
 
         <t6TextBox:T6TextBox
             Grid.Column="21"
             Grid.Row="0"
-            T6Value="{Binding Path=Skill}"
+            T6Value="{Binding ElementName=StewardsComboBox, Path=SelectedItem.Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ReadOnly="True"/>
 
     </Grid>

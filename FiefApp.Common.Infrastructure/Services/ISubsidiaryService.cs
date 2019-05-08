@@ -17,5 +17,9 @@ namespace FiefApp.Common.Infrastructure.Services
         ObservableCollection<SubsidiaryModel> GetConstructingCollection(int index);
         void ShowConstructingCollection();
         void SetSubsidiary(int index, int id, SubsidiaryModel model);
+        int GetAndSetDifficulty(int index, decimal spring, decimal summer, decimal fall, decimal winter);
+        int GetSilverIncome(int quality, int developmentLevel, decimal incomeFactor, decimal silverFactor);
+        int GetBaseIncome(int quality, int developmentLevel, decimal incomeFactor, decimal baseFactor);
+        int GetLuxuryIncome(int quality, int developmentLevel, decimal incomeFactor, decimal luxuryFactor);
     }
 }
