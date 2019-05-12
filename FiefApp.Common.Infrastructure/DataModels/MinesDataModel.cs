@@ -103,7 +103,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
 
             for (int x = 0; x < QuarriesCollection.Count; x++)
             {
-                stone += QuarriesCollection[x].Approximate;
+                stone += QuarriesCollection[x].ApproximateIncome;
                 bas -= QuarriesCollection[x].Upkeep;
             }
 

@@ -62,6 +62,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private int _baseIncome;
+        public int BaseIncome
+        {
+            get => _baseIncome;
+            set
+            {
+                _baseIncome = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _wealth;
         public int Wealth
         {
@@ -128,6 +139,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private int _availableGuards;
+        public int AvailableGuards
+        {
+            get => _availableGuards;
+            set
+            {
+                _availableGuards = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _difficulty;
         public int Difficulty
         {
@@ -150,13 +172,13 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _baseIncomeSilver;
-        public int BaseIncomeSilver
+        private bool _isFirstYear = true;
+        public bool IsFirstYear
         {
-            get => _baseIncomeSilver;
+            get => _isFirstYear;
             set
             {
-                _baseIncomeSilver = value;
+                _isFirstYear = value;
                 NotifyPropertyChanged();
             }
         }

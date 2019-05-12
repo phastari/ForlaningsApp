@@ -6,19 +6,41 @@ using System.Windows;
 using System.Windows.Controls;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Module.Mines.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Mines.UIElements.QuarryUI
 {
     /// <summary>
     /// Interaction logic for QuarryUI.xaml
     /// </summary>
-    public partial class QuarryUI
+    public partial class QuarryUI : INotifyPropertyChanged
     {
         public QuarryUI()
         {
             InitializeComponent();
             RootGrid.DataContext = this;
+
+            DeleteQuarry = new DelegateCommand(ExecuteDeleteQuarry);
         }
+
+        #region DelegateCommand : DeleteQuarry
+
+        public DelegateCommand DeleteQuarry { get; set; }
+        private void ExecuteDeleteQuarry()
+        {
+            QuarryUIEventArgs newEventArgs =
+                new QuarryUIEventArgs(
+                    QuarryUIRoutedEvent,
+                    "Delete",
+                    Id,
+                    -1,
+                    ""
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
 
         #region Dependency Properties
 
@@ -50,15 +72,15 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
                 new PropertyMetadata("")
             );
 
-        public int Income
+        public int BaseIncome
         {
-            get => (int)GetValue(IncomeProperty);
-            set => SetValue(IncomeProperty, value);
+            get => (int)GetValue(BaseIncomeProperty);
+            set => SetValue(BaseIncomeProperty, value);
         }
 
-        public static readonly DependencyProperty IncomeProperty =
+        public static readonly DependencyProperty BaseIncomeProperty =
             DependencyProperty.Register(
-                "Income",
+                "BaseIncome",
                 typeof(int),
                 typeof(QuarryUI),
                 new PropertyMetadata(-1)
@@ -103,9 +125,8 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
                 "DaysWorkThisYear",
                 typeof(int),
                 typeof(QuarryUI),
-                new PropertyMetadata(0)
+                new PropertyMetadata(0, RaiseDaysWorkChanged)
             );
-
         public ObservableCollection<StewardModel> StewardsCollection
         {
             get => (ObservableCollection<StewardModel>)GetValue(StewardsCollectionProperty);
@@ -118,6 +139,34 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
                 typeof(ObservableCollection<StewardModel>),
                 typeof(QuarryUI),
                 new PropertyMetadata(new ObservableCollection<StewardModel>())
+            );
+
+        public int StewardId
+        {
+            get => (int)GetValue(StewardIdProperty);
+            set => SetValue(StewardIdProperty, value);
+        }
+
+        public static readonly DependencyProperty StewardIdProperty =
+            DependencyProperty.Register(
+                "StewardId",
+                typeof(int),
+                typeof(QuarryUI),
+                new PropertyMetadata(-1)
+            );
+
+        public bool IsFirstYear
+        {
+            get => (bool)GetValue(IsFirstYearIdProperty);
+            set => SetValue(IsFirstYearIdProperty, value);
+        }
+
+        public static readonly DependencyProperty IsFirstYearIdProperty =
+            DependencyProperty.Register(
+                "IsFirstYear",
+                typeof(bool),
+                typeof(QuarryUI),
+                new PropertyMetadata(false)
             );
 
         #endregion
@@ -135,6 +184,23 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
             }
         }
 
+        private int _income;
+        public int Income
+        {
+            get => _income;
+            set
+            {
+                if (_income != value)
+                {
+                    SendIncomeUpdated(value);
+                }
+                _income = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _sendUpdateEvent = false;
+
         #endregion
 
         #region INotifyPropertyChanged
@@ -150,18 +216,96 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
 
         #region Event Handlers
 
-        private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void QuarryUI_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            for (int x = 0; x < StewardsCollection.Count; x++)
+            {
+                if (StewardsCollection[x].Id == StewardId)
+                {
+                    index = x;
+                }
+            }
+
+            SelectedIndex = index;
+            _sendUpdateEvent = true;
+        }
+
+        private static void RaiseDaysWorkChanged(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is QuarryUI c)
+            {
+                c.UpdateIncome();
+                c.SendDaysWorkUpdated();
+            }
+        }
+
+        private void UpdateIncome()
+        {
+            if (BaseIncome != 0)
+            {
+                if (IsFirstYear)
+                {
+                    Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded) / 4);
+                }
+                else
+                {
+                    Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded));
+                }
+            }
+        }
+
+        private void SendDaysWorkUpdated()
         {
             QuarryUIEventArgs newEventArgs =
                 new QuarryUIEventArgs(
                     QuarryUIRoutedEvent,
-                    "Changed",
+                    "DaysWork",
                     Id,
-                    StewardsCollection[SelectedIndex].Id,
-                    StewardsCollection[SelectedIndex].PersonName
+                    -1,
+                    "",
+                    "",
+                    DaysWorkThisYear
                 );
 
             RaiseEvent(newEventArgs);
+        }
+
+        private void SendIncomeUpdated(int income)
+        {
+            QuarryUIEventArgs newEventArgs =
+                new QuarryUIEventArgs(
+                    QuarryUIRoutedEvent,
+                    "IncomeUpdated",
+                    Id,
+                    -1,
+                    "",
+                    "",
+                    -1,
+                    income
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_sendUpdateEvent)
+            {
+                QuarryUIEventArgs newEventArgs =
+                    new QuarryUIEventArgs(
+                        QuarryUIRoutedEvent,
+                        "Changed",
+                        Id,
+                        StewardsCollection[SelectedIndex].Id,
+                        StewardsCollection[SelectedIndex].PersonName,
+                        StewardsCollection[SelectedIndex].Skill
+                    );
+
+                RaiseEvent(newEventArgs);
+            }
         }
 
         #endregion

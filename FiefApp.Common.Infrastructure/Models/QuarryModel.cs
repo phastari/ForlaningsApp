@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -83,6 +84,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private int _approximateIncome;
+        public int ApproximateIncome
+        {
+            get => _approximateIncome;
+            set
+            {
+                _approximateIncome = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _upkeep;
         public int Upkeep
         {
@@ -105,6 +117,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
+        public ObservableCollection<StewardModel> StewardsCollection
+        {
+            get => _stewardsCollection;
+            set
+            {
+                _stewardsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private string _steward;
         public string Steward
         {
@@ -123,6 +146,28 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _stewardId = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _skill = "0";
+        public string Skill
+        {
+            get => _skill;
+            set
+            {
+                _skill = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _combinationRoll = "0";
+        public string CombinationRoll
+        {
+            get => _combinationRoll;
+            set
+            {
+                _combinationRoll = value;
                 NotifyPropertyChanged();
             }
         }
@@ -160,6 +205,39 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _daysWorkNeeded = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _isFirstYear = true;
+        public bool IsFirstYear
+        {
+            get => _isFirstYear;
+            set
+            {
+                _isFirstYear = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _endOfYearStone;
+        public int EndOfYearStone
+        {
+            get => _endOfYearStone;
+            set
+            {
+                _endOfYearStone = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _difficulty;
+        public int Difficulty
+        {
+            get => _difficulty;
+            set
+            {
+                _difficulty = value;
                 NotifyPropertyChanged();
             }
         }

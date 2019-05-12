@@ -244,13 +244,13 @@
                         <RowDefinition Height="3"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="87"/>
+                        <ColumnDefinition Width="107"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="45"/>
                         <ColumnDefinition Width="6"/>
-                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="6"/>
                         <ColumnDefinition Width="45"/>
                         <ColumnDefinition Width="6"/>
@@ -291,7 +291,7 @@
 
                     <Label
                         Grid.Column="7"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="3"
                         Grid.Row="0"
                         Content="Färdighet"
                         HorizontalContentAlignment="Center"
@@ -351,11 +351,14 @@
                             <mineUI:MineUI
                                 Id="{Binding Path=Id}"
                                 MineType="{Binding Path=MineType}"
-                                Income="{Binding Path=Income}"
+                                BaseIncome="{Binding Path=BaseIncome}"
                                 Guards="{Binding Path=Guards}"
                                 Difficulty="{Binding Path=Difficulty}"
                                 StewardsCollection="{Binding Path=StewardsCollection}"
-                                StewardId="{Binding Path=StewardId}">
+                                StewardId="{Binding Path=StewardId}"
+                                AvailableGuards="{Binding Path=AvailableGuards}"
+                                Crime="{Binding Path=Crime}"
+                                IsFirstYear="{Binding Path=IsFirstYear}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MineUIEvent">
                                         <customCommands:CustomCommandAction Command="{Binding Path=DataContext.MineUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -492,11 +495,13 @@
                         <DataTemplate>
                             <quarryUI:QuarryUI
                                 Id="{Binding Path=Id}"
-                                Income="{Binding Path=Approximate}"
+                                BaseIncome="{Binding Path=Approximate}"
                                 DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 DaysWorkNeeded="{Binding Path=DaysWorkNeeded}"
                                 Upkeep="{Binding Path=Upkeep}"
-                                StewardsCollection="{Binding Path=StewardsCollection}">
+                                StewardsCollection="{Binding Path=StewardsCollection}"
+                                StewardId="{Binding Path=StewardId}"
+                                IsFirstYear="{Binding Path=IsFirstYear}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="QuarryUIEvent">
                                         <customCommands:CustomCommandAction Command="{Binding Path=DataContext.QuarryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

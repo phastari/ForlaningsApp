@@ -771,6 +771,19 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _usedGuards;
+        public int UsedGuards
+        {
+            get => _usedGuards;
+            set
+            {
+                _usedGuards = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int AvailableGuards => _armyGuards - _usedGuards;
+
         private int _armyGuardsSilver;
         public int ArmyGuardsSilver
         {

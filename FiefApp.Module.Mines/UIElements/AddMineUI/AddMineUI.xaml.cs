@@ -77,11 +77,14 @@ namespace FiefApp.Module.Mines.UIElements.AddMineUI
         public DelegateCommand SaveCommand { get; set; }
         private void ExecuteSaveCommand()
         {
-            _model.MineType = ComboBoxText;
-            _model.Crime = Crime;
-            _model.Income = BaseSilver;
-            _model.Population = Population;
-            _model.YearsLeft = YearsLeft;
+            _model = new MineModel
+            {
+                MineType = ComboBoxText,
+                Crime = Crime,
+                Income = BaseSilver,
+                Population = Population,
+                YearsLeft = YearsLeft
+            };
 
             AddMineUIEventArgs newEventArgs =
                 new AddMineUIEventArgs(
@@ -99,11 +102,7 @@ namespace FiefApp.Module.Mines.UIElements.AddMineUI
         public DelegateCommand CancelCommand { get; set; }
         private void ExecuteCancelCommand()
         {
-            _model.MineType = "";
-            _model.Crime = 0;
-            _model.Income = 0;
-            _model.Population = 0;
-            _model.YearsLeft = 0;
+            _model = null;
 
             ComboBoxText = "";
             Crime = 0;

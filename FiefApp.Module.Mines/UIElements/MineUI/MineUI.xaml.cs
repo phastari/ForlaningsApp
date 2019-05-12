@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using FiefApp.Module.Mines.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Mines.UIElements.MineUI
 {
@@ -18,10 +19,31 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
         {
             InitializeComponent();
             RootGrid.DataContext = this;
+
+            DeleteMine = new DelegateCommand(ExecuteDeleteMine);
         }
 
-        #region Dependency Properties
+        #region DelegateCommand : DeleteMine
 
+        public DelegateCommand DeleteMine { get; set; }
+        private void ExecuteDeleteMine()
+        {
+            MineUIEventArgs newEventArgs =
+                new MineUIEventArgs(
+                    MineUIRoutedEvent,
+                    "Delete",
+                    Id,
+                    -1,
+                    "",
+                    ""
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+
+        #region Dependency Properties
         public int Id
         {
             get => (int)GetValue(IdProperty);
@@ -50,18 +72,32 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                 new PropertyMetadata("")
             );
 
-        public int Income
+        public int BaseIncome
         {
-            get => (int)GetValue(IncomeProperty);
-            set => SetValue(IncomeProperty, value);
+            get => (int)GetValue(BaseIncomeProperty);
+            set => SetValue(BaseIncomeProperty, value);
         }
 
-        public static readonly DependencyProperty IncomeProperty =
+        public static readonly DependencyProperty BaseIncomeProperty =
             DependencyProperty.Register(
-                "Income",
+                "BaseIncome",
                 typeof(int),
                 typeof(MineUI),
                 new PropertyMetadata(-1)
+            );
+
+        public int Crime
+        {
+            get => (int)GetValue(CrimeProperty);
+            set => SetValue(CrimeProperty, value);
+        }
+
+        public static readonly DependencyProperty CrimeProperty =
+            DependencyProperty.Register(
+                "Crime",
+                typeof(int),
+                typeof(MineUI),
+                new PropertyMetadata(0)
             );
 
         public int Guards
@@ -76,6 +112,20 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                 typeof(int),
                 typeof(MineUI),
                 new PropertyMetadata(-1)
+            );
+
+        public int AvailableGuards
+        {
+            get => (int)GetValue(AvailableGuardsProperty);
+            set => SetValue(AvailableGuardsProperty, value);
+        }
+
+        public static readonly DependencyProperty AvailableGuardsProperty =
+            DependencyProperty.Register(
+                "AvailableGuards",
+                typeof(int),
+                typeof(MineUI),
+                new PropertyMetadata(0)
             );
 
         public int Difficulty
@@ -120,6 +170,20 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                 new PropertyMetadata(-1)
             );
 
+        public bool IsFirstYear
+        {
+            get => (bool)GetValue(IsFirstYearProperty);
+            set => SetValue(IsFirstYearProperty, value);
+        }
+
+        public static readonly DependencyProperty IsFirstYearProperty =
+            DependencyProperty.Register(
+                "IsFirstYear",
+                typeof(bool),
+                typeof(MineUI),
+                new PropertyMetadata(false)
+            );
+
         #endregion
 
         #region UI Properties
@@ -134,6 +198,45 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                 NotifyPropertyChanged();
             }
         }
+
+        private int _currentGuards;
+        public int CurrentGuards
+        {
+            get => _currentGuards;
+            set
+            {
+                _oldAmountGuards = CurrentGuards;
+                if (value > -1)
+                {
+                    _currentGuards = value;
+                }
+                else
+                {
+                    _currentGuards = 0;
+                }
+                UpdateGuards();
+                UpdateIncome();
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _income;
+        public int Income
+        {
+            get => _income;
+            set
+            {
+                if (_income != value)
+                {
+                    SendIncomeUpdated(value);
+                }
+                _income = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _oldAmountGuards;
+        private bool _sendUpdateEvent = false;
 
         #endregion
 
@@ -160,6 +263,47 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
                     StewardsCollection[SelectedIndex].Id,
                     StewardsCollection[SelectedIndex].PersonName,
                     StewardsCollection[SelectedIndex].Skill
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
+        private void UpdateIncome()
+        {
+            if (BaseIncome != 0)
+            {
+                int last = Income;
+
+                decimal factor = CurrentGuards * (((decimal)127 / (CurrentGuards + 1)) / Crime * Crime);
+
+                if (IsFirstYear)
+                {
+                    Income = 0;
+                }
+                else
+                {
+                    Income = Convert.ToInt32(Math.Floor(factor / 107 * BaseIncome));
+                }
+            }
+            else
+            {
+                Income = 0;
+            }
+        }
+
+        private void SendIncomeUpdated(int income)
+        {
+            MineUIEventArgs newEventArgs =
+                new MineUIEventArgs(
+                    MineUIRoutedEvent,
+                    "IncomeUpdated",
+                    Id,
+                    -1,
+                    "",
+                    "",
+                    -1,
+                    -1,
+                    income
                 );
 
             RaiseEvent(newEventArgs);
@@ -197,6 +341,28 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
             }
 
             SelectedIndex = index;
+            CurrentGuards = Guards;
+            _sendUpdateEvent = true;
+        }
+
+        private void UpdateGuards()
+        {
+            if (_sendUpdateEvent && CurrentGuards > -1)
+            {
+                MineUIEventArgs newEventArgs =
+                    new MineUIEventArgs(
+                        MineUIRoutedEvent,
+                        "Guards",
+                        Id,
+                        -1,
+                        "",
+                        "",
+                        CurrentGuards - _oldAmountGuards,
+                        _oldAmountGuards
+                    );
+
+                RaiseEvent(newEventArgs);
+            }
         }
     }
 }

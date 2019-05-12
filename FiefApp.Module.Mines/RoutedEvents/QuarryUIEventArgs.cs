@@ -7,8 +7,8 @@ namespace FiefApp.Module.Mines.RoutedEvents
         private readonly string _action;
         public string Action => _action;
 
-        private readonly int _mineId;
-        public int MineId => _mineId;
+        private readonly int _quarryId;
+        public int QuarryId => _quarryId;
 
         private readonly int _stewardId;
         public int StewardId => _stewardId;
@@ -16,19 +16,34 @@ namespace FiefApp.Module.Mines.RoutedEvents
         private readonly string _steward;
         public string Steward => _steward;
 
+        private readonly string _skill;
+        public string Skill => _skill;
+
+        private readonly int _dayswork;
+        public int DaysWork => _dayswork;
+
+        private readonly int _income;
+        public int Income => _income;
+
         public QuarryUIEventArgs(
             RoutedEvent routedEvent,
             string action,
-            int mineId,
+            int quarryId,
             int stewardId,
-            string steward
+            string steward,
+            string skill = null,
+            int dayswork = 0,
+            int income = 0
             )
             : base(routedEvent)
         {
             _action = action;
-            _mineId = mineId;
+            _quarryId = quarryId;
             _stewardId = stewardId;
             _steward = steward;
+            _skill = skill;
+            _dayswork = dayswork;
+            _income = income;
         }
     }
 }

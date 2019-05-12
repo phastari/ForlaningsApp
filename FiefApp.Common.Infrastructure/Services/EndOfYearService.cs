@@ -33,6 +33,7 @@ namespace FiefApp.Common.Infrastructure.Services
             List<EndOfYearIncomeModel> incomeList = new List<EndOfYearIncomeModel>();
             List<EndOfYearSubsidiaryModel> subsidiaryList = new List<EndOfYearSubsidiaryModel>();
             List<MineModel> minesList = new List<MineModel>();
+            List<QuarryModel> quarriesList = new List<QuarryModel>();
 
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
             {
@@ -88,7 +89,26 @@ namespace FiefApp.Common.Infrastructure.Services
                         StewardId = _fiefService.MinesList[x].MinesCollection[k].StewardId,
                         Skill = _fiefService.MinesList[x].MinesCollection[k].Skill,
                         Difficulty = _fiefService.MinesList[x].MinesCollection[k].Difficulty,
-                        BaseIncomeSilver = _fiefService.MinesList[x].MinesCollection[k].BaseIncomeSilver
+                        Income = _fiefService.MinesList[x].MinesCollection[k].Income
+                    });
+                }
+
+                for (int l = 0; l < _fiefService.MinesList[x].QuarriesCollection.Count; l++)
+                {
+                    quarriesList.Add(new QuarryModel()
+                    {
+                        QuarryType = _fiefService.MinesList[x].QuarriesCollection[l].QuarryType,
+                        Steward = _fiefService.MinesList[x].QuarriesCollection[l].Steward,
+                        StewardId = _fiefService.MinesList[x].QuarriesCollection[l].StewardId,
+                        Skill = _fiefService.MinesList[x].QuarriesCollection[l].Skill,
+                        Difficulty = _fiefService.MinesList[x].QuarriesCollection[l].Difficulty,
+                        Income = _fiefService.MinesList[x].QuarriesCollection[l].Income,
+                        Modifier = _fiefService.MinesList[x].QuarriesCollection[l].Modifier,
+                        Upkeep = _fiefService.MinesList[x].QuarriesCollection[l].Upkeep,
+                        CombinationRoll = _fiefService.MinesList[x].QuarriesCollection[l].CombinationRoll,
+                        DaysWorkThisYear = _fiefService.MinesList[x].QuarriesCollection[l].DaysWorkThisYear,
+                        DaysWorkNeeded = _fiefService.MinesList[x].QuarriesCollection[l].DaysWorkNeeded,
+                        IsFirstYear = _fiefService.MinesList[x].QuarriesCollection[l].IsFirstYear
                     });
                 }
 
@@ -97,7 +117,8 @@ namespace FiefApp.Common.Infrastructure.Services
                     FiefName = _fiefService.InformationList[x].FiefName,
                     IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
                     SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
-                    MinesCollection = new ObservableCollection<MineModel>(minesList)
+                    MinesCollection = new ObservableCollection<MineModel>(minesList),
+                    QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList)
                 });
             }
 

@@ -33,12 +33,14 @@ namespace FiefApp.Module.Mines.UIElements.ConstructQuarryUI
                 model.Income = 40;
                 model.Modifier = 15;
                 model.Approximate = 525;
+                model.ApproximateIncome = 0;
                 model.Upkeep = 25;
                 model.Wealth = 1;
                 model.Steward = "";
                 model.StewardId = -1;
                 model.DaysWorkNeeded = 2800;
                 model.DaysWorkThisYear = 0;
+                model.CombinationRoll = "10T6*15";
             }
             else if (QuarryComboBox.Text == "Medium")
             {
@@ -49,12 +51,14 @@ namespace FiefApp.Module.Mines.UIElements.ConstructQuarryUI
                 model.Income = 120;
                 model.Modifier = 13;
                 model.Approximate = 1365;
+                model.ApproximateIncome = 0;
                 model.Upkeep = 62;
                 model.Wealth = 3;
                 model.Steward = "";
                 model.StewardId = -1;
                 model.DaysWorkNeeded = 7000;
                 model.DaysWorkThisYear = 0;
+                model.CombinationRoll = "30T6*13";
             }
             else
             {
@@ -65,12 +69,14 @@ namespace FiefApp.Module.Mines.UIElements.ConstructQuarryUI
                 model.Income = 400;
                 model.Modifier = 25;
                 model.Approximate = 5250;
+                model.ApproximateIncome = 0;
                 model.Upkeep = 250;
                 model.Wealth = 25;
                 model.Steward = "";
                 model.StewardId = -1;
                 model.DaysWorkNeeded = 28000;
                 model.DaysWorkThisYear = 0;
+                model.CombinationRoll = "100T6*25";
             }
 
             ConstructQuarryUIEventArgs newEventArgs =
