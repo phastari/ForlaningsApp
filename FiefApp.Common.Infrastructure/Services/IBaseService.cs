@@ -12,8 +12,8 @@ namespace FiefApp.Common.Infrastructure.Services
         int CreateNewFief();
         int RemoveFief(int id);
         ObservableCollection<string> GetFiefCollection();
-
         int RollObDice(int skill);
         int RollDie(int x, int y);
+        int ConvertToNumeric(string str);
     }
 }

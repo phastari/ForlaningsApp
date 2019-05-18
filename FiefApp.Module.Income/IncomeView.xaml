@@ -369,10 +369,5 @@
                 VerticalContentAlignment="Center"
                 Padding="0"/>
         </Grid>
-        <Button
-            Content="Tärning"
-            Grid.Column="1"
-            Grid.Row="37"
-            Command="{Binding Path=RollDie}"/>
     </Grid>
 </UserControl>

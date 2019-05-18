@@ -71,11 +71,11 @@ namespace FiefApp.Common.Infrastructure.Services
 
             int result = Convert.ToInt32(Math.Ceiling(difficulty + spring + summer + fall + winter));
 
-            if (result > 6)
+            if (result > 4)
             {
                 return result;
             }
-            return 6;
+            return 4;
         }
 
         public int GetQuarriesDifficulty(int index)

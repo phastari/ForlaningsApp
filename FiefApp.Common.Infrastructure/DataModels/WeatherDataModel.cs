@@ -432,8 +432,24 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _numberUsedFishingBoats;
             set
             {
-                _numberUsedFishingBoats = value;
-                DaysworkFishingBoats = value * 360;
+                if (value < 0)
+                {
+                    _numberUsedFishingBoats = 0;
+                    DaysworkFishingBoats = 0;
+                }
+                else
+                {
+                    if (value > NumberOfFishingBoats)
+                    {
+                        _numberUsedFishingBoats = NumberOfFishingBoats;
+                        DaysworkFishingBoats = NumberOfFishingBoats * 360;
+                    }
+                    else
+                    {
+                        _numberUsedFishingBoats = value;
+                        DaysworkFishingBoats = value * 360;
+                    }
+                }
                 NotifyPropertyChanged();
             }
         }
@@ -765,6 +781,83 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _lastYearWood = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _tariffs = 10;
+        public int Tariffs
+        {
+            get => _tariffs;
+            set
+            {
+                _tariffs = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxSerfs = 20;
+        public int TaxSerfs
+        {
+            get => _taxSerfs;
+            set
+            {
+                _taxSerfs = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxFarmers = 20;
+        public int TaxFarmers
+        {
+            get => _taxFarmers;
+            set
+            {
+                _taxFarmers = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxFreemen = 20;
+        public int TaxFreemen
+        {
+            get => _taxFreemen;
+            set
+            {
+                _taxFreemen = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxVasalls = 10;
+        public int TaxVasalls
+        {
+            get => _taxVasalls;
+            set
+            {
+                _taxVasalls = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxToLiegeLord = 10;
+        public int TaxToLiegeLord
+        {
+            get => _taxToLiegeLord;
+            set
+            {
+                _taxToLiegeLord = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxToTheKing = 10;
+        public int TaxToTheKing
+        {
+            get => _taxToTheKing;
+            set
+            {
+                _taxToTheKing = value;
                 NotifyPropertyChanged();
             }
         }

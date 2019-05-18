@@ -79,8 +79,8 @@
     </Compile>
     <Compile Include="EndOfYearViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UIElements\EndOfYearFelling\EndOfYearFelling.xaml.cs">
-      <DependentUpon>EndOfYearFelling.xaml</DependentUpon>
+    <Compile Include="UIElements\EndOfYearFellingUI\EndOfYearFellingUI.xaml.cs">
+      <DependentUpon>EndOfYearFellingUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIElements\EndOfYearIncomeUI\EndOfYearIncomeUI.xaml.cs">
       <DependentUpon>EndOfYearIncomeUI.xaml</DependentUpon>
@@ -88,11 +88,20 @@
     <Compile Include="UIElements\EndOfYearMineUI\EndOfYearMineUI.xaml.cs">
       <DependentUpon>EndOfYearMineUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIElements\EndOfYearPopulationUI\EndOfYearPopulationUI.xaml.cs">
+      <DependentUpon>EndOfYearPopulationUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\EndOfYearQuarryUI\EndOfYearQuarryUI.xaml.cs">
       <DependentUpon>EndOfYearQuarryUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIElements\EndOfYearShipyardUI\EndOfYearShipyardUI.xaml.cs">
+      <DependentUpon>EndOfYearShipyardUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIElements\EndOfYearSubsidiaryUI\EndOfYearSubsidiaryUI.xaml.cs">
       <DependentUpon>EndOfYearSubsidiaryUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UIElements\EndOfYearTaxesUI\EndOfYearTaxesUI.xaml.cs">
+      <DependentUpon>EndOfYearTaxesUI.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +115,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UIElements\EndOfYearFelling\EndOfYearFelling.xaml">
+    <Page Include="UIElements\EndOfYearFellingUI\EndOfYearFellingUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,11 +127,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UIElements\EndOfYearPopulationUI\EndOfYearPopulationUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UIElements\EndOfYearQuarryUI\EndOfYearQuarryUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UIElements\EndOfYearShipyardUI\EndOfYearShipyardUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UIElements\EndOfYearSubsidiaryUI\EndOfYearSubsidiaryUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\EndOfYearTaxesUI\EndOfYearTaxesUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

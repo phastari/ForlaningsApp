@@ -1328,13 +1328,150 @@
             Grid.ColumnSpan="3"
             Grid.Row="19"
             Content="Skatter"
-            HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
-            VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
             Padding="0"/>
 
+        <Label 
+            Grid.Column="29"
+            Grid.Row="19"
+            Content="%"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
+        <Grid
+            Grid.Column="21"
+            Grid.ColumnSpan="9"
+            Grid.Row="21"
+            Grid.RowSpan="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="0"
+                Content="Tullar"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <iTextBox:iTextBox
+                Grid.Column="2"
+                Grid.Row="0"
+                Value="{Binding Path=DataModel.Tariffs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="2"
+                Content="Ofria bönder"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <iTextBox:iTextBox
+                Grid.Column="2"
+                Grid.Row="2"
+                Value="{Binding Path=DataModel.TaxSerfs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="4"
+                Content="Fria bönder"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <iTextBox:iTextBox
+                Grid.Column="2"
+                Grid.Row="4"
+                Value="{Binding Path=DataModel.TaxFarmers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="6"
+                Content="Borgare"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <iTextBox:iTextBox
+                Grid.Column="2"
+                Grid.Row="6"
+                Value="{Binding Path=DataModel.TaxFreemen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="8"
+                Content="Vasaller"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <iTextBox:iTextBox
+                Grid.Column="2"
+                Grid.Row="8"
+                Value="{Binding Path=DataModel.TaxVasalls, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="12"
+                Content="Länsherren"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=DataModel.TaxToLiegeLord}"
+                Grid.Column="2"
+                Grid.Row="12"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0,0,6,0"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                IsTabStop="False"/>
+
+            <Label 
+                Grid.Column="0"
+                Grid.Row="14"
+                Content="Storförsten/förstinnan"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=DataModel.TaxToTheKing}"
+                Grid.Column="2"
+                Grid.Row="14"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0,0,6,0"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                IsTabStop="False"/>
+        </Grid>
 
         <Button
             Content="Bokslut"

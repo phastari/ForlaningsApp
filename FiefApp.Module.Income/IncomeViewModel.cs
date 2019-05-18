@@ -29,16 +29,9 @@ namespace FiefApp.Module.Income
 
             TabName = "Inkomst";
 
-            RollDie = new DelegateCommand(ExecuteRollDie);
             IncomeUIEventUIEventHandler = new CustomDelegateCommand(ExecuteIncomeUIEventUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
-        }
-        public DelegateCommand RollDie { get; set; }
-
-        private void ExecuteRollDie()
-        {
-            _baseService.RollObDice(12);
         }
 
         #region CustomDelegateCommand : IncomeUIEventUIEventHandler

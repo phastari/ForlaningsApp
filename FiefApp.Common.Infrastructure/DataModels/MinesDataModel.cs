@@ -20,7 +20,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _totalSilver = 0;
+        private int _totalSilver;
         public int TotalSilver
         {
             get => _totalSilver;
@@ -31,7 +31,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _totalBase = 0;
+        private int _totalBase;
         public int TotalBase
         {
             get => _totalBase;
@@ -42,13 +42,24 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _totalStone = 0;
+        private int _totalStone;
         public int TotalStone
         {
             get => _totalStone;
             set
             {
                 _totalStone = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _populationChange;
+        public int PopulationChange
+        {
+            get => _populationChange;
+            set
+            {
+                _populationChange = value;
                 NotifyPropertyChanged();
             }
         }

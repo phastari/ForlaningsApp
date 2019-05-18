@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
@@ -49,9 +50,56 @@ namespace FiefApp.Module.Weather
             DataModel = Index
                         == 0 ? _weatherService.GetAllWeatherDataModels()
                 : _baseService.GetDataModel<WeatherDataModel>(Index);
-            
+
+            if (DataModel != null)
+            {
+                DataModel.PropertyChanged += DataModelPropertyChange;
+            }
+
             GetInformationSetDataModel();
             UpdateFiefCollection();
+        }
+
+        private void DataModelPropertyChange(
+            object sender, 
+            PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Tariffs":
+                {
+                    UpdateForecast();
+                    break;
+                }
+
+                case "TaxSerfs":
+                {
+                    UpdateForecast();
+                    break;
+                }
+
+                case "TaxFarmers":
+                {
+                    UpdateForecast();
+                    break;
+                }
+
+                case "TaxFreemen":
+                {
+                    UpdateForecast();
+                    break;
+                }
+            }
+        }
+
+        private void UpdateForecast()
+        {
+            DataModel.ThisYearSilver = _weatherService.GetForecastForSilver(Index);
+            DataModel.ThisYearBase = _weatherService.GetForecastForBase(Index);
+            DataModel.ThisYearLuxury = _weatherService.GetForecastForLuxury(Index);
+            DataModel.ThisYearIron = _weatherService.GetForecastForIron(Index);
+            DataModel.ThisYearStone = _weatherService.GetForecastForStone(Index);
+            DataModel.ThisYearWood = _weatherService.GetForecastForWood(Index);
         }
 
         private void ExecuteNewFiefLoadedEvent()

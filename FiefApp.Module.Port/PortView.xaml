@@ -225,7 +225,6 @@
                 </buildingShipyardUI:BuildingShipyardUI>
 
                 <gotShipyardUI:GotShipyardUI
-                    Upgrading="{Binding Path=DataModel.UpgradingShipyard}"
                     ShipyardModel="{Binding Path=DataModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <gotShipyardUI:GotShipyardUI.Style>
                         <Style TargetType="{x:Type gotShipyardUI:GotShipyardUI}">
@@ -260,7 +259,7 @@
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="ConstructShipyardEvent">
-                            <i:InvokeCommandAction Command="{Binding Path=DataContext.ConstructShipyardCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                            <i:InvokeCommandAction Command="{Binding Path=DataContext.ConstructShipyardEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </canBuildShipyardUI:CanBuildShipyardUI>
@@ -1075,47 +1074,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-
-
-            <Button
-                Content="GotShipyard"
-                ToolTip="Set GotShipyard"
-                Command="{Binding Path=SetGotShipyard}"
-                Grid.Column="2"
-                Grid.Row="41"
-                Width="51"
-                HorizontalAlignment="Left"/>
-
-            <Button
-                Content="UpgradingShipard"
-                ToolTip="Set UpgradingShipard"
-                Command="{Binding Path=SetUpgradingShipyard}"
-                Grid.Column="2"
-                Grid.Row="41"
-                Width="51"
-                HorizontalAlignment="Left"
-                Margin="57,0,0,0"></Button>
-
-            <Button
-                Content="BuildingShipard"
-                ToolTip="Set BuildingShipard"
-                Command="{Binding Path=SetBuildingShipyard}"
-                Grid.Column="2"
-                Grid.Row="41"
-                Width="51"
-                HorizontalAlignment="Left"
-                Margin="114, 0, 0, 0"></Button>
-
-            <Button
-                Content="CanBuildShipyard"
-                ToolTip="Set CanBuildShipyard"
-                Command="{Binding Path=SetCanBuildShipyard}"
-                Grid.Column="2"
-                Grid.Row="41"
-                Width="51"
-                HorizontalAlignment="Left"
-                Margin="171,0,0,0"></Button>
-
         </Grid>
 
         <crewBoatUI:CrewBoatUI

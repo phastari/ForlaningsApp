@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Module.Port.RoutedEvents;
+using System;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using FiefApp.Common.Infrastructure.Models;
+using System.Windows.Controls;
 
 namespace FiefApp.Module.Port.UIElements.GotShipyardUI
 {
     /// <summary>
     /// Interaction logic for GotShipyardUI.xaml
     /// </summary>
-    public partial class GotShipyardUI
+    public partial class GotShipyardUI : INotifyPropertyChanged
     {
         public GotShipyardUI()
         {
             InitializeComponent();
             RootGrid.DataContext = this;
         }
+
+        #region Dependency Properties
 
         public bool CantEdit
         {
@@ -44,33 +51,85 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
                 new PropertyMetadata(null)
             );
 
-        public List<StewardModel> StewardList
+        #endregion
+
+        #region Methods
+
+        private void StewardComboBox_OnSelectionChanged(
+            object sender,
+            SelectionChangedEventArgs e)
         {
-            get => (List<StewardModel>)GetValue(StewardListProperty);
-            set => SetValue(StewardListProperty, value);
+            StewardChanged();
         }
 
-        public static readonly DependencyProperty StewardListProperty =
-            DependencyProperty.Register(
-                "StewardList",
-                typeof(List<StewardModel>),
-                typeof(GotShipyardUI),
-                new PropertyMetadata(null)
-            );
-
-        public bool Upgrading
+        private void StewardChanged()
         {
-            get => (bool)GetValue(UpgradingProperty);
-            set => SetValue(UpgradingProperty, value);
+            GotShipyardUIEventArgs newEventArgs =
+                new GotShipyardUIEventArgs(
+                    GotShipyardUIRoutedEvent,
+                    "Changed",
+                    ShipyardModel
+                );
+
+            RaiseEvent(newEventArgs);
         }
 
-        public static readonly DependencyProperty UpgradingProperty =
-            DependencyProperty.Register(
-                "Upgrading",
-                typeof(bool),
-                typeof(GotShipyardUI),
-                new PropertyMetadata(
-                    true)
+        private void StewardCollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs e)
+        {
+            StewardChanged();
+        }
+
+        private void ShipyardModelPropertyChanged(
+            object sender,
+            PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Taxes":
+
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent GotShipyardUIRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "GotShipyardUIEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(GotShipyardUI)
             );
+
+        public event RoutedEventHandler GotShipyardUIEvent
+        {
+            add => AddHandler(GotShipyardUIRoutedEvent, value);
+            remove => RemoveHandler(GotShipyardUIRoutedEvent, value);
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        private void GotShipyardUI_OnLoaded(
+            object sender,
+            RoutedEventArgs e)
+        {
+            ShipyardModel.PropertyChanged += ShipyardModelPropertyChanged;
+            ShipyardModel.StewardsCollection.CollectionChanged += StewardCollectionChanged;
+        }
     }
 }

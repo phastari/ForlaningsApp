@@ -214,11 +214,11 @@ namespace FiefApp.Common.Infrastructure.Services
                                                           + summer * _fiefService.WeatherList[index].SummerRollMod
                                                           + fall * _fiefService.WeatherList[index].FallRollMod
                                                           + winter * _fiefService.WeatherList[index].WinterRollMod
-                                                          + 9));
+                                                          + 8));
 
-            if (difficulty < 7)
+            if (difficulty < 5)
             {
-                return 6;
+                return 4;
             }
             return difficulty;
         }

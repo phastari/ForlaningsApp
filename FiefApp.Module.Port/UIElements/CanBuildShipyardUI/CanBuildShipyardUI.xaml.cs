@@ -20,11 +20,10 @@ namespace FiefApp.Module.Port.UIElements.CanBuildShipyardUI
         public DelegateCommand ConstructShipyardCommand { get; set; }
         private void ExecuteConstructShipyardCommand()
         {
-            //CHECK FOR PAYMENT
-
             ConstructShipyardEventArgs newEventArgs =
                 new ConstructShipyardEventArgs(
-                    ConstructShipyardRoutedEvent
+                    ConstructShipyardRoutedEvent,
+                    "CheckPayment"
                 );
 
             RaiseEvent(newEventArgs);

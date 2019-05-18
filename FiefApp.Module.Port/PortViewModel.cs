@@ -18,12 +18,14 @@ namespace FiefApp.Module.Port
         private readonly IPortService _portService;
         private readonly ISettingsService _settingsService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ISupplyService _supplyService;
 
         public PortViewModel(
             IBaseService baseService,
             IPortService portService,
             ISettingsService settingsService,
-            IEventAggregator eventAggregator
+            IEventAggregator eventAggregator,
+            ISupplyService supplyService
             ) : base(baseService)
         {
             TabName = "Hamn";
@@ -32,62 +34,18 @@ namespace FiefApp.Module.Port
             _portService = portService;
             _settingsService = settingsService;
             _eventAggregator = eventAggregator;
+            _supplyService = supplyService;
 
             ConstructShipyardCommand = new DelegateCommand(ExecuteConstructShipyardCommand);
-
-            // Test Delegate Commands
-            SetGotShipyard = new DelegateCommand(ExecuteSetGotShipyard);
-            SetBuildingShipyard = new DelegateCommand(ExecuteSetBuildingShipyard);
-            SetUpgradingShipyard = new DelegateCommand(ExecuteSetUpgradingShipyard);
-            SetCanBuildShipyard = new DelegateCommand(ExecuteSetCanBuildShipyard);
 
             AddCaptain = new DelegateCommand(ExecuteAddCaptain);
             CaptainUIEventHandler = new CustomDelegateCommand(ExecuteCaptainUIEventHandler, o => true);
             BoatUIEventHandler = new CustomDelegateCommand(ExecuteBoatUIEventHandler, o => true);
             CrewBoatUIEventHandler = new CustomDelegateCommand(ExecuteCrewBoatUIEventHandler, o => true);
+            ConstructShipyardEventHandler = new CustomDelegateCommand(ExecuteConstructShipyardEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
-
-        #region Test DelegateCommands
-
-        public DelegateCommand SetGotShipyard { get; set; }
-        private void ExecuteSetGotShipyard()
-        {
-            DataModel.UpgradingShipyard = false;
-            DataModel.BuildingShipyard = false;
-            DataModel.CanBuildShipyard = false;
-            DataModel.GotShipyard = true;
-        }
-
-        public DelegateCommand SetBuildingShipyard { get; set; }
-        private void ExecuteSetBuildingShipyard()
-        {
-            DataModel.UpgradingShipyard = false;
-            DataModel.BuildingShipyard = true;
-            DataModel.CanBuildShipyard = false;
-            DataModel.GotShipyard = false;
-        }
-
-        public DelegateCommand SetUpgradingShipyard { get; set; }
-        private void ExecuteSetUpgradingShipyard()
-        {
-            DataModel.UpgradingShipyard = true;
-            DataModel.BuildingShipyard = false;
-            DataModel.CanBuildShipyard = false;
-            DataModel.GotShipyard = false;
-        }
-
-        public DelegateCommand SetCanBuildShipyard { get; set; }
-        private void ExecuteSetCanBuildShipyard()
-        {
-            DataModel.UpgradingShipyard = false;
-            DataModel.BuildingShipyard = false;
-            DataModel.CanBuildShipyard = true;
-            DataModel.GotShipyard = false;
-        }
-
-        #endregion
 
         #region DelegateCommand : ConstructShipyardCommand
 
@@ -102,7 +60,7 @@ namespace FiefApp.Module.Port
             {
                 Shipyard = "",
                 Size = _settingsService.ShipyardTypeSettingsList[0].DockType,
-                UN = "1",
+                UN = 1,
                 OperationBaseCost = _settingsService.ShipyardTypeSettingsList[0].OperationBaseCostModifier,
                 OperationBaseIncome = _settingsService.ShipyardTypeSettingsList[0].OperationBaseIncomeModifier,
                 IsBeingUpgraded = false,
@@ -112,7 +70,7 @@ namespace FiefApp.Module.Port
                 DockMediumFree = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
                 DockLarge = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
                 DockLargeFree = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
-                Taxes = "20"
+                Taxes = 20
             };
 
             SaveData();
@@ -259,35 +217,60 @@ namespace FiefApp.Module.Port
             switch (e.Action)
             {
                 case "Crew":
-                {
-                    int id = -1;
-
-                    for (int x = 0; x < DataModel.BoatsCollection.Count; x++)
                     {
-                        if (DataModel.BoatsCollection[x].Id == e.Id)
+                        int id = -1;
+
+                        for (int x = 0; x < DataModel.BoatsCollection.Count; x++)
                         {
-                            id = x;
-                            break;
+                            if (DataModel.BoatsCollection[x].Id == e.Id)
+                            {
+                                id = x;
+                                break;
+                            }
                         }
-                    }
 
-                    if (id != -1)
-                    {
-                        DataModel.CrewBoat = DataModel.BoatsCollection[id];
-                        DataModel.CrewBoat.AmountSailors = DataModel.Sailors;
-                        DataModel.CrewBoat.AmountSeamens = DataModel.Seaman;
-                        DataModel.CrewBoat.AmountRowers = DataModel.Rowers;
-                        DataModel.CrewBoat.AmountMariners = DataModel.Mariner;
+                        if (id != -1)
+                        {
+                            DataModel.CrewBoat = DataModel.BoatsCollection[id];
+                            DataModel.CrewBoat.AmountSailors = DataModel.Sailors;
+                            DataModel.CrewBoat.AmountSeamens = DataModel.Seaman;
+                            DataModel.CrewBoat.AmountRowers = DataModel.Rowers;
+                            DataModel.CrewBoat.AmountMariners = DataModel.Mariner;
 
-                        CrewBoatVisibility = Visibility.Visible;
+                            CrewBoatVisibility = Visibility.Visible;
+                        }
+                        break;
                     }
-                    break;
-                }
 
                 case "Changed":
+                    {
+                        break;
+                    }
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : ConstructShipyardEventHandler
+
+        public CustomDelegateCommand ConstructShipyardEventHandler { get; set; }
+        private void ExecuteConstructShipyardEventHandler(object obj)
+        {
+            if (_supplyService.WithdrawBase(25))
+            {
+                if (_supplyService.WithdrawWood(30))
                 {
-                    break;
+                    DataModel.BuildingShipyard = true;
+                    DataModel.CanBuildShipyard = false;
                 }
+                else
+                {
+                    _supplyService.DepositBase(25);
+                }
+            }
+            else
+            {
+                DataModel.CanBuildShipyard = true;
+                DataModel.BuildingShipyard = false;
             }
         }
 
@@ -315,6 +298,8 @@ namespace FiefApp.Module.Port
 
         #endregion
 
+        #region Methods
+
         protected override void SaveData(int index = -1)
         {
             _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
@@ -331,6 +316,7 @@ namespace FiefApp.Module.Port
                 DataModel.CanBuildShipyard = _portService.CheckShipyardPossibility(Index);
             }
 
+            GetInformationSetDataModel();
             UpdateFiefCollection();
         }
 
@@ -339,5 +325,12 @@ namespace FiefApp.Module.Port
             Index = 1;
             LoadData();
         }
+
+        private void GetInformationSetDataModel()
+        {
+
+        }
+
+        #endregion
     }
 }

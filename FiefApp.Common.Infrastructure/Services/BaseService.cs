@@ -296,5 +296,82 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             return _fiefService.GetRandom(x, y);
         }
+
+        public int ConvertToNumeric(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return 0;
+            }
+            else
+            {
+                if (str.IndexOf('T') != -1 || str.Length < 3)
+                {
+                    bool isNegative;
+                    string temp;
+
+                    if (str.IndexOf('-') == -1)
+                    {
+                        temp = str;
+                        isNegative = false;
+                    }
+                    else
+                    {
+                        temp = str;
+                        temp = temp.Substring(1);
+                        isNegative = true;
+                    }
+                    if (temp.IndexOf('+') == 0)
+                    {
+                        temp = temp.Substring(1);
+                    }
+
+
+                    string temp2;
+                    var value = 0;
+                    var loop = true;
+                    var holder = "";
+
+                    if (temp.Length < 3)
+                    {
+                        value = Convert.ToInt32(temp);
+                    }
+                    else
+                    {
+                        int x;
+                        for (x = 0; x < temp.Length && loop; x++)
+                        {
+                            if (Char.IsDigit(temp[x]))
+                            {
+                                temp2 = temp;
+                                holder = holder + temp2[x];
+                            }
+                            else
+                            {
+                                value = Convert.ToInt32(holder);
+                                value = value * 4;
+                                loop = false;
+                            }
+                        }
+                    }
+                    if (temp.IndexOf('+') != -1)
+                    {
+                        var pos = temp.IndexOf('+');
+                        pos = pos + 1;
+                        var y = temp.Substring(pos, 1);
+                        value = value + Convert.ToInt32(y);
+                    }
+                    if (isNegative)
+                    {
+                        return -value;
+                    }
+                    else
+                    {
+                        return value;
+                    }
+                }
+            }
+            return 0;
+        }
     }
 }

@@ -42,6 +42,28 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private string _loyalty = "3T6";
+        public string Loyalty
+        {
+            get => _loyalty;
+            set
+            {
+                _loyalty = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _amor = "3T6";
+        public string Amor
+        {
+            get => _amor;
+            set
+            {
+                _amor = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private string _selectedAllInformationText = "";
         public string SelectedAllInformationText
         {

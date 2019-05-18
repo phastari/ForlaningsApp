@@ -88,18 +88,26 @@ namespace FiefApp.Common.Infrastructure.Services
                             Winter = -1M
                         });
 
-                    decimal silver = _fiefService.ManorList[index].ManorPopulation * 6.25M;
+                    decimal silver = _fiefService.WeatherList[index].ThisYearLuxury * 33.85M
+                                     + _fiefService.WeatherList[index].ThisYearBase * 9.35M
+                                     + _fiefService.WeatherList[index].ThisYearStone * 37.25M
+                                     + _fiefService.WeatherList[index].ThisYearWood * 25.25M
+                                     + _fiefService.WeatherList[index].ThisYearIron * 213;
+
+                    silver /= 10;
+                    silver *= _fiefService.WeatherList[index].Tariffs;
+
                     if (_fiefService.InformationList[index].Roads == "Stigar")
                     {
-                        silver *= 0.5M;
+                        silver *= 0.3M;
                     }
                     else if (_fiefService.InformationList[index].Roads == "Stenlagd väg")
                     {
-                        silver *= 1.75M;
+                        silver *= 2.75M;
                     }
                     else if (_fiefService.InformationList[index].Roads == "Kunglig landsväg")
                     {
-                        silver *= 3.25M;
+                        silver *= 5.25M;
                     }
 
                     tempList.Add(
@@ -121,14 +129,14 @@ namespace FiefApp.Common.Infrastructure.Services
                             Winter = -1M
                         });
 
-                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
-                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
-                                                                  + (decimal)0.25 * _fiefService.WeatherList[index].FallRollMod
-                                                                  + (decimal)0.25 * _fiefService.WeatherList[index].WinterRollMod
-                                                                  + 9));
-                    if (difficulty < 7)
+                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.25 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.25 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
+                                                                  + 8));
+                    if (difficulty < 5)
                     {
-                        difficulty = 6;
+                        difficulty = 4;
                     }
 
                     int stewardId = -1;
@@ -164,13 +172,13 @@ namespace FiefApp.Common.Infrastructure.Services
 
                     difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.9 * _fiefService.WeatherList[index].SpringRollMod
                                                               + (decimal)0.9 * _fiefService.WeatherList[index].SummerRollMod
-                                                              + (decimal)0.1 * _fiefService.WeatherList[index].FallRollMod
+                                                              + (decimal)0.25 * _fiefService.WeatherList[index].FallRollMod
                                                               + (decimal)0.1 * _fiefService.WeatherList[index].WinterRollMod
-                                                              + 9));
+                                                              + 8));
 
-                    if (difficulty < 7)
+                    if (difficulty < 5)
                     {
-                        difficulty = 6;
+                        difficulty = 4;
                     }
 
                     stewardId = -1;
@@ -204,15 +212,15 @@ namespace FiefApp.Common.Infrastructure.Services
                             Difficulty = difficulty
                         });
 
-                    difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
-                                                              + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
-                                                              + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
-                                                              + (decimal)0.3 * _fiefService.WeatherList[index].WinterRollMod
-                                                              + 9));
+                    difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.2 * _fiefService.WeatherList[index].SpringRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].SummerRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
+                                                              + 8));
 
-                    if (difficulty < 7)
+                    if (difficulty < 5)
                     {
-                        difficulty = 6;
+                        difficulty = 4;
                     }
 
                     stewardId = -1;
@@ -250,14 +258,14 @@ namespace FiefApp.Common.Infrastructure.Services
                         || _fiefService.InformationList[index].Coast == "Ja"
                         || _fiefService.InformationList[index].Lake == "Ja")
                     {
-                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.4 * _fiefService.WeatherList[index].SpringRollMod
-                                                                  + (decimal)0.4 * _fiefService.WeatherList[index].SummerRollMod
-                                                                  + (decimal)0.4 * _fiefService.WeatherList[index].FallRollMod
-                                                                  + 9));
+                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + 8));
 
-                        if (difficulty < 7)
+                        if (difficulty < 5)
                         {
-                            difficulty = 6;
+                            difficulty = 4;
                         }
 
                         stewardId = -1;
@@ -295,15 +303,14 @@ namespace FiefApp.Common.Infrastructure.Services
                     if (_fiefService.WeatherList[index].Felling > 0
                         || _fiefService.WeatherList[index].LandClearing > 0)
                     {
-                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
-                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
-                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
-                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].WinterRollMod
-                                                                  + 9));
+                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.15 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.15 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.15 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + 8));
 
-                        if (difficulty < 7)
+                        if (difficulty < 5)
                         {
-                            difficulty = 6;
+                            difficulty = 4;
                         }
 
                         stewardId = -1;

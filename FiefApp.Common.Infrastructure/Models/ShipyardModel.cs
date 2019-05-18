@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Common.Infrastructure.Models
 {
@@ -29,13 +29,14 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private string _un;
-        public string UN
+        private int _un;
+        public int UN
         {
             get => _un;
             set
             {
                 _un = value;
+                CalculateIncome();
                 NotifyPropertyChanged();
             }
         }
@@ -51,6 +52,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private int _operationCost;
+        public int OperationCost
+        {
+            get => _operationCost;
+            set
+            {
+                _operationCost = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private decimal _operationBaseIncome;
         public decimal OperationBaseIncome
         {
@@ -62,6 +74,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private int _income;
+        public int Income
+        {
+            get => _income;
+            set
+            {
+                _income = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private bool _isBeingUpgraded;
         public bool IsBeingUpgraded
         {
@@ -69,6 +92,7 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _isBeingUpgraded = value;
+                CalculateIncome();
                 NotifyPropertyChanged();
             }
         }
@@ -161,13 +185,40 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private string _taxes;
-        public string Taxes
+        private int _taxes = 20;
+        public int Taxes
         {
             get => _taxes;
             set
             {
-                _taxes = value;
+                if (value > -1)
+                {
+                    if (value < 101)
+                    {
+                        _taxes = value;
+                    }
+                    else
+                    {
+                        _taxes = 100;
+                    }
+                }
+                else
+                {
+                    _taxes = 0;
+                }
+                if (Taxes > 20)
+                {
+                    Crime = Convert.ToInt32(Math.Ceiling(CrimeRate + (Taxes - 20) * (Taxes - 20)));
+                }
+                else if (Taxes < 20)
+                {
+                    Crime = Convert.ToInt32(Math.Floor(CrimeRate - (20 - Taxes) * (20 - Taxes)));
+                }
+                else
+                {
+                    Crime = Convert.ToInt32(CrimeRate);
+                }
+                CalculateIncome();
                 NotifyPropertyChanged();
             }
         }
@@ -201,6 +252,8 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _bailiffs = value;
+                UpdateOperationCost();
+                CalculateIncome();
                 NotifyPropertyChanged();
             }
         }
@@ -212,6 +265,7 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _captains = value;
+                UpdateOperationCost();
                 NotifyPropertyChanged();
             }
         }
@@ -222,7 +276,54 @@ namespace FiefApp.Common.Infrastructure.Models
             get => _guards;
             set
             {
-                _guards = value;
+                int oldGuards = Guards;
+                if (value - oldGuards > -1)
+                {
+                    if (value - oldGuards <= AvailableGuards)
+                    {
+                        if (value > (Captains + 1) * 20)
+                        {
+                            _guards = 20;
+                            AvailableGuards -= 20 - oldGuards;
+                        }
+                        else
+                        {
+                            _guards = value;
+                            AvailableGuards -= value - oldGuards;
+                        }
+                    }
+                    else
+                    {
+                        _guards = oldGuards + AvailableGuards;
+                        AvailableGuards = 0;
+                    }
+                }
+                else
+                {
+                    if (value > -1)
+                    {
+                        _guards = value;
+                        AvailableGuards += oldGuards - value;
+                    }
+                    else
+                    {
+                        _guards = 0;
+                        AvailableGuards += oldGuards;
+                    }
+                }
+                UpdateOperationCost();
+                CalculateIncome();
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _availableGuards;
+        public int AvailableGuards
+        {
+            get => _availableGuards;
+            set
+            {
+                _availableGuards = value;
                 NotifyPropertyChanged();
             }
         }
@@ -237,6 +338,67 @@ namespace FiefApp.Common.Infrastructure.Models
                 NotifyPropertyChanged();
             }
         }
+
+        private int _crime;
+        public int Crime
+        {
+            get => _crime;
+            set
+            {
+                _crime = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _upgrading;
+        public bool Upgrading
+        {
+            get => _upgrading;
+            set
+            {
+                _upgrading = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
+        public ObservableCollection<StewardModel> StewardsCollection
+        {
+            get => _stewardsCollection;
+            set
+            {
+                _stewardsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #region Methods
+
+        private void CalculateIncome()
+        {
+            decimal factor = 1 - Convert.ToDecimal(Math.Pow(0.9, Bailiffs + 1));
+            decimal factor2 = Guards * (((decimal)127 / (Guards + 1)) / (CrimeRate * CrimeRate + 1));
+
+            decimal baseIncome;
+
+            if (Upgrading)
+            {
+                baseIncome = OperationBaseIncome * factor * factor2 * 0.67M + OperationBaseIncome / 100 * UN;
+            }
+            else
+            {
+                baseIncome = OperationBaseIncome * factor * factor2 + OperationBaseIncome / 100 * UN;
+            }
+
+            Income = Convert.ToInt32(Math.Floor(baseIncome + (Taxes - 20) * baseIncome / 100));
+        }
+
+        private void UpdateOperationCost()
+        {
+            OperationCost = Convert.ToInt32(Math.Ceiling(OperationBaseCost + Bailiffs * 6 + Captains * 4 + Guards * 2));
+        }
+
+        #endregion
 
         #region INotifyPropertyChanged
 

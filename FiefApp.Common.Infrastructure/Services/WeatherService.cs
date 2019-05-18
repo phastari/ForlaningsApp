@@ -41,17 +41,20 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetForecastForSilver(int index)
         {
-            return _fiefService.IncomeList[index].IncomesCollection.Where(t => t.Silver != -1).Sum(t => t.Silver);
+            return _fiefService.IncomeList[index].IncomesCollection.Where(t => t.Silver != -1).Sum(t => t.Silver)
+                   + _fiefService.SubsidiaryList[index].SubsidiaryCollection.Where(t => t.Silver != -1).Sum(t => t.Silver);
         }
 
         public int GetForecastForBase(int index)
         {
-            return _fiefService.IncomeList[index].IncomesCollection.Where(t => t.Base != -1).Sum(t => t.Base);
+            return _fiefService.IncomeList[index].IncomesCollection.Where(t => t.Base != -1).Sum(t => t.Base)
+                   + _fiefService.SubsidiaryList[index].SubsidiaryCollection.Where(t => t.Base != -1).Sum(t => t.Base);
         }
 
         public int GetForecastForLuxury(int index)
         {
-            return _fiefService.IncomeList[index].IncomesCollection.Where(t => t.Luxury != -1).Sum(t => t.Luxury);
+            return _fiefService.IncomeList[index].IncomesCollection.Where(t => t.Luxury != -1).Sum(t => t.Luxury)
+                   + _fiefService.SubsidiaryList[index].SubsidiaryCollection.Where(t => t.Luxury != -1).Sum(t => t.Luxury);
         }
 
         public int GetForecastForIron(int index)

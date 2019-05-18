@@ -38,6 +38,9 @@ namespace FiefApp.Common.Infrastructure.Services
                          * 2.5M;
             }
 
+            avrad /= 20;
+            avrad *= _fiefService.WeatherList[index].TaxSerfs;
+
             return Convert.ToInt32(Math.Floor(avrad));
         }
 
@@ -52,6 +55,9 @@ namespace FiefApp.Common.Infrastructure.Services
                        / 500
                        * Convert.ToDecimal(_fiefService.ManorList[index].ManorWealth);
             }
+
+            tax /= 20;
+            tax *= _fiefService.WeatherList[index].TaxFarmers;
 
             return Convert.ToInt32(Math.Floor(tax));
         }
@@ -73,6 +79,9 @@ namespace FiefApp.Common.Infrastructure.Services
             }
 
             license += license / 100 * (Convert.ToDecimal(_fiefService.ManorList[index].ManorWealth) * 5);
+
+            license /= 20;
+            license *= _fiefService.WeatherList[index].TaxFreemen;
 
             return Convert.ToInt32(Math.Floor(license));
         }

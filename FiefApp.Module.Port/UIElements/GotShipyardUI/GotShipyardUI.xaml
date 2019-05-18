@@ -7,7 +7,8 @@
              xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="417" 
-             d:DesignWidth="238">
+             d:DesignWidth="238"
+             Loaded="GotShipyardUI_OnLoaded">
 
     <Grid
         x:Name="RootGrid">
@@ -131,7 +132,7 @@
 
         <ComboBox
                 x:Name="StewardComboBox"
-                ItemsSource="{Binding Path=StewardList}"
+                ItemsSource="{Binding Path=StewardCollection}"
                 DisplayMemberPath="PersonName"
                 Grid.Column="3"
                 Grid.ColumnSpan="5"
@@ -141,6 +142,7 @@
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource ComboBoxControlTemplate}"
                 ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                SelectionChanged="StewardComboBox_OnSelectionChanged"
                 IsTabStop="False"
                 Padding="6,0,0,0">
             <ComboBox.Style>
@@ -193,7 +195,7 @@
                 Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.OperationBaseCost}"
+                Text="{Binding Path=ShipyardModel.OperationCost}"
                 Grid.Column="7"
                 Grid.Row="10"
                 HorizontalContentAlignment="Center"
@@ -211,16 +213,12 @@
                 VerticalContentAlignment="Center"
                 Padding="0"/>
 
-        <TextBox
-                Text="{Binding Path=ShipyardModel.Taxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <iTextBox:iTextBox
+                Value="{Binding Path=ShipyardModel.Taxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Grid.Column="7"
                 Grid.Row="12"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="{Binding Path=CantEdit}"
-                Padding="0">
-        </TextBox>
+                TextBoxReadOnly="{Binding Path=CantEdit}">
+        </iTextBox:iTextBox>
 
         <Label
                 Content="Inkomst i bas"
@@ -232,7 +230,7 @@
                 Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.OperationBaseIncome}"
+                Text="{Binding Path=ShipyardModel.Income}"
                 Grid.Column="7"
                 Grid.Row="14"
                 HorizontalContentAlignment="Center"
@@ -324,7 +322,7 @@
                 Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.CrimeRate}"
+                Text="{Binding Path=ShipyardModel.Crime}"
                 Grid.Column="7"
                 Grid.Row="24"
                 HorizontalContentAlignment="Center"

@@ -34,6 +34,9 @@ namespace FiefApp.Common.Infrastructure.Services
             List<EndOfYearSubsidiaryModel> subsidiaryList = new List<EndOfYearSubsidiaryModel>();
             List<MineModel> minesList = new List<MineModel>();
             List<QuarryModel> quarriesList = new List<QuarryModel>();
+            EndOfYearFellingModel fellingModel = new EndOfYearFellingModel();
+            EndOfYearTaxesModel taxesModel = new EndOfYearTaxesModel();
+            EndOfYearPopulationModel populationModel = new EndOfYearPopulationModel();
 
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
             {
@@ -41,25 +44,28 @@ namespace FiefApp.Common.Infrastructure.Services
                 {
                     if (_fiefService.IncomeList[x].IncomesCollection[y].IsStewardNeeded)
                     {
-                        string steward = "";
-                        string skill = "0";
-                        
-                        if (_fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId) != null)
+                        if (_fiefService.IncomeList[x].IncomesCollection[y].Income != "Skogsavverkning")
                         {
-                            steward = _fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
-                            skill = _fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
-                        }
+                            string steward = "";
+                            string skill = "0";
 
-                        incomeList.Add(new EndOfYearIncomeModel()
-                        {
-                            Income = _fiefService.IncomeList[x].IncomesCollection[y].Income,
-                            Crewed = 1M,
-                            StewardId = _fiefService.IncomeList[x].IncomesCollection[y].StewardId,
-                            StewardName = steward,
-                            Skill = skill,
-                            Difficulty = _fiefService.IncomeList[x].IncomesCollection[y].Difficulty,
-                            BaseIncome = _fiefService.IncomeList[x].IncomesCollection[y].Base
-                        });
+                            if (_fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId) != null)
+                            {
+                                steward = _fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
+                                skill = _fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
+                            }
+
+                            incomeList.Add(new EndOfYearIncomeModel()
+                            {
+                                Income = _fiefService.IncomeList[x].IncomesCollection[y].Income,
+                                Crewed = 1M,
+                                StewardId = _fiefService.IncomeList[x].IncomesCollection[y].StewardId,
+                                StewardName = steward,
+                                Skill = skill,
+                                Difficulty = _fiefService.IncomeList[x].IncomesCollection[y].Difficulty,
+                                BaseIncome = _fiefService.IncomeList[x].IncomesCollection[y].Base
+                            });
+                        }
                     }
                 }
 
@@ -112,13 +118,73 @@ namespace FiefApp.Common.Infrastructure.Services
                     });
                 }
 
+                fellingModel.Felling = _fiefService.WeatherList[x].Felling;
+                fellingModel.LandClearing = _fiefService.WeatherList[x].LandClearing;
+
+                for (int m = 0; m < _fiefService.IncomeList[x].IncomesCollection.Count; m++)
+                {
+                    if (_fiefService.IncomeList[x].IncomesCollection[m].ManorId == x
+                        && _fiefService.IncomeList[x].IncomesCollection[m].Income == "Skogsavverkning")
+                    {
+                        fellingModel.Steward = _fiefService.IncomeList[x].IncomesCollection[m].Steward;
+                        fellingModel.StewardId = _fiefService.IncomeList[x].IncomesCollection[m].StewardId;
+                        fellingModel.Skill = _fiefService.IncomeList[x].IncomesCollection[m].Skill;
+                    }
+                }
+
+                int difficulty = Convert.ToInt32(Math.Ceiling(0.1 * _fiefService.WeatherList[x].SpringRollMod
+                                                              + 0.1 * _fiefService.WeatherList[x].SummerRollMod
+                                                              + 0.1 * _fiefService.WeatherList[x].FallRollMod
+                                                              + 8));
+
+                if (difficulty < 5)
+                {
+                    fellingModel.Difficulty = 4;
+                }
+                else
+                {
+                    fellingModel.Difficulty = difficulty;
+                }
+
+                taxesModel.Loyalty = _fiefService.InformationList[x].Loyalty;
+
+                int happiness = _baseService.ConvertToNumeric(_fiefService.WeatherList[x].HappinessTotal);
+                if (happiness / 2 < 5)
+                {
+                    taxesModel.Difficulty = 0;
+                }
+                else
+                {
+                    taxesModel.Difficulty = happiness / 2;
+                }
+
+                if (8 + happiness / 4 < 5)
+                {
+                    populationModel.Difficulty = 4;
+                }
+                else
+                {
+                    populationModel.Difficulty = 7 + happiness / 4;
+                }
+
+                populationModel.TotalPopulation = _fiefService.ManorList[x].ManorPopulation;
+                populationModel.ModificationPopulation = Convert.ToInt32(_fiefService.MinesList[x].MinesCollection.Sum(t => t.Population))
+                                                         + Convert.ToInt32(_fiefService.MinesList[x].QuarriesCollection.Sum(t => t.Population))
+                                                         + _fiefService.MinesList[x].PopulationChange;
+
+                populationModel.Amor = _fiefService.InformationList[x].Amor;
+
+
                 tempList.Add(new EndOfYearIncomeFiefModel()
                 {
                     FiefName = _fiefService.InformationList[x].FiefName,
                     IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
                     SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
                     MinesCollection = new ObservableCollection<MineModel>(minesList),
-                    QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList)
+                    QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
+                    FellingModel = fellingModel,
+                    TaxesModel = taxesModel,
+                    PopulationModel = populationModel
                 });
             }
 

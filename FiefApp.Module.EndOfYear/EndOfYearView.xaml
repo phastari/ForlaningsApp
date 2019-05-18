@@ -9,6 +9,9 @@
              xmlns:endOfYearSubsidiaryUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI"
              xmlns:endOfYearMineUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearMineUI"
              xmlns:endOfYearQuarryUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI"
+             xmlns:endOfYearFellingUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI"
+             xmlns:endOfYearTaxesUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI"
+             xmlns:endOfYearPopulationUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778"
@@ -80,11 +83,14 @@
             BorderThickness="0.5, 0.5, 0.5, 0"
             IsTabStop="False"/>
 
-        <StackPanel
+        <ScrollViewer
             Grid.Column="1"
             Grid.ColumnSpan="3"
             Grid.Row="3"
-            Grid.RowSpan="36">
+            Grid.RowSpan="36"
+            VerticalScrollBarVisibility="Auto">
+
+            <StackPanel>
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -103,15 +109,6 @@
                 <Frame 
                     Grid.Column="0" 
                     Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Background="LightGray" 
-                    BorderBrush="Gray" 
-                    BorderThickness="0.5, 0, 0.5, 0"
-                    IsTabStop="False"/>
-
-                <Frame 
-                    Grid.Column="0" 
-                    Grid.Row="3"
                     Grid.RowSpan="2"
                     Background="LightGray" 
                     BorderBrush="Gray" 
@@ -749,13 +746,35 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
+                                <Rectangle
+                                    Height="24"/>
 
+                                <WrapPanel>
+                                    <endOfYearFellingUI:EndOfYearFellingUI
+                                        Felling="{Binding Path=FellingModel.Felling}"
+                                        LandClearing="{Binding Path=FellingModel.LandClearing}"
+                                        Steward="{Binding Path=FellingModel.Steward}"
+                                        StewardId="{Binding Path=FellingModel.StewardId}"
+                                        Skill="{Binding Path=FellingModel.Skill}"
+                                        Difficulty="{Binding Path=FellingModel.Difficulty}"/>
 
+                                        <endOfYearTaxesUI:EndOfYearTaxesUI
+                                            Difficulty="{Binding Path=TaxesModel.Difficulty}"
+                                            TaxFactor="{Binding Path=TaxesModel.TaxFactor}"
+                                            Loyalty="{Binding Path=TaxesModel.Loyalty}"/>
+
+                                        <endOfYearPopulationUI:EndOfYearPopulationUI
+                                            Difficulty="{Binding Path=PopulationModel.Difficulty}"
+                                            Amor="{Binding Path=PopulationModel.Amor}"
+                                            TotalPopulation="{Binding Path=PopulationModel.TotalPopulation}"
+                                            ModificationPopulation="{Binding Path=PopulationModel.ModificationPopulation}"/>
+                                </WrapPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Grid>
         </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

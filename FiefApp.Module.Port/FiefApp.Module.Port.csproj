@@ -83,6 +83,7 @@
     <Compile Include="RoutedEvents\CaptainUIEventArgs.cs" />
     <Compile Include="RoutedEvents\ConstructShipyardEventArgs.cs" />
     <Compile Include="RoutedEvents\CrewBoatUIEventArgs.cs" />
+    <Compile Include="RoutedEvents\GotShipyardUIEventArgs.cs" />
     <Compile Include="UIElements\BoatUI\BoatUI.xaml.cs">
       <DependentUpon>BoatUI.xaml</DependentUpon>
     </Compile>
