@@ -140,20 +140,38 @@ namespace FiefApp.Module.Manor
 
             e.Handled = true;
 
-            if (e.Action == "Expanded")
+            switch (e.Action)
             {
-                for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
+                case "Expanded":
                 {
-                    if (e.Id != DataModel.VillagesCollection[x].Id)
+                    for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
                     {
-                        DataModel.VillagesCollection[x].IsExpanded = false;
+                        if (e.Id != DataModel.VillagesCollection[x].Id)
+                        {
+                            DataModel.VillagesCollection[x].IsExpanded = false;
+                        }
                     }
+                    break;
                 }
-            }
-            else if (e.Action == "Save")
-            {
-                DataModel.VillagesCollection[e.Id] = e.VillageModel;
-                UpdateManorPopulationFromVillages();
+
+                case "Save":
+                {
+                    DataModel.VillagesCollection[e.Id] = e.VillageModel;
+                    UpdateManorPopulationFromVillages();
+                    break;
+                }
+
+                case "Delete":
+                {
+                    for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
+                    {
+                        if (e.Id == DataModel.VillagesCollection[x].Id)
+                        {
+                            DataModel.VillagesCollection.RemoveAt(x);
+                        }
+                    }
+                    break;
+                }
             }
         }
 

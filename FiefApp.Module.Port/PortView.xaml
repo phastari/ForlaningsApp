@@ -206,8 +206,11 @@
                 Grid.RowSpan="37">
 
                 <buildingShipyardUI:BuildingShipyardUI
+                    Id="{Binding Path=DataModel.Shipyard.Id}"
                     DaysWorkNeeded="{Binding Path=DataModel.Shipyard.DaysWorkNeeded}"
-                    DaysWorkThisYear="{Binding Path=DataModel.Shipyard.DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    DaysWorkThisYear="{Binding Path=DataModel.Shipyard.DaysWorkThisYear}"
+                    StewardsCollection="{Binding Path=DataModel.StewardsCollection}"
+                    StewardId="{Binding Path=DataModel.Shipyard.StewardId}">
                     <buildingShipyardUI:BuildingShipyardUI.Style>
                         <Style TargetType="{x:Type buildingShipyardUI:BuildingShipyardUI}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -222,10 +225,15 @@
                             </Style.Triggers>
                         </Style>
                     </buildingShipyardUI:BuildingShipyardUI.Style>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="BuildingShipyardUIEvent">
+                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BuildingShipyardUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </buildingShipyardUI:BuildingShipyardUI>
 
                 <gotShipyardUI:GotShipyardUI
-                    ShipyardModel="{Binding Path=DataModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    ShipyardModel="{Binding Path=DataModel.Shipyard}">
                     <gotShipyardUI:GotShipyardUI.Style>
                         <Style TargetType="{x:Type gotShipyardUI:GotShipyardUI}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -243,6 +251,11 @@
                             </Style.Triggers>
                         </Style>
                     </gotShipyardUI:GotShipyardUI.Style>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotShipyardUIEvent">
+                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.GotShipyardUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </gotShipyardUI:GotShipyardUI>
 
                 <canBuildShipyardUI:CanBuildShipyardUI>
@@ -259,7 +272,7 @@
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="ConstructShipyardEvent">
-                            <i:InvokeCommandAction Command="{Binding Path=DataContext.ConstructShipyardEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.ConstructShipyardEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </canBuildShipyardUI:CanBuildShipyardUI>
@@ -813,25 +826,9 @@
                 Grid.Column="5"
                 Grid.Row="13"
                 Grid.RowSpan="26">
-                <StackPanel.Style>
-                    <Style TargetType="{x:Type StackPanel}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=BuildingShipyard, Path=IsChecked}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
 
                 <Grid
-                Height="24">
+                    Height="24">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="21"/>
                         <RowDefinition Height="3"/>

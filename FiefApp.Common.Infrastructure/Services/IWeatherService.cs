@@ -16,5 +16,7 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetForecastForStone(int index);
         int GetForecastForWood(int index);
         int GetManorAcres(int index);
+        int GetNumberOfFishingboats(int index);
+        void SetNumberOfFishingboats(int index, int fishingboats);
     }
 }

@@ -1,17 +1,15 @@
 ﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Stewards.RoutedEvents;
 using Prism.Commands;
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using FiefApp.Common.Infrastructure.EventAggregatorEvents;
-using FiefApp.Module.Stewards.UIElements.StewardUI;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FiefApp.Module.Stewards
 {
@@ -53,51 +51,76 @@ namespace FiefApp.Module.Stewards
 
             e.Handled = true;
 
-            if (e.Action == "Save")
+            switch (e.Action)
             {
-                for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
-                {
-                    if (e.Id == DataModel.StewardsCollection[x].Id)
+                case "Save":
                     {
-                        DataModel.StewardsCollection[x].Age = e.StewardModel.Age;
-                        DataModel.StewardsCollection[x].Bonus = e.StewardModel.Bonus;
-                        DataModel.StewardsCollection[x].Family = e.StewardModel.Family;
-                        DataModel.StewardsCollection[x].Loyalty = e.StewardModel.Loyalty;
-                        DataModel.StewardsCollection[x].PersonName = e.StewardModel.PersonName;
-                        DataModel.StewardsCollection[x].Resources = e.StewardModel.Resources;
-                        DataModel.StewardsCollection[x].Skill = e.StewardModel.Skill;
-                        DataModel.StewardsCollection[x].Speciality = e.StewardModel.Speciality;
-
-                        if (DataModel.StewardsCollection[x].IndustryId != e.StewardModel.IndustryId)
+                        for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
                         {
-                            for (int i = 0; i < DataModel.IndustryCollection.Count; i++)
+                            if (e.Id == DataModel.StewardsCollection[x].Id)
                             {
-                                if (DataModel.IndustryCollection[x].Id == e.StewardModel.IndustryId)
-                                {
-                                    DataModel.IndustryCollection[x].Steward = "";
-                                    DataModel.IndustryCollection[x].StewardId = -1;
-                                }
+                                DataModel.StewardsCollection[x].Age = e.StewardModel.Age;
+                                DataModel.StewardsCollection[x].Loyalty = e.StewardModel.Loyalty;
+                                DataModel.StewardsCollection[x].PersonName = e.StewardModel.PersonName;
+                                DataModel.StewardsCollection[x].Resources = e.StewardModel.Resources;
+                                DataModel.StewardsCollection[x].Skill = e.StewardModel.Skill;
+                            }
+                        }
+                        SetStewardsAndIndustriesCount();
+                        break;
+                    }
+
+                case "Delete":
+                    {
+                        for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
+                        {
+                            if (e.Id == DataModel.StewardsCollection[x].Id)
+                            {
+                                DataModel.StewardsCollection.RemoveAt(x);
+                                _baseService.RemoveSteward(e.Id);
+                                break;
+                            }
+                        }
+                        SetStewardsAndIndustriesCount();
+                        break;
+                    }
+
+                case "Change":
+                    {
+                        SaveData();
+                        _baseService.ChangeSteward(e.Id, e.StewardModel.IndustryId);
+
+                        for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
+                        {
+                            if (e.Id == DataModel.StewardsCollection[x].Id)
+                            {
+                                DataModel.StewardsCollection[x].IndustryId = e.StewardModel.IndustryId;
+                                DataModel.StewardsCollection[x].Industry = e.StewardModel.Industry;
+                                DataModel.StewardsCollection[x].IndustryType = e.StewardModel.IndustryType;
+                                DataModel.StewardsCollection[x].ManorId = e.StewardModel.ManorId;
                             }
                         }
 
-                        DataModel.StewardsCollection[x].IndustryId = e.StewardModel.IndustryId;
+                        List<StewardModel> tempList = new List<StewardModel>(DataModel.StewardsCollection);
+
+                        DataModel.StewardsCollection.Clear();
+                        DataModel.IndustriesCollection.Clear();
+
+                        DataModel.IndustriesCollection = new ObservableCollection<StewardIndustryModel>(_stewardsService.GetIndustries(Index));
+
+                        for (int x = 0; x < tempList.Count; x++)
+                        {
+                            tempList[x].IndustriesCollection = DataModel.IndustriesCollection;
+                        }
+
+                        DataModel.StewardsCollection = new ObservableCollection<StewardModel>(tempList);
+                        SetStewardsAndIndustriesCount();
+                        break;
                     }
-                }
-            }
-            else if (e.Action == "Expanded")
-            {
-                for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
-                {
-                    if (e.Id != DataModel.StewardsCollection[x].Id)
-                    {
-                        DataModel.StewardsCollection[x].TreeViewIsExpanded = false;
-                    }
-                }
             }
         }
 
         #endregion
-
         #region DelegateCommand : AddStewardCommand
 
         public DelegateCommand AddStewardCommand { get; set; }
@@ -106,8 +129,17 @@ namespace FiefApp.Module.Stewards
             DataModel.StewardsCollection.Add(
                 new StewardModel()
                 {
-                    Id = _stewardsService.GetNextStewardId()
+                    Id = _stewardsService.GetNextStewardId(),
+                    PersonName = _baseService.GetNobleName(),
+                    Age = _baseService.RollDie(14, 60),
+                    Skill = "0",
+                    Resources = "0",
+                    Loyalty = "0",
+                    IndustriesCollection = DataModel.IndustriesCollection
                 });
+
+            SetStewardsAndIndustriesCount();
+            SaveData();
         }
 
         #endregion
@@ -127,16 +159,47 @@ namespace FiefApp.Module.Stewards
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            _baseService.SaveStewardsCollection(DataModel.StewardsCollection);
         }
 
         protected override void LoadData()
         {
-            DataModel = Index
-                        == 0 ? _stewardsService.GetAllStewardsDataModel()
-                : _baseService.GetDataModel<StewardsDataModel>(Index);
+            DataModel = new StewardsDataModel();
 
+            GetInformationSetDataModel();
             UpdateFiefCollection();
+        }
+
+        private void GetInformationSetDataModel()
+        {
+            GetIndustries();
+            GetStewardsCollection();
+            SetAllStewardsIndustiresCollections();
+            SetStewardsAndIndustriesCount();
+        }
+
+        private void GetStewardsCollection()
+        {
+            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
+        }
+        private void GetIndustries()
+        {
+            DataModel.IndustriesCollection = new ObservableCollection<StewardIndustryModel>(_stewardsService.GetIndustries(Index));
+            SetStewardsAndIndustriesCount();
+        }
+
+        private void SetStewardsAndIndustriesCount()
+        {
+            DataModel.NumberOfStewards = DataModel.StewardsCollection.Count - 1;
+            DataModel.NumberOfIndustires = DataModel.IndustriesCollection.Count - 1;
+        }
+
+        private void SetAllStewardsIndustiresCollections()
+        {
+            for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
+            {
+                DataModel.StewardsCollection[x].IndustriesCollection = DataModel.IndustriesCollection;
+            }
         }
 
         private void ExecuteNewFiefLoadedEvent()

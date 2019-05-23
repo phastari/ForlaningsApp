@@ -2,6 +2,7 @@
 using FiefApp.Common.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -15,7 +16,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<ManorDataModel> ManorList { get; set; } = new List<ManorDataModel>();
         public List<BoatbuildingDataModel> BoatbuildingList { get; set; } = new List<BoatbuildingDataModel>();
         public List<ExpensesDataModel> ExpensesList { get; set; } = new List<ExpensesDataModel>();
-        public List<StewardsDataModel> StewardsList { get; set; } = new List<StewardsDataModel>();
+        public ObservableCollection<StewardModel> StewardsCollection { get; set; } = new ObservableCollection<StewardModel>();
         public List<SubsidiaryDataModel> SubsidiaryList { get; set; } = new List<SubsidiaryDataModel>();
         public List<SubsidiaryModel> CustomSubsidiaryList { get; set; } = new List<SubsidiaryModel>();
         public List<IncomeDataModel> IncomeList { get; set; } = new List<IncomeDataModel>();

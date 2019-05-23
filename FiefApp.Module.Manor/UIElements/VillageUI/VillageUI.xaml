@@ -432,6 +432,21 @@
                         Padding="0"/>
 
                     <Button
+                        x:Name="DeleteButton"
+                        Click="DeleteButton_OnClick"
+                        Content="tabort"
+                        Grid.Column="6"
+                        Grid.ColumnSpan="5"
+                        Grid.Row="8"
+                        Width="51"
+                        Template="{DynamicResource ButtonTemplate}"
+                        Visibility="{Binding Path=EditingVisibility}"
+                        HorizontalAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Padding="0"
+                        Margin="0,0,115,0"/>
+
+                    <Button
                         x:Name="SaveButton"
                         Click="SaveButton_OnClick"
                         Content="spara"

@@ -1,4 +1,5 @@
 ﻿using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -11,5 +12,7 @@ namespace FiefApp.Common.Infrastructure.Services
         bool GetGotShipyard(int index);
         bool GetUpgradingShipyard(int index);
         int GetVillageBoatBuilders(int index);
+        void AddBoatToCompletedBoats(int index, BoatModel model);
+        void AddFishingBoat(int index, int amount);
     }
 }

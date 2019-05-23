@@ -1,0 +1,263 @@
+﻿using System.Collections.Generic;
+using CommonServiceLocator;
+using FiefApp.Common.Infrastructure.Services;
+
+namespace FiefApp.Common.Infrastructure.HelpClasses.NameGenerator
+{
+    public class NameGenerator
+    {
+        private readonly string[] _namesArray =
+        {
+            "Adela",
+            "Amica",
+            "Ariandra",
+            "Aurica",
+            "Bella",
+            "Cara",
+            "Carmilla",
+            "Carminha",
+            "Cira",
+            "Clarissa",
+            "Claura",
+            "Damarella",
+            "Dara",
+            "Darella",
+            "Daiva",
+            "Domina",
+            "Ecsandra",
+            "Elektra",
+            "Elysia",
+            "Elzbieta",
+            "Faranna",
+            "Halla",
+            "Hellisia",
+            "Henruda",
+            "Ilona",
+            "Iulia",
+            "Ivlis",
+            "Laena",
+            "Leona",
+            "Liora",
+            "Lucia",
+            "Luissa",
+            "Maiha",
+            "Mara",
+            "Mariah",
+            "Mircalla",
+            "Mircea",
+            "Mirella",
+            "Mortis",
+            "Nella",
+            "Odill",
+            "Ovidia",
+            "Quinia",
+            "Reveca",
+            "Safira",
+            "Sela",
+            "Selima",
+            "Steliana",
+            "Tara",
+            "Tiranna",
+            "Verruca",
+            "Viorica",
+            "Vitera",
+            "Xerima",
+            "Zandra",
+            "Zimone",
+            "Zirel",
+            "Adrien",
+            "Anton",
+            "Bors",
+            "Begal",
+            "Berniel",
+            "Caroc",
+            "Caros",
+            "Cornel",
+            "Dac",
+            "Damar",
+            "Danu",
+            "Divil",
+            "Domer",
+            "Doriel",
+            "Eber",
+            "Ehlas",
+            "Euc",
+            "Eug",
+            "Fanmaris",
+            "Feldan",
+            "Forsek",
+            "Grim",
+            "Helm",
+            "Henec",
+            "Ignor",
+            "Ioan",
+            "Jorgus",
+            "Kamand",
+            "Lansal",
+            "Lot",
+            "Marok",
+            "Mogel",
+            "Morgel",
+            "Pergrim",
+            "Pelgrin",
+            "Ramuno",
+            "Ruprecht",
+            "Sebael",
+            "Sekyl",
+            "Thamas",
+            "Tarsin",
+            "Tibor",
+            "Tors",
+            "Urath",
+            "Uthos",
+            "Vasil",
+            "Vazul",
+            "Vestru",
+            "Vecras",
+            "Vikrat",
+            "Vitabek",
+            "Vorsel",
+            "Vug",
+            "Xander",
+            "Yegor",
+            "Zec",
+            "Anesh",
+            "Arax",
+            "Aysel",
+            "Bedisa",
+            "Eliso",
+            "Fidan",
+            "Gadar",
+            "Leyla",
+            "Lusine",
+            "Maral",
+            "Marina",
+            "Parvana",
+            "Siran",
+            "Talin",
+            "Tamar",
+            "Tinatini",
+            "Vardo",
+            "Yeva",
+            "Zabel",
+            "Anar",
+            "Ari",
+            "Armen",
+            "Avedis",
+            "Elzin",
+            "Garen",
+            "Imeda",
+            "Isidor",
+            "Jiran",
+            "Karen",
+            "Levon",
+            "Narek",
+            "Saba",
+            "Sahak",
+            "Sevan",
+            "Tamaz",
+            "Tural",
+            "Vahan",
+            "Vardan",
+            "Vugar",
+            "Anepa",
+            "Catleen",
+            "Cefone",
+            "Daynara",
+            "Eusebia",
+            "Felicie",
+            "Histalia",
+            "Ione",
+            "Luni",
+            "Maesta",
+            "Nivea",
+            "Preatra",
+            "Qulima",
+            "Ravia",
+            "Elina",
+            "Unine",
+            "Vitalia",
+            "Xandra",
+            "Yopatra",
+            "Zavia",
+            "Arcadius",
+            "Boethius",
+            "Caros",
+            "Damian",
+            "Elius",
+            "Galin",
+            "Hiberos",
+            "Ignatius",
+            "Keron",
+            "Leon",
+            "Marius",
+            "Nadian",
+            "Petros",
+            "Sarrius",
+            "Tatian",
+            "Uthos",
+            "Valerian",
+            "Yrgamos",
+            "Zenos"
+        };
+
+        private readonly string[] _familyHighArray = 
+        {
+            "Vitfjäder",
+            "van Culnar",
+            "Fachos",
+            "van Duncarck",
+            "van Dechmar"
+        };
+
+        private readonly string[] _familyLowArray =
+        {
+            "Mortis",
+            "van Caradin",
+            "Valocassa",
+            "Vallecata",
+            "van Derem",
+            "Mycho",
+            "Katullis",
+            "da Colarkan",
+            "Damarian",
+            "av Dimman",
+            "Olem",
+            "van Caaras",
+            "van Marie",
+            "van Milos",
+            "van Calter",
+            "van Carrai",
+            "van Calt",
+            "Xaremoro",
+            "Illian"
+        };
+        private readonly IBaseService _baseService;
+
+        public NameGenerator(IBaseService baseService)
+        {
+            _baseService = baseService;
+        }
+
+        #region Methods
+
+        public string GetRandomCommonerName()
+        {
+            return _namesArray[_baseService.RollDie(0, _namesArray.Length)];
+        }
+
+        public string GetRandomNoble()
+        {
+            if (_baseService.RollDie(0, 14) != 14)
+            {
+                return $"{_namesArray[_baseService.RollDie(0, _namesArray.Length)]} {_familyLowArray[_baseService.RollDie(0, _familyLowArray.Length)]}";
+            }
+            else
+            {
+                return $"{_namesArray[_baseService.RollDie(0, _namesArray.Length)]} {_familyHighArray[_baseService.RollDie(0, _familyHighArray.Length)]}";
+            }
+        }
+
+        #endregion
+    }
+}

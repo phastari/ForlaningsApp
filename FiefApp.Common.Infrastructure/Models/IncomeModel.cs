@@ -7,6 +7,17 @@ namespace FiefApp.Common.Infrastructure.Models
 {
     public class IncomeModel : INotifyPropertyChanged
     {
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _manorId;
         public int ManorId
         {
@@ -69,6 +80,39 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _isStewardNeeded = value; 
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _showInIncomes = true;
+        public bool ShowInIncomes
+        {
+            get => _showInIncomes;
+            set
+            {
+                _showInIncomes = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _canBeDeveloped = true;
+        public bool CanBeDeveloped
+        {
+            get => _canBeDeveloped;
+            set
+            {
+                _canBeDeveloped = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _beingDeveloped = false;
+        public bool BeingDeveloped
+        {
+            get => _beingDeveloped;
+            set
+            {
+                _beingDeveloped = value;
                 NotifyPropertyChanged();
             }
         }

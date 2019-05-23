@@ -94,6 +94,15 @@
                 BorderBrush="Transparent"
                 IsTabStop="False"/>
 
+            <CheckBox
+                x:Name="GotVillageBoatbuilders"
+                IsChecked="{Binding Path=DataModel.GotVillageBoatbuilders}"
+                Grid.Column="0"
+                Grid.Row="0"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsTabStop="False"/>
+
             <Frame 
                 Grid.Column="1" 
                 Grid.ColumnSpan="3"
@@ -480,6 +489,9 @@
                             <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=GotVillageBoatbuilders, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
@@ -635,6 +647,19 @@
                         <ColumnDefinition Width="108"/>
                         <ColumnDefinition Width="8"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
                     <Label
                         Grid.Column="1"
@@ -735,6 +760,20 @@
                             </boatBuilderUI:BoatBuilderUI>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+
+                    <ItemsControl.Style>
+                        <Style TargetType="{x:Type ItemsControl}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
                 </ItemsControl>
 
             </StackPanel>

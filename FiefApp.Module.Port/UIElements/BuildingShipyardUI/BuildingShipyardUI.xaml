@@ -4,12 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="57" 
-             d:DesignWidth="238">
+             d:DesignHeight="81" 
+             d:DesignWidth="238"
+             Loaded="UserControl_Loaded">
 
     <Grid
         x:Name="RootGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
             <RowDefinition Height="21"/>
             <RowDefinition Height="3"/>
             <RowDefinition Height="21"/>
@@ -28,7 +31,7 @@
                 Grid.Column="0" 
                 Grid.ColumnSpan="5"
                 Grid.Row="0" 
-                Grid.RowSpan="5" 
+                Grid.RowSpan="7" 
                 Background="LightGray" 
                 BorderBrush="Gray" 
                 BorderThickness="0.5, 0, 0.5, 0.5"
@@ -69,5 +72,31 @@
                 Text="{Binding Path=DaysworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="{Binding Path=CantEdit}"
                 Padding="0"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="4"
+            Content="Förvaltare"
+            HorizontalAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="0,0,131,0"/>
+
+        <ComboBox
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="4"
+            Width="125"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            ItemsSource="{Binding Path=StewardsCollection}"
+            DisplayMemberPath="PersonName"
+            SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectionChanged="Selector_OnSelectionChanged"
+            HorizontalAlignment="Right"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="6,0,0,0"/>
     </Grid>
 </UserControl>

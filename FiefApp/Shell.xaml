@@ -127,9 +127,43 @@
             </MenuItem>
         </Menu>
 
+        <CheckBox
+            x:Name="EndOfYearCheckBox"
+            Grid.Column="0"
+            Grid.Row="0"
+            Visibility="Collapsed"
+            IsChecked="{Binding Path=EndOfYear}"/>
+
         <TabControl Grid.Column="0" 
                     Grid.Row="1"
-                    prism:RegionManager.RegionName="TabRegion"/>
+                    prism:RegionManager.RegionName="TabRegion">
+            <TabControl.Style>
+                <Style TargetType="{x:Type TabControl}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=EndOfYearCheckBox}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TabControl.Style>
+        </TabControl>
+
+        <ContentControl
+            Grid.Column="0"
+            Grid.Row="1"
+            prism:RegionManager.RegionName="EndOfYearRegion">
+            <ContentControl.Style>
+                <Style TargetType="{x:Type ContentControl}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=EndOfYearCheckBox}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
 
         <ContentControl Grid.Column="0"
                         Grid.Row="2"

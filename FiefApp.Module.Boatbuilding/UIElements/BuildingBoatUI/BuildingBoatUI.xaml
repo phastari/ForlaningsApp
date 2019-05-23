@@ -385,6 +385,24 @@
             IsTabStop="False"
             Padding="0"/>
 
+        <Label
+            Content="Lägg till som färdig"
+            Grid.Column="5"
+            Grid.ColumnSpan="5"
+            Grid.Row="24"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="0,0,21,0"/>
+
+        <CheckBox
+            IsChecked="{Binding Path=AddAsBuilt}"
+            Grid.Column="9"
+            Grid.Row="24"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Template="{DynamicResource CheckBoxTemplate}"/>
+
         <Button
             Command="{Binding Path=SaveCommand}"
             Content="spara"

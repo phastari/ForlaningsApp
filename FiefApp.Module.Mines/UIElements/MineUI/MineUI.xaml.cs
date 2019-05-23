@@ -255,17 +255,20 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
 
         private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MineUIEventArgs newEventArgs =
-                new MineUIEventArgs(
-                    MineUIRoutedEvent,
-                    "Changed",
-                    Id,
-                    StewardsCollection[SelectedIndex].Id,
-                    StewardsCollection[SelectedIndex].PersonName,
-                    StewardsCollection[SelectedIndex].Skill
-                );
+            if (SelectedIndex != -1)
+            {
+                MineUIEventArgs newEventArgs =
+                    new MineUIEventArgs(
+                        MineUIRoutedEvent,
+                        "Changed",
+                        Id,
+                        StewardsCollection[SelectedIndex].Id,
+                        StewardsCollection[SelectedIndex].PersonName,
+                        StewardsCollection[SelectedIndex].Skill
+                    );
 
-            RaiseEvent(newEventArgs);
+                RaiseEvent(newEventArgs);
+            }
         }
 
         private void UpdateIncome()

@@ -49,10 +49,10 @@ namespace FiefApp.Common.Infrastructure.Services
                             string steward = "";
                             string skill = "0";
 
-                            if (_fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId) != null)
+                            if (_fiefService.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId) != null)
                             {
-                                steward = _fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
-                                skill = _fiefService.StewardsList[1].StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
+                                steward = _fiefService.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
+                                skill = _fiefService.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
                             }
 
                             incomeList.Add(new EndOfYearIncomeModel()

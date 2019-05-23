@@ -7,6 +7,17 @@ namespace FiefApp.Common.Infrastructure.Models
 {
     public class ShipyardModel : INotifyPropertyChanged
     {
+        private int _id = -1;
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private string _shipyard = "";
         public string Shipyard
         {
@@ -357,6 +368,28 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _upgrading = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _canBeDeveloped = true;
+        public bool CanBeDeveloped
+        {
+            get => _canBeDeveloped;
+            set
+            {
+                _canBeDeveloped = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _beingDeveloped = false;
+        public bool BeingDeveloped
+        {
+            get => _beingDeveloped;
+            set
+            {
+                _beingDeveloped = value;
                 NotifyPropertyChanged();
             }
         }

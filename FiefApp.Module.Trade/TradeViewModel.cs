@@ -47,7 +47,9 @@ namespace FiefApp.Module.Trade
         {
             DataModel.MerchantsCollection.Add(new MerchantModel()
             {
-                Id = _tradeService.GetNewMerchantId()
+                Id = _tradeService.GetNewMerchantId(),
+                PersonName = _baseService.GetCommonerName(),
+                Age = _baseService.RollDie(10,60)
             });
         }
 

@@ -43,11 +43,13 @@ namespace FiefApp.Module.Port
             BoatUIEventHandler = new CustomDelegateCommand(ExecuteBoatUIEventHandler, o => true);
             CrewBoatUIEventHandler = new CustomDelegateCommand(ExecuteCrewBoatUIEventHandler, o => true);
             ConstructShipyardEventHandler = new CustomDelegateCommand(ExecuteConstructShipyardEventHandler, o => true);
+            GotShipyardUIEventHandler = new CustomDelegateCommand(ExecuteGotShipyardUIEventHandler, o => true);
+            BuildingShipyardUIEventHandler = new CustomDelegateCommand(ExecuteBuildingShipyardUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
-        #region DelegateCommand : ConstructShipyardCommand
+        #region DelegateCommand : ConstructShipyardCommand (Används inte)
 
         public DelegateCommand ConstructShipyardCommand { get; set; }
         private void ExecuteConstructShipyardCommand()
@@ -84,7 +86,9 @@ namespace FiefApp.Module.Port
         {
             DataModel.CaptainsCollection.Add(new CaptainModel()
             {
-                Id = _portService.GetNewCaptainId(Index)
+                Id = _portService.GetNewCaptainId(Index),
+                PersonName = _baseService.GetCommonerName(),
+                Age = _baseService.RollDie(20,60)
             });
         }
 
@@ -217,35 +221,35 @@ namespace FiefApp.Module.Port
             switch (e.Action)
             {
                 case "Crew":
+                {
+                    int id = -1;
+
+                    for (int x = 0; x < DataModel.BoatsCollection.Count; x++)
                     {
-                        int id = -1;
-
-                        for (int x = 0; x < DataModel.BoatsCollection.Count; x++)
+                        if (DataModel.BoatsCollection[x].Id == e.Id)
                         {
-                            if (DataModel.BoatsCollection[x].Id == e.Id)
-                            {
-                                id = x;
-                                break;
-                            }
+                            id = x;
+                            break;
                         }
-
-                        if (id != -1)
-                        {
-                            DataModel.CrewBoat = DataModel.BoatsCollection[id];
-                            DataModel.CrewBoat.AmountSailors = DataModel.Sailors;
-                            DataModel.CrewBoat.AmountSeamens = DataModel.Seaman;
-                            DataModel.CrewBoat.AmountRowers = DataModel.Rowers;
-                            DataModel.CrewBoat.AmountMariners = DataModel.Mariner;
-
-                            CrewBoatVisibility = Visibility.Visible;
-                        }
-                        break;
                     }
+
+                    if (id != -1)
+                    {
+                        DataModel.CrewBoat = DataModel.BoatsCollection[id];
+                        DataModel.CrewBoat.AmountSailors = DataModel.Sailors;
+                        DataModel.CrewBoat.AmountSeamens = DataModel.Seaman;
+                        DataModel.CrewBoat.AmountRowers = DataModel.Rowers;
+                        DataModel.CrewBoat.AmountMariners = DataModel.Mariner;
+
+                        CrewBoatVisibility = Visibility.Visible;
+                    }
+                    break;
+                }
 
                 case "Changed":
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
             }
         }
 
@@ -255,12 +259,23 @@ namespace FiefApp.Module.Port
         public CustomDelegateCommand ConstructShipyardEventHandler { get; set; }
         private void ExecuteConstructShipyardEventHandler(object obj)
         {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is ConstructShipyardEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
             if (_supplyService.WithdrawBase(25))
             {
                 if (_supplyService.WithdrawWood(30))
                 {
                     DataModel.BuildingShipyard = true;
                     DataModel.CanBuildShipyard = false;
+                    DataModel.Shipyard.Id = _baseService.GetNewIndustryId();
+                    SaveData();
                 }
                 else
                 {
@@ -271,6 +286,58 @@ namespace FiefApp.Module.Port
             {
                 DataModel.CanBuildShipyard = true;
                 DataModel.BuildingShipyard = false;
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : GotShipyardUIEventHandler
+
+        public CustomDelegateCommand GotShipyardUIEventHandler { get; set; }
+        private void ExecuteGotShipyardUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is GotShipyardUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Changed":
+                {
+                    SaveData();
+                    _baseService.ChangeSteward(e.Model.StewardId, e.Model.Id);
+                    break;
+                }
+            }
+        }
+
+        #endregion
+        #region CustomDelegateCommand : BuildingShipyardUIEventHandler
+
+        public CustomDelegateCommand BuildingShipyardUIEventHandler { get; set; }
+        private void ExecuteBuildingShipyardUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is BuildingShipyardUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Changed":
+                {
+                    SaveData();
+                    _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id);
+                    break;
+                }
             }
         }
 
@@ -328,7 +395,18 @@ namespace FiefApp.Module.Port
 
         private void GetInformationSetDataModel()
         {
+            GetStewardsCollection();
+            SetShipyardsStewardsCollection();
+        }
 
+        private void GetStewardsCollection()
+        {
+            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
+        }
+
+        private void SetShipyardsStewardsCollection()
+        {
+            DataModel.Shipyard.StewardsCollection = DataModel.StewardsCollection;
         }
 
         #endregion

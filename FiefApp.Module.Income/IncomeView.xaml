@@ -92,6 +92,7 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type m:IncomeModel}">
                     <incomeUI:IncomeUI
+                        Id="{Binding Path=Id}"
                         Income="{Binding Path=Income}"
                         Silver="{Binding Path=Silver}"
                         Base="{Binding Path=Base}"
@@ -103,6 +104,7 @@
                         ManorId="{Binding Path=ManorId}"
                         StewardsCollection="{Binding Path=StewardsCollection}"
                         IsStewardNeeded="{Binding Path=IsStewardNeeded}"
+                        ShowInIncomes="{Binding Path=ShowInIncomes}"
                         StewardId="{Binding Path=StewardId}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="IncomeUIEvent">

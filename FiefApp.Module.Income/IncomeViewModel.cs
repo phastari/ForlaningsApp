@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Income.RoutedEvents;
 using Prism.Commands;
@@ -50,11 +52,10 @@ namespace FiefApp.Module.Income
 
             if (e.Action == "Changed")
             {
-                ChangeStewardInIncomeCollection(e.StewardModel.Id, e.StewardModel.PersonName, e.FiefId, e.Income);
-                _incomeService.ChangeSteward(e.StewardModel.Id, e.FiefId, e.Income);
-                DataModel.IncomesCollection.Clear();
-                DataModel.IncomesCollection = _incomeService.GetAllIncomes(Index);
                 SaveData();
+                _baseService.ChangeSteward(e.StewardId, e.IncomeId);
+                DataModel.IncomesCollection.Clear();
+                DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
             }
         }
 
@@ -74,9 +75,9 @@ namespace FiefApp.Module.Income
         protected override void LoadData()
         {
             DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
-            DataModel.IncomesCollection = _incomeService.GetAllIncomes(Index);
+            DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
             DataModel.UpdateTotals();
-            DataModel.StewardsCollection = _incomeService.GetAllStewards(Index);
+            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
 
             for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
             {
@@ -96,32 +97,5 @@ namespace FiefApp.Module.Income
             Index = 1;
             LoadData();
         }
-
-        #region Methods
-
-        private void ChangeStewardInIncomeCollection(int stewardId, string steward, int manorId, string income)
-        {
-            for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
-            {
-                if (stewardId == DataModel.IncomesCollection[x].StewardId)
-                {
-                    DataModel.IncomesCollection[x].StewardId = -1;
-                    DataModel.IncomesCollection[x].Steward = "";
-                }
-            }
-
-            for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
-            {
-                if (DataModel.IncomesCollection[x].Income == income && DataModel.IncomesCollection[x].ManorId == manorId)
-                {
-                    DataModel.IncomesCollection[x].StewardId = stewardId;
-                    DataModel.IncomesCollection[x].Steward = steward;
-                }
-            }
-
-            SaveData();
-        }
-
-        #endregion
     }
 }

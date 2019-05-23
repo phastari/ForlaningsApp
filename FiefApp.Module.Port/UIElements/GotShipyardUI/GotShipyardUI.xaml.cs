@@ -53,17 +53,38 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
 
         #endregion
 
+        #region UI Properties
+
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         private void StewardComboBox_OnSelectionChanged(
             object sender,
             SelectionChangedEventArgs e)
         {
-            StewardChanged();
+            if (SelectedIndex != -1)
+            {
+                StewardChanged();
+            }
         }
 
         private void StewardChanged()
         {
+            ShipyardModel.StewardId = ShipyardModel.StewardsCollection[SelectedIndex].Id;
+            ShipyardModel.Steward = ShipyardModel.StewardsCollection[SelectedIndex].PersonName;
+
             GotShipyardUIEventArgs newEventArgs =
                 new GotShipyardUIEventArgs(
                     GotShipyardUIRoutedEvent,
@@ -72,13 +93,6 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
                 );
 
             RaiseEvent(newEventArgs);
-        }
-
-        private void StewardCollectionChanged(
-            object sender,
-            NotifyCollectionChangedEventArgs e)
-        {
-            StewardChanged();
         }
 
         private void ShipyardModelPropertyChanged(
@@ -129,7 +143,6 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
             RoutedEventArgs e)
         {
             ShipyardModel.PropertyChanged += ShipyardModelPropertyChanged;
-            ShipyardModel.StewardsCollection.CollectionChanged += StewardCollectionChanged;
         }
     }
 }

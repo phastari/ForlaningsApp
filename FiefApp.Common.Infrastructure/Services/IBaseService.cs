@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -15,5 +16,12 @@ namespace FiefApp.Common.Infrastructure.Services
         int RollObDice(int skill);
         int RollDie(int x, int y);
         int ConvertToNumeric(string str);
+        string GetCommonerName();
+        string GetNobleName();
+        int GetNewIndustryId();
+        void RemoveSteward(int stewardId);
+        void ChangeSteward(int stewardId, int industryId);
+        ObservableCollection<StewardModel> GetStewardsCollection();
+        void SaveStewardsCollection(ObservableCollection<StewardModel> collection);
     }
 }

@@ -8,28 +8,28 @@ namespace FiefApp.Module.Income.RoutedEvents
         private readonly string _action;
         public string Action => _action;
 
-        private readonly StewardModel _stewardModel;
-        public StewardModel StewardModel => _stewardModel;
+        private readonly int _stewardId;
+        public int StewardId => _stewardId;
 
         private readonly string _income;
         public string Income => _income;
 
-        private readonly int _fiefId;
-        public int FiefId => _fiefId;
+        private readonly int _incomeId;
+        public int IncomeId => _incomeId;
 
         public IncomeUIEventArgs(
             RoutedEvent routedEvent,
             string action,
-            StewardModel stewardModel = null,
+            int stewardId,
             string income = "",
-            int fiefId = -1
+            int incomeId = -1
             )
             : base(routedEvent)
         {
             _action = action;
-            _stewardModel = stewardModel;
+            _stewardId = stewardId;
             _income = income;
-            _fiefId = fiefId;
+            _incomeId = incomeId;
         }
     }
 }

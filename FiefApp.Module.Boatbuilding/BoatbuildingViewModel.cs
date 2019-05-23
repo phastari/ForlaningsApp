@@ -59,9 +59,24 @@ namespace FiefApp.Module.Boatbuilding
 
             if (e.Action == "Save")
             {
-                e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
-                e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
-                DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                if (e.BoatModel.AddAsBuilt)
+                {
+                    if (e.BoatModel.BoatType == "Fiskebåt")
+                    {
+                        _boatbuildingService.AddFishingBoat(Index, e.BoatModel.Amount);
+                    }
+                    else
+                    {
+                        e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                        _boatbuildingService.AddBoatToCompletedBoats(Index, e.BoatModel);
+                    }
+                }
+                else
+                {
+                    e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                    e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                    DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                }
                 SaveData();
             }
         }
@@ -203,7 +218,9 @@ namespace FiefApp.Module.Boatbuilding
             DataModel.BoatBuildersCollection.Add(
                 new BoatbuilderModel()
                 {
-                    Id = _boatbuildingService.GetNewBoatbuilderId()
+                    Id = _boatbuildingService.GetNewBoatbuilderId(),
+                    PersonName = _baseService.GetCommonerName(),
+                    Age = _baseService.RollDie(14, 60)
                 });
         }
 
@@ -251,6 +268,11 @@ namespace FiefApp.Module.Boatbuilding
             DataModel.UpgradingShipyard = _boatbuildingService.GetUpgradingShipyard(Index);
             DataModel.BoatBuildersCollection.CollectionChanged += UpdateTotalBoatBuilders;
             DataModel.VillageBoatBuilders = _boatbuildingService.GetVillageBoatBuilders(Index);
+
+            if (DataModel.VillageBoatBuilders > 0)
+            {
+                DataModel.GotVillageBoatbuilders = true;
+            }
         }
 
         private void UpdateTotalBoatBuilders(object sender, NotifyCollectionChangedEventArgs e)

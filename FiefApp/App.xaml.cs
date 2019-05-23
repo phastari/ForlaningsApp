@@ -1,8 +1,9 @@
-﻿using Prism.Ioc;
-using Prism.Modularity;
-using System.Windows;
-using FiefApp.Common.Infrastructure.Services;
+﻿using FiefApp.Common.Infrastructure.Services;
 using Prism.Events;
+using Prism.Ioc;
+using Prism.Modularity;
+using System.ComponentModel;
+using System.Windows;
 
 namespace FiefApp
 {

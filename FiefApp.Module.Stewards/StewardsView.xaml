@@ -6,6 +6,7 @@
              xmlns:stewardUI="clr-namespace:FiefApp.Module.Stewards.UIElements.StewardUI"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
+             xmlns:industryUI="clr-namespace:FiefApp.Module.Stewards.UIElements.IndustryUI"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
@@ -99,7 +100,7 @@
             Padding="8,0,0,0"/>
 
         <TextBox
-            Text="{Binding Path=DataModel.StewardsCollection.Count, Mode=OneWay}"
+            Text="{Binding Path=DataModel.NumberOfStewards}"
             Grid.Column="4"
             Grid.Row="3"
             HorizontalContentAlignment="Center"
@@ -116,7 +117,7 @@
             Padding="8,0,0,0"/>
 
         <TextBox
-            Text="{Binding Path=NrNaringar, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=DataModel.NumberOfIndustires}"
             Grid.Column="4"
             Grid.Row="5"
             HorizontalAlignment="Stretch"
@@ -146,28 +147,40 @@
             Grid.RowSpan="30"
             VerticalScrollBarVisibility="Auto"
             Padding="0">
+
+            <StackPanel>
+               
             <ItemsControl
-                ItemsSource="{Binding Path=NaringarCollection}"
+                ItemsSource="{Binding Path=DataModel.IndustriesCollection}"
                 IsTabStop="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel 
+                        IsItemsHost="True" 
+                        Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.Template>
+                    <ControlTemplate TargetType="ItemsControl">
+                        <StackPanel>
+                            <ItemsPresenter />
+                        </StackPanel>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="21"/>
-                                <RowDefinition Height="3"/>
-                            </Grid.RowDefinitions>
-                            <Label
-                                Grid.Column="0"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Left"
-                                VerticalAlignment="Stretch"
-                                VerticalContentAlignment="Center"
-                                Padding="0"
-                                Content="{Binding Path=Namn}"/>
-                        </Grid>
+                        <industryUI:IndustryUI
+                            Industry="{Binding Path=Industry}"
+                            CanBeDeveloped="{Binding Path=CanBeDeveloped}"
+                            BeingDeveloped="{Binding Path=BeingDeveloped}">
+                            
+                        </industryUI:IndustryUI>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            </StackPanel>
         </ScrollViewer>
 
         <!-- RIGHT WINDOW -->
@@ -226,13 +239,10 @@
                         Steward="{Binding Path=PersonName}"
                         Age="{Binding Path=Age}"
                         Skill="{Binding Path=Skill}"
-                        IndustryCollection="{Binding Path=DataContext.DataModel.IndustryCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Family="{Binding Path=Family}"
+                        IndustriesCollection="{Binding Path=IndustriesCollection}"
                         StewardResources="{Binding Path=Resources}"
                         Loyalty="{Binding Path=Loyalty}"
-                        Speciality="{Binding Path=Speciality}"
-                        Bonus="{Binding Path=Bonus}"
-                        TreeViewIsExpanded="{Binding Path=TreeViewIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        IndustryType="{Binding Path=IndustryType}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="StewardUIEvent">
                                 <customCommands:CustomCommandAction Command="{Binding Path=DataContext.StewardUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

@@ -75,6 +75,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private bool _gotVillageBoatbuilders;
+        public bool GotVillageBoatbuilders
+        {
+            get => _gotVillageBoatbuilders;
+            set
+            {
+                _gotVillageBoatbuilders = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _villageBoatBuilders;
         public int VillageBoatBuilders
         {

@@ -179,7 +179,9 @@ namespace FiefApp.Module.Buildings
             int id = _buildingsService.GetNewIdForBuilder();
             DataModel.BuildersCollection.Add(new BuilderModel()
             {
-                Id = id
+                Id = id,
+                PersonName = _baseService.GetCommonerName(),
+                Age = _baseService.RollDie(14, 60)
             });
             SaveData();
         }

@@ -75,6 +75,20 @@ namespace FiefApp.Module.Manor.UIElements.VillageUI
             EditButtonVisibility = Visibility.Visible;
         }
 
+        private void DeleteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            VillagesUIEventArgs newEventArgs =
+                new VillagesUIEventArgs(
+                    VillageUIRoutedEvent,
+                    Id,
+                    "Delete"
+                );
+            RaiseEvent(newEventArgs);
+
+            EditingVisibility = Visibility.Collapsed;
+            EditButtonVisibility = Visibility.Visible;
+        }
+
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
             VillagesUIEventArgs newEventArgs =

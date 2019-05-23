@@ -1,4 +1,5 @@
-﻿using FiefApp.Module.Port.RoutedEvents;
+﻿using FiefApp.Common.Infrastructure.CustomCommands;
+using FiefApp.Module.Port.RoutedEvents;
 using Prism.Commands;
 using System.Windows;
 
@@ -33,7 +34,7 @@ namespace FiefApp.Module.Port.UIElements.CanBuildShipyardUI
 
         public static readonly RoutedEvent ConstructShipyardRoutedEvent =
             EventManager.RegisterRoutedEvent(
-                "   ",
+                "ConstructShipyardEvent",
                 RoutingStrategy.Bubble,
                 typeof(RoutedEventHandler),
                 typeof(CanBuildShipyardUI)

@@ -66,7 +66,7 @@ namespace FiefApp.Module.Mines
 
             if (e.Action == "Save")
             {
-                e.Model.Id = _minesService.GetNewIdForQuarry();
+                e.Model.Id = _baseService.GetNewIndustryId();
                 e.Model.IsFirstYear = true;
 
                 DataModel.QuarriesCollection.Add(e.Model);
@@ -95,7 +95,7 @@ namespace FiefApp.Module.Mines
 
             if (e.Action == "Save")
             {
-                e.Model.Id = _minesService.GetNewIdForMine();
+                e.Model.Id = _baseService.GetNewIndustryId();
                 e.Model.StewardId = -1;
                 e.Model.Steward = "";
                 e.Model.StewardsCollection = DataModel.StewardsCollection;
@@ -129,8 +129,8 @@ namespace FiefApp.Module.Mines
             {
                 case "Changed":
                 {
-                    ChangeStewardInMinesCollection(e.StewardId, e.Steward, e.MineId, e.Skill);
-                    _minesService.ChangeStewardInMinesCollection(e.StewardId, e.MineId, e.Steward);
+                    SaveData();
+                    _baseService.ChangeSteward(e.StewardId, e.MineId);
                     List<MineModel> tempList = new List<MineModel>(DataModel.MinesCollection);
                     List<QuarryModel> quarryList = new List<QuarryModel>(DataModel.QuarriesCollection);
                     DataModel.MinesCollection.Clear();
@@ -252,8 +252,8 @@ namespace FiefApp.Module.Mines
 
                 case "Changed":
                 {
-                    ChangeStewardInQuarriesCollection(e.StewardId, e.Steward, e.QuarryId, e.Skill);
-                    _minesService.ChangeStewardInQuarriesCollection(e.StewardId, e.QuarryId, e.Steward);
+                    SaveData();
+                    _baseService.ChangeSteward(e.StewardId, e.QuarryId);
                     List<MineModel> tempList = new List<MineModel>(DataModel.MinesCollection);
                     List<QuarryModel> quarryList = new List<QuarryModel>(DataModel.QuarriesCollection);
                     DataModel.MinesCollection.Clear();
@@ -382,74 +382,6 @@ namespace FiefApp.Module.Mines
         {
             Index = 1;
             LoadData();
-        }
-
-        private void ChangeStewardInMinesCollection(int stewardId, string steward, int mineId, string skill)
-        {
-            for (int x = 0; x < DataModel.MinesCollection.Count; x++)
-            {
-                if (stewardId == DataModel.MinesCollection[x].StewardId)
-                {
-                    DataModel.MinesCollection[x].StewardId = -1;
-                    DataModel.MinesCollection[x].Steward = "";
-                }
-            }
-
-            if (DataModel.QuarriesCollection.Count > 0)
-            {
-                for (int x = 0; x < DataModel.QuarriesCollection.Count; x++)
-                {
-                    if (stewardId == DataModel.QuarriesCollection[x].StewardId)
-                    {
-                        DataModel.QuarriesCollection[x].StewardId = -1;
-                        DataModel.QuarriesCollection[x].Steward = "";
-                    }
-                }
-            }
-
-            for (int y = 0; y < DataModel.MinesCollection.Count; y++)
-            {
-                if (mineId == DataModel.MinesCollection[y].Id)
-                {
-                    DataModel.MinesCollection[y].StewardId = stewardId;
-                    DataModel.MinesCollection[y].Steward = steward;
-                    DataModel.MinesCollection[y].Skill = skill;
-                }
-            }
-        }
-
-        private void ChangeStewardInQuarriesCollection(int stewardId, string steward, int quarryId, string skill)
-        {
-            for (int x = 0; x < DataModel.QuarriesCollection.Count; x++)
-            {
-                if (stewardId == DataModel.QuarriesCollection[x].StewardId)
-                {
-                    DataModel.QuarriesCollection[x].StewardId = -1;
-                    DataModel.QuarriesCollection[x].Steward = "";
-                }
-            }
-
-            if (DataModel.MinesCollection.Count > 0)
-            {
-                for (int x = 0; x < DataModel.MinesCollection.Count; x++)
-                {
-                    if (stewardId == DataModel.MinesCollection[x].StewardId)
-                    {
-                        DataModel.MinesCollection[x].StewardId = -1;
-                        DataModel.MinesCollection[x].Steward = "";
-                    }
-                }
-            }
-
-            for (int y = 0; y < DataModel.QuarriesCollection.Count; y++)
-            {
-                if (quarryId == DataModel.QuarriesCollection[y].Id)
-                {
-                    DataModel.QuarriesCollection[y].StewardId = stewardId;
-                    DataModel.QuarriesCollection[y].Steward = steward;
-                    DataModel.QuarriesCollection[y].Skill = skill;
-                }
-            }
         }
 
         #endregion

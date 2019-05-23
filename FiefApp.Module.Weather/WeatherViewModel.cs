@@ -4,6 +4,7 @@ using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
+using Prism.Commands;
 using Prism.Events;
 
 namespace FiefApp.Module.Weather
@@ -27,7 +28,19 @@ namespace FiefApp.Module.Weather
             TabName = "Väder/Dagsverk";
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+
+            EndOfYearCommand = new DelegateCommand(ExecuteEndOfYearCommand);
         }
+
+        #region DelegateCommand : EndOfYearCommand
+
+        public DelegateCommand EndOfYearCommand { get; set; }
+        private void ExecuteEndOfYearCommand()
+        {
+            _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+        }
+
+        #endregion
 
         #region DataModel
 
@@ -112,6 +125,7 @@ namespace FiefApp.Module.Weather
         {
             GetTotalAmountOfSerfs();
             GetTotalAmountOfSlaves();
+            GetNumberOfFishingboats();
             GetSubsidiaryData();
             GetForecasts();
             GetManorAcresSetManorDaysWork();
@@ -150,6 +164,11 @@ namespace FiefApp.Module.Weather
             int acres = _weatherService.GetManorAcres(Index);
 
             DataModel.ManorDaysWork = Convert.ToInt32(Math.Ceiling((decimal)acres / 6 * 80));
+        }
+
+        private void GetNumberOfFishingboats()
+        {
+            DataModel.NumberOfFishingBoats = _weatherService.GetNumberOfFishingboats(Index);
         }
 
         #endregion

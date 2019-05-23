@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using FiefApp.Module.Stewards.RoutedEvents;
 
 namespace FiefApp.Module.Stewards.UIElements.StewardUI
@@ -19,46 +20,24 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
             InitializeComponent();
             RootGrid.DataContext = this;
 
-            EditButtonCommand = new DelegateCommand(ExecuteEditButtonCommand);
             CancelEditingButtonCommand = new DelegateCommand(ExecuteCancelEditingButtonCommand);
             SaveEditedButtonCommand = new DelegateCommand(ExecuteSaveEditedButtonCommand);
-            RemoveButtonCommand = new DelegateCommand(ExecuteRemoveButtonCommand);
+            DeleteSteward = new DelegateCommand(ExecuteDeleteSteward);
+            EditSteward = new DelegateCommand(ExecuteEditSteward);
+
+            CheckStewards();
         }
 
-        #region DelegateCommand : EditButtonCommand
-
-        public DelegateCommand EditButtonCommand { get; set; }
-        private void ExecuteEditButtonCommand()
-        {
-            _oldStewardModel = new StewardModel()
-            {
-                Age = Age,
-                Bonus = Bonus,
-                Family = Family,
-                Loyalty = Loyalty,
-                PersonName = Name,
-                Resources = StewardResources,
-                Skill = Skill,
-                IndustryId = IndustryId,
-                Speciality = Speciality
-            };
-        }
-
-        #endregion
         #region DelegateCommand : CancelEditingButtonCommand
 
         public DelegateCommand CancelEditingButtonCommand { get; set; }
         private void ExecuteCancelEditingButtonCommand()
         {
             Age = _oldStewardModel.Age;
-            Bonus = _oldStewardModel.Bonus;
-            Family = _oldStewardModel.Family;
             Loyalty = _oldStewardModel.Loyalty;
-            Name = _oldStewardModel.PersonName;
+            Steward = _oldStewardModel.PersonName;
             StewardResources = _oldStewardModel.Resources;
             Skill = _oldStewardModel.Skill;
-            IndustryId = _oldStewardModel.IndustryId;
-            Speciality = _oldStewardModel.Speciality;
         }
 
         #endregion
@@ -75,14 +54,10 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                     new StewardModel()
                     {
                         Age = Age,
-                        Bonus = Bonus,
-                        Family = Family,
                         Loyalty = Loyalty,
                         PersonName = Steward,
                         Resources = StewardResources,
-                        Skill = Skill,
-                        IndustryId = IndustryId,
-                        Speciality = Speciality
+                        Skill = Skill
                     }
                 );
 
@@ -90,10 +65,10 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
         }
 
         #endregion
-        #region DelegateCommand : RemoveButtonCommand
+        #region DelegateCommand : DeleteSteward
 
-        public DelegateCommand RemoveButtonCommand { get; set; }
-        private void ExecuteRemoveButtonCommand()
+        public DelegateCommand DeleteSteward { get; set; }
+        private void ExecuteDeleteSteward()
         {
             StewardUIEventArgs newEventArgs =
                 new StewardUIEventArgs(
@@ -103,6 +78,19 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                 );
 
             RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+        #region DelegateCommand : EditSteward
+
+        public DelegateCommand EditSteward { get; set; }
+        private void ExecuteEditSteward()
+        {
+            _oldStewardModel.Age = Age;
+            _oldStewardModel.Loyalty = Loyalty;
+            _oldStewardModel.PersonName = Steward;
+            _oldStewardModel.Resources = StewardResources;
+            _oldStewardModel.Skill = Skill;
         }
 
         #endregion
@@ -165,32 +153,18 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                 new PropertyMetadata("0")
             );
 
-        public ObservableCollection<IndustryModel> IndustryCollection
+        public ObservableCollection<StewardIndustryModel> IndustriesCollection
         {
-            get => (ObservableCollection<IndustryModel>)GetValue(IndustryCollectionProperty);
-            set => SetValue(IndustryCollectionProperty, value);
+            get => (ObservableCollection<StewardIndustryModel>)GetValue(IndustriesCollectionProperty);
+            set => SetValue(IndustriesCollectionProperty, value);
         }
 
-        public static readonly DependencyProperty IndustryCollectionProperty =
+        public static readonly DependencyProperty IndustriesCollectionProperty =
             DependencyProperty.Register(
-                "IndustryCollection",
-                typeof(ObservableCollection<IndustryModel>),
+                "IndustriesCollection",
+                typeof(ObservableCollection<StewardIndustryModel>),
                 typeof(StewardUI),
-                new PropertyMetadata(new ObservableCollection<IndustryModel>())
-            );
-
-        public string Family
-        {
-            get => (string)GetValue(FamilyProperty);
-            set => SetValue(FamilyProperty, value);
-        }
-
-        public static readonly DependencyProperty FamilyProperty =
-            DependencyProperty.Register(
-                "Family",
-                typeof(string),
-                typeof(StewardUI),
-                new PropertyMetadata("")
+                new PropertyMetadata(new ObservableCollection<StewardIndustryModel>())
             );
 
         public string StewardResources
@@ -220,80 +194,127 @@ namespace FiefApp.Module.Stewards.UIElements.StewardUI
                 typeof(StewardUI),
                 new PropertyMetadata("0")
             );
-
-        public string Speciality
+        public string IndustryType
         {
-            get => (string)GetValue(SpecialityProperty);
-            set => SetValue(SpecialityProperty, value);
+            get => (string)GetValue(IndustryTypeProperty);
+            set => SetValue(IndustryTypeProperty, value);
         }
 
-        public static readonly DependencyProperty SpecialityProperty =
+        public static readonly DependencyProperty IndustryTypeProperty =
             DependencyProperty.Register(
-                "Speciality",
+                "IndustryType",
                 typeof(string),
                 typeof(StewardUI),
-                new PropertyMetadata("0")
-            );
-
-        public int Bonus
-        {
-            get => (int)GetValue(BonusProperty);
-            set => SetValue(BonusProperty, value);
-        }
-
-        public static readonly DependencyProperty BonusProperty =
-            DependencyProperty.Register(
-                "Bonus",
-                typeof(int),
-                typeof(StewardUI),
-                new PropertyMetadata(0)
-            );
-
-        public bool TreeViewIsExpanded
-        {
-            get => (bool)GetValue(TreeViewIsExpandedProperty);
-            set => SetValue(TreeViewIsExpandedProperty, value);
-        }
-
-        public static readonly DependencyProperty TreeViewIsExpandedProperty =
-            DependencyProperty.Register(
-                "TreeViewIsExpanded",
-                typeof(bool),
-                typeof(StewardUI),
-                new PropertyMetadata(false)
+                new PropertyMetadata("")
             );
 
         #endregion
 
         #region UI Properties
 
-        private StewardModel _oldStewardModel;
+        private StewardModel _oldStewardModel = new StewardModel();
 
-        private int _industryId;
-        public int IndustryId
+        private int _selectedIndustryIndex;
+        public int SelectedIndustryIndex
         {
-            get => _industryId;
+            get => _selectedIndustryIndex;
             set
             {
-                _industryId = value;
+                _selectedIndustryIndex = value;
                 NotifyPropertyChanged();
             }
         }
 
+        private string _comboBoxText;
+        public string ComboBoxText
+        {
+            get => _comboBoxText;
+            set
+            {
+                _comboBoxText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _editingSteward;
+        public bool EditingSteward
+        {
+            get => _editingSteward;
+            set
+            {
+                _editingSteward = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _loaded;
+
         #endregion
 
-        private void TreeViewItemIsExpandedCommand(object sender, RoutedEventArgs e)
-        {
-            StewardUIEventArgs newEventArgs =
-                new StewardUIEventArgs(
-                    StewardUIRoutedEvent,
-                    Id,
-                    "Expanded"
-                );
+        #region Methods
 
-            RaiseEvent(newEventArgs);
+        private void StewardUI_OnLoaded(
+            object sender, 
+            RoutedEventArgs e)
+        {
+            CheckStewards();
+            if (Id == 0)
+            {
+                Self.Visibility = Visibility.Collapsed;
+            }
+            _loaded = true;
         }
-        
+
+        private void Selector_OnSelectionChanged(
+            object sender, 
+            SelectionChangedEventArgs e)
+        {
+            if (_loaded && SelectedIndustryIndex != -1 && IndustriesCollection.Count > 0)
+            {
+                StewardUIEventArgs newEventArgs =
+                    new StewardUIEventArgs(
+                        StewardUIRoutedEvent,
+                        Id,
+                        "Change",
+                        new StewardModel()
+                        {
+                            Id = Id,
+                            Age = Age,
+                            Loyalty = Loyalty,
+                            PersonName = Steward,
+                            Resources = StewardResources,
+                            Skill = Skill,
+                            IndustryId = IndustriesCollection[SelectedIndustryIndex].IndustryId,
+                            Industry = IndustriesCollection[SelectedIndustryIndex].Industry,
+                            IndustryType = IndustriesCollection[SelectedIndustryIndex].IndustryType,
+                            ManorId = IndustriesCollection[SelectedIndustryIndex].FiefId
+                        }
+                    );
+
+                RaiseEvent(newEventArgs);
+            }
+        }
+
+        private void CheckStewards()
+        {
+            if (IndustryType != "")
+            {
+                for (int x = 0; x < IndustriesCollection.Count; x++)
+                {
+                    if (IndustriesCollection[x].StewardId == Id)
+                    {
+                        SelectedIndustryIndex = x;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                SelectedIndustryIndex = 0;
+            }
+        }
+
+        #endregion
 
         #region RoutedEvents
 

@@ -5,6 +5,8 @@ using FiefApp.Common.Infrastructure.Services;
 
 using Prism.Events;
 using System.Collections.ObjectModel;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.EndOfYear
 {
@@ -25,7 +27,19 @@ namespace FiefApp.Module.EndOfYear
             _eventAggregator = eventAggregator;
 
             TabName = "Bokslut";
+
+            EndOfYearCancelCommand = new DelegateCommand(ExecuteEndOfYearCancelCommand);
         }
+
+        #region DelegateCommand : EndOfYearCancelCommand
+
+        public DelegateCommand EndOfYearCancelCommand { get; set; }
+        private void ExecuteEndOfYearCancelCommand()
+        {
+            _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+        }
+
+        #endregion
 
         #region Data Model
 

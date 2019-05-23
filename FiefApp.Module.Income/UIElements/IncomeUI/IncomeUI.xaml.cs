@@ -22,6 +22,20 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
 
         #region Dependency Properties
 
+        public int Id
+        {
+            get => (int)GetValue(IdProperty);
+            set => SetValue(IdProperty, value);
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register(
+                "Id",
+                typeof(int),
+                typeof(IncomeUI),
+                new PropertyMetadata(-1)
+            );
+
         public string Income
         {
             get => (string)GetValue(IncomeProperty);
@@ -162,6 +176,20 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
                 new PropertyMetadata(false)
             );
 
+        public bool ShowInIncomes
+        {
+            get => (bool)GetValue(ShowInIncomesProperty);
+            set => SetValue(ShowInIncomesProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowInIncomesProperty =
+            DependencyProperty.Register(
+                "ShowInIncomes",
+                typeof(bool),
+                typeof(IncomeUI),
+                new PropertyMetadata(false)
+            );
+
         public int Difficulty
         {
             get => (int)GetValue(DifficultyProperty);
@@ -218,16 +246,19 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
 
         private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IncomeUIEventArgs newEventArgs =
-                new IncomeUIEventArgs(
-                    IncomeUIRoutedEvent,
-                    "Changed",
-                    (StewardModel)StewardsComboBox.SelectedItem,
-                    Income,
-                    ManorId
-                );
+            if (SelectedIndex != -1)
+            {
+                IncomeUIEventArgs newEventArgs =
+                    new IncomeUIEventArgs(
+                        IncomeUIRoutedEvent,
+                        "Changed",
+                        StewardsCollection[SelectedIndex].Id,
+                        Income,
+                        Id
+                    );
 
-            RaiseEvent(newEventArgs);
+                RaiseEvent(newEventArgs);
+            }
         }
 
         #endregion
@@ -262,6 +293,15 @@ namespace FiefApp.Module.Income.UIElements.IncomeUI
             }
 
             SelectedIndex = index;
+
+            if (!ShowInIncomes)
+            {
+                Self.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Self.Visibility = Visibility.Visible;
+            }
         }
     }
 }

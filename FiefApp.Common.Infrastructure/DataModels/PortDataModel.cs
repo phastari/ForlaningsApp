@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
@@ -75,6 +74,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
+        public ObservableCollection<StewardModel> StewardsCollection
+        {
+            get => _stewardsCollection;
+            set
+            {
+                _stewardsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<BoatModel> _boatsCollection = new ObservableCollection<BoatModel>();
         public ObservableCollection<BoatModel> BoatsCollection
         {
@@ -82,6 +92,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _boatsCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _fishingBoats;
+        public int FishingBoats
+        {
+            get => _fishingBoats;
+            set
+            {
+                _fishingBoats = value;
                 NotifyPropertyChanged();
             }
         }

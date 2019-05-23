@@ -249,6 +249,28 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private bool _canBeDeveloped = true;
+        public bool CanBeDeveloped
+        {
+            get => _canBeDeveloped;
+            set
+            {
+                _canBeDeveloped = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _beingDeveloped = false;
+        public bool BeingDeveloped
+        {
+            get => _beingDeveloped;
+            set
+            {
+                _beingDeveloped = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private ObservableCollection<StewardModel> _stewardsCollection;
         public ObservableCollection<StewardModel> StewardsCollection
         {

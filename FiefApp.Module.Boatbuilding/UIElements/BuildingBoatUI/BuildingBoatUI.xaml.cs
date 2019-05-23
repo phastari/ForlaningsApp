@@ -46,7 +46,8 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
                 Seaworthiness = Seaworthiness,
                 BuildTimeInDays = BuildTimeInDays,
                 BuildTimeInDaysAll = BuildTimeInDaysAll,
-                NextFinishedDays = BuildTimeInDays
+                NextFinishedDays = BuildTimeInDays,
+                AddAsBuilt = AddAsBuilt
             };
 
             BuildingBoatUIEventArgs newEventArgs =
@@ -103,8 +104,24 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
             get => _length;
             set
             {
-                _length = value;
-                if (value > 0)
+                if (value > 0 && LengthMin >= value && LengthMax <= value)
+                {
+                    _length = value;
+                }
+                else if (value > 0 && value < LengthMin)
+                {
+                    _length = LengthMin;
+                }
+                else if (value > 0 && value > LengthMax)
+                {
+                    _length = LengthMax;
+                }
+                else
+                {
+                    _length = 0;
+                }
+
+                if (Length > 0)
                 {
                     CalculateBoat();
                 }
@@ -391,6 +408,17 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
             }
         }
 
+        private bool _addAsBuilt;
+        public bool AddAsBuilt
+        {
+            get => _addAsBuilt;
+            set
+            {
+                _addAsBuilt = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged
@@ -413,6 +441,8 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
                 Length = 0;
                 Amount = 1;
                 LengthInfo = BoatTypeCollection[SelectedBoatTypeIndex].LengthInfo;
+                LengthMin = BoatTypeCollection[SelectedBoatTypeIndex].LengthMin;
+                LengthMax = BoatTypeCollection[SelectedBoatTypeIndex].LengthMax;
                 BoatWidth = 0M;
                 Depth = 0M;
                 Crew = 0;
@@ -426,6 +456,7 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
                 BuildTimeInDays = 0;
                 BuildTimeInDaysAll = 0;
                 IMGSource = $"/FiefApp.Common.Infrastructure;component/Graphics/Boats/{BoatTypeCollection[SelectedBoatTypeIndex].IMGSource}";
+                AddAsBuilt = false;
             }
         }
 
@@ -508,6 +539,7 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
             BuildTimeInDaysAll = 0;
             IMGSource = null;
             SelectedBoatTypeIndex = -1;
+            AddAsBuilt = false;
         }
 
         #endregion

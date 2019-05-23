@@ -1475,9 +1475,11 @@
 
         <Button
             Content="Bokslut"
+            Command="{Binding Path=EndOfYearCommand}"
             Grid.Column="28"
             Grid.ColumnSpan="2"
             Grid.Row="37"
+            Background="AntiqueWhite"
             Padding="0"/>
 
 

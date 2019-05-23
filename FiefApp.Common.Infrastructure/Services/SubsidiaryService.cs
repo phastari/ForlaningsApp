@@ -89,31 +89,6 @@ namespace FiefApp.Common.Infrastructure.Services
             }
         }
 
-        public int GetNewIdForSubsidiary()
-        {
-            List<int> tempList = new List<int>();
-
-            for (int x = 0; x < _settingsService.SubsidiarySettingsList.Count; x++)
-            {
-                tempList.Add(x);
-            }
-
-            for (int x = 0; x < _fiefService.CustomSubsidiaryList.Count; x++)
-            {
-                tempList.Add(_fiefService.CustomSubsidiaryList[x].Id);
-            }
-
-            for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
-            {
-                for (int y = 0; y < _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count; y++)
-                {
-                    tempList.Add(_fiefService.SubsidiaryList[x].SubsidiaryCollection[y].Id);
-                }
-            }
-
-            return tempList.Max() + 1;
-        }
-
         public void EditCustomSubsidiary(SubsidiaryModel model)
         {
             for (int x = 0; x < _fiefService.CustomSubsidiaryList.Count; x++)
@@ -129,47 +104,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public ObservableCollection<StewardModel> GetAllStewards()
         {
-            return _fiefService.StewardsList[0].StewardsCollection;
-        }
-
-        public void ChangeSteward(int stewardId, int subsidiaryId, string subsidiary)
-        {
-            for (int x = 0; x < _fiefService.StewardsList[0].StewardsCollection.Count; x++)
-            {
-                if (_fiefService.StewardsList[0].StewardsCollection[x].IndustryId == subsidiaryId && _fiefService.StewardsList[0].StewardsCollection[x].Industry == subsidiary)
-                {
-                    _fiefService.StewardsList[0].StewardsCollection[x].IndustryId = -1;
-                    _fiefService.StewardsList[0].StewardsCollection[x].ManorId = -1;
-                    _fiefService.StewardsList[0].StewardsCollection[x].Industry = "";
-                }
-            }
-
-            for (int x = 0; x < _fiefService.StewardsList[0].StewardsCollection.Count; x++)
-            {
-                if (_fiefService.StewardsList[0].StewardsCollection[x].Id == stewardId)
-                {
-                    _fiefService.StewardsList[0].StewardsCollection[x].IndustryId = subsidiaryId;
-                    _fiefService.StewardsList[0].StewardsCollection[x].ManorId = -1;
-                    _fiefService.StewardsList[0].StewardsCollection[x].Industry = subsidiary;
-                }
-            }
-
-            for (int x = 1; x < _fiefService.StewardsList.Count; x++)
-            {
-                _fiefService.StewardsList[x].StewardsCollection = _fiefService.StewardsList[0].StewardsCollection;
-            }
-
-            for (int x = 1; x < _fiefService.IncomeList.Count; x++)
-            {
-                for (int y = 0; y < _fiefService.IncomeList[x].IncomesCollection.Count; y++)
-                {
-                    if (_fiefService.IncomeList[x].IncomesCollection[y].StewardId == stewardId)
-                    {
-                        _fiefService.IncomeList[x].IncomesCollection[y].StewardId = -1;
-                        _fiefService.IncomeList[x].IncomesCollection[y].Steward = "";
-                    }
-                }
-            }
+            return _fiefService.StewardsCollection;
         }
 
         public ObservableCollection<SubsidiaryModel> GetSubsidiaryCollection(int index)

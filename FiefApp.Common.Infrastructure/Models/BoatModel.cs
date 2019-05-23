@@ -101,6 +101,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        public bool AddAsBuilt { get; set; }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

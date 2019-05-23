@@ -76,5 +76,15 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             return _fiefService.ManorList[index].ManorAcres;
         }
+
+        public int GetNumberOfFishingboats(int index)
+        {
+            return _fiefService.PortsList[index].FishingBoats;
+        }
+
+        public void SetNumberOfFishingboats(int index, int fishingboats)
+        {
+            _fiefService.PortsList[index].FishingBoats = fishingboats;
+        }
     }
 }

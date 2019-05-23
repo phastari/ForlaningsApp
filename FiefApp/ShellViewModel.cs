@@ -40,6 +40,7 @@ namespace FiefApp
             // INIT
             FileIsSaved = Properties.Settings.Default.IsSaved;
             _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
+            _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(ExecuteEndOfYear);
         }
 
         #region DelegateCommand : NewFiefCommand
@@ -89,8 +90,8 @@ namespace FiefApp
                 _fiefService.MinesList = new List<MinesDataModel>(obj.MinesList);
                 _fiefService.PortsList.Clear();
                 _fiefService.PortsList = new List<PortDataModel>(obj.PortsList);
-                _fiefService.StewardsList.Clear();
-                _fiefService.StewardsList = new List<StewardsDataModel>(obj.StewardsList);
+                _fiefService.StewardsCollection.Clear();
+                _fiefService.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsCollection);
                 _fiefService.SubsidiaryList.Clear();
                 _fiefService.SubsidiaryList = new List<SubsidiaryDataModel>(obj.SubsidiaryList);
                 _fiefService.SupplyDataModel = (SupplyDataModel)obj.SupplyDataModel.Clone();
@@ -245,8 +246,6 @@ namespace FiefApp
                     _fiefService.MinesList = new List<MinesDataModel>(obj.MinesList);
                     _fiefService.PortsList.Clear();
                     _fiefService.PortsList = new List<PortDataModel>(obj.PortsList);
-                    _fiefService.StewardsList.Clear();
-                    _fiefService.StewardsList = new List<StewardsDataModel>(obj.StewardsList);
                     _fiefService.SubsidiaryList.Clear();
                     _fiefService.SubsidiaryList = new List<SubsidiaryDataModel>(obj.SubsidiaryList);
                     _fiefService.SupplyDataModel = (SupplyDataModel)obj.SupplyDataModel.Clone();
@@ -254,6 +253,7 @@ namespace FiefApp
                     _fiefService.TradeList = new List<TradeDataModel>(obj.TradeList);
                     _fiefService.WeatherList.Clear();
                     _fiefService.WeatherList = new List<WeatherDataModel>(obj.WeatherList);
+                    _fiefService.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsCollection);
 
                     ForlaningsNamn = _fiefService.InformationList[1].FiefName;
                     ForlaningsAr = _fiefService.Year;
@@ -301,7 +301,7 @@ namespace FiefApp
         private string _forlaningsNamn;
         public string ForlaningsNamn
         {
-            get { return _forlaningsNamn; }
+            get => _forlaningsNamn;
             set
             {
                 if (SetProperty(ref _forlaningsNamn, value))
@@ -314,7 +314,7 @@ namespace FiefApp
         private int _forlaningsAr;
         public int ForlaningsAr
         {
-            get { return _forlaningsAr; }
+            get => _forlaningsAr;
             set
             {
                 if (SetProperty(ref _forlaningsAr, value))
@@ -327,22 +327,22 @@ namespace FiefApp
         private string _title = "Förlänings applikation";
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         private bool _fileIsSaved;
         public bool FileIsSaved
         {
-            get { return _fileIsSaved; }
-            set { SetProperty(ref _fileIsSaved, value); }
+            get => _fileIsSaved;
+            set => SetProperty(ref _fileIsSaved, value);
         }
 
         private string _fileName;
         public string FileName
         {
-            get { return _fileName; }
-            set { SetProperty(ref _fileName, value); }
+            get => _fileName;
+            set => SetProperty(ref _fileName, value);
         }
 
         private bool _loadLast;
@@ -360,6 +360,13 @@ namespace FiefApp
                     }
                 }
             }
+        }
+
+        private bool _endOfYear;
+        public bool EndOfYear
+        {
+            get => _endOfYear;
+            set => SetProperty(ref _endOfYear, value);
         }
 
         #endregion
@@ -427,14 +434,6 @@ namespace FiefApp
                 {
                     Id = 1
                 });
-                _fiefService.StewardsList.Add(new StewardsDataModel()
-                {
-                    Id = 0
-                });
-                _fiefService.StewardsList.Add(new StewardsDataModel()
-                {
-                    Id = 1
-                });
                 _fiefService.SubsidiaryList.Add(new SubsidiaryDataModel()
                 {
                     Id = 0
@@ -488,6 +487,13 @@ namespace FiefApp
                     new IncomeDataModel(),
                     new IncomeDataModel()
                 };
+                _fiefService.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>()
+                {
+                    new StewardModel()
+                    {
+                        Id = 0
+                    }
+                };
             }
         }
 
@@ -500,6 +506,11 @@ namespace FiefApp
         private void ExecuteFiefNameChangedEvent()
         {
             ForlaningsNamn = _fiefService.InformationList[1].FiefName;
+        }
+
+        private void ExecuteEndOfYear()
+        {
+            EndOfYear = !EndOfYear;
         }
 
         #endregion

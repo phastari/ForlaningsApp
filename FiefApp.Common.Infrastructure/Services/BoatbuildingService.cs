@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
-using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -99,6 +98,16 @@ namespace FiefApp.Common.Infrastructure.Services
         public int GetVillageBoatBuilders(int index)
         {
             return _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Boatbuilders);
+        }
+
+        public void AddBoatToCompletedBoats(int index, BoatModel model)
+        {
+            _fiefService.PortsList[index].BoatsCollection.Add(model);
+        }
+
+        public void AddFishingBoat(int index, int amount)
+        {
+            _fiefService.PortsList[index].FishingBoats += amount;
         }
     }
 }

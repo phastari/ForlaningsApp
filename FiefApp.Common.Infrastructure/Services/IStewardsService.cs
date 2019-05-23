@@ -8,6 +8,6 @@ namespace FiefApp.Common.Infrastructure.Services
     {
         List<IndustryModel> GetIndustryModels(int index);
         int GetNextStewardId();
-        StewardsDataModel GetAllStewardsDataModel();
+        List<StewardIndustryModel> GetIndustries(int index);
     }
 }

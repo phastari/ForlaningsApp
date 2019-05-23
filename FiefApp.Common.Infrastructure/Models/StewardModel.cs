@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -14,21 +15,49 @@ namespace FiefApp.Common.Infrastructure.Models
         public string Resources { get; set; }
         public string Loyalty { get; set; }
         public string Skill { get; set; }
-        public string Speciality { get; set; }
-        public int Bonus { get; set; }
-        public string Family { get; set; }
 
-        public string Industry { get; set; }
-        public int IndustryId { get; set; }
-        public int ManorId { get; set; } = -1;
-
-        private bool _treeViewIsExpanded;
-        public bool TreeViewIsExpanded
+        private string _industry = "";
+        public string Industry
         {
-            get => _treeViewIsExpanded;
+            get => _industry;
             set
             {
-                _treeViewIsExpanded = value;
+                _industry = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _industryType = "";
+        public string IndustryType
+        {
+            get => _industryType;
+            set
+            {
+                _industryType = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _industryId = -1;
+        public int IndustryId
+        {
+            get => _industryId;
+            set
+            {
+                _industryId = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int ManorId { get; set; } = -1;
+
+        private ObservableCollection<StewardIndustryModel> _industriesCollection;
+        public ObservableCollection<StewardIndustryModel> IndustriesCollection
+        {
+            get => _industriesCollection;
+            set
+            {
+                _industriesCollection = value;
                 NotifyPropertyChanged();
             }
         }

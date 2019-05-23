@@ -9,7 +9,7 @@ namespace FiefApp.Module.EndOfYear
         public void OnInitialized(IContainerProvider containerProvider)
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion("TabRegion", typeof(EndOfYearView));
+            regionManager.RegisterViewWithRegion("EndOfYearRegion", typeof(EndOfYearView));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
