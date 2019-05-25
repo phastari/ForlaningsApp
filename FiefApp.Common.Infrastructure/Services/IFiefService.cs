@@ -16,7 +16,7 @@ namespace FiefApp.Common.Infrastructure.Services
         List<ManorDataModel> ManorList { get; set; }
         List<BoatbuildingDataModel> BoatbuildingList { get; set; }
         List<ExpensesDataModel> ExpensesList { get; set; }
-        ObservableCollection<StewardModel> StewardsCollection { get; set; }
+        StewardsDataModel StewardsDataModel { get; set; }
         List<SubsidiaryDataModel> SubsidiaryList { get; set; }
         List<SubsidiaryModel> CustomSubsidiaryList { get; set; }
         List<IncomeDataModel> IncomeList { get; set; }
@@ -25,9 +25,7 @@ namespace FiefApp.Common.Infrastructure.Services
         List<TradeDataModel> TradeList { get; set; }
         List<PortDataModel> PortsList { get; set; }
         List<MinesDataModel> MinesList { get; set; }
-
         SupplyDataModel SupplyDataModel { get; set; }
-
         int GetRandom(int min, int max);
     }
 }

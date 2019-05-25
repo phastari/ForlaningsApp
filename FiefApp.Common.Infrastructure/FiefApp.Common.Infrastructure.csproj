@@ -122,6 +122,7 @@
     <Compile Include="Models\EndOfYearTaxesModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\IncomeModel.cs" />
+    <Compile Include="Models\IndustryBeingDevelopedModel.cs" />
     <Compile Include="Models\IndustryModel.cs" />
     <Compile Include="Models\LivingconditionModel.cs" />
     <Compile Include="Models\ManorModel.cs" />

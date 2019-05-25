@@ -16,7 +16,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<ManorDataModel> ManorList { get; set; } = new List<ManorDataModel>();
         public List<BoatbuildingDataModel> BoatbuildingList { get; set; } = new List<BoatbuildingDataModel>();
         public List<ExpensesDataModel> ExpensesList { get; set; } = new List<ExpensesDataModel>();
-        public ObservableCollection<StewardModel> StewardsCollection { get; set; } = new ObservableCollection<StewardModel>();
+        public StewardsDataModel StewardsDataModel { get; set; } = new StewardsDataModel();
         public List<SubsidiaryDataModel> SubsidiaryList { get; set; } = new List<SubsidiaryDataModel>();
         public List<SubsidiaryModel> CustomSubsidiaryList { get; set; } = new List<SubsidiaryModel>();
         public List<IncomeDataModel> IncomeList { get; set; } = new List<IncomeDataModel>();
@@ -27,7 +27,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<TradeDataModel> TradeList { get; set; } = new List<TradeDataModel>();
         public SupplyDataModel SupplyDataModel { get; set; } = new SupplyDataModel();
 
-        private readonly Random _getRandom = new Random(Guid.NewGuid().GetHashCode() * Guid.NewGuid().GetHashCode());
+        private readonly Random _getRandom = new Random(Guid.NewGuid().GetHashCode());
         public int GetRandom(int min, int max)
         {
             lock (_getRandom)

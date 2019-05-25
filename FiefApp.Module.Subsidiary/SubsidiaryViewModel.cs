@@ -318,7 +318,7 @@ namespace FiefApp.Module.Subsidiary
                         == 0 ? _subsidiaryService.GetAllSubsidiaryDataModel()
                 : _baseService.GetDataModel<SubsidiaryDataModel>(Index);
 
-            DataModel.StewardsCollection = _subsidiaryService.GetAllStewards();
+            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
             for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
             {
                 DataModel.ConstructingCollection[x].StewardsCollection = DataModel.StewardsCollection;

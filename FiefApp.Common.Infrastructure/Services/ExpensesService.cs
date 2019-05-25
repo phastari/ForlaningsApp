@@ -173,19 +173,19 @@ namespace FiefApp.Common.Infrastructure.Services
                    + _fiefService.EmployeesList[index].Prospector
                    + _fiefService.EmployeesList[index].Scholar
                    + _fiefService.EmployeesList[index].EmployeesCollection.Count
-                   + _fiefService.StewardsCollection.Count;
+                   + _fiefService.StewardsDataModel.StewardsCollection.Count;
         }
 
         public int GetEmployeeBaseCost(int index)
         {
             return _fiefService.EmployeesList[index].TotalBase
-                   + _fiefService.StewardsCollection.Count * 4;
+                   + _fiefService.StewardsDataModel.StewardsCollection.Count * 4;
         }
 
         public int GetEmployeeLuxuryCost(int index)
         {
             return _fiefService.EmployeesList[index].TotalLuxury
-                   + _fiefService.StewardsCollection.Count * 2;
+                   + _fiefService.StewardsDataModel.StewardsCollection.Count * 2;
         }
 
         public int GetManorUpkeep(int index)

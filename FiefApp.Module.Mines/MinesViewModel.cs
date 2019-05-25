@@ -349,7 +349,7 @@ namespace FiefApp.Module.Mines
             {
                 for (int x = 0; x < DataModel.MinesCollection.Count; x++)
                 {
-                    DataModel.MinesCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_minesService.GetStewardsCollection());
+                    DataModel.MinesCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_baseService.GetStewardsCollection());
                 }
             }
         }
@@ -360,7 +360,7 @@ namespace FiefApp.Module.Mines
             {
                 for (int x = 0; x < DataModel.QuarriesCollection.Count; x++)
                 {
-                    DataModel.QuarriesCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_minesService.GetStewardsCollection());
+                    DataModel.QuarriesCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_baseService.GetStewardsCollection());
                 }
             }
         }

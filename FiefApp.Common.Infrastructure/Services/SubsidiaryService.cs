@@ -102,11 +102,6 @@ namespace FiefApp.Common.Infrastructure.Services
             }
         }
 
-        public ObservableCollection<StewardModel> GetAllStewards()
-        {
-            return _fiefService.StewardsCollection;
-        }
-
         public ObservableCollection<SubsidiaryModel> GetSubsidiaryCollection(int index)
         {
             return _fiefService.SubsidiaryList[index].SubsidiaryCollection;

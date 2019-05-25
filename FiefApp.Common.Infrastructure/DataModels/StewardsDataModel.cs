@@ -1,7 +1,8 @@
-﻿using FiefApp.Common.Infrastructure.Models;
+﻿using CommonServiceLocator;
+using FiefApp.Common.Infrastructure.Models;
+using FiefApp.Common.Infrastructure.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -9,12 +10,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
 {
     public class StewardsDataModel : INotifyPropertyChanged, ICloneable, IDataModelBase
     {
-        public StewardsDataModel()
-        {
-            //IndustriesCollection.CollectionChanged += IndustriesCollectionChanged;
-            StewardsCollection.CollectionChanged += StewardsCollectionChanged;
-        }
-
         private ObservableCollection<StewardModel> _stewardsCollection = new ObservableCollection<StewardModel>();
         public ObservableCollection<StewardModel> StewardsCollection
         {
@@ -33,6 +28,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _industriesCollection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IndustryBeingDevelopedModel> _industriesBeingDevelopedCollection = new ObservableCollection<IndustryBeingDevelopedModel>();
+        public ObservableCollection<IndustryBeingDevelopedModel> IndustriesBeingDevelopedCollection
+        {
+            get => _industriesBeingDevelopedCollection;
+            set
+            {
+                _industriesBeingDevelopedCollection = value;
                 NotifyPropertyChanged();
             }
         }
@@ -58,37 +64,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 NotifyPropertyChanged();
             }
         }
-
-        #region PropertyChanged Listener For StewardsCollection
-
-        private void StewardsCollectionChanged(
-            object sender,
-            NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
-            {
-                foreach (INotifyPropertyChanged item in e.OldItems)
-                {
-                    item.PropertyChanged -= StewardsCollection_PropertyChanged;
-                }
-            }
-            if (e.NewItems != null)
-            {
-                foreach (INotifyPropertyChanged item in e.NewItems)
-                {
-                    item.PropertyChanged += StewardsCollection_PropertyChanged;
-                }
-            }
-        }
-
-        private void StewardsCollection_PropertyChanged(
-            object sender,
-            PropertyChangedEventArgs e)
-        {
-
-        }
-
-        #endregion
 
         #region INotifyPropertyChanged
 

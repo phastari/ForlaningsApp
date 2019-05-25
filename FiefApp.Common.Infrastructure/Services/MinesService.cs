@@ -57,11 +57,6 @@ namespace FiefApp.Common.Infrastructure.Services
             return 6;
         }
 
-        public List<StewardModel> GetStewardsCollection()
-        {
-            return new List<StewardModel>(_fiefService.StewardsCollection);
-        }
-
         public List<MineModel> GetMinesCollection(int index)
         {
             return new List<MineModel>(_fiefService.MinesList[index].MinesCollection);

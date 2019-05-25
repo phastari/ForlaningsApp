@@ -9,5 +9,6 @@ namespace FiefApp.Common.Infrastructure.Services
         List<IndustryModel> GetIndustryModels(int index);
         int GetNextStewardId();
         List<StewardIndustryModel> GetIndustries(int index);
+        void SetBeingDevelopedInIndustries(int industryId, bool beingDeveloped);
     }
 }

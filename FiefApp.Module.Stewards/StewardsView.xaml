@@ -149,6 +149,33 @@
             Padding="0">
 
             <StackPanel>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="21"/>
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="45"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label 
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Content="Näring"
+                        VerticalContentAlignment="Center"
+                        Padding="6,0,0,0"/>
+
+                    <Label 
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Content="Utveckla"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Padding="0"/>
+                </Grid>
                
             <ItemsControl
                 ItemsSource="{Binding Path=DataModel.IndustriesCollection}"
@@ -172,10 +199,15 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <industryUI:IndustryUI
+                            Id="{Binding Path=IndustryId}"
                             Industry="{Binding Path=Industry}"
                             CanBeDeveloped="{Binding Path=CanBeDeveloped}"
                             BeingDeveloped="{Binding Path=BeingDeveloped}">
-                            
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="IndustryUIEvent">
+                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.IndustryUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </industryUI:IndustryUI>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

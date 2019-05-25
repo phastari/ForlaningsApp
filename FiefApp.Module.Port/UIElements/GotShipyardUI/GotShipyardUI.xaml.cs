@@ -1,7 +1,6 @@
 ﻿using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Module.Port.RoutedEvents;
 using System;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;

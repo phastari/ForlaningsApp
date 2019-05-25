@@ -36,6 +36,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 IncomeModel temp =
                     new IncomeModel()
                     {
+                        Id = -1,
                         Income = "Avrad",
                         Manor = _fiefService.InformationList[index].FiefName,
                         ManorId = index,
@@ -68,6 +69,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 temp =
                     new IncomeModel()
                     {
+                        Id = -1,
                         Income = "Skatter",
                         Manor = _fiefService.InformationList[index].FiefName,
                         ManorId = index,
@@ -100,6 +102,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 temp =
                     new IncomeModel()
                     {
+                        Id = -1,
                         Income = "Licensavgifter",
                         Manor = _fiefService.InformationList[index].FiefName,
                         ManorId = index,
@@ -154,6 +157,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 temp =
                     new IncomeModel()
                     {
+                        Id = -1,
                         Income = "Tullar",
                         Manor = _fiefService.InformationList[index].FiefName,
                         ManorId = index,
@@ -206,7 +210,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Iron = -1,
                         IsStewardNeeded = true,
                         ShowInIncomes = true,
-                        StewardsCollection = _fiefService.StewardsCollection,
+                        StewardsCollection = _baseService.GetStewardsCollection(),
                         Spring = 0.3M,
                         Summer = 0.3M,
                         Fall = 0.25M,
@@ -224,11 +228,11 @@ namespace FiefApp.Common.Infrastructure.Services
                 else
                 {
                     temp.Id = _fiefService.IncomeList[index].IncomesCollection.FirstOrDefault(o => o.Income == "Djurhållning").Id;
-                    if (_fiefService.StewardsCollection.Count > 0)
+                    if (_fiefService.StewardsDataModel.StewardsCollection.Count > 0)
                     {
-                        if (_fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
+                        if (_fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
                         {
-                            temp.StewardId = _fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
+                            temp.StewardId = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
                         }
                         else
                         {
@@ -278,7 +282,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Iron = -1,
                         IsStewardNeeded = true,
                         ShowInIncomes = true,
-                        StewardsCollection = _fiefService.StewardsCollection,
+                        StewardsCollection = _baseService.GetStewardsCollection(),
                         Spring = 0.9M,
                         Summer = 0.9M,
                         Fall = 0.1M,
@@ -296,11 +300,11 @@ namespace FiefApp.Common.Infrastructure.Services
                 else
                 {
                     temp.Id = _fiefService.IncomeList[index].IncomesCollection.FirstOrDefault(o => o.Income == "Jordbruk").Id;
-                    if (_fiefService.StewardsCollection.Count > 0)
+                    if (_fiefService.StewardsDataModel.StewardsCollection.Count > 0)
                     {
-                        if (_fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
+                        if (_fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
                         {
-                            temp.StewardId = _fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
+                            temp.StewardId = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
                         }
                         else
                         {
@@ -349,7 +353,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Stone = -1,
                         Iron = -1,
                         IsStewardNeeded = true,
-                        StewardsCollection = _fiefService.StewardsCollection,
+                        StewardsCollection = _baseService.GetStewardsCollection(),
                         Spring = 0.3M,
                         Summer = 0.3M,
                         Fall = 0.3M,
@@ -367,11 +371,11 @@ namespace FiefApp.Common.Infrastructure.Services
                 else
                 {
                     temp.Id = _fiefService.IncomeList[index].IncomesCollection.FirstOrDefault(o => o.Income == "Jakt").Id;
-                    if (_fiefService.StewardsCollection.Count > 0)
+                    if (_fiefService.StewardsDataModel.StewardsCollection.Count > 0)
                     {
-                        if (_fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
+                        if (_fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
                         {
-                            temp.StewardId = _fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
+                            temp.StewardId = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
                         }
                         else
                         {
@@ -428,7 +432,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Stone = -1,
                         Iron = -1,
                         IsStewardNeeded = true,
-                        StewardsCollection = _fiefService.StewardsCollection,
+                        StewardsCollection = _baseService.GetStewardsCollection(),
                         Spring = 0.4M,
                         Summer = 0.4M,
                         Fall = 0.4M,
@@ -446,11 +450,11 @@ namespace FiefApp.Common.Infrastructure.Services
                 else
                 {
                     temp.Id = _fiefService.IncomeList[index].IncomesCollection.FirstOrDefault(o => o.Income == "Fiske").Id;
-                    if (_fiefService.StewardsCollection.Count > 0)
+                    if (_fiefService.StewardsDataModel.StewardsCollection.Count > 0)
                     {
-                        if (_fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
+                        if (_fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
                         {
-                            temp.StewardId = _fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
+                            temp.StewardId = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
                         }
                         else
                         {
@@ -516,7 +520,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Stone = -1,
                         Iron = -1,
                         IsStewardNeeded = true,
-                        StewardsCollection = _fiefService.StewardsCollection,
+                        StewardsCollection = _baseService.GetStewardsCollection(),
                         Spring = 0.3M,
                         Summer = 0.3M,
                         Fall = 0.3M,
@@ -534,11 +538,11 @@ namespace FiefApp.Common.Infrastructure.Services
                 else
                 {
                     temp.Id = _fiefService.IncomeList[index].IncomesCollection.FirstOrDefault(o => o.Income == "Skogsavverkning").Id;
-                    if (_fiefService.StewardsCollection.Count > 0)
+                    if (_fiefService.StewardsDataModel.StewardsCollection.Count > 0)
                     {
-                        if (_fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
+                        if (_fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id) != null)
                         {
-                            temp.StewardId = _fiefService.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
+                            temp.StewardId = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.IndustryId == temp.Id).Id;
                         }
                         else
                         {

@@ -10,6 +10,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace FiefApp.Module.Stewards
 {
@@ -32,6 +33,7 @@ namespace FiefApp.Module.Stewards
             TabName = "Förvaltare";
 
             StewardUIEventHandler = new CustomDelegateCommand(ExecuteStewardUIEventHandler, o => true);
+            IndustryUIEventHandler = new CustomDelegateCommand(ExecuteIndustryUIEventHandler, o => true);
             AddStewardCommand = new DelegateCommand(ExecuteAddStewardCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
@@ -121,6 +123,43 @@ namespace FiefApp.Module.Stewards
         }
 
         #endregion
+        #region CustomDelegateCommand : IndustryUIEventHandler
+
+        public CustomDelegateCommand IndustryUIEventHandler { get; set; }
+        private void ExecuteIndustryUIEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is IndustryUIEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            switch (e.Action)
+            {
+                case "Changed":
+                    {
+                        for (int x = 0; x < DataModel.IndustriesCollection.Count; x++)
+                        {
+                            if (DataModel.IndustriesCollection[x].IndustryId == e.Id)
+                            {
+                                DataModel.IndustriesCollection[x].BeingDeveloped = e.BeingDeveloped;
+                                break;
+                            }
+                        }
+
+                        _baseService.SaveStewardsCollection(DataModel.StewardsCollection);
+                        _stewardsService.SetBeingDevelopedInIndustries(e.Id, e.BeingDeveloped);
+                        GetInformationSetDataModel();
+
+                        break;
+                    }
+            }
+        }
+
+        #endregion
         #region DelegateCommand : AddStewardCommand
 
         public DelegateCommand AddStewardCommand { get; set; }
@@ -146,7 +185,7 @@ namespace FiefApp.Module.Stewards
 
         #region DataModels
 
-        private StewardsDataModel _dataModel = new StewardsDataModel();
+        private StewardsDataModel _dataModel;
         public StewardsDataModel DataModel
         {
             get => _dataModel;
@@ -159,16 +198,74 @@ namespace FiefApp.Module.Stewards
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SaveStewardsCollection(DataModel.StewardsCollection);
+            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
         }
 
         protected override void LoadData()
         {
-            DataModel = new StewardsDataModel();
+            DataModel = _baseService.GetDataModel<StewardsDataModel>(Index);
+
+            if (DataModel.IndustriesBeingDevelopedCollection.Count == 0)
+            {
+                int id = _baseService.GetNewIndustryId();
+
+                DataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
+                {
+                    Id = id,
+                    Industry = "Utveckla Medicin",
+                    IndustryId = id,
+                    StewardId = -1
+                });
+                id++;
+
+                DataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
+                {
+                    Id = id,
+                    Industry = "Utveckla Militär",
+                    IndustryId = id,
+                    StewardId = -1
+                });
+                id++;
+
+                DataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
+                {
+                    Id = id,
+                    Industry = "Utveckla Utbildning",
+                    IndustryId = id,
+                    StewardId = -1
+                });
+            }
 
             GetInformationSetDataModel();
             UpdateFiefCollection();
+
+            //DataModel.StewardsCollection.CollectionChanged += StewardsCollection_CollectionChanged;
         }
+
+        //private void StewardsCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.OldItems != null)
+        //    {
+        //        foreach (INotifyPropertyChanged item in e.OldItems)
+        //        {
+        //            item.PropertyChanged -= StewardsCollection_PropertyChanged;
+        //        }
+        //    }
+        //    if (e.NewItems != null)
+        //    {
+        //        foreach (INotifyPropertyChanged item in e.NewItems)
+        //        {
+        //            item.PropertyChanged += StewardsCollection_PropertyChanged;
+        //        }
+        //    }
+        //}
+
+        //private void StewardsCollection_PropertyChanged(
+        //    object sender, 
+        //    PropertyChangedEventArgs e)
+        //{
+        //    Console.WriteLine("!!!");
+        //}
 
         private void GetInformationSetDataModel()
         {
@@ -191,7 +288,7 @@ namespace FiefApp.Module.Stewards
         private void SetStewardsAndIndustriesCount()
         {
             DataModel.NumberOfStewards = DataModel.StewardsCollection.Count - 1;
-            DataModel.NumberOfIndustires = DataModel.IndustriesCollection.Count - 1;
+            DataModel.NumberOfIndustires = DataModel.IndustriesCollection.Count - 1 - DataModel.IndustriesBeingDevelopedCollection.Count;
         }
 
         private void SetAllStewardsIndustiresCollections()

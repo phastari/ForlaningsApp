@@ -9,7 +9,6 @@ namespace FiefApp.Common.Infrastructure.Services
         MinesDataModel GetAllMinesDataModel();
         int GetMinesDifficulty(int index);
         int GetQuarriesDifficulty(int index);
-        List<StewardModel> GetStewardsCollection();
         List<MineModel> GetMinesCollection(int index);
         int GetAvailableGuards(int index);
         bool SetUsedGuards(int index, int amount);

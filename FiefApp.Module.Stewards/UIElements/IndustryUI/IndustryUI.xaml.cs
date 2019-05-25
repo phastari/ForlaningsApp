@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using FiefApp.Module.Stewards.RoutedEvents;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FiefApp.Module.Stewards.UIElements.IndustryUI
@@ -55,7 +57,7 @@ namespace FiefApp.Module.Stewards.UIElements.IndustryUI
                 "BeingDeveloped",
                 typeof(bool),
                 typeof(IndustryUI),
-                new PropertyMetadata(false)
+                new PropertyMetadata(false, BeingDevelopedChanged)
             );
 
         public bool CanBeDeveloped
@@ -81,5 +83,43 @@ namespace FiefApp.Module.Stewards.UIElements.IndustryUI
                 Self.Visibility = Visibility.Collapsed;
             }
         }
+
+        private static void BeingDevelopedChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is IndustryUI c)
+                c.BeingDevelopedPropertyChanged();
+        }
+
+        private void BeingDevelopedPropertyChanged()
+        {
+            IndustryUIEventArgs newEventArgs =
+                new IndustryUIEventArgs(
+                    IndustryUIRoutedEvent,
+                    Id,
+                    "Changed",
+                    BeingDeveloped
+                );
+            RaiseEvent(newEventArgs);
+        }
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent IndustryUIRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "IndustryUIEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(IndustryUI)
+            );
+
+        public event RoutedEventHandler IndustryUIEvent
+        {
+            add => AddHandler(IndustryUIRoutedEvent, value);
+            remove => RemoveHandler(IndustryUIRoutedEvent, value);
+        }
+
+        #endregion
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Collections.ObjectModel;
 
 namespace FiefApp
 {
@@ -90,8 +91,8 @@ namespace FiefApp
                 _fiefService.MinesList = new List<MinesDataModel>(obj.MinesList);
                 _fiefService.PortsList.Clear();
                 _fiefService.PortsList = new List<PortDataModel>(obj.PortsList);
-                _fiefService.StewardsCollection.Clear();
-                _fiefService.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsCollection);
+                _fiefService.StewardsDataModel = new StewardsDataModel();
+                _fiefService.StewardsDataModel.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsDataModel.StewardsCollection);
                 _fiefService.SubsidiaryList.Clear();
                 _fiefService.SubsidiaryList = new List<SubsidiaryDataModel>(obj.SubsidiaryList);
                 _fiefService.SupplyDataModel = (SupplyDataModel)obj.SupplyDataModel.Clone();
@@ -253,7 +254,8 @@ namespace FiefApp
                     _fiefService.TradeList = new List<TradeDataModel>(obj.TradeList);
                     _fiefService.WeatherList.Clear();
                     _fiefService.WeatherList = new List<WeatherDataModel>(obj.WeatherList);
-                    _fiefService.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsCollection);
+                    _fiefService.StewardsDataModel = new StewardsDataModel();
+                    _fiefService.StewardsDataModel.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsDataModel.StewardsCollection);
 
                     ForlaningsNamn = _fiefService.InformationList[1].FiefName;
                     ForlaningsAr = _fiefService.Year;
@@ -487,7 +489,8 @@ namespace FiefApp
                     new IncomeDataModel(),
                     new IncomeDataModel()
                 };
-                _fiefService.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>()
+                _fiefService.StewardsDataModel = new StewardsDataModel();
+                _fiefService.StewardsDataModel.StewardsCollection = new ObservableCollection<StewardModel>()
                 {
                     new StewardModel()
                     {

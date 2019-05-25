@@ -68,6 +68,10 @@ namespace FiefApp.Common.Infrastructure.Services
                 {
                     return (T)Convert.ChangeType(_fiefService.IncomeList[index].Clone(), typeof(IncomeDataModel));
                 }
+                else if (typeof(T) == typeof(StewardsDataModel))
+                {
+                    return (T)Convert.ChangeType(_fiefService.StewardsDataModel.Clone(), typeof(StewardsDataModel));
+                }
                 else if (typeof(T) == typeof(BuildingsDataModel))
                 {
                     return (T)Convert.ChangeType(_fiefService.BuildingsList[index].Clone(), typeof(BuildingsDataModel));
@@ -137,6 +141,11 @@ namespace FiefApp.Common.Infrastructure.Services
                 {
                     SubsidiaryDataModel tempDataModel = (SubsidiaryDataModel)dataModel;
                     _fiefService.SubsidiaryList[index] = (SubsidiaryDataModel)tempDataModel.Clone();
+                }
+                else if (dataModel.GetType() == typeof(StewardsDataModel))
+                {
+                    StewardsDataModel tempDataModel = (StewardsDataModel)dataModel;
+                    _fiefService.StewardsDataModel = (StewardsDataModel)tempDataModel.Clone();
                 }
                 else if (dataModel.GetType() == typeof(IncomeDataModel))
                 {
@@ -213,6 +222,7 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService.MinesList.Add(new MinesDataModel());
             _fiefService.PortsList.Add(new PortDataModel());
             _fiefService.TradeList.Add(new TradeDataModel());
+            _fiefService.StewardsDataModel = new StewardsDataModel();
 
             return _fiefService.InformationList.Count - 1;
         }
@@ -376,7 +386,7 @@ namespace FiefApp.Common.Infrastructure.Services
         }
         public ObservableCollection<StewardModel> GetStewards()
         {
-            return _fiefService.StewardsCollection;
+            return _fiefService.StewardsDataModel.StewardsCollection;
         }
 
         public int GetNewIndustryId()
@@ -404,6 +414,10 @@ namespace FiefApp.Common.Infrastructure.Services
                 if (_fiefService.SubsidiaryList[x].SubsidiaryCollection.Count > 0)
                 {
                     tempList.Add(_fiefService.SubsidiaryList[x].SubsidiaryCollection.Max(o => o.Id));
+                }
+                if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Count > 0)
+                {
+                    tempList.Add(_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Max(o => o.Id));
                 }
             }
 
@@ -456,11 +470,103 @@ namespace FiefApp.Common.Infrastructure.Services
                 }
             }
 
-            for (int x = 0; x < _fiefService.StewardsCollection.Count; x++)
+            for (int x = 0; x < _fiefService.StewardsDataModel.StewardsCollection.Count; x++)
             {
-                if (_fiefService.StewardsCollection[x].Id == stewardId)
+                if (_fiefService.StewardsDataModel.StewardsCollection[x].Id == stewardId)
                 {
-                    _fiefService.StewardsCollection.RemoveAt(x);
+                    _fiefService.StewardsDataModel.StewardsCollection.RemoveAt(x);
+                }
+            }
+        }
+
+        public void RemoveIndustry(int industryId)
+        {
+            bool foundIndustry = false;
+
+            for (int x = 0; x < _fiefService.StewardsDataModel.StewardsCollection.Count; x++)
+            {
+                if (_fiefService.StewardsDataModel.StewardsCollection[x].IndustryId == industryId)
+                {
+                    _fiefService.StewardsDataModel.StewardsCollection[x].IndustryId = -1;
+                    break;
+                }
+            }
+
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.IncomeList[x].IncomesCollection.Count; y++)
+                {
+                    if (_fiefService.IncomeList[x].IncomesCollection[y].Id == industryId)
+                    {
+                        foundIndustry = true;
+                        _fiefService.IncomeList[x].IncomesCollection.RemoveAt(y);
+                        break;
+                    }
+                }
+
+                if (foundIndustry)
+                {
+                    break;
+                }
+                else
+                {
+                    for (int y = 0; y < _fiefService.MinesList[x].MinesCollection.Count; y++)
+                    {
+                        if (_fiefService.MinesList[x].MinesCollection[y].Id == industryId)
+                        {
+                            foundIndustry = true;
+                            _fiefService.MinesList[x].MinesCollection.RemoveAt(y);
+                            break;
+                        }
+                    }
+                }
+
+                if (foundIndustry)
+                {
+                    break;
+                }
+                else
+                {
+                    for (int y = 0; y < _fiefService.MinesList[x].QuarriesCollection.Count; y++)
+                    {
+                        if (_fiefService.MinesList[x].QuarriesCollection[y].Id == industryId)
+                        {
+                            foundIndustry = true;
+                            _fiefService.MinesList[x].QuarriesCollection.RemoveAt(y);
+                            break;
+                        }
+                    }
+                }
+
+                if (foundIndustry)
+                {
+                    break;
+                }
+                else
+                {
+                    if (_fiefService.PortsList[x].Shipyard.Id == industryId)
+                    {
+                        foundIndustry = true;
+                        _fiefService.PortsList[x].Shipyard.Id = -1;
+                        break;
+                    }
+                }
+
+                if (foundIndustry)
+                {
+                    break;
+                }
+                else
+                {
+                    for (int y = 0; y < _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count; y++)
+                    {
+                        if (_fiefService.SubsidiaryList[x].SubsidiaryCollection[y].Id == industryId)
+                        {
+                            foundIndustry = true;
+                            _fiefService.SubsidiaryList[x].SubsidiaryCollection.RemoveAt(y);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -473,22 +579,23 @@ namespace FiefApp.Common.Infrastructure.Services
 
         private void SetIndustryForStewardInStewardsCollection(int stewardId, int industryId)
         {
-            for (int x = 1; x < _fiefService.StewardsCollection.Count; x++)
+            for (int x = 1; x < _fiefService.StewardsDataModel.StewardsCollection.Count; x++)
             {
-                if (_fiefService.StewardsCollection[x].IndustryId == industryId
-                    && _fiefService.StewardsCollection[x].Id != stewardId)
+                if (_fiefService.StewardsDataModel.StewardsCollection[x].IndustryId == industryId
+                    && _fiefService.StewardsDataModel.StewardsCollection[x].Id != stewardId)
                 {
-                    _fiefService.StewardsCollection[x].IndustryId = -1;
+                    _fiefService.StewardsDataModel.StewardsCollection[x].IndustryId = -1;
                 }
-                else if (_fiefService.StewardsCollection[x].Id == stewardId)
+                else if (_fiefService.StewardsDataModel.StewardsCollection[x].Id == stewardId)
                 {
-                    _fiefService.StewardsCollection[x].IndustryId = industryId;
+                    _fiefService.StewardsDataModel.StewardsCollection[x].IndustryId = industryId;
                 }
             }
         }
 
         private void SetStewardInIndustriesCollections(int stewardId, int industryId)
         {
+            bool check = true;
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
             {
                 for (int y = 0; y < _fiefService.IncomeList[x].IncomesCollection.Count; y++)
@@ -577,17 +684,41 @@ namespace FiefApp.Common.Infrastructure.Services
                         }
                     }
                 }
+
+                if (check)
+                {
+                    check = false;
+                    for (int y = 0; y < _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Count; y++)
+                    {
+                        if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[y].StewardId == stewardId)
+                        {
+                            if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[y].Id != industryId)
+                            {
+                                _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[y].StewardId = -1;
+                            }
+                        }
+                        else
+                        {
+                            if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[y].Id == industryId)
+                            {
+                                _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[y].StewardId = stewardId;
+                            }
+                        }
+                    }
+                }
             }
         }
 
         public ObservableCollection<StewardModel> GetStewardsCollection()
         {
-            return _fiefService.StewardsCollection;
+            List<StewardModel> tempList = new List<StewardModel>(_fiefService.StewardsDataModel.StewardsCollection);
+            return new ObservableCollection<StewardModel>(tempList);
         }
 
         public void SaveStewardsCollection(ObservableCollection<StewardModel> collection)
         {
-            _fiefService.StewardsCollection = collection;
+            List<StewardModel> tempList = new List<StewardModel>(collection);
+            _fiefService.StewardsDataModel.StewardsCollection = new ObservableCollection<StewardModel>(tempList);
         }
     }
 }
