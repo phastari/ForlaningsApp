@@ -6,6 +6,8 @@ namespace FiefApp.Common.Infrastructure.Models
 {
     public class EndOfYearFellingModel : INotifyPropertyChanged
     {
+        public int Id { get; set; }
+
         private int _felling;
         public int Felling
         {

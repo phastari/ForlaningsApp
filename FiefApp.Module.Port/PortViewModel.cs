@@ -275,6 +275,7 @@ namespace FiefApp.Module.Port
                     DataModel.BuildingShipyard = true;
                     DataModel.CanBuildShipyard = false;
                     DataModel.Shipyard.Id = _baseService.GetNewIndustryId();
+                    DataModel.Shipyard.DaysWorkNeeded = 2500;
                     SaveData();
                 }
                 else
@@ -333,11 +334,17 @@ namespace FiefApp.Module.Port
             switch (e.Action)
             {
                 case "Changed":
-                {
-                    SaveData();
-                    _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id);
-                    break;
-                }
+                    {
+                        SaveData();
+                        _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id);
+                        break;
+                    }
+
+                case "DaysWorkChanged":
+                    {
+                        DataModel.Shipyard.DaysWorkThisYear = e.DaysWorkThisYear;
+                        break;
+                    }
             }
         }
 

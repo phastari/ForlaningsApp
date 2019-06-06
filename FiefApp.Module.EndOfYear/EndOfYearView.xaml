@@ -12,9 +12,12 @@
              xmlns:endOfYearFellingUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI"
              xmlns:endOfYearTaxesUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI"
              xmlns:endOfYearPopulationUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI"
+             xmlns:endOfYearDevelopmentUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearDevelopmentUI"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:endOfYearShipyardUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearShipyardUI"
              mc:Ignorable="d" 
-             d:DesignHeight="485" 
-             d:DesignWidth="778"
+             d:DesignHeight="533" 
+             d:DesignWidth="792"
              x:Name="Self">
 
     <Grid 
@@ -60,6 +63,10 @@
             <RowDefinition Height="3"/>
             <RowDefinition Height="21"/>
             <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="21"/>
+            <RowDefinition Height="3"/>
             <RowDefinition Height="9"/>
             <RowDefinition Height="3"/>
             <RowDefinition Height="21"/>
@@ -68,7 +75,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="744"/>
+            <ColumnDefinition Width="755"/>
+            <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -77,10 +85,28 @@
             Grid.Column="1" 
             Grid.ColumnSpan="3"
             Grid.Row="1"
-            Grid.RowSpan="2"
+            Grid.RowSpan="4"
             Background="LightGray" 
             BorderBrush="Gray" 
-            BorderThickness="0.5, 0.5, 0.5, 0"
+            BorderThickness="0.5, 0.5, 0, 0"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="3" 
+            Grid.Row="1"
+            Grid.RowSpan="43"
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0, 0.5, 0.5, 0.5"
+            IsTabStop="False"/>
+
+        <Frame 
+            Grid.Column="1" 
+            Grid.ColumnSpan="3"
+            Grid.Row="43"
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5, 0, 0.5, 0.5"
             IsTabStop="False"/>
 
         <Button
@@ -89,6 +115,7 @@
             Grid.Column="2"
             Grid.Row="1"
             Grid.RowSpan="4"
+            Grid.ZIndex="0"
             Width="16"
             Height="16"
             HorizontalAlignment="Right"
@@ -101,63 +128,67 @@
 
         <ScrollViewer
             Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Grid.Row="3"
-            Grid.RowSpan="36"
+            Grid.ColumnSpan="2"
+            Grid.Row="5"
+            Grid.RowSpan="39"
+            Grid.ZIndex="1"
             VerticalScrollBarVisibility="Auto">
+            <ScrollViewer.Resources>
+                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">2</sys:Double>
+            </ScrollViewer.Resources>
 
             <StackPanel>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" x:Name="Row1"/>
-                    <RowDefinition Height="9"/>
-                    <RowDefinition Height="3"/>
-                    <RowDefinition Height="6"/>
-                    <RowDefinition Height="3"/>
-                    <RowDefinition Height="Auto" x:Name="Row2"/>
-                    <RowDefinition Height="Auto" x:Name="Row3"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" x:Name="Col1"/>
-                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" x:Name="Row1"/>
+                        <RowDefinition Height="9"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="6"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="Auto" x:Name="Row2"/>
+                        <RowDefinition Height="Auto" x:Name="Row3"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" x:Name="Col1"/>
+                    </Grid.ColumnDefinitions>
 
-                <Frame 
-                    Grid.Column="0" 
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Background="LightGray" 
-                    BorderBrush="Gray" 
-                    BorderThickness="0.5, 0, 0.5, 0"
-                    IsTabStop="False"/>
+                    <Frame 
+                        Grid.Column="0" 
+                        Grid.Row="0"
+                        Grid.RowSpan="6"
+                        Background="LightGray" 
+                        BorderBrush="Gray" 
+                        BorderThickness="0.5, 0, 0, 0"
+                        IsTabStop="False"/>
 
-                <ItemsControl
-                    Grid.Column="0"
-                    Grid.Row="0"
-                    Height="{Binding Path=Height, ElementName=Row1}"
-                    Width="{Binding Path=Width, ElementName=Col1}"
-                    ItemsSource="{Binding Path=DataModel.IncomeListFief}"
-                    Margin="8,0,8,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel 
+                    <ItemsControl
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Height="{Binding Path=Height, ElementName=Row1}"
+                        Width="{Binding Path=Width, ElementName=Col1}"
+                        ItemsSource="{Binding Path=DataModel.IncomeListFief}"
+                        Margin="8,0,8,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel 
                                 IsItemsHost="True" 
                                 Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <StackPanel>
-                                <ItemsPresenter />
-                            </StackPanel>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <StackPanel>
+                                    <ItemsPresenter />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <Label
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Label
                                     Height="21"
                                     Width="180"
                                     FontWeight="Bold"
@@ -167,37 +198,37 @@
                                     VerticalContentAlignment="Center"
                                     Padding="12,0,0,0"/>
 
-                                <Grid
+                                    <Grid
                                     Height="27">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="3"/>
-                                        <RowDefinition Height="21"/>
-                                        <RowDefinition Height="3"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="153"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="150"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="60"/>
-                                    </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="153"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="0"
                                         Grid.Row="1"
                                         Content="Näring"
@@ -206,7 +237,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="12,0,0,0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="2"
                                         Grid.Row="1"
                                         Content="Förvaltare"
@@ -215,7 +246,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="12,0,0,0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="3"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="1"
@@ -224,7 +255,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="5"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="1"
@@ -234,7 +265,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="8"
                                         Grid.Row="1"
                                         Content="SG"
@@ -243,7 +274,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="10"
                                         Grid.Row="1"
                                         Content="Slag #1"
@@ -251,7 +282,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="13"
                                         Grid.Row="1"
                                         Content="Slag #2"
@@ -259,7 +290,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="16"
                                         Grid.Row="1"
                                         Content="Slag #3"
@@ -267,85 +298,92 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="19"
                                         Grid.Row="1"
                                         Content="Resultat"
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
-                                </Grid>
+                                    </Grid>
 
-                                <ItemsControl
+                                    <ItemsControl
                                     ItemsSource="{Binding Path=IncomeCollection}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel 
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel 
                                                 IsItemsHost="True" 
                                                 Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
 
-                                    <ItemsControl.Template>
-                                        <ControlTemplate TargetType="ItemsControl">
-                                            <StackPanel>
-                                                <ItemsPresenter />
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </ItemsControl.Template>
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <StackPanel>
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
 
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <endOfYearIncomeUI:EndOfYearIncomeUI
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <endOfYearIncomeUI:EndOfYearIncomeUI
+                                                Id="{Binding Path=Id}"
                                                 Income="{Binding Path=Income}"
                                                 StewardId="{Binding Path=StewardId}"
                                                 StewardName="{Binding Path=StewardName}"
                                                 Skill="{Binding Path=Skill}"
                                                 Crewed="{Binding Path=Crewed}"
                                                 Difficulty="{Binding Path=Difficulty}"
-                                                BaseIncome="{Binding Path=BaseIncome}"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                BaseIncome="{Binding Path=BaseIncome}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </endOfYearIncomeUI:EndOfYearIncomeUI>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                <Rectangle
+                                    <Rectangle
                                     Height="24"/>
 
-                                <Grid
+                                    <Grid
                                     Height="27">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="3"/>
-                                        <RowDefinition Height="21"/>
-                                        <RowDefinition Height="3"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="96"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="65"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                    </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="96"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="65"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="0"
                                         Grid.Row="1"
                                         Content="Binäring"
@@ -353,7 +391,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="2"
                                         Grid.Row="1"
                                         Content="Förvaltare"
@@ -361,7 +399,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="3"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="1"
@@ -370,7 +408,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="6"
                                         Grid.Row="1"
                                         Content="Bem."
@@ -379,7 +417,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="8"
                                         Grid.Row="1"
                                         Content="SG"
@@ -388,7 +426,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="10"
                                         Grid.Row="1"
                                         Content="Slag #1"
@@ -396,7 +434,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="13"
                                         Grid.Row="1"
                                         Content="Slag #2"
@@ -404,7 +442,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="16"
                                         Grid.Row="1"
                                         Content="Slag #3"
@@ -412,7 +450,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="19"
                                         Grid.Row="1"
                                         Content="Silver"
@@ -420,7 +458,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="21"
                                         Grid.Row="1"
                                         Content="Bas"
@@ -428,36 +466,37 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="23"
                                         Grid.Row="1"
                                         Content="Lyx"
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
-                                </Grid>
+                                    </Grid>
 
-                                <ItemsControl
+                                    <ItemsControl
                                     ItemsSource="{Binding Path=SubsidiariesCollection}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel 
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel 
                                                 IsItemsHost="True" 
                                                 Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
 
-                                    <ItemsControl.Template>
-                                        <ControlTemplate TargetType="ItemsControl">
-                                            <StackPanel>
-                                                <ItemsPresenter />
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </ItemsControl.Template>
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <StackPanel>
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
 
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <endOfYearSubsidiaryUI:EndOfYearSubsidiaryUI
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <endOfYearSubsidiaryUI:EndOfYearSubsidiaryUI
+                                                Id="{Binding Path=Id}"
                                                 Subsidiary="{Binding Path=Subsidiary}"
                                                 StewardId="{Binding Path=StewardId}"
                                                 StewardName="{Binding Path=Steward}"
@@ -466,45 +505,51 @@
                                                 Difficulty="{Binding Path=Difficulty}"
                                                 BaseIncomeSilver="{Binding Path=BaseIncomeSilver}"
                                                 BaseIncomeBase="{Binding Path=BaseIncomeBase}"
-                                                BaseIncomeLuxury="{Binding Path=BaseIncomeLuxury}"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                BaseIncomeLuxury="{Binding Path=BaseIncomeLuxury}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </endOfYearSubsidiaryUI:EndOfYearSubsidiaryUI>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                <Rectangle
+                                    <Rectangle
                                     Height="24"/>
 
-                                <Grid
+                                    <Grid
                                     Height="27">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="3"/>
-                                        <RowDefinition Height="21"/>
-                                        <RowDefinition Height="3"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="163"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="125"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="75"/>
-                                    </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="163"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="125"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="75"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="0"
                                         Grid.Row="1"
                                         Content="Gruvtyp"
@@ -512,7 +557,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="2"
                                         Grid.Row="1"
                                         Content="Vakter"
@@ -520,7 +565,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="4"
                                         Grid.Row="1"
                                         Content="Förvaltare"
@@ -528,7 +573,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="5"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="1"
@@ -537,7 +582,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="8"
                                         Grid.Row="1"
                                         Content="SG"
@@ -546,7 +591,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="10"
                                         Grid.Row="1"
                                         Content="Slag #1"
@@ -554,7 +599,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="13"
                                         Grid.Row="1"
                                         Content="Slag #2"
@@ -562,7 +607,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="16"
                                         Grid.Row="1"
                                         Content="Slag #3"
@@ -570,36 +615,37 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="19"
                                         Grid.Row="1"
                                         Content="Silver"
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
-                                </Grid>
+                                    </Grid>
 
-                                <ItemsControl
+                                    <ItemsControl
                                     ItemsSource="{Binding Path=MinesCollection}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel 
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel 
                                                 IsItemsHost="True" 
                                                 Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
 
-                                    <ItemsControl.Template>
-                                        <ControlTemplate TargetType="ItemsControl">
-                                            <StackPanel>
-                                                <ItemsPresenter />
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </ItemsControl.Template>
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <StackPanel>
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
 
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <endOfYearMineUI:EndOfYearMineUI
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <endOfYearMineUI:EndOfYearMineUI
+                                                Id="{Binding Path=Id}"
                                                 Type="{Binding Path=MineType}"
                                                 Guards="{Binding Path=Guards}"
                                                 Crime="{Binding Path=Crime}"
@@ -608,48 +654,52 @@
                                                 BaseIncomeSilver="{Binding Path=Income}"
                                                 Skill="{Binding Path=Skill}"
                                                 Difficulty="{Binding Path=Difficulty}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </endOfYearMineUI:EndOfYearMineUI>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                            </endOfYearMineUI:EndOfYearMineUI>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-
-                                <Rectangle
+                                    <Rectangle
                                     Height="24"/>
 
-                                <Grid
+                                    <Grid
                                     Height="27">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="3"/>
-                                        <RowDefinition Height="21"/>
-                                        <RowDefinition Height="3"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="92"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="125"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="45"/>
-                                        <ColumnDefinition Width="21"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="65"/>
-                                        <ColumnDefinition Width="6"/>
-                                        <ColumnDefinition Width="75"/>
-                                    </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="92"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="125"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="65"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="75"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="0"
                                         Grid.Row="1"
                                         Content="Stenbrott"
@@ -657,7 +707,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="1"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="1"
@@ -666,7 +716,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="4"
                                         Grid.Row="1"
                                         Content="Förvaltare"
@@ -674,7 +724,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="5"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="1"
@@ -683,7 +733,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="8"
                                         Grid.Row="1"
                                         Content="SG"
@@ -692,7 +742,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="10"
                                         Grid.Row="1"
                                         Content="Slag #1"
@@ -700,7 +750,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="13"
                                         Grid.Row="1"
                                         Content="Slag #2"
@@ -708,7 +758,7 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="16"
                                         Grid.Row="1"
                                         Content="Slag #3"
@@ -716,36 +766,37 @@
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
 
-                                    <Label
+                                        <Label
                                         Grid.Column="19"
                                         Grid.Row="1"
                                         Content="Sten"
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         Padding="0"/>
-                                </Grid>
+                                    </Grid>
 
-                                <ItemsControl
+                                    <ItemsControl
                                     ItemsSource="{Binding Path=QuarriesCollection}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel 
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel 
                                                 IsItemsHost="True" 
                                                 Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
 
-                                    <ItemsControl.Template>
-                                        <ControlTemplate TargetType="ItemsControl">
-                                            <StackPanel>
-                                                <ItemsPresenter />
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </ItemsControl.Template>
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <StackPanel>
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
 
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <endOfYearQuarryUI:EndOfYearQuarryUI
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <endOfYearQuarryUI:EndOfYearQuarryUI
+                                                Id="{Binding Path=Id}"
                                                 QuarryType="{Binding Path=QuarryType}"
                                                 StewardName="{Binding Path=Steward}"
                                                 StewardId="{Binding Path=StewardId}"
@@ -757,40 +808,234 @@
                                                 CombinationRoll="{Binding Path=CombinationRoll}"
                                                 DaysWorkThisYear="{Binding Path=DaysWorkThisYear}"
                                                 DaysWorkNeeded="{Binding Path=DaysWorkNeeded}"
-                                                IsFirstYear="{Binding Path=IsFirstYear}"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                IsFirstYear="{Binding Path=IsFirstYear}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </endOfYearQuarryUI:EndOfYearQuarryUI>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                <Rectangle
+                                    <Rectangle
+                                        Height="24"/>
+
+                                    <Grid
+                                        Height="27">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="125"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="125"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="164"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            Content="Utvecklingsområde"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="1"
+                                            Content="SG"
+                                            ToolTip="Svårighetsgrad"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="4"
+                                            Grid.Row="1"
+                                            Content="Förvaltare"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="5"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="1"
+                                            Content="Färdighet"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="8"
+                                            Grid.Row="1"
+                                            Content="SG"
+                                            ToolTip="Slag #1"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="11"
+                                            Grid.Row="1"
+                                            Content="Slag #2"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="14"
+                                            Grid.Row="1"
+                                            Content="Slag #3"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="17"
+                                            Grid.Row="1"
+                                            Content="Resultat"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+                                    </Grid>
+
+                                    <ItemsControl
+                                        ItemsSource="{Binding Path=DevelopmentCollection}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel 
+                                                    IsItemsHost="True" 
+                                                    Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <StackPanel>
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <endOfYearDevelopmentUI:EndOfYearDevelopmentUI
+                                                    Id="{Binding Path=Id}"
+                                                    Industry="{Binding Path=Industry}"
+                                                    IndustryId="{Binding Path=IndustryId}"
+                                                    StewardName="{Binding Path=Steward}"
+                                                    StewardId="{Binding Path=StewardId}"
+                                                    DevelopmentLevel="{Binding Path=DevelopmentLevel}"
+                                                    BeingDeveloped="{Binding Path=BeingDeveloped}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </endOfYearDevelopmentUI:EndOfYearDevelopmentUI>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <Rectangle
                                     Height="24"/>
 
-                                <WrapPanel>
-                                    <endOfYearFellingUI:EndOfYearFellingUI
+                                    <WrapPanel>
+                                        <endOfYearShipyardUI:EndOfYearShipyardUI
+                                        Id="{Binding Path=Id}"
+                                        Income="{Binding Path=Shipyard.Income}"
+                                        Upkeep="{Binding Path=Shipyard.OperationCost}"
+                                        Difficulty="{Binding Path=Shipyard.Difficulty}"
+                                        Steward="{Binding Path=Shipyard.Steward}"
+                                        StewardId="{Binding Path=Shipyard.StewardId}"
+                                        Skill="{Binding Path=Shipyard.Skill}"
+                                        ShowShipyard="{Binding Path=ShowShipyard}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </endOfYearShipyardUI:EndOfYearShipyardUI>
+
+                                        <endOfYearFellingUI:EndOfYearFellingUI
+                                        Id="{Binding Path=Id}"
                                         Felling="{Binding Path=FellingModel.Felling}"
                                         LandClearing="{Binding Path=FellingModel.LandClearing}"
                                         Steward="{Binding Path=FellingModel.Steward}"
                                         StewardId="{Binding Path=FellingModel.StewardId}"
                                         Skill="{Binding Path=FellingModel.Skill}"
-                                        Difficulty="{Binding Path=FellingModel.Difficulty}"/>
+                                        Difficulty="{Binding Path=FellingModel.Difficulty}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </endOfYearFellingUI:EndOfYearFellingUI>
 
                                         <endOfYearTaxesUI:EndOfYearTaxesUI
+                                            Id="{Binding Path=Id}"
                                             Difficulty="{Binding Path=TaxesModel.Difficulty}"
                                             TaxFactor="{Binding Path=TaxesModel.TaxFactor}"
-                                            Loyalty="{Binding Path=TaxesModel.Loyalty}"/>
+                                            Loyalty="{Binding Path=TaxesModel.Loyalty}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </endOfYearTaxesUI:EndOfYearTaxesUI>
 
                                         <endOfYearPopulationUI:EndOfYearPopulationUI
+                                            Id="{Binding Path=Id}"
                                             Difficulty="{Binding Path=PopulationModel.Difficulty}"
                                             Amor="{Binding Path=PopulationModel.Amor}"
                                             TotalPopulation="{Binding Path=PopulationModel.TotalPopulation}"
-                                            ModificationPopulation="{Binding Path=PopulationModel.ModificationPopulation}"/>
-                                </WrapPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-        </StackPanel>
+                                            ModificationPopulation="{Binding Path=PopulationModel.ModificationPopulation}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </endOfYearPopulationUI:EndOfYearPopulationUI>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </StackPanel>
         </ScrollViewer>
+
+        <Button
+            Content="klar"
+            Command="{Binding Path=CompleteEndOfYearCommand}"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Grid.Row="45"
+            Width="51"
+            Height="21"
+            Template="{DynamicResource ButtonTemplate}"
+            IsEnabled="{Binding Path=EnableButton}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

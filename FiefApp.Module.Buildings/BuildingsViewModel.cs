@@ -85,17 +85,17 @@ namespace FiefApp.Module.Buildings
             switch (e.Action)
             {
                 case "Delete":
-                {
-                    for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
                     {
-                        if (DataModel.BuildersCollection[x].Id == e.Model.Id)
+                        for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
                         {
-                            DataModel.BuildersCollection.RemoveAt(x);
-                            break;
+                            if (DataModel.BuildersCollection[x].Id == e.Model.Id)
+                            {
+                                DataModel.BuildersCollection.RemoveAt(x);
+                                break;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
 
                 case "Save":
                     for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
@@ -162,9 +162,33 @@ namespace FiefApp.Module.Buildings
                                 DataModel.BuildsCollection[x].BuilderId = -1;
                             }
                         }
-
-                        DataModel.SetDaysWorkLeft();
                     }
+
+                    for (int x = 0; x < DataModel.BuildersCollection.Count; x++)
+                    {
+                        if (DataModel.BuildersCollection[x].Id == e.Model.BuilderId)
+                        {
+                            DataModel.BuildersCollection[x].BuildingId = e.Id;
+                        }
+                        else
+                        {
+                            if (DataModel.BuildersCollection[x].BuildingId == e.Id)
+                            {
+                                DataModel.BuildersCollection[x].BuildingId = -1;
+                            }
+                        }
+                    }
+
+                    for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+                    {
+                        DataModel.BuildsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+                    }
+
+                    List<BuildingModel> tempList = new List<BuildingModel>(DataModel.BuildsCollection);
+                    DataModel.BuildsCollection.Clear();
+                    DataModel.BuildsCollection = new ObservableCollection<BuildingModel>(tempList);
+
+                    DataModel.SetDaysWorkLeft();
                     break;
             }
         }
@@ -206,12 +230,21 @@ namespace FiefApp.Module.Buildings
 
         protected override void LoadData()
         {
+            _buildingsService.SetAllBuildsCollectionIsAll(Index);
             DataModel = Index
                         == 0 ? _buildingsService.GetAllBuildingsDataModel()
                 : _baseService.GetDataModel<BuildingsDataModel>(Index);
 
-            GetInformationSetDataModel();
-
+            if (Index == 0)
+            {
+                DataModel.IsAll = true;
+                SetBuildersInBuildsCollection();
+            }
+            else
+            {
+                DataModel.IsAll = false;
+                GetInformationSetDataModel();
+            }
             DataModel.BuildersCollection.CollectionChanged += UpdateBuildersCollectionInBuildingsCollection;
 
             UpdateFiefCollection();
@@ -236,10 +269,14 @@ namespace FiefApp.Module.Buildings
         private void GetInformationSetDataModel()
         {
             DataModel.AvailableBuildings = new ObservableCollection<BuildingModel>(_buildingsService.GetAvailableBuildings());
+            SetBuildersInBuildsCollection();
+        }
 
-            for (int x = 0; x < DataModel.BuildingsCollection.Count; x++)
+        public void SetBuildersInBuildsCollection()
+        {
+            for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
             {
-                DataModel.BuildingsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+                DataModel.BuildsCollection[x].BuildersCollection = DataModel.BuildersCollection;
             }
         }
     }

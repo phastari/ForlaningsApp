@@ -1,7 +1,6 @@
 ﻿using FiefApp.Common.Infrastructure.Models;
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -192,6 +191,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _docksVillageFree = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _showButtons;
+        public bool ShowButtons
+        {
+            get => _showButtons;
+            set
+            {
+                _showButtons = value;
                 NotifyPropertyChanged();
             }
         }

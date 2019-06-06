@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Timers;
 using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
@@ -14,6 +15,7 @@ namespace FiefApp.Module.Weather
         private readonly IBaseService _baseService;
         private readonly IWeatherService _weatherService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly Timer _timer;
 
         public WeatherViewModel(
             IBaseService baseService,
@@ -24,6 +26,8 @@ namespace FiefApp.Module.Weather
             _baseService = baseService;
             _weatherService = weatherService;
             _eventAggregator = eventAggregator;
+
+            _timer = new Timer();
 
             TabName = "Väder/Dagsverk";
 
@@ -37,7 +41,20 @@ namespace FiefApp.Module.Weather
         public DelegateCommand EndOfYearCommand { get; set; }
         private void ExecuteEndOfYearCommand()
         {
-            _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+            if (DataModel.SpringRoll > 0
+                && DataModel.SummerRoll > 0
+                && DataModel.FallRoll > 0
+                && DataModel.WinterRoll > 0)
+            {
+                _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+            }
+            else
+            {
+                _timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                _timer.Interval = 4000;
+                _timer.Start();
+                DataModel.EndOfYearError = "Du har inte fyllt i årets väder!";
+            }
         }
 
         #endregion
@@ -71,6 +88,14 @@ namespace FiefApp.Module.Weather
 
             GetInformationSetDataModel();
             UpdateFiefCollection();
+        }
+
+        private void OnTimedEvent(
+            object sender, 
+            ElapsedEventArgs e)
+        {
+            DataModel.EndOfYearError = "";
+            _timer.Dispose();
         }
 
         private void DataModelPropertyChange(
@@ -129,9 +154,18 @@ namespace FiefApp.Module.Weather
             GetSubsidiaryData();
             GetForecasts();
             GetManorAcresSetManorDaysWork();
+            GetMaxFellingLandClearing();
         }
 
         #region Methods : GetInformationSetDataModel
+
+        private void GetMaxFellingLandClearing()
+        {
+            DataModel.LandClearingMax = _weatherService.GetMaxLandClearing(Index);
+            DataModel.LandClearingOfFellingMax = _weatherService.GetMaxLandClearFelling(Index);
+            DataModel.FellingMax = _weatherService.GetMaxFelling(Index);
+            DataModel.ClearUselessMax = _weatherService.GetMaxUseless(Index);
+        }
 
         private void GetTotalAmountOfSerfs()
         {

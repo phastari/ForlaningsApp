@@ -2,14 +2,294 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="219" 
              d:DesignWidth="181.5"
-             x:Name="Self">
+             x:Name="Self"
+             Loaded="Self_Loaded">
 
     <Grid
         x:Name="RootGrid">
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="96"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="9"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="165.5"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="Hamn"
+                FontWeight="Bold"
+                Grid.Column="0"
+                Grid.ColumnSpan="5"
+                Grid.Row="0"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="12,0,0,0"/>
+
+            <Label
+                Content="Bas"
+                ToolTip="Kostnad/Inkomst"
+                Grid.Column="0"
+                Grid.Row="2"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=Upkeep}"
+                Grid.Column="2"
+                Grid.Row="2"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                Padding="0,0,6,0"
+                IsReadOnly="True"/>
+
+            <TextBox
+                Text="{Binding Path=Income}"
+                Grid.Column="4"
+                Grid.Row="2"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                Padding="0,0,6,0"
+                IsReadOnly="True"/>
+        </Grid>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                    Content="{Binding Path=Steward}"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Padding="0"/>
+
+            <t6TextBox:T6TextBox
+                    T6Value="{Binding Path=Skill}"
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    ReadOnly="True"/>
+        </Grid>
+        <Grid
+            Grid.Column="1"
+            Grid.Row="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="21"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="Svårighetsgrad"
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=Difficulty}"
+                Grid.Column="2"
+                Grid.Row="0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="AntiqueWhite"
+                Padding="0"
+                IsReadOnly="True"/>
+
+            <Label
+                Content="Slag #1"
+                Grid.Column="0"
+                Grid.Row="2"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=Roll1}"
+                Grid.Column="2"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                Padding="0"/>
+
+            <Button 
+                Command="{Binding Path=Roll}"
+                CommandParameter="1"
+                Grid.Column="4"
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                Panel.ZIndex="2">
+                <ContentControl>
+                    <Image Stretch="UniformToFill">
+                        <Image.Source>
+                            <BitmapImage UriSource="/FiefApp.Common.Infrastructure;component/Graphics/Miscellaneous/dice.png"/>
+                        </Image.Source>
+                    </Image>
+                </ContentControl>
+            </Button>
+
+            <Label
+                Content="Slag #2"
+                Grid.Column="0"
+                Grid.Row="4"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=Roll2}"
+                Grid.Column="2"
+                Grid.Row="4"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                Padding="0"/>
+
+            <Button 
+                Command="{Binding Path=Roll}"
+                CommandParameter="2"
+                Grid.Column="4"
+                Grid.Row="4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                Panel.ZIndex="2">
+                <ContentControl>
+                    <Image Stretch="UniformToFill">
+                        <Image.Source>
+                            <BitmapImage UriSource="/FiefApp.Common.Infrastructure;component/Graphics/Miscellaneous/dice.png"/>
+                        </Image.Source>
+                    </Image>
+                </ContentControl>
+            </Button>
+
+            <Label
+                Content="Slag #3"
+                Grid.Column="0"
+                Grid.Row="6"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=Roll3}"
+                Grid.Column="2"
+                Grid.Row="6"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                Padding="0"/>
+
+            <Button 
+                Command="{Binding Path=Roll}"
+                CommandParameter="3"
+                Grid.Column="4"
+                Grid.Row="6"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                Panel.ZIndex="2">
+                <ContentControl>
+                    <Image Stretch="UniformToFill">
+                        <Image.Source>
+                            <BitmapImage UriSource="/FiefApp.Common.Infrastructure;component/Graphics/Miscellaneous/dice.png"/>
+                        </Image.Source>
+                    </Image>
+                </ContentControl>
+            </Button>
+        </Grid>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="65"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="Totalt"
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=Result}"
+                Grid.Column="2"
+                Grid.Row="0"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Background="NavajoWhite"
+                Padding="0,0,6,0"
+                IsReadOnly="True"/>
+        </Grid>
     </Grid>
 </UserControl>

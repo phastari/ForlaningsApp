@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.EndOfYear.RoutedEvents;
+using Prism.Commands;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using CommonServiceLocator;
-using FiefApp.Common.Infrastructure.Services;
-using Prism.Commands;
 
 namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
 {
@@ -51,6 +51,20 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
         #endregion
 
         #region Dependency Properties
+
+        public int Id
+        {
+            get => (int)GetValue(IdProperty);
+            set => SetValue(IdProperty, value);
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register(
+                "Id",
+                typeof(int),
+                typeof(EndOfYearTaxesUI),
+                new PropertyMetadata(-1)
+            );
 
         public string Loyalty
         {
@@ -160,15 +174,21 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
 
         #region Methods
 
+        private void SendOk(bool ok)
+        {
+            EndOfYearEventArgs newEventArgs =
+                new EndOfYearEventArgs(
+                    EndOfYearOkRoutedEvent,
+                    "Taxes",
+                    Id,
+                    ok
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
         private void CalculateResult()
         {
-            if (Difficulty == 0)
-            {
-                Outcome = "Dina undersåtar betalar sina skatter.";
-                LoyaltyNumeric += 1;
-            }
-            else
-            {
                 if (Roll1 > 0 && Roll2 > 0 && Roll3 > 0)
                 {
                     int control = 0;
@@ -190,7 +210,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
 
                     if (control == 0)
                     {
-                        Outcome = "Dina undersåtar vägrar betala skatt!";
+                        Outcome = "Dina undersåtar vägrar betala skatt! Bondeuppror!";
                         TaxFactor = 0;
                         LoyaltyNumeric -= 4;
                     }
@@ -227,8 +247,15 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
                         Outcome = "Dina undersåtar betalar glatt sina skatter!";
                         LoyaltyNumeric += control - 3;
                     }
+                    SendOk(true);
                 }
-            }
+                else
+                {
+                    if (Difficulty > 0)
+                    {
+                        SendOk(false);
+                    }
+                }
         }
 
         private static void RaiseLoyaltyChanged(
@@ -317,6 +344,24 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
 
         #endregion
 
+        #region RoutedEvents
+
+        public static readonly RoutedEvent EndOfYearOkRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "EndOfYearOkEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(EndOfYearTaxesUI)
+            );
+
+        public event RoutedEventHandler EndOfYearOkEvent
+        {
+            add => AddHandler(EndOfYearOkRoutedEvent, value);
+            remove => RemoveHandler(EndOfYearOkRoutedEvent, value);
+        }
+
+        #endregion
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -327,5 +372,16 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
         }
 
         #endregion
+
+        private void Self_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Difficulty == 0)
+            {
+                RollGrid.Visibility = Visibility.Collapsed;
+                Outcome = "Dina undersåtar betalar sina skatter.";
+                LoyaltyNumeric += 1;
+                SendOk(true);
+            }
+        }
     }
 }

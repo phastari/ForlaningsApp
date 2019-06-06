@@ -14,7 +14,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public string Loyalty { get; set; }
         
         public string Skill { get; set; }
-        public int BuildingId { get; set; }
+        public int BuildingId { get; set; } = -1;
         public string Assignment { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;

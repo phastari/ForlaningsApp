@@ -86,5 +86,25 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             _fiefService.PortsList[index].FishingBoats = fishingboats;
         }
+
+        public int GetMaxLandClearing(int index)
+        {
+            return _fiefService.ManorList[index].ManorWoodland;
+        }
+
+        public int GetMaxFelling(int index)
+        {
+            return _fiefService.ManorList[index].ManorWoodland;
+        }
+
+        public int GetMaxUseless(int index)
+        {
+            return _fiefService.ManorList[index].ManorUseless;
+        }
+
+        public int GetMaxLandClearFelling(int index)
+        {
+            return _fiefService.ManorList[index].ManorFelling;
+        }
     }
 }

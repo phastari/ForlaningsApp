@@ -1,21 +1,21 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.EndOfYear.RoutedEvents;
 using Prism.Commands;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 
-namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
+namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearDevelopmentUI
 {
     /// <summary>
-    /// Interaction logic for EndOfYearFelling.xaml
+    /// Interaction logic for EndOfYearDevelopmentUI.xaml
     /// </summary>
-    public partial class EndOfYearFellingUI : INotifyPropertyChanged
+    public partial class EndOfYearDevelopmentUI : INotifyPropertyChanged
     {
         private readonly IBaseService _baseService;
-        public EndOfYearFellingUI()
+        public EndOfYearDevelopmentUI()
         {
             InitializeComponent();
             RootGrid.DataContext = this;
@@ -62,49 +62,49 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             DependencyProperty.Register(
                 "Id",
                 typeof(int),
-                typeof(EndOfYearFellingUI),
+                typeof(EndOfYearDevelopmentUI),
                 new PropertyMetadata(-1)
             );
 
-        public int Felling
+        public string Industry
         {
-            get => (int)GetValue(FellingProperty);
-            set => SetValue(FellingProperty, value);
+            get => (string)GetValue(IndustryProperty);
+            set => SetValue(IndustryProperty, value);
         }
 
-        public static readonly DependencyProperty FellingProperty =
+        public static readonly DependencyProperty IndustryProperty =
             DependencyProperty.Register(
-                "Felling",
-                typeof(int),
-                typeof(EndOfYearFellingUI),
-                new PropertyMetadata(0)
-            );
-
-        public int LandClearing
-        {
-            get => (int)GetValue(LandClearingProperty);
-            set => SetValue(LandClearingProperty, value);
-        }
-
-        public static readonly DependencyProperty LandClearingProperty =
-            DependencyProperty.Register(
-                "LandClearing",
-                typeof(int),
-                typeof(EndOfYearFellingUI),
-                new PropertyMetadata(0)
-            );
-
-        public string Steward
-        {
-            get => (string)GetValue(StewardProperty);
-            set => SetValue(StewardProperty, value);
-        }
-
-        public static readonly DependencyProperty StewardProperty =
-            DependencyProperty.Register(
-                "Steward",
+                "Industry",
                 typeof(string),
-                typeof(EndOfYearFellingUI),
+                typeof(EndOfYearDevelopmentUI),
+                new PropertyMetadata("")
+            );
+
+        public int IndustryId
+        {
+            get => (int)GetValue(IndustryIdProperty);
+            set => SetValue(IndustryIdProperty, value);
+        }
+
+        public static readonly DependencyProperty IndustryIdProperty =
+            DependencyProperty.Register(
+                "IndustryId",
+                typeof(int),
+                typeof(EndOfYearDevelopmentUI),
+                new PropertyMetadata(-1)
+            );
+
+        public string StewardName
+        {
+            get => (string)GetValue(StewardNameProperty);
+            set => SetValue(StewardNameProperty, value);
+        }
+
+        public static readonly DependencyProperty StewardNameProperty =
+            DependencyProperty.Register(
+                "StewardName",
+                typeof(string),
+                typeof(EndOfYearDevelopmentUI),
                 new PropertyMetadata("")
             );
 
@@ -118,8 +118,8 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             DependencyProperty.Register(
                 "StewardId",
                 typeof(int),
-                typeof(EndOfYearFellingUI),
-                new PropertyMetadata(0)
+                typeof(EndOfYearDevelopmentUI),
+                new PropertyMetadata(-1)
             );
 
         public string Skill
@@ -132,27 +132,52 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             DependencyProperty.Register(
                 "Skill",
                 typeof(string),
-                typeof(EndOfYearFellingUI),
+                typeof(EndOfYearDevelopmentUI),
                 new PropertyMetadata("0", RaiseSkillChanged)
             );
 
-        public int Difficulty
+        public int DevelopmentLevel
         {
-            get => (int)GetValue(DifficultyProperty);
-            set => SetValue(DifficultyProperty, value);
+            get => (int)GetValue(DevelopmentLevelProperty);
+            set => SetValue(DevelopmentLevelProperty, value);
         }
 
-        public static readonly DependencyProperty DifficultyProperty =
+        public static readonly DependencyProperty DevelopmentLevelProperty =
             DependencyProperty.Register(
-                "Difficulty",
+                "DevelopmentLevel",
                 typeof(int),
-                typeof(EndOfYearFellingUI),
+                typeof(EndOfYearDevelopmentUI),
                 new PropertyMetadata(0)
+            );
+
+        public bool BeingDeveloped
+        {
+            get => (bool)GetValue(BeingDevelopedProperty);
+            set => SetValue(BeingDevelopedProperty, value);
+        }
+
+        public static readonly DependencyProperty BeingDevelopedProperty =
+            DependencyProperty.Register(
+                "BeingDeveloped",
+                typeof(bool),
+                typeof(EndOfYearDevelopmentUI),
+                new PropertyMetadata(false)
             );
 
         #endregion
 
         #region UI Properties
+
+        private int _skillNumeric;
+        public int SkillNumeric
+        {
+            get => _skillNumeric;
+            set
+            {
+                _skillNumeric = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private int _roll1;
         public int Roll1
@@ -190,51 +215,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             }
         }
 
-        private int _prediction;
-        public int Prediction
-        {
-            get => _prediction;
-            set
-            {
-                _prediction = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _fellingWood;
-        public int FellingWood
-        {
-            get => _fellingWood;
-            set
-            {
-                _fellingWood = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _landClearingWood;
-        public int LandClearingWood
-        {
-            get => _landClearingWood;
-            set
-            {
-                _landClearingWood = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _baseIncome;
-        public int BaseIncome
-        {
-            get => _baseIncome;
-            set
-            {
-                _baseIncome = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private string _result;
+        private string _result = "-";
         public string Result
         {
             get => _result;
@@ -245,20 +226,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             }
         }
 
-        private int _skillNumeric;
-        public int SkillNumeric
-        {
-            get => _skillNumeric;
-            set
-            {
-                _skillNumeric = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Methods
+
+        private static void RaiseSkillChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is EndOfYearDevelopmentUI c)
+                c.ConvertToNumeric();
+        }
 
         private void CalculateResult()
         {
@@ -266,62 +244,32 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             {
                 int control = 0;
 
-                if (Roll1 - Difficulty >= 0)
+                if (Roll1 - (7 + DevelopmentLevel * 2) >= 0)
                 {
-                    control += Convert.ToInt32(Math.Floor(((decimal)Roll1 - Difficulty) / 5) + 1);
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll1 - (7 + DevelopmentLevel * 2)) / 5) + 1);
                 }
 
-                if (Roll2 - Difficulty >= 0)
+                if (Roll2 - (7 + DevelopmentLevel * 2) >= 0)
                 {
-                    control += Convert.ToInt32(Math.Floor(((decimal)Roll2 - Difficulty) / 5) + 1);
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll2 - (7 + DevelopmentLevel * 2)) / 5) + 1);
                 }
 
-                if (Roll3 - Difficulty >= 0)
+                if (Roll3 - (7 + DevelopmentLevel * 2) >= 0)
                 {
-                    control += Convert.ToInt32(Math.Floor(((decimal)Roll3 - Difficulty) / 5) + 1);
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll3 - (7 + DevelopmentLevel * 2)) / 5) + 1);
                 }
 
-                if (control == 0)
+                if (control < 3)
                 {
-                    Result = "0";
+                    Result = "Misslyckat!";
                 }
-                else if (control < 3)
+                else if (control > 8)
                 {
-                    int i = Roll1 - Difficulty;
-                    if (i < 0)
-                    {
-                        i *= 15;
-                    }
-
-                    int j = Roll2 - Difficulty;
-                    if (j < 0)
-                    {
-                        j *= 15;
-                    }
-
-                    int k = Roll3 - Difficulty;
-                    if (k < 0)
-                    {
-                        k *= 15;
-                    }
-                    
-                    int r = Convert.ToInt32(Math.Floor((decimal)FellingWood + LandClearingWood + Convert.ToInt32((FellingWood + LandClearingWood) * ((decimal)(i + j + k) / 100))));
-                    if (r <= 0)
-                    {
-                        Result = "0";
-                    }
-                    else
-                    {
-                        Result = Convert.ToString(r);
-                    }
-                }
-                else if (control == 3)
-                {
-                    Result = Convert.ToInt32(FellingWood + LandClearingWood).ToString();
+                    Result = "Legendariskt";
                 }
                 else
                 {
-                    Result = Convert.ToString(Convert.ToInt32(Math.Floor((FellingWood + LandClearingWood) * ((control - 3) * 0.25M + 1))));
+                    Result = "Lyckat";
                 }
                 SendOk(true);
             }
@@ -343,14 +291,6 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
                 );
 
             RaiseEvent(newEventArgs);
-        }
-
-        private static void RaiseSkillChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
-        {
-            if (d is EndOfYearFellingUI c)
-                c.ConvertToNumeric();
         }
 
         private void ConvertToNumeric()
@@ -438,7 +378,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
                 "EndOfYearOkEvent",
                 RoutingStrategy.Bubble,
                 typeof(RoutedEventHandler),
-                typeof(EndOfYearFellingUI)
+                typeof(EndOfYearDevelopmentUI)
             );
 
         public event RoutedEventHandler EndOfYearOkEvent
@@ -460,20 +400,13 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
 
         #endregion
 
-        private void EndOfYearFellingUI_OnLoaded(
+        private void Self_Loaded(
             object sender, 
             RoutedEventArgs e)
         {
-            if (Felling > 0 || LandClearing > 0)
-            {
-                FellingWood = _baseService.RollObDice(Felling * 4) + Felling * 6;
-                LandClearingWood = _baseService.RollObDice(LandClearing * 4) + LandClearing * 6;
-                Prediction = Felling * 9 + LandClearing * 9;
-            }
-            else
+            if (!BeingDeveloped || StewardId < 1)
             {
                 Self.Visibility = Visibility.Collapsed;
-                SendOk(true);
             }
         }
     }

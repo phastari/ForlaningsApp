@@ -85,6 +85,14 @@
                 Grid.Row="0"
                 Focusable="True"/>
 
+            <CheckBox
+                x:Name="IsAllCheckBox"
+                IsChecked="{Binding Path=DataModel.IsAll}"
+                Grid.Column="0"
+                Grid.Row="0"
+                Visibility="Collapsed"
+                IsTabStop="False"/>
+
             <Frame 
                 Grid.Column="1" 
                 Grid.ColumnSpan="3"
@@ -320,7 +328,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="5"
                     Grid.Row="0"
-                    Value="{Binding Path=DataModel.Stoneworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Value="{Binding Path=DataModel.Stoneworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
 
                 <Label
                     Grid.Column="7"
@@ -334,7 +353,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="11"
                     Grid.Row="0"
-                    Value="{Binding Path=DataModel.Woodworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Value="{Binding Path=DataModel.Woodworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
 
                 <Label
                     Grid.Column="13"
@@ -348,7 +378,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="17"
                     Grid.Row="0"
-                    Value="{Binding Path=DataModel.Smiths, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Value="{Binding Path=DataModel.Smiths, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
             </Grid>
             <Grid
                 Grid.Column="5"
@@ -639,6 +680,16 @@
                                     Padding="0"
                                     Margin="0,3,8,0"
                                     Template="{DynamicResource ButtonTemplate}">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>
@@ -757,6 +808,16 @@
                                             <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="False"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>
@@ -766,6 +827,7 @@
                         <DataTemplate>
                             <buildingBuildingUI:BuildingBuildingUI
                                 Id="{Binding Path=Id}"
+                                IsAll="{Binding Path=IsAll}"
                                 Amount="{Binding Path=Amount}"
                                 Building="{Binding Path=Building}"
                                 BuildingTime="{Binding Path=BuildingTime}"
@@ -782,6 +844,7 @@
                                 LeftStonework="{Binding Path=LeftStonework}"
                                 StoneworkThisYear="{Binding Path=StoneworkThisYear}"
                                 LeftStone="{Binding Path=LeftStone}"
+                                StoneThisYear="{Binding Path=StoneThisYear}"
                                 IsExpanded="{Binding Path=IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="BuildingBuildingUIEvent">

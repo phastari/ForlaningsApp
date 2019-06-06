@@ -9,5 +9,6 @@ namespace FiefApp.Common.Infrastructure.Services
         BuildingsDataModel GetAllBuildingsDataModel();
         List<BuildingModel> GetAvailableBuildings();
         int GetNewIdForBuilder();
+        void SetAllBuildsCollectionIsAll(int index);
     }
 }

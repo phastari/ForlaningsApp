@@ -134,7 +134,9 @@
             Visibility="Collapsed"
             IsChecked="{Binding Path=EndOfYear}"/>
 
-        <TabControl Grid.Column="0" 
+        <TabControl 
+            x:Name="Test"
+            Grid.Column="0" 
                     Grid.Row="1"
                     prism:RegionManager.RegionName="TabRegion">
             <TabControl.Style>

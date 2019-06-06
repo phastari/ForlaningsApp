@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using CommonServiceLocator;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.EndOfYear.RoutedEvents;
 using Prism.Commands;
 
 namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
@@ -50,6 +51,20 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
         #endregion
 
         #region Dependency Properties
+
+        public int Id
+        {
+            get => (int)GetValue(IdProperty);
+            set => SetValue(IdProperty, value);
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register(
+                "Id",
+                typeof(int),
+                typeof(EndOfYearPopulationUI),
+                new PropertyMetadata(-1)
+            );
 
         public string Amor
         {
@@ -173,6 +188,19 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
 
         #region Methods
 
+        private void SendOk(bool ok)
+        {
+            EndOfYearEventArgs newEventArgs =
+                new EndOfYearEventArgs(
+                    EndOfYearOkRoutedEvent,
+                    "Population",
+                    Id,
+                    ok
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
         private void CalculateResult()
         {
             if (Roll1 > 0 && Roll2 > 0 && Roll3 > 0)
@@ -276,6 +304,11 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     }
                     AmorNumeric -= 1;
                 }
+                SendOk(true);
+            }
+            else
+            {
+                SendOk(false);
             }
         }
 
@@ -361,6 +394,24 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent EndOfYearOkRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "EndOfYearOkEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(EndOfYearPopulationUI)
+            );
+
+        public event RoutedEventHandler EndOfYearOkEvent
+        {
+            add => AddHandler(EndOfYearOkRoutedEvent, value);
+            remove => RemoveHandler(EndOfYearOkRoutedEvent, value);
         }
 
         #endregion

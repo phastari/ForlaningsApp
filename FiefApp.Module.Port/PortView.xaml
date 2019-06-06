@@ -208,7 +208,6 @@
                 <buildingShipyardUI:BuildingShipyardUI
                     Id="{Binding Path=DataModel.Shipyard.Id}"
                     DaysWorkNeeded="{Binding Path=DataModel.Shipyard.DaysWorkNeeded}"
-                    DaysWorkThisYear="{Binding Path=DataModel.Shipyard.DaysWorkThisYear}"
                     StewardsCollection="{Binding Path=DataModel.StewardsCollection}"
                     StewardId="{Binding Path=DataModel.Shipyard.StewardId}">
                     <buildingShipyardUI:BuildingShipyardUI.Style>

@@ -98,36 +98,57 @@ namespace FiefApp.Module.Boatbuilding
 
             if (e.Action == "Delete")
             {
-                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                if (Index == 0)
                 {
-                    if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
+                    if (_boatbuildingService.RemoveBoatbuilder(e.BoatbuilderModel.Id))
                     {
-                        DataModel.BoatBuildersCollection.RemoveAt(x);
-                        break;
+                        LoadData();
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                    {
+                        if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
+                        {
+                            DataModel.BoatBuildersCollection.RemoveAt(x);
+                            break;
+                        }
                     }
                 }
             }
 
             if (e.Action == "Save")
             {
-                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                if (Index == 0)
                 {
-                    if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
+                    if (_boatbuildingService.SaveBoatbuilder(e.BoatbuilderModel))
                     {
-                        DataModel.BoatBuildersCollection[x].PersonName = e.BoatbuilderModel.PersonName;
-                        DataModel.BoatBuildersCollection[x].Loyalty = e.BoatbuilderModel.Loyalty;
-                        DataModel.BoatBuildersCollection[x].Skill = e.BoatbuilderModel.Skill;
-                        DataModel.BoatBuildersCollection[x].Resources = e.BoatbuilderModel.Resources;
-                        DataModel.BoatBuildersCollection[x].Age = e.BoatbuilderModel.Age;
+                        LoadData();
                     }
                 }
-
-                for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                else
                 {
-                    DataModel.BoatsBuildingCollection[x].BoatBuildersCollection = DataModel.BoatBuildersCollection;
-                }
 
-                SaveData();
+                    for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                    {
+                        if (e.BoatbuilderModel.Id == DataModel.BoatBuildersCollection[x].Id)
+                        {
+                            DataModel.BoatBuildersCollection[x].PersonName = e.BoatbuilderModel.PersonName;
+                            DataModel.BoatBuildersCollection[x].Loyalty = e.BoatbuilderModel.Loyalty;
+                            DataModel.BoatBuildersCollection[x].Skill = e.BoatbuilderModel.Skill;
+                            DataModel.BoatBuildersCollection[x].Resources = e.BoatbuilderModel.Resources;
+                            DataModel.BoatBuildersCollection[x].Age = e.BoatbuilderModel.Age;
+                        }
+                    }
+
+                    for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                    {
+                        DataModel.BoatsBuildingCollection[x].BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                    }
+
+                    SaveData();
+                }
             }
         }
 
@@ -148,35 +169,43 @@ namespace FiefApp.Module.Boatbuilding
 
             if (e.Action == "Update")
             {
-                int index = -1;
-
-                for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                if (Index == 0)
                 {
-                    if (DataModel.BoatsBuildingCollection[x].Id == e.ConstructingBoatId)
-                    {
-                        DataModel.BoatsBuildingCollection[x].BoatbuilderId = e.BoatbuilderId;
-                        index = x;
-                    }
-                    else if (DataModel.BoatsBuildingCollection[x].BoatbuilderId == e.BoatbuilderId)
-                    {
-                        DataModel.BoatsBuildingCollection[x].BoatbuilderId = -1;
-                        DataModel.BoatsBuildingCollection[x].SelectedIndex = -1;
-                    }
+                    _boatbuildingService.ChangeBoatbuilder(e.ConstructingBoatId, e.BoatbuilderId);
+                    LoadData();
                 }
-
-                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                else
                 {
-                    if (DataModel.BoatBuildersCollection[x].Id == e.BoatbuilderId)
+                    int index = -1;
+
+                    for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
                     {
-                        DataModel.BoatBuildersCollection[x].BuildingBoatId = e.ConstructingBoatId;
-                        DataModel.BoatBuildersCollection[x].Assignment = DataModel.BoatsBuildingCollection[index].BoatType;
-                    }
-                    else
-                    {
-                        if (DataModel.BoatBuildersCollection[x].BuildingBoatId == e.ConstructingBoatId)
+                        if (DataModel.BoatsBuildingCollection[x].Id == e.ConstructingBoatId)
                         {
-                            DataModel.BoatBuildersCollection[x].BuildingBoatId = -1;
-                            DataModel.BoatBuildersCollection[x].Assignment = "";
+                            DataModel.BoatsBuildingCollection[x].BoatbuilderId = e.BoatbuilderId;
+                            index = x;
+                        }
+                        else if (DataModel.BoatsBuildingCollection[x].BoatbuilderId == e.BoatbuilderId)
+                        {
+                            DataModel.BoatsBuildingCollection[x].BoatbuilderId = -1;
+                            DataModel.BoatsBuildingCollection[x].SelectedIndex = -1;
+                        }
+                    }
+
+                    for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                    {
+                        if (DataModel.BoatBuildersCollection[x].Id == e.BoatbuilderId)
+                        {
+                            DataModel.BoatBuildersCollection[x].BuildingBoatId = e.ConstructingBoatId;
+                            DataModel.BoatBuildersCollection[x].Assignment = DataModel.BoatsBuildingCollection[index].BoatType;
+                        }
+                        else
+                        {
+                            if (DataModel.BoatBuildersCollection[x].BuildingBoatId == e.ConstructingBoatId)
+                            {
+                                DataModel.BoatBuildersCollection[x].BuildingBoatId = -1;
+                                DataModel.BoatBuildersCollection[x].Assignment = "";
+                            }
                         }
                     }
                 }
@@ -184,21 +213,29 @@ namespace FiefApp.Module.Boatbuilding
 
             if (e.Action == "Delete")
             {
-                for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
+                if (Index == 0)
                 {
-                    if (DataModel.BoatsBuildingCollection[x].Id == e.ConstructingBoatId)
-                    {
-                        DataModel.BoatsBuildingCollection.RemoveAt(x);
-                        break;
-                    }
+                    _boatbuildingService.RemoveBoat(e.ConstructingBoatId);
+                    LoadData();
                 }
-
-                for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                else
                 {
-                    if (DataModel.BoatBuildersCollection[x].BuildingBoatId == e.ConstructingBoatId)
+                    for (int x = 0; x < DataModel.BoatsBuildingCollection.Count; x++)
                     {
-                        DataModel.BoatBuildersCollection[x].BuildingBoatId = -1;
-                        DataModel.BoatBuildersCollection[x].Assignment = "";
+                        if (DataModel.BoatsBuildingCollection[x].Id == e.ConstructingBoatId)
+                        {
+                            DataModel.BoatsBuildingCollection.RemoveAt(x);
+                            break;
+                        }
+                    }
+
+                    for (int x = 0; x < DataModel.BoatBuildersCollection.Count; x++)
+                    {
+                        if (DataModel.BoatBuildersCollection[x].BuildingBoatId == e.ConstructingBoatId)
+                        {
+                            DataModel.BoatBuildersCollection[x].BuildingBoatId = -1;
+                            DataModel.BoatBuildersCollection[x].Assignment = "";
+                        }
                     }
                 }
             }
@@ -249,8 +286,12 @@ namespace FiefApp.Module.Boatbuilding
                 : _baseService.GetDataModel<BoatbuildingDataModel>(Index);
 
             DataModel.BoatTypeCollection = new ObservableCollection<BoatModel>(_settingsService.BoatbuildingSettingsModel.BoatSettingsList);
-            SetDataModelInformation();
+            if (Index != 0)
+            {
+                SetDataModelInformation();
+            }
 
+            DataModel.ShowButtons = Index != 0;
             UpdateFiefCollection();
         }
 

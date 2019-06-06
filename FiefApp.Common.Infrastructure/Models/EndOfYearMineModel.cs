@@ -2,6 +2,7 @@
 {
     public class EndOfYearMineModel
     {
+        public int Id { get; set; }
         public string Type { get; set; }
         public int Guards { get; set; }
         public int Crime { get; set; }

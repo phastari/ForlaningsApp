@@ -483,8 +483,32 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _landClearing;
             set
             {
-                _landClearing = value;
-                DaysworkLandClearing = value * 280;
+                if (value < 0)
+                {
+                    _landClearing = 0;
+                    DaysworkLandClearing = 0;
+                }
+                else if (value > LandClearingMax)
+                {
+                    _landClearing = LandClearingMax;
+                    DaysworkLandClearing = LandClearingMax * 280;
+                }
+                else
+                {
+                    _landClearing = value;
+                    DaysworkLandClearing = value * 280;
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _landClearingMax;
+        public int LandClearingMax
+        {
+            get => _landClearingMax;
+            set
+            {
+                _landClearingMax = value;
                 NotifyPropertyChanged();
             }
         }
@@ -518,8 +542,32 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _landClearingOfFelling;
             set
             {
-                _landClearingOfFelling = value;
-                DaysworkLandClearingOfFelling = value * 210;
+                if (value < 0)
+                {
+                    _landClearingOfFelling = 0;
+                    DaysworkLandClearingOfFelling = 0;
+                }
+                else if (value > LandClearingOfFellingMax)
+                {
+                    _landClearingOfFelling = LandClearingOfFellingMax;
+                    DaysworkLandClearingOfFelling = 210 * LandClearingOfFellingMax;
+                }
+                else
+                {
+                    _landClearingOfFelling = value;
+                    DaysworkLandClearingOfFelling = value * 210;
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _landClearingOfFellingMax;
+        public int LandClearingOfFellingMax
+        {
+            get => _landClearingOfFellingMax;
+            set
+            {
+                _landClearingOfFellingMax = value;
                 NotifyPropertyChanged();
             }
         }
@@ -553,8 +601,32 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _clearUseless;
             set
             {
-                _clearUseless = value;
-                DaysworkClearUseless = value * 500;
+                if (value < 0)
+                {
+                    _clearUseless = 0;
+                    DaysworkClearUseless = 0;
+                }
+                else if (value > ClearUselessMax)
+                {
+                    _clearUseless = ClearUselessMax;
+                    DaysworkClearUseless = 500 * ClearUselessMax;
+                }
+                else
+                {
+                    _clearUseless = value;
+                    DaysworkClearUseless = value * 500;
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _clearUselessMax;
+        public int ClearUselessMax
+        {
+            get => _clearUselessMax;
+            set
+            {
+                _clearUselessMax = value;
                 NotifyPropertyChanged();
             }
         }
@@ -588,8 +660,32 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _felling;
             set
             {
-                _felling = value;
-                DaysworkFelling = value * 70;
+                if (value < 0)
+                {
+                    _felling = 0;
+                    DaysworkFelling = 0;
+                }
+                else if (value > FellingMax)
+                {
+                    _felling = FellingMax;
+                    DaysworkFelling = 70 * FellingMax;
+                }
+                else
+                {
+                    _felling = value;
+                    DaysworkFelling = value * 70;
+                }
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _fellingMax;
+        public int FellingMax
+        {
+            get => _fellingMax;
+            set
+            {
+                _fellingMax = value;
                 NotifyPropertyChanged();
             }
         }
@@ -858,6 +954,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _taxToTheKing = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _endOfYearError;
+        public string EndOfYearError
+        {
+            get => _endOfYearError;
+            set
+            {
+                _endOfYearError = value;
                 NotifyPropertyChanged();
             }
         }

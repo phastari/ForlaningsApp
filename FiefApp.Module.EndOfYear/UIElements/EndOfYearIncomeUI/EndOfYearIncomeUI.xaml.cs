@@ -1,5 +1,6 @@
 ﻿using CommonServiceLocator;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.EndOfYear.RoutedEvents;
 using Prism.Commands;
 using System;
 using System.ComponentModel;
@@ -230,6 +231,19 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearIncomeUI
 
         #region Methods
 
+        private void SendOk(bool ok)
+        {
+            EndOfYearEventArgs newEventArgs =
+                new EndOfYearEventArgs(
+                    EndOfYearOkRoutedEvent,
+                    "Industry",
+                    Id,
+                    ok
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
         private static void RaiseSkillChanged(
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
@@ -302,10 +316,12 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearIncomeUI
                     {
                         Result = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncome * ((control - 3) * 0.25M + 1))));
                     }
+                    SendOk(true);
                 }
                 else
                 {
                     Result = "-";
+                    SendOk(false);
                 }
             }
         }
@@ -384,6 +400,24 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearIncomeUI
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent EndOfYearOkRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "EndOfYearOkEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(EndOfYearIncomeUI)
+            );
+
+        public event RoutedEventHandler EndOfYearOkEvent
+        {
+            add => AddHandler(EndOfYearOkRoutedEvent, value);
+            remove => RemoveHandler(EndOfYearOkRoutedEvent, value);
         }
 
         #endregion

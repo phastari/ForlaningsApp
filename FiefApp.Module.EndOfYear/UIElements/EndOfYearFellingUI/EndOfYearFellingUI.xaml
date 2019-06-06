@@ -16,9 +16,9 @@
             <RowDefinition Height="9"/>
             <RowDefinition Height="6"/>
             <RowDefinition Height="3"/>
-            <RowDefinition Height="72"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="24"/>
-            <RowDefinition Height="72"/>
+            <RowDefinition Height="96"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="9"/>
         </Grid.RowDefinitions>
@@ -36,10 +36,6 @@
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
                 <RowDefinition Height="3"/>
-                <RowDefinition Height="21"/>
-                <RowDefinition Height="3"/>
-                <RowDefinition Height="21"/>
-                <RowDefinition Height="3"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -53,79 +49,25 @@
                 Content="Skogsavverkning"
                 FontWeight="Bold"
                 Grid.Column="0"
+                Grid.ColumnSpan="5"
                 Grid.Row="0"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
-
-            <Label
-                Content="Antal"
-                Grid.Column="2"
-                Grid.Row="0"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
-
-            <Label
-                Content="Timmer"
-                Grid.Column="4"
-                Grid.Row="0"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
-
-            <Label
-                Content="Avverkat"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="2"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
-                Padding="0"/>
-
-            <TextBox
-                Text="{Binding Path=Felling}"
-                Grid.Column="2"
-                Grid.Row="2"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                Padding="0"
-                IsReadOnly="True"/>
-
-            <TextBox
-                Text="{Binding Path=FellingWood}"
-                Grid.Column="4"
-                Grid.Row="2"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                Padding="0,0,6,0"
-                IsReadOnly="True"/>
+                Padding="12,0,0,0"/>
 
             <Label
-                Content="Bryt."
-                ToolTip="Landbrytning"
+                Content="Timmer prognos"
                 Grid.Column="0"
-                Grid.Row="4"
+                Grid.ColumnSpan="3"
+                Grid.Row="2"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
 
             <TextBox
-                Text="{Binding Path=LandClearing}"
-                Grid.Column="2"
-                Grid.Row="4"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                Padding="0"
-                IsReadOnly="True"/>
-
-            <TextBox
-                Text="{Binding Path=LandClearingWood}"
+                Text="{Binding Path=Prediction}"
                 Grid.Column="4"
-                Grid.Row="4"
+                Grid.Row="2"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -144,8 +86,6 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
 
                 <Label
@@ -156,26 +96,18 @@
                     VerticalContentAlignment="Center"
                     Padding="0"/>
 
-                <t6TextBox:T6TextBox
+            <t6TextBox:T6TextBox
                     T6Value="{Binding Path=Skill}"
                     Grid.Column="2"
                     Grid.Row="0"
                     ReadOnly="True"/>
-
-                <TextBox
-                    Text="{Binding Path=Difficulty}"
-                    Grid.Column="4"
-                    Grid.Row="0"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Background="AntiqueWhite"
-                    Padding="0"
-                    IsReadOnly="True"/>
         </Grid>
         <Grid
             Grid.Column="1"
             Grid.Row="5">
             <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
@@ -192,9 +124,27 @@
             </Grid.ColumnDefinitions>
 
             <Label
-                Content="Slag #1"
+                Content="Svårighetsgrad"
                 Grid.Column="0"
                 Grid.Row="0"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+            
+            <TextBox
+                    Text="{Binding Path=Difficulty}"
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="AntiqueWhite"
+                    Padding="0"
+                    IsReadOnly="True"/>
+            
+            <Label
+                Content="Slag #1"
+                Grid.Column="0"
+                Grid.Row="2"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -202,7 +152,7 @@
             <TextBox
                 Text="{Binding Path=Roll1}"
                 Grid.Column="2"
-                Grid.Row="0"
+                Grid.Row="2"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -212,7 +162,7 @@
                 Command="{Binding Path=Roll}"
                 CommandParameter="1"
                 Grid.Column="4"
-                Grid.Row="0"
+                Grid.Row="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Transparent"
@@ -230,7 +180,7 @@
             <Label
                 Content="Slag #2"
                 Grid.Column="0"
-                Grid.Row="2"
+                Grid.Row="4"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -238,7 +188,7 @@
             <TextBox
                 Text="{Binding Path=Roll2}"
                 Grid.Column="2"
-                Grid.Row="2"
+                Grid.Row="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -248,7 +198,7 @@
                 Command="{Binding Path=Roll}"
                 CommandParameter="2"
                 Grid.Column="4"
-                Grid.Row="2"
+                Grid.Row="4"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Transparent"
@@ -266,7 +216,7 @@
             <Label
                 Content="Slag #3"
                 Grid.Column="0"
-                Grid.Row="4"
+                Grid.Row="6"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -274,7 +224,7 @@
             <TextBox
                 Text="{Binding Path=Roll3}"
                 Grid.Column="2"
-                Grid.Row="4"
+                Grid.Row="6"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -284,7 +234,7 @@
                 Command="{Binding Path=Roll}"
                 CommandParameter="3"
                 Grid.Column="4"
-                Grid.Row="4"
+                Grid.Row="6"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Transparent"
@@ -313,7 +263,6 @@
                 <ColumnDefinition Width="65"/>
             </Grid.ColumnDefinitions>
 
-        
             <Label
                 Content="Totalt"
                 Grid.Column="0"
@@ -328,7 +277,7 @@
                 Grid.Row="0"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
+                Background="NavajoWhite"
                 Padding="0,0,6,0"
                 IsReadOnly="True"/>
         </Grid>

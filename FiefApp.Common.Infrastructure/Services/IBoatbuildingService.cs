@@ -6,6 +6,10 @@ namespace FiefApp.Common.Infrastructure.Services
     public interface IBoatbuildingService
     {
         BoatbuildingDataModel GetAllBoatbuildingDataModel();
+        bool RemoveBoatbuilder(int id);
+        bool SaveBoatbuilder(BoatbuilderModel model);
+        void ChangeBoatbuilder(int boatId, int boatbuilderId);
+        void RemoveBoat(int boatId);
         int GetNewBuildingBoatId(int index);
         int GetNewBoatbuilderId();
         int GetNrVillageBoatbuilders(int index);

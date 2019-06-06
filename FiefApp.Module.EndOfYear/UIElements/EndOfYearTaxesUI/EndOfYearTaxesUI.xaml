@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="219" 
              d:DesignWidth="181.5"
-             x:Name="Self">
+             x:Name="Self"
+             Loaded="Self_Loaded">
 
     <Grid
         x:Name="RootGrid">
@@ -16,7 +17,8 @@
             <RowDefinition Height="6"/>
             <RowDefinition Height="3"/>
             <RowDefinition Height="72"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="72"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="9"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -70,7 +72,7 @@
                 IsReadOnly="True"/>
 
             <Label
-                Content="Undersåtarnas lojalitet"
+                Content="Invånarnas lojalitet"
                 Grid.Column="0"
                 Grid.Row="4"
                 HorizontalContentAlignment="Right"
@@ -84,13 +86,10 @@
                 ReadOnly="True"/>
         </Grid>
         <Grid
+            x:Name="RollGrid"
             Grid.Column="1"
             Grid.Row="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="21"/>
-                <RowDefinition Height="3"/>
-                <RowDefinition Height="21"/>
-                <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
@@ -109,7 +108,7 @@
             <Label
                 Content="Slag #1"
                 Grid.Column="0"
-                Grid.Row="2"
+                Grid.Row="0"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -117,7 +116,7 @@
             <TextBox
                 Text="{Binding Path=Roll1}"
                 Grid.Column="2"
-                Grid.Row="2"
+                Grid.Row="0"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -127,7 +126,7 @@
                 Command="{Binding Path=Roll}"
                 CommandParameter="1"
                 Grid.Column="4"
-                Grid.Row="2"
+                Grid.Row="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Transparent"
@@ -145,7 +144,7 @@
             <Label
                 Content="Slag #2"
                 Grid.Column="0"
-                Grid.Row="4"
+                Grid.Row="2"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -153,7 +152,7 @@
             <TextBox
                 Text="{Binding Path=Roll2}"
                 Grid.Column="2"
-                Grid.Row="4"
+                Grid.Row="2"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -163,7 +162,7 @@
                 Command="{Binding Path=Roll}"
                 CommandParameter="2"
                 Grid.Column="4"
-                Grid.Row="4"
+                Grid.Row="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Transparent"
@@ -181,7 +180,7 @@
             <Label
                 Content="Slag #3"
                 Grid.Column="0"
-                Grid.Row="6"
+                Grid.Row="4"
                 HorizontalContentAlignment="Right"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -189,7 +188,7 @@
             <TextBox
                 Text="{Binding Path=Roll3}"
                 Grid.Column="2"
-                Grid.Row="6"
+                Grid.Row="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"
@@ -199,7 +198,7 @@
                 Command="{Binding Path=Roll}"
                 CommandParameter="3"
                 Grid.Column="4"
-                Grid.Row="6"
+                Grid.Row="4"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 BorderBrush="Transparent"
@@ -213,16 +212,14 @@
                     </Image>
                 </ContentControl>
             </Button>
-
-            <Label
-                Content="{Binding Path=Outcome}"
-                Grid.Column="0"
-                Grid.ColumnSpan="5"
-                Grid.Row="8"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
         </Grid>
-
+        <TextBlock
+            Text="{Binding Path=Outcome}"
+            Grid.Column="1"
+            Grid.Row="5"
+            TextWrapping="Wrap"
+            TextAlignment="Center"
+            Padding="0"
+            Margin="6,0,6,0"/>
     </Grid>
 </UserControl>

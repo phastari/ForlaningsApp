@@ -7,7 +7,9 @@
              xmlns:t6TextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.T6TextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="24" 
-             d:DesignWidth="510">
+             d:DesignWidth="510"
+             Loaded="UserControl_Loaded"
+             x:Name="Self">
 
     <Grid
         x:Name="RootGrid">

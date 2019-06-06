@@ -2,6 +2,7 @@
 {
     public class EndOfYearSubsidiaryModel
     {
+        public int Id { get; set; }
         public string Subsidiary { get; set; }
         public string Steward { get; set; }
         public int StewardId { get; set; }

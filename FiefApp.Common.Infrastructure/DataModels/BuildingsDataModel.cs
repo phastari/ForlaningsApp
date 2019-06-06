@@ -65,7 +65,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private ObservableCollection<BuilderModel> _buildersCollection = new ObservableCollection<BuilderModel>();
+        private ObservableCollection<BuilderModel> _buildersCollection = new ObservableCollection<BuilderModel>() { new BuilderModel() { Id = 0 } };
         public ObservableCollection<BuilderModel> BuildersCollection
         {
             get => _buildersCollection;
@@ -224,6 +224,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _woodworkersDaysWorkLeft = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _isAll;
+        public bool IsAll
+        {
+            get => _isAll;
+            set
+            {
+                _isAll = value;
                 NotifyPropertyChanged();
             }
         }

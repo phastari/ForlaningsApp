@@ -2,6 +2,7 @@
 {
     public class EndOfYearIncomeModel
     {
+        public int Id { get; set; }
         public string Income { get; set; }
         public decimal Crewed { get; set; }
         public int StewardId { get; set; }

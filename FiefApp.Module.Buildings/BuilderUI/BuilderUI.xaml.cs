@@ -245,5 +245,13 @@ namespace FiefApp.Module.Buildings.BuilderUI
         }
 
         #endregion
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Id == 0)
+            {
+                Self.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }

@@ -117,6 +117,20 @@ namespace FiefApp.Common.Infrastructure.Services
                 });
             }
 
+            for (int x = 0; x < _fiefService.SubsidiaryList[index].ConstructingCollection.Count; x++)
+            {
+                tempList.Add(new StewardIndustryModel()
+                {
+                    Industry = _fiefService.SubsidiaryList[index].ConstructingCollection[x].Subsidiary,
+                    IndustryId = _fiefService.SubsidiaryList[index].ConstructingCollection[x].Id,
+                    IndustryType = "Subsidiary",
+                    FiefId = index,
+                    StewardId = _fiefService.SubsidiaryList[index].ConstructingCollection[x].StewardId,
+                    CanBeDeveloped = _fiefService.SubsidiaryList[index].ConstructingCollection[x].CanBeDeveloped,
+                    BeingDeveloped = _fiefService.SubsidiaryList[index].ConstructingCollection[x].BeingDeveloped
+                });
+            }
+
             if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Count > 0)
             {
                 for (int x = 0; x < _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Count; x++)

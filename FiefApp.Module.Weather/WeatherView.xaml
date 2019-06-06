@@ -1473,6 +1473,17 @@
                 IsTabStop="False"/>
         </Grid>
 
+        <Label 
+            Grid.Column="21"
+            Grid.ColumnSpan="7"
+            Grid.Row="37"
+            Foreground="Red"
+            Content="{Binding Path=DataModel.EndOfYearError}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"
+            Margin="0,0,3,0"/>
+
         <Button
             Content="Bokslut"
             Command="{Binding Path=EndOfYearCommand}"

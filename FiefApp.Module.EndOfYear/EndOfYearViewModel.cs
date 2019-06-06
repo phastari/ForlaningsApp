@@ -1,12 +1,15 @@
 ﻿using FiefApp.Common.Infrastructure;
+using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
-
-using Prism.Events;
-using System.Collections.ObjectModel;
-using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using FiefApp.Module.EndOfYear.RoutedEvents;
 using Prism.Commands;
+using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FiefApp.Module.EndOfYear
 {
@@ -29,6 +32,10 @@ namespace FiefApp.Module.EndOfYear
             TabName = "Bokslut";
 
             EndOfYearCancelCommand = new DelegateCommand(ExecuteEndOfYearCancelCommand);
+            CompleteEndOfYearCommand = new DelegateCommand(ExecuteCompleteEndOfYearCommand);
+            EndOfYearOkEventHandler = new CustomDelegateCommand(ExecuteEndOfYearOkEventHandler, o => true);
+
+            _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
         }
 
         #region DelegateCommand : EndOfYearCancelCommand
@@ -37,6 +44,130 @@ namespace FiefApp.Module.EndOfYear
         private void ExecuteEndOfYearCancelCommand()
         {
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+        }
+
+        #endregion
+        #region CustomDelegateCommand : EndOfYearOkEventHandler
+
+        public CustomDelegateCommand EndOfYearOkEventHandler { get; set; }
+        private void ExecuteEndOfYearOkEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is EndOfYearEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+            Console.WriteLine("EndOfYearOkEvent Recived!");
+            switch (e.Action)
+            {
+                case "Industry":
+                    {
+                        List<bool> tempList = new List<bool>();
+                        for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
+                        {
+                            if (DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsKey(e.Id))
+                            {
+                                DataModel.IncomeListFief[x].EndOfYearOkDictionary[e.Id] = e.Ok;
+                            }
+                            
+                            if (!DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsValue(false))
+                            {
+                                tempList.Add(true);
+                            }
+                            else
+                            {
+                                tempList.Add(false);
+                            }
+                            tempList.Add(DataModel.IncomeListFief[x].PopulationOk);
+                            tempList.Add(DataModel.IncomeListFief[x].TaxesOk);
+                        }
+
+                        if (tempList.Contains(false))
+                        {
+                            DataModel.EnableButton = false;
+                        }
+                        else
+                        {
+                            DataModel.EnableButton = true;
+                        }
+                        
+                        break;
+                    }
+
+                case "Population":
+                    {
+                        DataModel.IncomeListFief[e.Id - 1].PopulationOk = e.Ok;
+
+                        List<bool> tempList = new List<bool>();
+                        for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
+                        {
+                            if (!DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsValue(false))
+                            {
+                                tempList.Add(true);
+                            }
+                            else
+                            {
+                                tempList.Add(false);
+                            }
+                            tempList.Add(DataModel.IncomeListFief[x].PopulationOk);
+                            tempList.Add(DataModel.IncomeListFief[x].TaxesOk);
+                        }
+
+                        if (tempList.Contains(false))
+                        {
+                            DataModel.EnableButton = false;
+                        }
+                        else
+                        {
+                            DataModel.EnableButton = true;
+                        }
+
+                        break;
+                    }
+
+                case "Taxes":
+                    {
+                        DataModel.IncomeListFief[e.Id - 1].TaxesOk = e.Ok;
+
+                        List<bool> tempList = new List<bool>();
+                        for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
+                        {
+                            if (!DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsValue(false))
+                            {
+                                tempList.Add(true);
+                            }
+                            else
+                            {
+                                tempList.Add(false);
+                            }
+                            tempList.Add(DataModel.IncomeListFief[x].PopulationOk);
+                            tempList.Add(DataModel.IncomeListFief[x].TaxesOk);
+                        }
+
+                        if (tempList.Contains(false))
+                        {
+                            DataModel.EnableButton = false;
+                        }
+                        else
+                        {
+                            DataModel.EnableButton = true;
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        #endregion
+        #region DelegateCommand : CompleteEndOfYearCommand
+
+        public DelegateCommand CompleteEndOfYearCommand { get; set; }
+        private void ExecuteCompleteEndOfYearCommand()
+        {
+            DataModel.CheckIfAllRollsHaveBeenMade();
         }
 
         #endregion

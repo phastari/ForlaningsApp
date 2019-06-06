@@ -196,6 +196,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private string _skill;
+        public string Skill
+        {
+            get => _skill;
+            set
+            {
+                _skill = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _taxes = 20;
         public int Taxes
         {
@@ -335,6 +346,17 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _availableGuards = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _difficulty;
+        public int Difficulty
+        {
+            get => _difficulty;
+            set
+            {
+                _difficulty = value;
                 NotifyPropertyChanged();
             }
         }

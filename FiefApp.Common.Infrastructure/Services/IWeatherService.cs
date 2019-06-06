@@ -18,5 +18,9 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetManorAcres(int index);
         int GetNumberOfFishingboats(int index);
         void SetNumberOfFishingboats(int index, int fishingboats);
+        int GetMaxLandClearing(int index);
+        int GetMaxFelling(int index);
+        int GetMaxUseless(int index);
+        int GetMaxLandClearFelling(int index);
     }
 }

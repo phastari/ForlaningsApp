@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
 {
@@ -14,11 +14,37 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _incomeListFief;
             set
             {
-                _incomeListFief = value; 
+                _incomeListFief = value;
                 NotifyPropertyChanged();
             }
         }
 
+        private bool _enableButton;
+        public bool EnableButton
+        {
+            get => _enableButton;
+            set
+            {
+                _enableButton = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #region Methods
+
+        public bool CheckIfAllRollsHaveBeenMade()
+        {
+            for (int x = 0; x < _incomeListFief.Count; x++)
+            {
+                if (_incomeListFief[x].EndOfYearOkDictionary.ContainsValue(false))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        #endregion
 
         #region INotifyPropertyChanged
 

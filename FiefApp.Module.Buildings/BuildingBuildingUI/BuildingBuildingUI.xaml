@@ -8,7 +8,8 @@
              xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="120" 
-             d:DesignWidth="510">
+             d:DesignWidth="510"
+             Loaded="UserControl_Loaded">
 
     <Grid
         x:Name="RootGrid"
@@ -153,7 +154,8 @@
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
-                        Value="{Binding Path=SmithsworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="SmithsThisYearTextBox"
+                        Value="{Binding Path=SmithsworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                         Grid.Column="4"
                         Grid.Row="2"
                         Padding="0"/>
@@ -189,7 +191,8 @@
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
-                        Value="{Binding Path=IronThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="IronThisYearTextBox"
+                        Value="{Binding Path=IronThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                         Grid.Column="12"
                         Grid.Row="2"
                         Padding="0"/>
@@ -214,7 +217,8 @@
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
-                        Value="{Binding Path=WoodworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="WoodworkersThisYearTextBox"
+                        Value="{Binding Path=WoodworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                         Grid.Column="4"
                         Grid.Row="4"
                         Padding="0"/>
@@ -250,7 +254,8 @@
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
-                        Value="{Binding Path=WoodThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="WoodThisYearTextBox"
+                        Value="{Binding Path=WoodThisYearUC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Column="12"
                         Grid.Row="4"
                         Padding="0"/>
@@ -276,7 +281,8 @@
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
-                        Value="{Binding Path=StoneworkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="StoneworkersThisYearTextBox"
+                        Value="{Binding Path=StoneworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                         Grid.Column="4"
                         Grid.Row="6"
                         Padding="0"/>
@@ -312,12 +318,11 @@
                         IsReadOnly="True"/>
 
                     <iTextBox:iTextBox
-                        Value="{Binding Path=StoneThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="StoneThisYearTextBox"
+                        Value="{Binding Path=StoneThisYearUC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Column="12"
                         Grid.Row="6"
                         Padding="0"/>
-
-
                 </Grid>
             </TreeViewItem>
         </TreeView>
@@ -381,10 +386,11 @@
                 Grid.Row="0"
                 ItemsSource="{Binding Path=BuildersCollection}"
                 DisplayMemberPath="PersonName"
+                VerticalContentAlignment="Center"
                 SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
                 Template="{DynamicResource ComboBoxControlTemplate}"
-                SelectionChanged="BuilderComboBox_OnSelectionChanged"/>
+                SelectionChanged="BuilderComboBox_OnSelectionChanged"/> 
 
             <t6TextBox:T6TextBox
                 T6Value="{Binding ElementName=BuilderComboBox, Path=SelectedItem.Skill}"

@@ -339,6 +339,17 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private bool _isAll = false;
+        public bool IsAll
+        {
+            get => _isAll;
+            set
+            {
+                _isAll = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

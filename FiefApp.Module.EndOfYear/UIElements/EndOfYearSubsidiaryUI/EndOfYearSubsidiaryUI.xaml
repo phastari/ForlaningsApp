@@ -175,7 +175,7 @@
             Grid.Row="0"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Background="AntiqueWhite"
+            Background="NavajoWhite"
             Padding="0"
             IsReadOnly="True"/>
 
@@ -185,7 +185,7 @@
             Grid.Row="0"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Background="AntiqueWhite"
+            Background="NavajoWhite"
             Padding="0"
             IsReadOnly="True"/>
 
@@ -195,7 +195,7 @@
             Grid.Row="0"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Background="AntiqueWhite"
+            Background="NavajoWhite"
             Padding="0"
             IsReadOnly="True"/>
     </Grid>

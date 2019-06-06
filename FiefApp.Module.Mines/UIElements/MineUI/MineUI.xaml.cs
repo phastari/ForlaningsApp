@@ -279,7 +279,7 @@ namespace FiefApp.Module.Mines.UIElements.MineUI
 
                 decimal factor = CurrentGuards * (((decimal)127 / (CurrentGuards + 1)) / Crime * Crime);
 
-                if (IsFirstYear)
+                if (IsFirstYear || StewardId < 1)
                 {
                     Income = 0;
                 }

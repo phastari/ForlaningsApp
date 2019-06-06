@@ -77,6 +77,15 @@
 
 
             <CheckBox
+                x:Name="ShowButton"
+                IsChecked="{Binding Path=DataModel.ShowButtons}"
+                Grid.Column="0"
+                Grid.Row="0"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsTabStop="False"/>
+            
+            <CheckBox
                 x:Name="GotShipyard"
                 IsChecked="{Binding Path=DataModel.GotShipyard}"
                 Grid.Column="0"
@@ -597,6 +606,16 @@
                                             <customCommands:CustomSetterAction PropertyName="IsEnabled" TargetObject="{Binding ElementName=RootGrid}" Value="False"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ShowButton, Path=IsChecked}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>
@@ -737,6 +756,16 @@
                                     Padding="0"
                                     Margin="0,3,8,0"
                                     Template="{DynamicResource ButtonTemplate}">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ShowButton, Path=IsChecked}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>

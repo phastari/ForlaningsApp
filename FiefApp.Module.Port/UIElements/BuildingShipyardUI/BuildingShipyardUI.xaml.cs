@@ -65,20 +65,6 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                 new PropertyMetadata(0)
             );
 
-        public int DaysWorkThisYear
-        {
-            get => (int)GetValue(DaysWorkThisYearProperty);
-            set => SetValue(DaysWorkThisYearProperty, value);
-        }
-
-        public static readonly DependencyProperty DaysWorkThisYearProperty =
-            DependencyProperty.Register(
-                "DaysWorkThisYear",
-                typeof(int),
-                typeof(BuildingShipyardUI),
-                new PropertyMetadata(0)
-            );
-
         public ObservableCollection<StewardModel> StewardsCollection
         {
             get => (ObservableCollection<StewardModel>)GetValue(StewardsCollectionProperty);
@@ -122,6 +108,29 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
             }
         }
 
+        private int _daysWorkThisYear;
+        public int DaysWorkThisYear
+        {
+            get => _daysWorkThisYear;
+            set
+            {
+                if (value < 0)
+                {
+                    _daysWorkThisYear = 0;
+                }
+                else if (value > DaysWorkNeeded)
+                {
+                    _daysWorkThisYear = DaysWorkNeeded;
+                }
+                else
+                {
+                    _daysWorkThisYear = value;
+                }
+                RaiseDaysWorkThisYearChanged();
+                NotifyPropertyChanged();
+            }
+        }        
+
         private bool _loaded = false;
 
         #endregion
@@ -157,6 +166,20 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
 
             SelectedIndex = index;
             _loaded = true;
+        }
+
+        private void RaiseDaysWorkThisYearChanged()
+        {
+            BuildingShipyardUIEventArgs newEventArgs =
+                    new BuildingShipyardUIEventArgs(
+                        BuildingShipyardUIRoutedEvent,
+                        "DaysWorkChanged",
+                        StewardsCollection[SelectedIndex].Id,
+                        Id,
+                        DaysWorkThisYear
+                    );
+
+            RaiseEvent(newEventArgs);
         }
 
         #region RoutedEvents

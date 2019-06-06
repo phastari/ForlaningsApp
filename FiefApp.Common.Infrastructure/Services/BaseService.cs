@@ -125,6 +125,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 else if (dataModel.GetType() == typeof(ManorDataModel))
                 {
                     ManorDataModel tempDataModel = (ManorDataModel)dataModel;
+                    tempDataModel.ResidentsCollection.Clear();
                     _fiefService.ManorList[index] = (ManorDataModel)tempDataModel.Clone();
                 }
                 else if (dataModel.GetType() == typeof(BoatbuildingDataModel))
@@ -419,6 +420,10 @@ namespace FiefApp.Common.Infrastructure.Services
                 {
                     tempList.Add(_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Max(o => o.Id));
                 }
+                if (_fiefService.SubsidiaryList[x].ConstructingCollection.Count > 0)
+                {
+                    tempList.Add(_fiefService.SubsidiaryList[x].ConstructingCollection.Max(o => o.Id));
+                }
             }
 
             if (tempList.Count > 0)
@@ -466,6 +471,14 @@ namespace FiefApp.Common.Infrastructure.Services
                     if (_fiefService.SubsidiaryList[x].SubsidiaryCollection[y].StewardId == stewardId)
                     {
                         _fiefService.SubsidiaryList[x].SubsidiaryCollection[y].StewardId = -1;
+                    }
+                }
+
+                for (int y = 0; y < _fiefService.SubsidiaryList[x].ConstructingCollection.Count; y++)
+                {
+                    if (_fiefService.SubsidiaryList[x].ConstructingCollection[y].StewardId == stewardId)
+                    {
+                        _fiefService.SubsidiaryList[x].ConstructingCollection[y].StewardId = -1;
                     }
                 }
             }
@@ -564,6 +577,23 @@ namespace FiefApp.Common.Infrastructure.Services
                         {
                             foundIndustry = true;
                             _fiefService.SubsidiaryList[x].SubsidiaryCollection.RemoveAt(y);
+                            break;
+                        }
+                    }
+                }
+
+                if (foundIndustry)
+                {
+                    break;
+                }
+                else
+                {
+                    for (int y = 0; y < _fiefService.SubsidiaryList[x].ConstructingCollection.Count; y++)
+                    {
+                        if (_fiefService.SubsidiaryList[x].ConstructingCollection[y].Id == industryId)
+                        {
+                            foundIndustry = true;
+                            _fiefService.SubsidiaryList[x].ConstructingCollection.RemoveAt(y);
                             break;
                         }
                     }
@@ -681,6 +711,24 @@ namespace FiefApp.Common.Infrastructure.Services
                         if (_fiefService.SubsidiaryList[x].SubsidiaryCollection[y].Id == industryId)
                         {
                             _fiefService.SubsidiaryList[x].SubsidiaryCollection[y].StewardId = stewardId;
+                        }
+                    }
+                }
+
+                for (int y = 0; y < _fiefService.SubsidiaryList[x].ConstructingCollection.Count; y++)
+                {
+                    if (_fiefService.SubsidiaryList[x].ConstructingCollection[y].StewardId == stewardId)
+                    {
+                        if (_fiefService.SubsidiaryList[x].ConstructingCollection[y].Id != industryId)
+                        {
+                            _fiefService.SubsidiaryList[x].ConstructingCollection[y].StewardId = -1;
+                        }
+                    }
+                    else
+                    {
+                        if (_fiefService.SubsidiaryList[x].ConstructingCollection[y].Id == industryId)
+                        {
+                            _fiefService.SubsidiaryList[x].ConstructingCollection[y].StewardId = stewardId;
                         }
                     }
                 }

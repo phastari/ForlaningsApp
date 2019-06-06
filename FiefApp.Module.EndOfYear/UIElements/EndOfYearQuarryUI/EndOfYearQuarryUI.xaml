@@ -184,7 +184,7 @@
             Grid.Row="0"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxTemplate}"
+            Background="NavajoWhite"
             Padding="0,0,6,0"
             IsReadOnly="True"/>
 

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
 using FiefApp.Common.Infrastructure.Services;
+using FiefApp.Module.EndOfYear.RoutedEvents;
 using Prism.Commands;
 
 namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI
@@ -51,6 +52,20 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI
         #endregion
 
         #region Dependency Properties
+
+        public int Id
+        {
+            get => (int)GetValue(IdProperty);
+            set => SetValue(IdProperty, value);
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register(
+                "Id",
+                typeof(int),
+                typeof(EndOfYearQuarryUI),
+                new PropertyMetadata(-1)
+            );
 
         public string QuarryType
         {
@@ -297,6 +312,19 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI
 
         #region Methods
 
+        private void SendOk(bool ok)
+        {
+            EndOfYearEventArgs newEventArgs =
+                new EndOfYearEventArgs(
+                    EndOfYearOkRoutedEvent,
+                    "Industry",
+                    Id,
+                    ok
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
         private static void RaiseSkillChanged(
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
@@ -367,10 +395,12 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI
                 {
                     ResultStone = Convert.ToString(Convert.ToInt32(Math.Floor(BaseStone * ((control - 3) * 0.25M + 1))));
                 }
+                SendOk(true);
             }
             else
             {
                 ResultStone = "-";
+                SendOk(false);
             }
         }
 
@@ -448,6 +478,24 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent EndOfYearOkRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "EndOfYearOkEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(EndOfYearQuarryUI)
+            );
+
+        public event RoutedEventHandler EndOfYearOkEvent
+        {
+            add => AddHandler(EndOfYearOkRoutedEvent, value);
+            remove => RemoveHandler(EndOfYearOkRoutedEvent, value);
         }
 
         #endregion

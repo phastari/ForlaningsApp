@@ -209,7 +209,7 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                 "DaysWorkThisYear",
                 typeof(int),
                 typeof(SubsidiaryUI),
-                new PropertyMetadata(-1)
+                new PropertyMetadata(0, RaiseCalculateIncomes)
             );
 
         public string Steward
@@ -346,9 +346,9 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
 
         private void CalculateIncomes()
         {
-            Silver = Convert.ToInt32(Math.Floor(Quality * IncomeFactor * IncomeSilver + Quality * IncomeFactor * IncomeSilver / 20 * (DevelopmentLevel - 1)));
-            Base = Convert.ToInt32(Math.Floor(Quality * IncomeFactor * IncomeBase + Quality * IncomeFactor * IncomeBase / 20 * (DevelopmentLevel - 1)));
-            Luxury = Convert.ToInt32(Math.Floor(Quality * IncomeFactor * IncomeLuxury + Quality * IncomeFactor * IncomeLuxury / 20 * (DevelopmentLevel - 1)));
+            Silver = Convert.ToInt32(Math.Floor((Quality * IncomeFactor * IncomeSilver + Quality * IncomeFactor * IncomeSilver / 20 * (DevelopmentLevel - 1)) * DaysWorkThisYear / DaysWorkLeft));
+            Base = Convert.ToInt32(Math.Floor((Quality * IncomeFactor * IncomeBase + Quality * IncomeFactor * IncomeBase / 20 * (DevelopmentLevel - 1)) * DaysWorkThisYear / DaysWorkLeft));
+            Luxury = Convert.ToInt32(Math.Floor((Quality * IncomeFactor * IncomeLuxury + Quality * IncomeFactor * IncomeLuxury / 20 * (DevelopmentLevel - 1)) * DaysWorkThisYear / DaysWorkLeft));
             UpdateSubsidiary();
         }
 
