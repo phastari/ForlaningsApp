@@ -382,7 +382,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 }
                 else if (value > LeftStonework)
                 {
-                    _stoneworkThisYearUC = LeftStone;
+                    _stoneworkThisYearUC = LeftStonework;
                 }
                 else
                 {
@@ -455,7 +455,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 }
                 else
                 {
-                    _stoneworkThisYearUC = value;
+                    _stoneThisYearUC = value;
                 }
                 NotifyPropertyChanged();
             }
@@ -549,33 +549,37 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                         break;
                 }
 
-                BuildingBuildingUIEventArgs newEventArgs =
-                    new BuildingBuildingUIEventArgs(
-                        BuildingBuildingUIRoutedEvent,
-                        "Updated",
-                        Id,
-                        new BuildingModel()
-                        {
-                            SmithsworkThisYear = SmithsworkThisYearUC,
-                            IronThisYear = IronThisYearUC,
-                            StoneThisYear = StoneThisYearUC,
-                            StoneworkThisYear = StoneworkThisYearUC,
-                            WoodworkThisYear = WoodworkThisYearUC,
-                            WoodThisYear = WoodThisYearUC,
-                            BuildingTime = BuildingTime
-                        }
-                    );
-
-                if (SelectedIndex != -1)
+                if (_loaded)
                 {
-                    newEventArgs.Model.BuilderId = BuildersCollection[SelectedIndex].Id;
-                }
-                else
-                {
-                    newEventArgs.Model.BuilderId = 0;
-                }
 
-                RaiseEvent(newEventArgs);
+                    BuildingBuildingUIEventArgs newEventArgs =
+                        new BuildingBuildingUIEventArgs(
+                            BuildingBuildingUIRoutedEvent,
+                            "Updated",
+                            Id,
+                            new BuildingModel()
+                            {
+                                SmithsworkThisYear = SmithsworkThisYearUC,
+                                IronThisYear = IronThisYearUC,
+                                StoneThisYear = StoneThisYearUC,
+                                StoneworkThisYear = StoneworkThisYearUC,
+                                WoodworkThisYear = WoodworkThisYearUC,
+                                WoodThisYear = WoodThisYearUC,
+                                BuildingTime = BuildingTime
+                            }
+                        );
+
+                    if (SelectedIndex != -1)
+                    {
+                        newEventArgs.Model.BuilderId = BuildersCollection[SelectedIndex].Id;
+                    }
+                    else
+                    {
+                        newEventArgs.Model.BuilderId = 0;
+                    }
+
+                    RaiseEvent(newEventArgs);
+                }
             }
         }
 

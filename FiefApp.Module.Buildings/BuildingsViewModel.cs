@@ -94,6 +94,9 @@ namespace FiefApp.Module.Buildings
                                 break;
                             }
                         }
+                        List<BuilderModel> tempList = new List<BuilderModel>(DataModel.BuildersCollection);
+                        DataModel.BuildersCollection.Clear();
+                        DataModel.BuildersCollection = new ObservableCollection<BuilderModel>(tempList);
                         break;
                     }
 

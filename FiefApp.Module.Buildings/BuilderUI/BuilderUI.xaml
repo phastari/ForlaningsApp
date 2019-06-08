@@ -264,6 +264,7 @@
             Width="51"
             HorizontalAlignment="Left"
             VerticalContentAlignment="Center"
+            Template="{DynamicResource ButtonTemplate}"
             Padding="0">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -285,6 +286,7 @@
             Width="51"
             HorizontalAlignment="Left"
             VerticalContentAlignment="Center"
+            Template="{DynamicResource ButtonTemplate}"
             Padding="0"
             Margin="57,0,0,0">
             <Button.Style>

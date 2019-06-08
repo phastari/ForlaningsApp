@@ -110,14 +110,17 @@ namespace FiefApp.Common.Infrastructure.Services
 
             for (int x = 1; x < _fiefService.BuildingsList.Count; x++)
             {
-                tempList.Add(_fiefService.BuildingsList[x].BuildersCollection.Max(t => t.Id));
+                if (_fiefService.BuildingsList[x].BuildersCollection.Count > 0)
+                {
+                    tempList.Add(_fiefService.BuildingsList[x].BuildersCollection.Max(t => t.Id));
+                }
             }
 
             if (tempList.Count > 0)
             {
                 return tempList.Max() + 1;
             }
-            return 0;
+            return 1;
         }
 
         public void SetAllBuildsCollectionIsAll(int index)

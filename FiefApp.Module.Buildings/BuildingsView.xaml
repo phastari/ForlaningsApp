@@ -707,7 +707,7 @@
                                 Assignment="{Binding Path=Assignment}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="BuilderUIEvent">
-                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BuilderUIEventHandler, ElementName=Self}"/>
+                                        <customCommands:CustomCommandAction Command="{Binding Path=DataContext.BuilderUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </builderUI:BuilderUI>

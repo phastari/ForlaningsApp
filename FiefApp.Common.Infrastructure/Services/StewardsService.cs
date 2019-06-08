@@ -24,7 +24,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetNextStewardId()
         {
-            return _fiefService.StewardsDataModel.StewardsCollection.Count > 0 ? _fiefService.StewardsDataModel.StewardsCollection.Max(o => o.Id) + 1 : 0;
+            return _fiefService.StewardsDataModel.StewardsCollection.Count > 0 ? _fiefService.StewardsDataModel.StewardsCollection.Max(o => o.Id) + 1 : 1;
         }
 
         public List<StewardIndustryModel> GetIndustries(int index)
