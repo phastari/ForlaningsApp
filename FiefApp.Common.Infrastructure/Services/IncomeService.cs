@@ -3,6 +3,7 @@ using FiefApp.Common.Infrastructure.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using FiefApp.Common.Infrastructure.DataModels;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -579,6 +580,25 @@ namespace FiefApp.Common.Infrastructure.Services
 
             _fiefService.IncomeList[index].IncomesCollection = new ObservableCollection<IncomeModel>(tempList);
             return new ObservableCollection<IncomeModel>(tempList);
+        }
+
+        public IncomeDataModel GetAllDataModel()
+        {
+            IncomeDataModel model = new IncomeDataModel();
+
+            for (int x = 1; x < _fiefService.IncomeList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.IncomeList[x].IncomesCollection.Count; y++)
+                {
+                    model.IncomesCollection.Add(_fiefService.IncomeList[x].IncomesCollection[y]);
+                    model.IncomesCollection[model.IncomesCollection.Count - 1].Income = $"{model.IncomesCollection[model.IncomesCollection.Count - 1].Income} ({_fiefService.InformationList[x].FiefName})";
+                }
+            }
+
+            model.UpdateTotals();
+            model.StewardsCollection = _fiefService.StewardsDataModel.StewardsCollection;
+
+            return model;
         }
     }
 }

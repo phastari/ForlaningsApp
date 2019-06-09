@@ -19,6 +19,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private bool _isAll = false;
+        public bool IsAll
+        {
+            get => _isAll;
+            set
+            {
+                _isAll = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private bool _canBuildShipyard;
         public bool CanBuildShipyard
         {
@@ -26,6 +37,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _canBuildShipyard = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IsAllPortModel> _isAllShipyardCollection = new ObservableCollection<IsAllPortModel>();
+        public ObservableCollection<IsAllPortModel> IsAllShipyardCollection
+        {
+            get => _isAllShipyardCollection;
+            set
+            {
+                _isAllShipyardCollection = value;
                 NotifyPropertyChanged();
             }
         }

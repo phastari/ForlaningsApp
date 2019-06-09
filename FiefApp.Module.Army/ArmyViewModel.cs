@@ -142,11 +142,14 @@ namespace FiefApp.Module.Army
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
-            if (DataModel != null)
+            if (Index != 0)
             {
-                _armyService.UpdateSilverExpenses(Index, DataModel.TotalSilver);
-                _armyService.UpdateBaseExpenses(Index, DataModel.TotalBase);
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+                if (DataModel != null)
+                {
+                    _armyService.UpdateSilverExpenses(Index, DataModel.TotalSilver);
+                    _armyService.UpdateBaseExpenses(Index, DataModel.TotalBase);
+                }
             }
         }
 

@@ -122,7 +122,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Command="{Binding Path=DeleteEmployee}"
+                <Button 
+                    x:Name="DeleteButton"
+                    Command="{Binding Path=DeleteEmployee}"
                     Grid.Column="1"
                     Grid.Row="0"
                     HorizontalAlignment="Left"
@@ -152,7 +154,9 @@
                     </Button.Style>
                 </Button>
 
-                <Button Command="{Binding Path=EditEmployee}"
+                <Button 
+                    x:Name="EditButton"
+                    Command="{Binding Path=EditEmployee}"
                     Grid.Column="2"
                     Grid.Row="0"
                     HorizontalAlignment="Left"
@@ -189,9 +193,11 @@
                    Padding="6,0,0,0"/>
             </Grid>
 
-            <itb:iTextBox Grid.Column="3"
-                      Grid.Row="0"
-                      Value="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <itb:iTextBox 
+                x:Name="AmountTextBox"
+                Grid.Column="3"
+                Grid.Row="0"
+                Value="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox Grid.Column="5"
                  Grid.Row="0"

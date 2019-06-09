@@ -74,14 +74,21 @@ namespace FiefApp.Module.Income
 
         protected override void LoadData()
         {
-            DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
-            DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
-            DataModel.UpdateTotals();
-            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
-
-            for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+            if (Index != 0)
             {
-                DataModel.IncomesCollection[x].StewardsCollection = DataModel.StewardsCollection;
+                DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
+                DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
+                DataModel.UpdateTotals();
+                DataModel.StewardsCollection = _baseService.GetStewardsCollection();
+
+                for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+                {
+                    DataModel.IncomesCollection[x].StewardsCollection = DataModel.StewardsCollection;
+                }
+            }
+            else
+            {
+                DataModel = _incomeService.GetAllDataModel();
             }
 
             UpdateFiefCollection();
@@ -89,7 +96,10 @@ namespace FiefApp.Module.Income
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            if (Index != 0)
+            {
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            }
         }
 
         private void ExecuteNewFiefLoadedEvent()

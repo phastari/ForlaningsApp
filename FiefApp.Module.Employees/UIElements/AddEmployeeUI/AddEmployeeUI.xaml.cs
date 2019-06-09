@@ -68,6 +68,23 @@ namespace FiefApp.Module.Employees.UIElements.AddEmployeeUI
 
         #endregion
 
+        #region Dependency Properties
+
+        public bool IsAll
+        {
+            get => (bool)GetValue(IsAllProperty);
+            set => SetValue(IsAllProperty, value);
+        }
+
+        public static readonly DependencyProperty IsAllProperty =
+            DependencyProperty.Register(
+                "IsAll",
+                typeof(bool),
+                typeof(AddEmployeeUI),
+                new PropertyMetadata(false, RaiseIsAllChanged)
+            );
+
+        #endregion
         #region UI Properties
 
         private string _employee;
@@ -126,6 +143,32 @@ namespace FiefApp.Module.Employees.UIElements.AddEmployeeUI
             {
                 _showingAddVisibility = value;
                 NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void RaiseIsAllChanged(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AddEmployeeUI c)
+            {
+                c.CheckIsAll();
+            }
+        }
+
+        private void CheckIsAll()
+        {
+            if (IsAll)
+            {
+                RootGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                RootGrid.Visibility = Visibility.Visible;
             }
         }
 

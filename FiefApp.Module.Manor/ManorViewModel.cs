@@ -295,15 +295,18 @@ namespace FiefApp.Module.Manor
 
         protected override void SaveData(int index = -1)
         {
-            if (index == -1)
+            if (Index != 0)
             {
-                _baseService.SetDataModel(DataModel, Index);
-                _manorService.SetLivingconditions(Index, DataModel.ManorLivingconditions);
-            }
-            else
-            {
-                _baseService.SetDataModel(DataModel, index);
-                _manorService.SetLivingconditions(index, DataModel.ManorLivingconditions);
+                if (index == -1)
+                {
+                    _baseService.SetDataModel(DataModel, Index);
+                    _manorService.SetLivingconditions(Index, DataModel.ManorLivingconditions);
+                }
+                else
+                {
+                    _baseService.SetDataModel(DataModel, index);
+                    _manorService.SetLivingconditions(index, DataModel.ManorLivingconditions);
+                }
             }
         }
 

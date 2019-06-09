@@ -107,6 +107,20 @@ namespace FiefApp.Module.Employees.UIElements.EmployeeUI
                 new PropertyMetadata(-1)
             );
 
+        public bool IsAll
+        {
+            get => (bool)GetValue(IsAllProperty);
+            set => SetValue(IsAllProperty, value);
+        }
+
+        public static readonly DependencyProperty IsAllProperty =
+            DependencyProperty.Register(
+                "IsAll",
+                typeof(bool),
+                typeof(EmployeeUI),
+                new PropertyMetadata(false)
+            );
+
         public string Employee
         {
             get => (string)GetValue(EmployeeProperty);
@@ -286,6 +300,15 @@ namespace FiefApp.Module.Employees.UIElements.EmployeeUI
         private void EmployeeUI_OnLoaded(object sender, RoutedEventArgs e)
         {
             RaiseUpdateEvent();
+
+            if (IsAll)
+            {
+                AmountTextBox.TextBoxReadOnly = true;
+                DeleteButton.Style = null;
+                EditButton.Style = null;
+                DeleteButton.Visibility = Visibility.Collapsed;
+                EditButton.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

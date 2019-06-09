@@ -97,7 +97,10 @@ namespace FiefApp.Module.Expenses
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            if (Index != 0)
+            {
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            }
         }
         protected override void LoadData()
         {
@@ -105,19 +108,23 @@ namespace FiefApp.Module.Expenses
                         == 0 ? _expensesService.GetAllExpensesDataModel()
                 : _baseService.GetDataModel<ExpensesDataModel>(Index);
 
-            DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
-            DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
-            DataModel.PropertyChanged += DataModelPropertyChanged;
+            if (Index != 0)
+            {
+                DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
+                DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
+                DataModel.PropertyChanged += DataModelPropertyChanged;
+
+                DataModel.Army = _expensesService.GetArmyNumbers(Index);
+                DataModel.ArmyBase = _expensesService.GetArmyBaseCost(Index);
+                DataModel.ArmySilver = _expensesService.GetArmySilverCost(Index);
+                DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
+                DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
+                DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
+                GetInformationSetDataModel();
+                DataModel.CalculateTotals();
+            }
 
             UpdateFiefCollection();
-            DataModel.Army = _expensesService.GetArmyNumbers(Index);
-            DataModel.ArmyBase = _expensesService.GetArmyBaseCost(Index);
-            DataModel.ArmySilver = _expensesService.GetArmySilverCost(Index);
-            DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
-            DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
-            DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
-            GetInformationSetDataModel();
-            DataModel.CalculateTotals();
         }
 
         private void ExecuteNewFiefLoadedEvent()

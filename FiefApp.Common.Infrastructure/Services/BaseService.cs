@@ -223,7 +223,6 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService.MinesList.Add(new MinesDataModel());
             _fiefService.PortsList.Add(new PortDataModel());
             _fiefService.TradeList.Add(new TradeDataModel());
-            _fiefService.StewardsDataModel = new StewardsDataModel();
 
             return _fiefService.InformationList.Count - 1;
         }

@@ -17,6 +17,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private bool _isAll = false;
+        public bool IsAll
+        {
+            get => _isAll;
+            set
+            {
+                _isAll = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _expensesSilver;
         public int ExpensesSilver
         {

@@ -98,6 +98,17 @@
             Grid.Row="0"
             Focusable="True"/>
 
+        <CheckBox
+            x:Name="IsAllCheckBox"
+            Grid.Column="0"
+            Grid.Row="0"
+            Focusable="False"
+            IsTabStop="False"
+            Visibility="Collapsed"
+            IsChecked="{Binding Path=DataModel.IsAll, FallbackValue=False}">
+            
+        </CheckBox>
+
         <Frame 
             Grid.Column="1" 
             Grid.ColumnSpan="11" 
@@ -313,12 +324,43 @@
 
         <Label 
             Grid.Column="2"
+            Grid.Row="9"
+            Content="Levnadsnivå"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="0">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        
+        <Label 
+            Grid.Column="2"
             Grid.Row="11"
             Content="Levnadsnivå"
             HorizontalAlignment="Right"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            Padding="0"/>
+            Padding="0">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
 
         <ComboBox
             x:Name="LivingconditionsComboBox"
@@ -340,9 +382,13 @@
             <ComboBox.Style>
                 <Style TargetType="{x:Type ComboBox}">
                     <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                             <Setter Property="IsReadOnly" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -365,11 +411,34 @@
                         <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </fakeComboBox:FakeComboBox.Style>
         </fakeComboBox:FakeComboBox>
 
+        <TextBox
+            Text="{Binding Path=DataModel.Livingcondition}"
+            Grid.Column="2"
+            Grid.ColumnSpan="9"
+            Grid.Row="9"
+            Grid.RowSpan="3"
+            TextWrapping="Wrap"
+            Padding="6,0,6,0"
+            Margin="70,0,0,0">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
 
         <Label 
             Grid.Column="2"
@@ -491,19 +560,9 @@
             IsReadOnly="True"
             Padding="0"/>
 
-
-        <Label 
-            Grid.Column="2"
-            Grid.Row="19"
-            Content="Stall"
-            FontWeight="Bold"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
-
         <Label
             Grid.Column="2"
-            Grid.Row="21"
+            Grid.Row="19"
             Content="Ridhästar"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -511,7 +570,7 @@
 
         <iTextBox:iTextBox
             Grid.Column="4"
-            Grid.Row="21"
+            Grid.Row="19"
             Value="{Binding Path=DataModel.StableRidingHorses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <iTextBox:iTextBox.Style>
                 <Style TargetType="{x:Type iTextBox:iTextBox}">
@@ -520,38 +579,8 @@
                         <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                             <Setter Property="TextBoxReadOnly" Value="False"/>
                         </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </iTextBox:iTextBox.Style>
-        </iTextBox:iTextBox>
-
-        <TextBox
-            Grid.Column="8"
-            Grid.Row="21"
-            Text="{Binding Path=DataModel.StableRidingHorsesBase}"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            IsReadOnly="True"
-            Padding="0"/>
-
-        <Label
-            Grid.Column="2"
-            Grid.Row="23"
-            Content="Stridshästar"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
-
-        <iTextBox:iTextBox
-            Grid.Column="4"
-            Grid.Row="23"
-            Value="{Binding Path=DataModel.StableWarHorses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <iTextBox:iTextBox.Style>
-                <Style TargetType="{x:Type iTextBox:iTextBox}">
-                    <Setter Property="TextBoxReadOnly" Value="True"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
-                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -560,7 +589,43 @@
 
         <TextBox
             Grid.Column="8"
-            Grid.Row="23"
+            Grid.Row="19"
+            Text="{Binding Path=DataModel.StableRidingHorsesBase}"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            Padding="0"/>
+
+        <Label
+            Grid.Column="2"
+            Grid.Row="21"
+            Content="Stridshästar"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <iTextBox:iTextBox
+            Grid.Column="4"
+            Grid.Row="21"
+            Value="{Binding Path=DataModel.StableWarHorses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <iTextBox:iTextBox.Style>
+                <Style TargetType="{x:Type iTextBox:iTextBox}">
+                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                            <Setter Property="TextBoxReadOnly" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </iTextBox:iTextBox.Style>
+        </iTextBox:iTextBox>
+
+        <TextBox
+            Grid.Column="8"
+            Grid.Row="21"
             Text="{Binding Path=DataModel.StableWarHorsesBase}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -571,11 +636,9 @@
         <Grid
             Grid.Column="2"
             Grid.ColumnSpan="9"
-            Grid.Row="25"
-            Grid.RowSpan="14">
+            Grid.Row="23"
+            Grid.RowSpan="12">
             <Grid.RowDefinitions>
-                <RowDefinition Height="21"/>
-                <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
@@ -664,9 +727,13 @@
                 <CheckBox.Style>
                     <Style TargetType="{x:Type CheckBox}">
                         <Setter Property="IsEnabled" Value="False"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="IsEnabled" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -704,9 +771,13 @@
                 <CheckBox.Style>
                     <Style TargetType="{x:Type CheckBox}">
                         <Setter Property="IsEnabled" Value="False"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="IsEnabled" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -772,43 +843,10 @@
                 IsReadOnly="True"
                 Padding="0"/>
 
-
-            <Label
-                Grid.Column="0"
-                Grid.Row="8"
-                Content="Båtbyggen (silver)"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
-
-            <TextBox
-                Grid.Column="2"
-                Grid.Row="8"
-                Text="{Binding Path=DataModel.BoatBuilds}"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="True"
-                Padding="0"/>
-
-            <TextBox
-                Grid.Column="4"
-                Grid.ColumnSpan="3"
-                Grid.Row="8"
-                Width="60"
-                Text="{Binding Path=DataModel.BoatBuildsSilver}"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="True"
-                Padding="0,0,6,0"/>
-
-
             <Label
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Grid.Row="10"
+                Grid.Row="8"
                 Content="Underhåll, godset"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
@@ -816,7 +854,7 @@
 
             <TextBox
                 Grid.Column="2"
-                Grid.Row="10"
+                Grid.Row="8"
                 Text="{Binding Path=DataModel.ManorMaintenance}"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
@@ -827,7 +865,7 @@
 
             <TextBox
                 Grid.Column="4"
-                Grid.Row="10"
+                Grid.Row="8"
                 Text="{Binding Path=DataModel.ManorMaintenanceBase}"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
@@ -838,7 +876,7 @@
             <Label
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
-                Grid.Row="12"
+                Grid.Row="10"
                 Content="Utveckla vägnätet"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
@@ -848,7 +886,7 @@
 
             <CheckBox
                 Grid.Column="2"
-                Grid.Row="12"
+                Grid.Row="10"
                 IsChecked="{Binding Path=DataModel.ImproveRoads, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{DynamicResource CheckBoxTemplate}"
                 HorizontalAlignment="Center"
@@ -856,9 +894,13 @@
                 <CheckBox.Style>
                     <Style TargetType="{x:Type CheckBox}">
                         <Setter Property="IsEnabled" Value="False"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="IsEnabled" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -867,7 +909,7 @@
 
             <TextBox
                 Grid.Column="4"
-                Grid.Row="12"
+                Grid.Row="10"
                 Text="{Binding Path=DataModel.ImproveRoadsBase}"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
@@ -877,7 +919,7 @@
 
             <TextBox
                 Grid.Column="8"
-                Grid.Row="12"
+                Grid.Row="10"
                 Text="{Binding Path=DataModel.ImproveRoadsStone}"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
@@ -885,6 +927,78 @@
                 IsReadOnly="True"
                 Padding="0"/>
         </Grid>
+
+        <Grid
+            Grid.Column="2"
+            Grid.ColumnSpan="9"
+            Grid.Row="35"
+            Grid.RowSpan="4">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="Antal"
+                Grid.Column="2"
+                Grid.Row="0"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Silver"
+                Grid.Column="4"
+                Grid.Row="0"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Båtbyggen"
+                Grid.Column="0"
+                Grid.Row="2"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Right"
+                Padding="0"/>
+
+            <TextBox
+                Grid.Column="2"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.BoatBuilds}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.BoatBuildsSilver}"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                Padding="0,0,6,0"/>
+        </Grid>
+        
 
 
 
@@ -1128,6 +1242,9 @@
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="TextBoxReadOnly" Value="False"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </iTextBox:iTextBox.Style>
@@ -1172,6 +1289,9 @@
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="TextBoxReadOnly" Value="False"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </iTextBox:iTextBox.Style>
@@ -1215,6 +1335,9 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="TextBoxReadOnly" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -1270,6 +1393,9 @@
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="TextBoxReadOnly" Value="False"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </iTextBox:iTextBox.Style>
@@ -1323,6 +1449,9 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=EditButton, Path=IsChecked}" Value="True">
                                 <Setter Property="TextBoxReadOnly" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

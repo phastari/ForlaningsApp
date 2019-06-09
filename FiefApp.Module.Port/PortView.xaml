@@ -99,7 +99,7 @@
 
             <CheckBox
                 x:Name="GotShipyard"
-                IsChecked="{Binding Path=DataModel.GotShipyard}"
+                IsChecked="{Binding Path=DataModel.GotShipyard, FallbackValue=False}"
                 Grid.Column="0"
                 Grid.Row="0"
                 Background="Transparent"
@@ -108,7 +108,7 @@
 
             <CheckBox
                 x:Name="UpgradingShipyard"
-                IsChecked="{Binding Path=DataModel.UpgradingShipyard}"
+                IsChecked="{Binding Path=DataModel.UpgradingShipyard, FallbackValue=False}"
                 Grid.Column="0"
                 Grid.Row="0"
                 Background="Transparent"
@@ -117,7 +117,7 @@
 
             <CheckBox
                 x:Name="BuildingShipyard"
-                IsChecked="{Binding Path=DataModel.BuildingShipyard}"
+                IsChecked="{Binding Path=DataModel.BuildingShipyard, FallbackValue=False}"
                 Grid.Column="1"
                 Grid.Row="1"
                 Background="Transparent"
@@ -126,12 +126,21 @@
 
             <CheckBox
                 x:Name="CanBuildShipyard"
-                IsChecked="{Binding Path=DataModel.CanBuildShipyard}"
+                IsChecked="{Binding Path=DataModel.CanBuildShipyard, FallbackValue=False}"
                 Grid.Column="1"
                 Grid.Row="1"
                 Background="Transparent"
                 BorderBrush="Transparent"
                 IsTabStop="False"/>
+
+            <CheckBox
+                x:Name="IsAllCheckBox"
+                IsChecked="{Binding Path=DataModel.IsAll, FallbackValue=False}"
+                Grid.Column="0"
+                Grid.Row="0"
+                Visibility="Collapsed"
+                IsTabStop="False"
+                IsHitTestVisible="False"/>
 
             <Frame 
                 Grid.Column="1" 
@@ -204,6 +213,325 @@
                 Grid.ColumnSpan="3"
                 Grid.Row="5"
                 Grid.RowSpan="37">
+
+                <Grid
+                    x:Name="IsAllGrid"
+                    Height="Auto"
+                    Width="222">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    
+                    <Frame 
+                        Grid.Column="0" 
+                        Grid.Row="0" 
+                        Grid.ZIndex="0"
+                        Background="LightGray" 
+                        BorderBrush="Gray" 
+                        BorderThickness="0.5, 0, 0.5, 0.5"
+                        Margin="-8,0,-8,-9"
+                        IsTabStop="False"/>
+                    
+                    <ItemsControl
+                        ItemsSource="{Binding Path=DataModel.IsAllShipyardCollection}"
+                        Background="Transparent"
+                        Grid.ZIndex="10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel 
+                                    IsItemsHost="True" 
+                                    Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <StackPanel>
+                                    <ItemsPresenter />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Grid
+                                        Height="24">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="14"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            Content="{Binding Path=Fief}"
+                                            HorizontalContentAlignment="Left"
+                                            VerticalContentAlignment="Center"
+                                            Padding="6,0,0,0"/>
+                                    </Grid>
+                                    <Grid
+                                        Height="24">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=CanBuildShipyardCheckBox, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="14"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox
+                                            x:Name="CanBuildShipyardCheckBox"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            IsTabStop="False"
+                                            IsHitTestVisible="False"
+                                            Visibility="Collapsed"
+                                            IsChecked="{Binding Path=CanBuildShipyard}"/>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="0"
+                                            Content="Kan bygga en hamn"
+                                            HorizontalContentAlignment="Right"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <TextBox
+                                            Grid.Column="4"
+                                            Grid.Row="0"
+                                            Text="Ja"
+                                            IsReadOnly="True"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+                                    </Grid>
+                                    <Grid
+                                        Height="48">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=GotShipyardCheckBox, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="14"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox
+                                            x:Name="GotShipyardCheckBox"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            IsTabStop="False"
+                                            IsHitTestVisible="False"
+                                            Visibility="Collapsed"
+                                            IsChecked="{Binding Path=GotShipyard}"/>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="0"
+                                            Content="Inkomst"
+                                            HorizontalContentAlignment="Right"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <TextBox
+                                            Grid.Column="4"
+                                            Grid.Row="0"
+                                            Text="{Binding Path=Income}"
+                                            IsReadOnly="True"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.Row="2"
+                                            Content="Hamnstorlek"
+                                            HorizontalContentAlignment="Right"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <TextBox
+                                            Grid.Column="2"
+                                            Grid.ColumnSpan="2"
+                                            Grid.Row="2"
+                                            Text="{Binding Path=PortSize}"
+                                            IsReadOnly="True"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+                                    </Grid>
+                                    <Grid
+                                        Height="24">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=UpgradingShipyardCheckBox, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="14"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox
+                                            x:Name="UpgradingShipyardCheckBox"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            IsTabStop="False"
+                                            IsHitTestVisible="False"
+                                            Visibility="Collapsed"
+                                            IsChecked="{Binding Path=UpgradingShipyard}"/>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="0"
+                                            Content="Hamnen byggs ut"
+                                            HorizontalContentAlignment="Right"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <TextBox
+                                            Grid.Column="4"
+                                            Grid.Row="0"
+                                            Text="Ja"
+                                            IsReadOnly="True"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+                                    </Grid>
+                                    <Grid
+                                        Height="48">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=BuildingShipyardCheckBox, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox
+                                            x:Name="BuildingShipyardCheckBox"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            IsTabStop="False"
+                                            IsHitTestVisible="False"
+                                            Visibility="Collapsed"
+                                            IsChecked="{Binding Path=BuildingShipyard}"/>
+
+                                        <Label
+                                            Grid.Column="2"
+                                            Grid.Row="0"
+                                            Content="Dagsverk"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="4"
+                                            Grid.Row="0"
+                                            Content="Behövs"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <TextBox
+                                            Grid.Column="2"
+                                            Grid.Row="2"
+                                            Text="{Binding Path=DaysworkThisYear}"
+                                            IsReadOnly="True"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <TextBox
+                                            Grid.Column="4"
+                                            Grid.Row="2"
+                                            Text="{Binding Path=DaysworkNeeded}"
+                                            IsReadOnly="True"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
 
                 <buildingShipyardUI:BuildingShipyardUI
                     Id="{Binding Path=DataModel.Shipyard.Id}"
@@ -303,6 +631,9 @@
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -477,6 +808,9 @@
                             <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
@@ -584,6 +918,9 @@
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -696,7 +1033,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="3"
                     Grid.Row="2"
-                    Value="{Binding Path=DataModel.Sailors}"/>
+                    Value="{Binding Path=DataModel.Sailors}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
 
                 <TextBox
                     Grid.Column="5"
@@ -730,7 +1078,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="11"
                     Grid.Row="2"
-                    Value="{Binding Path=DataModel.Seaman}"/>
+                    Value="{Binding Path=DataModel.Seaman}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
 
                 <TextBox
                     Grid.Column="13"
@@ -764,7 +1123,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="3"
                     Grid.Row="4"
-                    Value="{Binding Path=DataModel.Guards}"/>
+                    Value="{Binding Path=DataModel.Guards}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
 
                 <TextBox
                     Grid.Column="5"
@@ -798,7 +1168,18 @@
                 <iTextBox:iTextBox
                     Grid.Column="11"
                     Grid.Row="4"
-                    Value="{Binding Path=DataModel.Mariner}"/>
+                    Value="{Binding Path=DataModel.Mariner}">
+                    <iTextBox:iTextBox.Style>
+                        <Style TargetType="{x:Type iTextBox:iTextBox}">
+                            <Setter Property="TextBoxReadOnly" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="TextBoxReadOnly" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </iTextBox:iTextBox.Style>
+                </iTextBox:iTextBox>
 
                 <TextBox
                     Grid.Column="13"
@@ -1045,6 +1426,28 @@
                                             <i:InvokeCommandAction Command="{Binding Path=DataContext.AddCaptain, ElementName=RootGrid}"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=BuildingShipyard, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=UpgradingShipyard, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=CanBuildShipyard, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>

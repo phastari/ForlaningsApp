@@ -19,7 +19,27 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public MinesDataModel GetAllMinesDataModel()
         {
-            return null;
+            MinesDataModel model = new MinesDataModel();
+
+            for (int x = 1; x < _fiefService.MinesList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.MinesList[x].MinesCollection.Count; y++)
+                {
+                    model.MinesCollection.Add(_fiefService.MinesList[x].MinesCollection[y]);
+                    model.MinesCollection[model.MinesCollection.Count - 1].MineType = $"{model.MinesCollection[model.MinesCollection.Count - 1].MineType} ({_fiefService.InformationList[x].FiefName})";
+                }
+
+                for (int z = 0; z < _fiefService.MinesList[x].QuarriesCollection.Count; z++)
+                {
+                    model.QuarriesCollection.Add(_fiefService.MinesList[x].QuarriesCollection[z]);
+                    model.QuarriesCollection[model.QuarriesCollection.Count - 1].QuarryType = $"{model.QuarriesCollection[model.QuarriesCollection.Count - 1].QuarryType} ({_fiefService.InformationList[x].FiefName})";
+                }
+            }
+
+            model.StewardsCollection = _fiefService.StewardsDataModel.StewardsCollection;
+            model.UpdateTotals();
+
+            return model;
         }
 
         public int GetMinesDifficulty(int index)

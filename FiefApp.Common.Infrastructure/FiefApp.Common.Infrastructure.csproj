@@ -125,6 +125,7 @@
     <Compile Include="Models\IncomeModel.cs" />
     <Compile Include="Models\IndustryBeingDevelopedModel.cs" />
     <Compile Include="Models\IndustryModel.cs" />
+    <Compile Include="Models\IsAllPortModel.cs" />
     <Compile Include="Models\LivingconditionModel.cs" />
     <Compile Include="Models\ManorModel.cs" />
     <Compile Include="Models\MerchantModel.cs" />

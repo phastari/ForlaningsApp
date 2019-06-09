@@ -166,7 +166,10 @@ namespace FiefApp.Module.Employees
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            if (Index != 0)
+            {
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            }
         }
 
         protected override void LoadData()
@@ -176,6 +179,21 @@ namespace FiefApp.Module.Employees
                 : _baseService.GetDataModel<EmployeesDataModel>(Index);
 
             DataModel.PropertyChanged += DataModelPropertyChanged;
+
+            if (Index == 0)
+            {
+                DataModel.Falconer = DataModel.Falconer;
+                DataModel.Bailiff = DataModel.Bailiff;
+                DataModel.Herald = DataModel.Herald;
+                DataModel.Hunter = DataModel.Hunter;
+                DataModel.Physician = DataModel.Physician;
+                DataModel.Scholar = DataModel.Scholar;
+                DataModel.Cupbearer = DataModel.Cupbearer;
+                DataModel.Prospector = DataModel.Prospector;
+                DataModel.UpdateTotalCosts();
+                DataModel.IsAll = true;
+                
+            }
 
             UpdateFiefCollection();
         }
@@ -230,13 +248,21 @@ namespace FiefApp.Module.Employees
                     break;
 
                 case "Prospector":
-                    DataModel.BaseProspector = _settingsService.EmployeeSettingsModel.ProspectorBase * DataModel.Prospector;
+                    if (DataModel.Prospector == 0)
+                    {
+                        DataModel.BaseProspector = 0;
+                        DataModel.LuxuryProspector = 0;
+                    }
+                    else
+                    {
+                        DataModel.BaseProspector = _settingsService.EmployeeSettingsModel.ProspectorBase * DataModel.Prospector;
 
-                    string formula = $"{DataModel.Prospector}{_settingsService.EmployeeSettingsModel.ProspectorLuxury}";
-                    StringToFormula stf = new StringToFormula();
-                    double result = stf.Eval(formula);
-                    result = Math.Ceiling(result);
-                    DataModel.LuxuryProspector = Convert.ToInt16(result);
+                        string formula = $"{DataModel.Prospector}{_settingsService.EmployeeSettingsModel.ProspectorLuxury}";
+                        StringToFormula stf = new StringToFormula();
+                        double result = stf.Eval(formula);
+                        result = Math.Ceiling(result);
+                        DataModel.LuxuryProspector = Convert.ToInt16(result);
+                    }
                     break;
             }
         }

@@ -9,6 +9,7 @@ namespace FiefApp.Common.Infrastructure.Models
     {
         public int Id { get; set; }
         public string BoatType { get; set; }
+        public string BoatName { get; set; } = "";
         public int Masts { get; set; }
         public int LengthMin { get; set; }
         public int LengthMax { get; set; }

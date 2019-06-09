@@ -11,7 +11,8 @@
              xmlns:m="clr-namespace:FiefApp.Common.Infrastructure.Models;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="531" 
-             d:DesignWidth="784">
+             d:DesignWidth="784"
+             x:Name="Self">
 
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
@@ -89,6 +90,22 @@
                    Grid.Column="0"
                    Grid.Row="0"
                    Focusable="True"/>
+
+        <CheckBox
+            x:Name="IsAllCheckBox"
+            IsChecked="{Binding Path=DataModel.IsAll}"
+            Visibility="Collapsed"
+            IsTabStop="False">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Checked">
+                    <cdc:CustomSetterAction PropertyName="IsAll" TargetObject="{Binding ElementName=AddEmployeeControl}" Value="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Unchecked">
+                    <cdc:CustomSetterAction PropertyName="IsAll" TargetObject="{Binding ElementName=AddEmployeeControl}" Value="False" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </CheckBox>
+        
         <Frame 
             Grid.Column="1" 
             Grid.ColumnSpan="9"
@@ -134,7 +151,8 @@
                         Base="{Binding Path=Base}"
                         BaseCost="{Binding Path=BaseCost}"
                         Luxury="{Binding Path=Luxury}"
-                        LuxuryCost="{Binding Path=LuxuryCost}">
+                        LuxuryCost="{Binding Path=LuxuryCost}"
+                        IsAll="{Binding ElementName=IsAllCheckBox, Path=IsChecked}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="EmployeeUIEvent">
                                 <cdc:CustomCommandAction Command="{Binding Path=DataContext.EmployeeUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -164,6 +182,7 @@
                         Fill="Transparent"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource Employees}}"/>
                     <aeui:AddEmployeeUI
+                        x:Name="AddEmployeeControl"
                         Margin="8,0,0,0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="AddEmployeeUIEvent">
@@ -374,7 +393,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="8"
-                Value="{Binding Path=DataModel.Falconer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Falconer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -409,7 +439,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="10"
-                Value="{Binding Path=DataModel.Bailiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Bailiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -444,7 +485,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="12"
-                Value="{Binding Path=DataModel.Herald, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Herald, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -479,7 +531,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="14"
-                Value="{Binding Path=DataModel.Hunter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Hunter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -514,7 +577,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="16"
-                Value="{Binding Path=DataModel.Physician, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Physician, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -549,7 +623,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="18"
-                Value="{Binding Path=DataModel.Scholar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Scholar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -584,7 +669,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="20"
-                Value="{Binding Path=DataModel.Cupbearer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Cupbearer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"
@@ -619,7 +715,18 @@
             <itb:iTextBox
                 Grid.Column="3"
                 Grid.Row="22"
-                Value="{Binding Path=DataModel.Prospector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.Prospector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <itb:iTextBox.Style>
+                    <Style TargetType="{x:Type itb:iTextBox}">
+                        <Setter Property="TextBoxReadOnly" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=IsAllCheckBox, Path=IsChecked}" Value="True">
+                                <Setter Property="TextBoxReadOnly" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </itb:iTextBox.Style>
+            </itb:iTextBox>
 
             <TextBox
                 Grid.Column="5"

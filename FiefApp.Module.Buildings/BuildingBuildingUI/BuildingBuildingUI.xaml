@@ -155,7 +155,7 @@
 
                     <iTextBox:iTextBox
                         x:Name="SmithsThisYearTextBox"
-                        Value="{Binding Path=SmithsworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        Value="{Binding Path=SmithsworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Column="4"
                         Grid.Row="2"
                         Padding="0"/>
@@ -218,7 +218,7 @@
 
                     <iTextBox:iTextBox
                         x:Name="WoodworkersThisYearTextBox"
-                        Value="{Binding Path=WoodworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        Value="{Binding Path=WoodworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Column="4"
                         Grid.Row="4"
                         Padding="0"/>
@@ -282,7 +282,7 @@
 
                     <iTextBox:iTextBox
                         x:Name="StoneworkersThisYearTextBox"
-                        Value="{Binding Path=StoneworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        Value="{Binding Path=StoneworkThisYearUC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Column="4"
                         Grid.Row="6"
                         Padding="0"/>

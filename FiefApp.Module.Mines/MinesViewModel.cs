@@ -297,7 +297,10 @@ namespace FiefApp.Module.Mines
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            if (Index != 0)
+            {
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            }
         }
 
         protected override void LoadData()

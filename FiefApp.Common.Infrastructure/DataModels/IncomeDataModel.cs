@@ -103,6 +103,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private bool _isAll = false;
+        public bool IsAll
+        {
+            get => _isAll;
+            set
+            {
+                _isAll = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #region PropertyChanged Listener For IncomeCollection
 
         private void IncomeCollectionPropertyChanged(object sender, NotifyCollectionChangedEventArgs e)

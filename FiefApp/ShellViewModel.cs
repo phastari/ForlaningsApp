@@ -489,17 +489,16 @@ namespace FiefApp
                     new IncomeDataModel(),
                     new IncomeDataModel()
                 };
-                if (_fiefService.StewardsDataModel == null)
+                _fiefService.StewardsDataModel = new StewardsDataModel
                 {
-                    _fiefService.StewardsDataModel = new StewardsDataModel();
-                    _fiefService.StewardsDataModel.StewardsCollection = new ObservableCollection<StewardModel>()
-                {
-                    new StewardModel()
+                    StewardsCollection = new ObservableCollection<StewardModel>()
                     {
-                        Id = 0
+                        new StewardModel()
+                        {
+                            Id = 0
+                        }
                     }
                 };
-                }
             }
         }
 

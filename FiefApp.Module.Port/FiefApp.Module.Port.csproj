@@ -97,6 +97,9 @@
     <Compile Include="UIElements\GotShipyardUI\GotShipyardUI.xaml.cs">
       <DependentUpon>GotShipyardUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIElements\IsAllPortUI\IsAllPortUI.xaml.cs">
+      <DependentUpon>IsAllPortUI.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiefApp.Common.Infrastructure\FiefApp.Common.Infrastructure.csproj">
@@ -136,6 +139,10 @@
     <Page Include="UIElements\GotShipyardUI\GotShipyardUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIElements\IsAllPortUI\IsAllPortUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -193,6 +193,24 @@ namespace FiefApp.Module.Buildings
 
                     DataModel.SetDaysWorkLeft();
                     break;
+
+                case "Changed":
+                    for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+                    {
+                        if (e.Id == DataModel.BuildsCollection[x].Id)
+                        {
+                            DataModel.BuildsCollection[x].SmithsworkThisYear = e.Model.SmithsworkThisYear;
+                            DataModel.BuildsCollection[x].IronThisYear = e.Model.IronThisYear;
+                            DataModel.BuildsCollection[x].WoodworkThisYear = e.Model.WoodworkThisYear;
+                            DataModel.BuildsCollection[x].WoodThisYear = e.Model.WoodThisYear;
+                            DataModel.BuildsCollection[x].StoneworkThisYear = e.Model.StoneworkThisYear;
+                            DataModel.BuildsCollection[x].StoneThisYear = e.Model.StoneThisYear;
+                            DataModel.BuildsCollection[x].BuilderId = e.Model.BuilderId;
+                            DataModel.BuildsCollection[x].BuildingTime = e.Model.BuildingTime;
+                        }
+                    }
+                    DataModel.SetDaysWorkLeft();
+                    break;
             }
         }
 
@@ -228,7 +246,10 @@ namespace FiefApp.Module.Buildings
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            if (Index != 0)
+            {
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            }
         }
 
         protected override void LoadData()

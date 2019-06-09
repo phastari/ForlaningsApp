@@ -513,79 +513,76 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
 
         private void RaiseUpdateEvent(string str)
         {
+            decimal factor;
+
+            switch (str)
+            {
+                case "Iron":
+                    factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
+                    IronNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftIron * factor));
+                    CheckBuildTime();
+                    break;
+
+                case "Stone":
+                    factor = (decimal)StoneworkThisYearUC / LeftStonework;
+                    StoneNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftStone * factor));
+                    CheckBuildTime();
+                    break;
+
+                case "Wood":
+                    factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
+                    WoodNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftWood * factor));
+                    CheckBuildTime();
+                    break;
+
+                case "All":
+                    factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
+                    IronNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftIron * factor));
+
+                    factor = (decimal)StoneworkThisYearUC / LeftStonework;
+                    StoneNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftStone * factor));
+
+                    factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
+                    WoodNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftWood * factor));
+                    CheckBuildTime();
+                    break;
+                }
+
             if (_loaded)
             {
-                decimal factor;
-                string buildTime;
-                int buildTimeN;
+                BuildingBuildingUIEventArgs newEventArgs =
+                    new BuildingBuildingUIEventArgs(
+                        BuildingBuildingUIRoutedEvent,
+                        "Changed",
+                        Id,
+                        new BuildingModel()
+                        {
+                            SmithsworkThisYear = SmithsworkThisYearUC,
+                            IronThisYear = IronThisYearUC,
+                            StoneThisYear = StoneThisYearUC,
+                            StoneworkThisYear = StoneworkThisYearUC,
+                            WoodworkThisYear = WoodworkThisYearUC,
+                            WoodThisYear = WoodThisYearUC,
+                            BuildingTime = BuildingTime
+                        }
+                    );
 
-                switch (str)
+                if (SelectedIndex != -1)
                 {
-                    case "Iron":
-                        factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
-                        IronNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftIron * factor));
-
-                        buildTime = CheckBuildTime();
-                        buildTimeN = buildTime == "-" ? 0 : Convert.ToInt32(buildTime);
-                        SetValue(BuildingTimeProperty, buildTimeN > 0 ? buildTime : "-");
-                        break;
-
-                    case "Stone":
-                        factor = (decimal)StoneworkThisYearUC / LeftStonework;
-                        StoneNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftStone * factor));
-
-                        buildTime = CheckBuildTime();
-                        buildTimeN = buildTime == "-" ? 0 : Convert.ToInt32(buildTime);
-                        SetValue(BuildingTimeProperty, buildTimeN > 0 ? buildTime : "-");
-                        break;
-
-                    case "Wood":
-                        factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
-                        WoodNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftWood * factor));
-
-                        buildTime = CheckBuildTime();
-                        buildTimeN = buildTime == "-" ? 0 : Convert.ToInt32(buildTime);
-                        SetValue(BuildingTimeProperty, buildTimeN > 0 ? buildTime : "-");
-                        break;
+                    newEventArgs.Model.BuilderId = BuildersCollection[SelectedIndex].Id;
+                }
+                else
+                {
+                    newEventArgs.Model.BuilderId = 0;
                 }
 
-                if (_loaded)
-                {
-
-                    BuildingBuildingUIEventArgs newEventArgs =
-                        new BuildingBuildingUIEventArgs(
-                            BuildingBuildingUIRoutedEvent,
-                            "Updated",
-                            Id,
-                            new BuildingModel()
-                            {
-                                SmithsworkThisYear = SmithsworkThisYearUC,
-                                IronThisYear = IronThisYearUC,
-                                StoneThisYear = StoneThisYearUC,
-                                StoneworkThisYear = StoneworkThisYearUC,
-                                WoodworkThisYear = WoodworkThisYearUC,
-                                WoodThisYear = WoodThisYearUC,
-                                BuildingTime = BuildingTime
-                            }
-                        );
-
-                    if (SelectedIndex != -1)
-                    {
-                        newEventArgs.Model.BuilderId = BuildersCollection[SelectedIndex].Id;
-                    }
-                    else
-                    {
-                        newEventArgs.Model.BuilderId = 0;
-                    }
-
-                    RaiseEvent(newEventArgs);
-                }
+                RaiseEvent(newEventArgs);
             }
         }
 
-        private string CheckBuildTime()
+        private void CheckBuildTime()
         {
-            if (SelectedIndex != -1
+            if (SelectedIndex > 0
                 && StoneworkThisYearUC != 0
                 && WoodworkThisYearUC != 0
                 && SmithsworkThisYearUC != 0)
@@ -594,15 +591,19 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                 int woodwork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftWoodworkProperty)) / WoodworkThisYearUC));
                 int smithswork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftSmithsworkProperty)) / SmithsworkThisYearUC));
 
-                return Math.Max(Math.Max(stonework, woodwork), smithswork).ToString();
+                SetValue(BuildingTimeProperty, Math.Max(Math.Max(stonework, woodwork), smithswork).ToString());
             }
-            return "-";
+            else
+            {
+                SetValue(BuildingTimeProperty, "-");
+            }
         }
 
         private void BuilderComboBox_OnSelectionChanged(
             object sender, 
             SelectionChangedEventArgs e)
         {
+            CheckBuildTime();
             if (_loaded && SelectedIndex != -1)
             {
                 BuildingBuildingUIEventArgs newEventArgs =
@@ -623,7 +624,6 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                         });
 
                 RaiseEvent(newEventArgs);
-                CheckBuildTime();
             }
         }
 
@@ -667,6 +667,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
             WoodThisYearUC = WoodThisYear;
             IronThisYearUC = IronThisYear;
             StoneThisYearUC = StoneThisYear;
+            RaiseUpdateEvent("All");
 
             if (BuilderId != -1)
             {
@@ -678,7 +679,9 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
                     }
                 }
             }
-            
+
+            CheckBuildTime();
+
             if (IsAll)
             {
                 BuilderComboBox.IsReadOnly = true;

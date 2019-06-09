@@ -118,8 +118,6 @@ namespace FiefApp.Module.Information
             set => SetProperty(ref _dataModel, value);
         }
 
-        private InformationDataModel _tempDataModel;
-
         private InformationSettingsModel _settingsModel;
         public InformationSettingsModel SettingsModel
         {
@@ -133,11 +131,14 @@ namespace FiefApp.Module.Information
 
         protected override void SaveData(int index = -1)
         {
-            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
-
-            if (Index == 1)
+            if (Index != 0)
             {
-                _eventAggregator.GetEvent<FiefNameChangedEvent>().Publish();
+                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+
+                if (Index == 1)
+                {
+                    _eventAggregator.GetEvent<FiefNameChangedEvent>().Publish();
+                }
             }
         }
 
