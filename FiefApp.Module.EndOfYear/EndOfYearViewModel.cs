@@ -18,16 +18,19 @@ namespace FiefApp.Module.EndOfYear
         private readonly IBaseService _baseService;
         private readonly IEndOfYearService _endOfYearService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IFiefService _fiefService;
 
         public EndOfYearViewModel(
             IBaseService baseService,
             IEndOfYearService endOfYearService,
-            IEventAggregator eventAggregator
+            IEventAggregator eventAggregator,
+            IFiefService fiefService
             ) : base(baseService)
         {
             _baseService = baseService;
             _endOfYearService = endOfYearService;
             _eventAggregator = eventAggregator;
+            _fiefService = fiefService;
 
             TabName = "Bokslut";
 
@@ -167,7 +170,114 @@ namespace FiefApp.Module.EndOfYear
         public DelegateCommand CompleteEndOfYearCommand { get; set; }
         private void ExecuteCompleteEndOfYearCommand()
         {
-            DataModel.CheckIfAllRollsHaveBeenMade();
+            if (DataModel.CheckIfAllRollsHaveBeenMade())
+            {
+                DataModel.EnableButton = false;
+
+                for (int x = 1; x < _fiefService.InformationList.Count; x++)
+                {
+                    #region BoatbuildingModule
+
+                    for (int y = _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count - 1; y > -1; y--)
+                    {
+                        if (_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BuildTimeInDaysAll < 365)
+                        {
+                            for (int z = 1; z <= _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount; z++)
+                            {
+                                _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
+                            }
+
+                            _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
+                        }
+                        else
+                        {
+                            int i = Convert.ToInt32(Math.Floor(365M / _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BuildTimeInDays));
+
+                            if (i > _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount)
+                            {
+                                for (int z = 1; z <= _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount; z++)
+                                {
+                                    _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
+                                }
+
+                                _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
+                            }
+                            else
+                            {
+                                _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount -= i;
+                                while (i > 0)
+                                {
+                                    _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
+                                    i--;
+                                }
+
+                                _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
+                            }
+                        }
+                    }
+
+                    #endregion
+                    #region BuildingsModule
+
+                    for (int y = 0; y < _fiefService.BuildingsList[x].BuildsCollection.Count; y++)
+                    {
+                        if (_fiefService.BuildingsList[x].BuildsCollection[y].BuilderId > 0)
+                        {
+                            if (_fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].StoneNeededThisYear)
+                            {
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear = 0;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear = 0;
+                            }
+                            else
+                            {
+                                decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].StoneNeededThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear));
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear = 0;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear = 0;
+                            }
+
+                            if (_fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].WoodNeededThisYear)
+                            {
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear = 0;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear = 0;
+                            }
+                            else
+                            {
+                                decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].WoodNeededThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear));
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear = 0;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear = 0;
+                            }
+
+                            if (_fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].IronNeededThisYear)
+                            {
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork -= _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron -= _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear = 0;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear = 0;
+                            }
+                            else
+                            {
+                                decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].IronNeededThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear));
+                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron -= _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear = 0;
+                                _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear = 0;
+                            }
+                        }
+                    }
+
+                    
+
+                    #endregion
+                }
+            }
         }
 
         #endregion

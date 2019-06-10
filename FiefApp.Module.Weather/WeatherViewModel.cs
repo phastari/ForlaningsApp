@@ -51,7 +51,7 @@ namespace FiefApp.Module.Weather
             else
             {
                 _timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                _timer.Interval = 4000;
+                _timer.Interval = 2750;
                 _timer.Start();
                 DataModel.EndOfYearError = "Du har inte fyllt i årets väder!";
             }
@@ -95,7 +95,7 @@ namespace FiefApp.Module.Weather
             ElapsedEventArgs e)
         {
             DataModel.EndOfYearError = "";
-            _timer.Dispose();
+            _timer.Stop();
         }
 
         private void DataModelPropertyChange(
