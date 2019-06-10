@@ -2,7 +2,6 @@
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -591,9 +590,16 @@ namespace FiefApp.Common.Infrastructure.Services
                             case "Prospector":
                                 tempModel.ProspectorBase =
                                     Convert.ToInt16(xmlAttributeCollection["Base"].Value);
-                                tempModel.ProspectorLuxury = xmlAttributeCollection["Luxury"].Value;
+                                if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+                                {
+                                    tempModel.ProspectorLuxury = xmlAttributeCollection["Luxury"].Value;
+                                }
+                                else
+                                {
+                                    tempModel.ProspectorLuxury = xmlAttributeCollection["Luxury"].Value.Replace(",", ".");
+                                }
                                 break;
-
+                                
                             default:
                                 foundError = true;
                                 break;

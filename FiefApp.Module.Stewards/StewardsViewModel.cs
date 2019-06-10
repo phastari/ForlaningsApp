@@ -10,7 +10,6 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace FiefApp.Module.Stewards
 {
@@ -18,7 +17,6 @@ namespace FiefApp.Module.Stewards
     {
         private readonly IBaseService _baseService;
         private readonly IStewardsService _stewardsService;
-        private readonly IEventAggregator _eventAggregator;
 
         public StewardsViewModel(
             IBaseService baseService,
@@ -28,7 +26,6 @@ namespace FiefApp.Module.Stewards
         {
             _baseService = baseService;
             _stewardsService = stewardsService;
-            _eventAggregator = eventAggregator;
 
             TabName = "Förvaltare";
 
@@ -36,7 +33,7 @@ namespace FiefApp.Module.Stewards
             IndustryUIEventHandler = new CustomDelegateCommand(ExecuteIndustryUIEventHandler, o => true);
             AddStewardCommand = new DelegateCommand(ExecuteAddStewardCommand);
 
-            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
         }
 
         #region CustomDelegateCommand : StewardUIEventHandler

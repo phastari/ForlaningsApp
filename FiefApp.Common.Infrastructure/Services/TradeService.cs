@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using FiefApp.Common.Infrastructure.DataModels;
 
@@ -17,7 +18,21 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public TradeDataModel GetAllTradeDataModel()
         {
-            return null;
+            TradeDataModel model = new TradeDataModel();
+
+            for (int x = 1; x < _fiefService.TradeList.Count; x++)
+            {
+                model.MarketAvailableBase += _fiefService.TradeList[x].MarketAvailableBase;
+                model.MarketAvailableIron += _fiefService.TradeList[x].MarketAvailableIron;
+                model.MarketAvailableLuxury += _fiefService.TradeList[x].MarketAvailableLuxury;
+                model.MarketAvailableStone += _fiefService.TradeList[x].MarketAvailableStone;
+                model.MarketAvailableWood += _fiefService.TradeList[x].MarketAvailableWood;
+
+                model.MerchantsCollection.AddRange(_fiefService.TradeList[x].MerchantsCollection);
+                model.ShipsCollection.AddRange(_fiefService.TradeList[x].ShipsCollection);
+            }
+
+            return model;
         }
 
         public int GetNewMerchantId()

@@ -23,7 +23,28 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public SubsidiaryDataModel GetAllSubsidiaryDataModel()
         {
-            return null;
+            SubsidiaryDataModel model = new SubsidiaryDataModel();
+
+            for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
+            {
+                for (int y = 0; y < _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count; y++)
+                {
+                    model.SubsidiaryCollection.Add(_fiefService.SubsidiaryList[x].SubsidiaryCollection[y]);
+                    model.SubsidiaryCollection[model.SubsidiaryCollection.Count - 1].Subsidiary =
+                        $"{model.SubsidiaryCollection[model.SubsidiaryCollection.Count - 1].Subsidiary} ({_fiefService.InformationList[x].FiefName})";
+                }
+
+                for (int z = 0; z < _fiefService.SubsidiaryList[x].ConstructingCollection.Count; z++)
+                {
+                    model.ConstructingCollection.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[z]);
+                    model.ConstructingCollection[model.ConstructingCollection.Count - 1].Subsidiary =
+                        $"{model.ConstructingCollection[model.ConstructingCollection.Count - 1].Subsidiary} ({_fiefService.InformationList[x].FiefName})";
+                }
+            }
+
+            model.IsAll = true;
+
+            return model;
         }
 
         public ObservableCollection<SubsidiaryModel> GetSubsidiaryTypesCollection()
