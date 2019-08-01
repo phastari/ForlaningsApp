@@ -375,6 +375,64 @@ namespace FiefApp.Common.Infrastructure.Services
             return 0;
         }
 
+        public string ConvertToT6(int num)
+        {
+            string value;
+            bool isNegative;
+            string temp = num.ToString();
+
+            if (temp.IndexOf('-') != -1)
+            {
+                temp = temp.Substring(1);
+                isNegative = true;
+            }
+            else
+            {
+                isNegative = false;
+            }
+
+
+            var y = Convert.ToInt32(temp);
+            var i = y / 4;
+            var x = y - i * 4;
+
+            if (!isNegative)
+            {
+                if (x > 0)
+                {
+                    if (i != 0)
+                        value = i + "T6+" + x;
+                    else
+                        value = "+" + x;
+                }
+                else
+                {
+                    if (i != 0)
+                        value = i + "T6";
+                    else
+                        value = "0";
+                }
+            }
+            else
+            {
+                if (x > 0)
+                {
+                    if (i != 0)
+                        value = "-" + i + "T6+" + x;
+                    else
+                        value = "-" + x;
+                }
+                else
+                {
+                    if (i != 0)
+                        value = "-" + i + "T6";
+                    else
+                        value = "0";
+                }
+            }
+            return value;
+        }
+
         public string GetCommonerName()
         {
             return _nameGenerator.GetRandomCommonerName();

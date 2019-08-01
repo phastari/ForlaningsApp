@@ -264,6 +264,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        public string Result { get; set; } = "0";
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

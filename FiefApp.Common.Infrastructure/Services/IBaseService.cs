@@ -16,6 +16,7 @@ namespace FiefApp.Common.Infrastructure.Services
         int RollObDice(int skill);
         int RollDie(int x, int y);
         int ConvertToNumeric(string str);
+        string ConvertToT6(int num);
         string GetCommonerName();
         string GetNobleName();
         int GetNewIndustryId();

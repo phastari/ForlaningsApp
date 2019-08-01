@@ -238,7 +238,8 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearIncomeUI
                     EndOfYearOkRoutedEvent,
                     "Industry",
                     Id,
-                    ok
+                    ok,
+                    Result
                 );
 
             RaiseEvent(newEventArgs);

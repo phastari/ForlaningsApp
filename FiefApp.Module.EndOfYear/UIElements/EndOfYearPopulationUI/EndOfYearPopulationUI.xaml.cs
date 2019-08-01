@@ -173,6 +173,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
             }
         }
 
+        private string _result;
+        public string Result
+        {
+            get => _result;
+            set
+            {
+                _result = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _amorNumeric;
         public int AmorNumeric
         {
@@ -195,7 +206,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     EndOfYearOkRoutedEvent,
                     "Population",
                     Id,
-                    ok
+                    ok,
+                    Result,
+                    AmorNumeric
                 );
 
             RaiseEvent(newEventArgs);
@@ -304,10 +317,12 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     }
                     AmorNumeric -= 1;
                 }
+                Result = population.ToString();
                 SendOk(true);
             }
             else
             {
+                Result = "-";
                 SendOk(false);
             }
         }

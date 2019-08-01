@@ -17,10 +17,10 @@ namespace FiefApp.Common.Infrastructure.Models
         public EndOfYearPopulationModel PopulationModel { get; set; }
         public bool ShowShipyard { get; set; }
         public ShipyardModel Shipyard { get; set; }
-
-
         public Dictionary<int, bool> EndOfYearOkDictionary { get; set; }
         public bool PopulationOk { get; set; }
         public bool TaxesOk { get; set; }
+        public int AmorNumeric { get; set; }
+        public int TaxFactor { get; set; }
     }
 }

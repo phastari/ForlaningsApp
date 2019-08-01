@@ -2,7 +2,6 @@
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
-using System.ComponentModel;
 using System.Windows;
 
 namespace FiefApp

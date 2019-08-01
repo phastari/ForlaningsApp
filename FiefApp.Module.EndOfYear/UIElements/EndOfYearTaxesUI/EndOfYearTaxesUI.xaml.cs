@@ -181,7 +181,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
                     EndOfYearOkRoutedEvent,
                     "Taxes",
                     Id,
-                    ok
+                    ok,
+                    TaxFactor.ToString(),
+                    LoyaltyNumeric
                 );
 
             RaiseEvent(newEventArgs);

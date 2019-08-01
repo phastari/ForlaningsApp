@@ -12,5 +12,8 @@
         public int BaseIncomeSilver { get; set; }
         public int BaseIncomeBase { get; set; }
         public int BaseIncomeLuxury { get; set; }
+        public string ResultSilver { get; set; }
+        public string ResultBase { get; set; }
+        public string ResultLuxury { get; set; }
     }
 }

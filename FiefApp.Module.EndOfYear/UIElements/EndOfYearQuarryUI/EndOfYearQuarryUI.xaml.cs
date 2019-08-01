@@ -317,9 +317,10 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearQuarryUI
             EndOfYearEventArgs newEventArgs =
                 new EndOfYearEventArgs(
                     EndOfYearOkRoutedEvent,
-                    "Industry",
+                    "Quarry",
                     Id,
-                    ok
+                    ok,
+                    ResultStone
                 );
 
             RaiseEvent(newEventArgs);

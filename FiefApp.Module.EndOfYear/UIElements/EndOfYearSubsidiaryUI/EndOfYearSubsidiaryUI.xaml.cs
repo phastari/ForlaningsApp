@@ -286,9 +286,14 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
             EndOfYearEventArgs newEventArgs =
                 new EndOfYearEventArgs(
                     EndOfYearOkRoutedEvent,
-                    "Industry",
+                    "Subsidiary",
                     Id,
-                    ok
+                    ok,
+                    "-",
+                    0,
+                    ResultSilver,
+                    ResultBase,
+                    ResultLuxury
                 );
 
             RaiseEvent(newEventArgs);

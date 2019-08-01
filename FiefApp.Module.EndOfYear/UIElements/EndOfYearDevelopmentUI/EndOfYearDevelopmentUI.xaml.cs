@@ -285,9 +285,10 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearDevelopmentUI
             EndOfYearEventArgs newEventArgs =
                 new EndOfYearEventArgs(
                     EndOfYearOkRoutedEvent,
-                    "Industry",
+                    "Development",
                     Id,
-                    ok
+                    ok,
+                    Result
                 );
 
             RaiseEvent(newEventArgs);

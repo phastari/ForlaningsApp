@@ -427,6 +427,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        public string Result { get; set; }
+
         #region Methods
 
         private void CalculateIncome()

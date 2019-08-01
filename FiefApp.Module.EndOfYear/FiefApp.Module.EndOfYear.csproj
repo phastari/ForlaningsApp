@@ -101,6 +101,9 @@
     <Compile Include="UIElements\EndOfYearTaxesUI\EndOfYearTaxesUI.xaml.cs">
       <DependentUpon>EndOfYearTaxesUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIElements\EndOfYearTradeUI\EndOfYearTradeUI.xaml.cs">
+      <DependentUpon>EndOfYearTradeUI.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiefApp.Common.Infrastructure\FiefApp.Common.Infrastructure.csproj">
@@ -146,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UIElements\EndOfYearTaxesUI\EndOfYearTaxesUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIElements\EndOfYearTradeUI\EndOfYearTradeUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
