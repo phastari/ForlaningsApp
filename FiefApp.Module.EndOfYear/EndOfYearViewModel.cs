@@ -390,8 +390,8 @@ namespace FiefApp.Module.EndOfYear
         public DelegateCommand CompleteEndOfYearCommand { get; set; }
         private void ExecuteCompleteEndOfYearCommand()
         {
-            if (DataModel.CheckIfAllRollsHaveBeenMade())
-            {
+            //if (DataModel.CheckIfAllRollsHaveBeenMade())
+            //{
                 DataModel.EnableButton = false;
                 List<EndOfYearReportModel> reports = new List<EndOfYearReportModel>();
                 string str = $"år: {_fiefService.Year}" + Environment.NewLine + Environment.NewLine;
@@ -916,8 +916,6 @@ namespace FiefApp.Module.EndOfYear
                 }
 
                 _fiefService.Year++;
-            }
-
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
         }
 
