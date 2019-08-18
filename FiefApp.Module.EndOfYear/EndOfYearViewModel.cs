@@ -10,7 +10,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Windows.Documents;
 
 namespace FiefApp.Module.EndOfYear
 {
@@ -321,7 +321,7 @@ namespace FiefApp.Module.EndOfYear
                     {
                         DataModel.IncomeListFief[e.Id - 1].PopulationOk = e.Ok;
                         DataModel.IncomeListFief[e.Id - 1].AmorNumeric = e.Amor;
-                        DataModel.IncomeListFief[e.Id - 1].PopulationModel.ResultPopulation = 
+                        DataModel.IncomeListFief[e.Id - 1].PopulationModel.AddPopulation = e.AddPopulation;
 
                         List<bool> tempList = new List<bool>();
                         for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
@@ -771,6 +771,54 @@ namespace FiefApp.Module.EndOfYear
                     _fiefService.WeatherList[x].Felling = 0;
 
                     #endregion
+                    #region Population
+
+                    if (DataModel.IncomeListFief[x].PopulationModel.AddPopulation)
+                    {
+                        int nrVillages = _fiefService.ManorList[x].VillagesCollection.Count;
+
+                        for (int i = 0; i < DataModel.IncomeListFief[x].PopulationModel.ResultPopulation; i++)
+                        {
+                            int villageNr = _baseService.RollDie(1, nrVillages);
+                            _fiefService.ManorList[x].VillagesCollection[villageNr].Population++;
+                            if (_baseService.RollDie(1, 100) > 97)
+                            {
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Burgess++;
+
+                                int y = _baseService.RollDie(1, 100);
+                                if (y < 11)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Boatbuilders++;
+                                }
+                                else if (y < 21)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Tanners++;
+                                }
+                                else if (y < 41)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Millers++;
+                                }
+                                else if (y < 46)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Furriers++;
+                                }
+                                else if (y < 51)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Tailors++;
+                                }
+                                else if (y < 71)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Carpenters++;
+                                }
+                                else if (y < 91)
+                                {
+                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Innkeepers++;
+                                }
+                            }
+                        }
+                    }
+
+                    #endregion
 
                     #region Write report to text file
 
@@ -896,6 +944,7 @@ namespace FiefApp.Module.EndOfYear
         protected override void LoadData()
         {
             DataModel.IncomeListFief = new ObservableCollection<EndOfYearIncomeFiefModel>(_endOfYearService.Initialize());
+            Console.WriteLine("Test");
         }
 
         #endregion

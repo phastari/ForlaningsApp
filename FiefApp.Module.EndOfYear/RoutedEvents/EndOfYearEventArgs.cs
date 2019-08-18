@@ -27,6 +27,9 @@ namespace FiefApp.Module.EndOfYear.RoutedEvents
 
         private readonly string _incomeLuxury;
         public string IncomeLuxury => _incomeLuxury;
+
+        public bool AddPopulation { get; set; }
+
         public EndOfYearEventArgs(
             RoutedEvent routedEvent,
             string action,
@@ -36,7 +39,8 @@ namespace FiefApp.Module.EndOfYear.RoutedEvents
             int amor = 0,
             string incomeSilver = "-",
             string incomeBase = "-",
-            string incomeLuxury = "-")
+            string incomeLuxury = "-",
+            bool addPopulation = true)
             : base(routedEvent)
         {
             _action = action;
@@ -47,6 +51,7 @@ namespace FiefApp.Module.EndOfYear.RoutedEvents
             _incomeSilver = incomeSilver;
             _incomeBase = incomeBase;
             _incomeLuxury = incomeLuxury;
+            AddPopulation = addPopulation;
         }
     }
 }
