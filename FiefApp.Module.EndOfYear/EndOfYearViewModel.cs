@@ -321,6 +321,7 @@ namespace FiefApp.Module.EndOfYear
                     {
                         DataModel.IncomeListFief[e.Id - 1].PopulationOk = e.Ok;
                         DataModel.IncomeListFief[e.Id - 1].AmorNumeric = e.Amor;
+                        DataModel.IncomeListFief[e.Id - 1].PopulationModel.ResultPopulation = 
 
                         List<bool> tempList = new List<bool>();
                         for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
@@ -393,6 +394,7 @@ namespace FiefApp.Module.EndOfYear
             {
                 DataModel.EnableButton = false;
                 List<EndOfYearReportModel> reports = new List<EndOfYearReportModel>();
+                string str = $"år: {_fiefService.Year}" + Environment.NewLine + Environment.NewLine;
 
                 for (int x = 1; x < _fiefService.InformationList.Count; x++)
                 {
@@ -722,6 +724,7 @@ namespace FiefApp.Module.EndOfYear
                         temp.ResultStone = 0;
                         temp.ResultWood = 0;
                         temp.ResultIron = 0;
+                        temp.Income = DataModel.IncomeListFief[x].SubsidiariesCollection[x].Subsidiary;
 
                         model.SubsidiariesList.Add(temp);
                     }
@@ -732,10 +735,142 @@ namespace FiefApp.Module.EndOfYear
 
 
                     #endregion
+                    #region WeatherModule
+
+
+                    model.Happiness = _fiefService.WeatherList[x].HappinessTotal;
+                    model.NumberUsedFishingBoats = _fiefService.WeatherList[x].NumberUsedFishingBoats;
+                    model.AddedManorAcres = _fiefService.WeatherList[x].LandClearing
+                                          + _fiefService.WeatherList[x].LandClearingOfFelling
+                                          + _fiefService.WeatherList[x].ClearUseless;
+                    model.LandClearing = _fiefService.WeatherList[x].LandClearing;
+                    model.LandClearingOfFelling = _fiefService.WeatherList[x].LandClearingOfFelling;
+                    model.ClearUseless = _fiefService.WeatherList[x].ClearUseless;
+                    model.Felling = _fiefService.WeatherList[x].Felling;
+                    model.Happiness = _fiefService.WeatherList[x].HappinessTotal;
+
+                    _fiefService.ManorList[x].ManorAcres += _fiefService.WeatherList[x].LandClearing 
+                                                          + _fiefService.WeatherList[x].LandClearingOfFelling 
+                                                          + _fiefService.WeatherList[x].ClearUseless;
+                    _fiefService.ManorList[x].ManorFelling += _fiefService.WeatherList[x].Felling - _fiefService.WeatherList[x].LandClearingOfFelling;
+                    _fiefService.ManorList[x].ManorUseless -= _fiefService.WeatherList[x].ClearUseless;
+                    _fiefService.ManorList[x].ManorWoodland -= (_fiefService.WeatherList[x].LandClearing
+                                                             + _fiefService.WeatherList[x].Felling);
+
+                    _fiefService.WeatherList[x].SpringRoll = null;
+                    _fiefService.WeatherList[x].SummerRoll = null;
+                    _fiefService.WeatherList[x].FallRoll = null;
+                    _fiefService.WeatherList[x].WinterRoll = null;
+
+                    _fiefService.WeatherList[x].NumberUsedFishingBoats = 0;
+                    _fiefService.WeatherList[x].LandClearing = 0;
+                    _fiefService.WeatherList[x].LandClearingOfFelling = 0;
+                    _fiefService.WeatherList[x].ClearUseless = 0;
+
+                    
+                    _fiefService.WeatherList[x].Felling = 0;
+
+                    #endregion
+
+                    #region Write report to text file
+
+                    str += $"{_fiefService.InformationList[x].FiefName}" + Environment.NewLine;
+                    str += $"Årets väder" + Environment.NewLine;
+                    str += $"   Vår: {_fiefService.WeatherList[x].SpringRoll}({_fiefService.WeatherList[x].SpringRollMod})" + Environment.NewLine;
+                    str += $"Sommar: {_fiefService.WeatherList[x].SummerRoll}({_fiefService.WeatherList[x].SummerRollMod})" + Environment.NewLine;
+                    str += $"  Höst: {_fiefService.WeatherList[x].FallRoll}({_fiefService.WeatherList[x].FallRollMod})" + Environment.NewLine;
+                    str += $"Vinter: {_fiefService.WeatherList[x].WinterRoll}({_fiefService.WeatherList[x].WinterRollMod})" + Environment.NewLine + Environment.NewLine;
+                    str += $"Inkomster" + Environment.NewLine;
+
+                    for (int i = 0; i < model.IncomesList.Count; i++)
+                    {
+                        str += $"{model.IncomesList[i].Income}: ";
+
+                        bool gotSomething = false;
+                        if (model.IncomesList[i].ResultBase > 0)
+                        {
+                            str += $"{model.IncomesList[i].ResultBase}bas";
+                            gotSomething = true;
+                        }
+                        if (model.IncomesList[i].ResultLuxury > 0)
+                        {
+                            str += $"{model.IncomesList[i].ResultLuxury}lyx";
+                            gotSomething = true;
+                        }
+                        if (model.IncomesList[i].ResultIron > 0)
+                        {
+                            str += $"{model.IncomesList[i].ResultIron}järn";
+                            gotSomething = true;
+                        }
+                        if (model.IncomesList[i].ResultStone > 0)
+                        {
+                            str += $"{model.IncomesList[i].ResultStone}sten";
+                            gotSomething = true;
+                        }
+                        if(model.IncomesList[i].ResultWood > 0)
+                        {
+                            str += $"{model.IncomesList[i].ResultWood}timmer";
+                            gotSomething = true;
+                        }
+                        if (!gotSomething)
+                        {
+                            str += $"-";
+                        }
+
+                        str += Environment.NewLine;
+                    }
+
+                    if (model.SubsidiariesList.Count > 1)
+                    {
+                        str += Environment.NewLine + $"Binäringar" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        str += $"Binäring" + Environment.NewLine;
+                    }
+
+                    for (int i = 0; i < model.SubsidiariesList.Count; i++)
+                    {
+                        bool gotSomething = false;
+                        str += $"{model.SubsidiariesList[i].Income} ";
+
+                        if (model.SubsidiariesList[i].ResultSilver > 0)
+                        {
+                            str += $"{model.SubsidiariesList[i].ResultSilver}silver";
+                            gotSomething = true;
+                        }
+                        if (model.SubsidiariesList[i].ResultBase > 0)
+                        {
+                            str += $"{model.SubsidiariesList[i].ResultBase}bas";
+                            gotSomething = true;
+                        }
+                        if (model.SubsidiariesList[i].ResultLuxury > 0)
+                        {
+                            str += $"{model.SubsidiariesList[i].ResultLuxury}lyx";
+                            gotSomething = true;
+                        }
+
+                        if (!gotSomething)
+                        {
+                            str += $"-";
+                        }
+
+                        str += Environment.NewLine;
+                    }
+
+                    #endregion
+
+                    #region End
+
+                    reports.Add(model);
+
+                    #endregion
                 }
 
                 _fiefService.Year++;
             }
+
+            _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
         }
 
         #endregion

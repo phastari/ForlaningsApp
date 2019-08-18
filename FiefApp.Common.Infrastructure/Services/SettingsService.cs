@@ -60,7 +60,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         {
                             case "ArmyCrossbowmen":
                                 tempModel.ArmyCrossbowmenSilver =
-                                    Convert.ToInt16(xmlAttributeCollection["Silver"].Value);
+                                Convert.ToInt16(xmlAttributeCollection["Silver"].Value);
                                 tempModel.ArmyCrossbowmenBase = Convert.ToInt16(xmlAttributeCollection["Base"].Value);
                                 break;
 

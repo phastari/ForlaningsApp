@@ -65,5 +65,14 @@ namespace FiefApp.Common.Infrastructure.Models
 
         // SubsidiaryModule
         public List<EndOfYearReportIncomeModel> SubsidiariesList { get; set; }
+
+        // WeatherModule
+        public int NumberUsedFishingBoats { get; set; }
+        public int AddedManorAcres { get; set; }
+        public int LandClearing { get; set; }
+        public int LandClearingOfFelling { get; set; }
+        public int ClearUseless { get; set; }
+        public int Felling { get; set; }
+        public string Happiness { get; set; }
     }
 }

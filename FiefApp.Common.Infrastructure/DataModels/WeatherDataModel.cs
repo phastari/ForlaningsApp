@@ -17,14 +17,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _springRoll;
-        public int SpringRoll
+        private int? _springRoll;
+        public int? SpringRoll
         {
             get => _springRoll;
             set
             {
                 _springRoll = value;
-                SpringRollMod = CheckWeatherMod(value);
+                if (value != null)
+                {
+                    SpringRollMod = CheckWeatherMod(value);
+                }
                 CalculateTotalWeatherHappiness();
                 NotifyPropertyChanged();
             }
@@ -53,8 +56,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _summerRoll;
-        public int SummerRoll
+        private int? _summerRoll;
+        public int? SummerRoll
         {
             get => _summerRoll;
             set
@@ -89,8 +92,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _fallRoll;
-        public int FallRoll
+        private int? _fallRoll;
+        public int? FallRoll
         {
             get => _fallRoll;
             set
@@ -125,8 +128,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _winterRoll;
-        public int WinterRoll
+        private int? _winterRoll;
+        public int? WinterRoll
         {
             get => _winterRoll;
             set
@@ -971,7 +974,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
 
         #region Weather Methods
 
-        private int CheckWeatherMod(int i)
+        private int CheckWeatherMod(int? i)
         {
             if (i == 3)
             {

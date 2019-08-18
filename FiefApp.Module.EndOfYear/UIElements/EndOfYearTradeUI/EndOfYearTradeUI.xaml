@@ -16,11 +16,9 @@
             <RowDefinition Height="3"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="125"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
@@ -39,7 +37,13 @@
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="36"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
         </Grid.ColumnDefinitions>
 
         <Label
@@ -51,7 +55,7 @@
             Padding="0"/>
 
         <Label
-            Content="{Binding Path=Steward}"
+            Content="{Binding Path=Merchant}"
             Grid.Column="2"
             Grid.Row="0"
             HorizontalContentAlignment="Center"
@@ -64,5 +68,158 @@
             Grid.Row="0"
             ReadOnly="True"/>
 
+        <TextBox
+            Text="{Binding Path=Difficulty}"
+            Grid.Column="6"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="AntiqueWhite"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=Roll1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="8"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"/>
+
+        <Button 
+            Command="{Binding Path=Roll}"
+            CommandParameter="1"
+            Grid.Column="9"
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderBrush="Transparent"
+            Background="Transparent"
+            Panel.ZIndex="2">
+            <ContentControl>
+                <Image Stretch="UniformToFill">
+                    <Image.Source>
+                        <BitmapImage UriSource="/FiefApp.Common.Infrastructure;component/Graphics/Miscellaneous/dice.png"/>
+                    </Image.Source>
+                </Image>
+            </ContentControl>
+        </Button>
+
+        <TextBox
+            Text="{Binding Path=Roll2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="11"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"/>
+
+        <Button 
+            Command="{Binding Path=Roll}"
+            CommandParameter="1"
+            Grid.Column="12"
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderBrush="Transparent"
+            Background="Transparent"
+            Panel.ZIndex="2">
+            <ContentControl>
+                <Image Stretch="UniformToFill">
+                    <Image.Source>
+                        <BitmapImage UriSource="/FiefApp.Common.Infrastructure;component/Graphics/Miscellaneous/dice.png"/>
+                    </Image.Source>
+                </Image>
+            </ContentControl>
+        </Button>
+
+        <TextBox
+            Text="{Binding Path=Roll3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="14"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"/>
+
+        <Button 
+            Command="{Binding Path=Roll}"
+            CommandParameter="1"
+            Grid.Column="15"
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderBrush="Transparent"
+            Background="Transparent"
+            Panel.ZIndex="2">
+            <ContentControl>
+                <Image Stretch="UniformToFill">
+                    <Image.Source>
+                        <BitmapImage UriSource="/FiefApp.Common.Infrastructure;component/Graphics/Miscellaneous/dice.png"/>
+                    </Image.Source>
+                </Image>
+            </ContentControl>
+        </Button>
+
+        <TextBox
+            Text="{Binding Path=ResultSilver}"
+            Grid.Column="17"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="NavajoWhite"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=ResultBase}"
+            Grid.Column="19"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="NavajoWhite"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=ResultLuxury}"
+            Grid.Column="21"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="NavajoWhite"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=ResultIron}"
+            Grid.Column="23"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="NavajoWhite"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=ResultStone}"
+            Grid.Column="25"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="NavajoWhite"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=ResultWood}"
+            Grid.Column="27"
+            Grid.Row="0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="NavajoWhite"
+            Padding="0"
+            IsReadOnly="True"/>
     </Grid>
 </UserControl>

@@ -7,5 +7,7 @@
         public int Difficulty { get; set; }
         public int TotalPopulation { get; set; }
         public int ModificationPopulation { get; set; }
+        public int ResultPopulation { get; set; }
+        public bool AddPopulation { get; set; }
     }
 }
