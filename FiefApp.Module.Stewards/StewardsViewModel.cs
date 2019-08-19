@@ -10,6 +10,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace FiefApp.Module.Stewards
 {
@@ -105,7 +106,7 @@ namespace FiefApp.Module.Stewards
                         DataModel.StewardsCollection.Clear();
                         DataModel.IndustriesCollection.Clear();
 
-                        DataModel.IndustriesCollection = new ObservableCollection<StewardIndustryModel>(_stewardsService.GetIndustries(Index));
+                        DataModel.IndustriesCollection = new ObservableCollection<StewardIndustryModel>(_stewardsService.GetIndustries());
 
                         for (int x = 0; x < tempList.Count; x++)
                         {
@@ -162,6 +163,7 @@ namespace FiefApp.Module.Stewards
         public DelegateCommand AddStewardCommand { get; set; }
         private void ExecuteAddStewardCommand()
         {
+            SaveData();
             DataModel.StewardsCollection.Add(
                 new StewardModel()
                 {
@@ -202,67 +204,22 @@ namespace FiefApp.Module.Stewards
         {
             DataModel = _baseService.GetDataModel<StewardsDataModel>(Index);
 
+            GetInformationSetDataModel();
+            UpdateFiefCollection();
+
             if (DataModel.IndustriesBeingDevelopedCollection.Count == 0)
             {
                 int id = _baseService.GetNewIndustryId();
 
-                DataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
-                {
-                    Id = id,
-                    Industry = "Utveckla Medicin",
-                    IndustryId = id,
-                    StewardId = -1
-                });
-                id++;
-
-                DataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
-                {
-                    Id = id,
-                    Industry = "Utveckla Militär",
-                    IndustryId = id,
-                    StewardId = -1
-                });
-                id++;
-
-                DataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
-                {
-                    Id = id,
-                    Industry = "Utveckla Utbildning",
-                    IndustryId = id,
-                    StewardId = -1
-                });
+                DataModel.IndustriesBeingDevelopedCollection = _baseService.CreateNewBeingDevelopedIndustries();
+                SaveData();
             }
-
-            GetInformationSetDataModel();
-            UpdateFiefCollection();
-
-            //DataModel.StewardsCollection.CollectionChanged += StewardsCollection_CollectionChanged;
+            else if (DataModel.IndustriesBeingDevelopedCollection.Count / 3 != FiefCollection.Count - 1)
+            {
+                DataModel.IndustriesBeingDevelopedCollection = _baseService.UpdateIndustriesBeingDevelopedCollection(DataModel.IndustriesBeingDevelopedCollection);
+                SaveData();
+            }
         }
-
-        //private void StewardsCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (e.OldItems != null)
-        //    {
-        //        foreach (INotifyPropertyChanged item in e.OldItems)
-        //        {
-        //            item.PropertyChanged -= StewardsCollection_PropertyChanged;
-        //        }
-        //    }
-        //    if (e.NewItems != null)
-        //    {
-        //        foreach (INotifyPropertyChanged item in e.NewItems)
-        //        {
-        //            item.PropertyChanged += StewardsCollection_PropertyChanged;
-        //        }
-        //    }
-        //}
-
-        //private void StewardsCollection_PropertyChanged(
-        //    object sender, 
-        //    PropertyChangedEventArgs e)
-        //{
-        //    Console.WriteLine("!!!");
-        //}
 
         private void GetInformationSetDataModel()
         {
@@ -278,7 +235,7 @@ namespace FiefApp.Module.Stewards
         }
         private void GetIndustries()
         {
-            DataModel.IndustriesCollection = new ObservableCollection<StewardIndustryModel>(_stewardsService.GetIndustries(Index));
+            DataModel.IndustriesCollection = new ObservableCollection<StewardIndustryModel>(_stewardsService.GetIndustries());
             SetStewardsAndIndustriesCount();
         }
 

@@ -224,7 +224,129 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService.PortsList.Add(new PortDataModel());
             _fiefService.TradeList.Add(new TradeDataModel());
 
+            int id = GetNewIndustryId();
+
+            _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
+            {
+                Id = id,
+                Industry = "Utveckla Medicin" + " (" + _fiefService.InformationList[_fiefService.InformationList.Count - 1].FiefName + ")",
+                FiefId = _fiefService.InformationList.Count - 1,
+                IndustryId = id,
+                StewardId = -1
+            });
+            id++;
+
+            _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
+            {
+                Id = id,
+                Industry = "Utveckla Militär" + " (" + _fiefService.InformationList[_fiefService.InformationList.Count - 1].FiefName + ")",
+                FiefId = _fiefService.InformationList.Count - 1,
+                IndustryId = id,
+                StewardId = -1
+            });
+            id++;
+
+            _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Add(new IndustryBeingDevelopedModel()
+            {
+                Id = id,
+                Industry = "Utveckla Utbildning" + " (" + _fiefService.InformationList[_fiefService.InformationList.Count - 1].FiefName + ")",
+                FiefId = _fiefService.InformationList.Count - 1,
+                IndustryId = id,
+                StewardId = -1
+            });
+
             return _fiefService.InformationList.Count - 1;
+        }
+
+        public ObservableCollection<IndustryBeingDevelopedModel> CreateNewBeingDevelopedIndustries()
+        {
+            ObservableCollection<IndustryBeingDevelopedModel> collection = new ObservableCollection<IndustryBeingDevelopedModel>();
+            int id = GetNewIndustryId();
+
+            collection.Add(new IndustryBeingDevelopedModel()
+            {
+                Id = id,
+                Industry = "Utveckla Medicin" + " (" + _fiefService.InformationList[1].FiefName + ")",
+                FiefId = 1,
+                IndustryId = id,
+                StewardId = -1
+            });
+            id++;
+
+            collection.Add(new IndustryBeingDevelopedModel()
+            {
+                Id = id,
+                Industry = "Utveckla Militär" + " (" + _fiefService.InformationList[1].FiefName + ")",
+                FiefId = 1,
+                IndustryId = id,
+                StewardId = -1
+            });
+            id++;
+
+            collection.Add(new IndustryBeingDevelopedModel()
+            {
+                Id = id,
+                Industry = "Utveckla Utbildning" + " (" + _fiefService.InformationList[1].FiefName + ")",
+                FiefId = 1,
+                IndustryId = id,
+                StewardId = -1
+            });
+
+            return collection;
+        }
+
+        public ObservableCollection<IndustryBeingDevelopedModel> UpdateIndustriesBeingDevelopedCollection(ObservableCollection<IndustryBeingDevelopedModel> collection)
+        {
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                string fief = _fiefService.InformationList[x].FiefName;
+                bool fiefFound = false;
+
+                for (int y = 0; y < collection.Count; y++)
+                {
+                    if (collection[y].Industry.Contains(fief))
+                    {
+                        fiefFound = true;
+                        break;
+                    }
+                }
+
+                if (!fiefFound)
+                {
+                    int id = GetNewIndustryId();
+
+                    collection.Add(new IndustryBeingDevelopedModel()
+                    {
+                        Id = id,
+                        Industry = "Utveckla Medicin" + " (" + fief + ")",
+                        FiefId = x,
+                        IndustryId = id,
+                        StewardId = -1
+                    });
+                    id++;
+
+                    collection.Add(new IndustryBeingDevelopedModel()
+                    {
+                        Id = id,
+                        Industry = "Utveckla Militär" + " (" + fief + ")",
+                        FiefId = x,
+                        IndustryId = id,
+                        StewardId = -1
+                    });
+                    id++;
+
+                    collection.Add(new IndustryBeingDevelopedModel()
+                    {
+                        Id = id,
+                        Industry = "Utveckla Utbildning" + " (" + fief + ")",
+                        FiefId = x,
+                        IndustryId = id,
+                        StewardId = -1
+                    });
+                }
+            }
+
+            return collection;
         }
 
         public ObservableCollection<string> GetFiefCollection()
@@ -475,7 +597,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 }
                 if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Count > 0)
                 {
-                    tempList.Add(_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Max(o => o.Id));
+                    tempList.Add(_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Max(o => o.IndustryId));
                 }
                 if (_fiefService.SubsidiaryList[x].ConstructingCollection.Count > 0)
                 {
