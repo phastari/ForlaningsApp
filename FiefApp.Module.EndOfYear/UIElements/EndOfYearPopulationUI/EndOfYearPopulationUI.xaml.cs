@@ -195,6 +195,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
             }
         }
 
+        private bool _addPopulation;
+        public bool AddPopulation
+        {
+            get => _addPopulation;
+            set
+            {
+                _addPopulation = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -211,6 +222,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     AmorNumeric
                 );
 
+            newEventArgs.AddPopulation = AddPopulation;
             RaiseEvent(newEventArgs);
         }
 
@@ -246,14 +258,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     if (population > 0)
                     {
                         Outcome = $"Din befolkning ökar med {population}!";
+                        AddPopulation = true;
                     }
                     else if (population == 0)
                     {
                         Outcome = $"Ingen förändring i befolkning!";
+                        AddPopulation = true;
                     }
                     else
                     {
                         Outcome = $"Din befolkning minskar med {population}!";
+                        AddPopulation = false;
                     }
                     AmorNumeric += 2;
                 }
@@ -266,14 +281,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     if (population > 0)
                     {
                         Outcome = $"Din befolkning ökar med {population}.";
+                        AddPopulation = true;
                     }
                     else if (population == 0)
                     {
                         Outcome = $"Ingen förändring i befolkning.";
+                        AddPopulation = true;
                     }
                     else
                     {
                         Outcome = $"Din befolkning minskar med {population}.";
+                        AddPopulation = false;
                     }
                     AmorNumeric += 1;
                 }
@@ -286,14 +304,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     if (population > 0)
                     {
                         Outcome = $"Din befolkning ökar med {population}.";
+                        AddPopulation = true;
                     }
                     else if (population == 0)
                     {
                         Outcome = $"Ingen förändring i befolkning.";
+                        AddPopulation = true;
                     }
                     else
                     {
                         Outcome = $"Din befolkning minskar med {population}.";
+                        AddPopulation = false;
                     }
                 }
                 else
@@ -306,14 +327,17 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                     if (population > 0)
                     {
                         Outcome = $"Din befolkning ökar med {population}!";
+                        AddPopulation = true;
                     }
                     else if (population == 0)
                     {
                         Outcome = $"Ingen förändring i befolkning!";
+                        AddPopulation = true;
                     }
                     else
                     {
                         Outcome = $"Din befolkning minskar med {population}!";
+                        AddPopulation = false;
                     }
                     AmorNumeric -= 1;
                 }
