@@ -88,7 +88,7 @@ namespace FiefApp.Module.Stewards
                 case "Change":
                     {
                         SaveData();
-                        _baseService.ChangeSteward(e.Id, e.StewardModel.IndustryId);
+                        _baseService.ChangeSteward(e.Id, e.StewardModel.IndustryId, e.StewardModel.IndustryType);
 
                         for (int x = 0; x < DataModel.StewardsCollection.Count; x++)
                         {

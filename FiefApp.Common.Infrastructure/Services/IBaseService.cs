@@ -23,7 +23,7 @@ namespace FiefApp.Common.Infrastructure.Services
         string GetNobleName();
         int GetNewIndustryId();
         void RemoveSteward(int stewardId);
-        void ChangeSteward(int stewardId, int industryId);
+        void ChangeSteward(int stewardId, int industryId, string industryType = "");
         ObservableCollection<StewardModel> GetStewardsCollection();
         void SaveStewardsCollection(ObservableCollection<StewardModel> collection);
     }

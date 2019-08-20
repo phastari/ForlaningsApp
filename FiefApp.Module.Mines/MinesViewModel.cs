@@ -130,13 +130,15 @@ namespace FiefApp.Module.Mines
                 case "Changed":
                 {
                     SaveData();
-                    _baseService.ChangeSteward(e.StewardId, e.MineId);
+                    _baseService.ChangeSteward(e.StewardId, e.MineId, "Mine");
                     List<MineModel> tempList = new List<MineModel>(DataModel.MinesCollection);
                     List<QuarryModel> quarryList = new List<QuarryModel>(DataModel.QuarriesCollection);
                     DataModel.MinesCollection.Clear();
                     DataModel.QuarriesCollection.Clear();
                     DataModel.MinesCollection = new ObservableCollection<MineModel>(tempList);
                     DataModel.QuarriesCollection = new ObservableCollection<QuarryModel>(quarryList);
+                    UpdateStewardsCollectionInMines();
+                    UpdateStewardsCollectionInQuarries();
                     DataModel.UpdateTotals();
                     break;
                 }
@@ -253,7 +255,7 @@ namespace FiefApp.Module.Mines
                 case "Changed":
                 {
                     SaveData();
-                    _baseService.ChangeSteward(e.StewardId, e.QuarryId);
+                    _baseService.ChangeSteward(e.StewardId, e.QuarryId, "Quarry");
                     List<MineModel> tempList = new List<MineModel>(DataModel.MinesCollection);
                     List<QuarryModel> quarryList = new List<QuarryModel>(DataModel.QuarriesCollection);
                     DataModel.MinesCollection.Clear();

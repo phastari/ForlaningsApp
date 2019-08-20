@@ -53,7 +53,7 @@ namespace FiefApp.Module.Income
             if (e.Action == "Changed")
             {
                 SaveData();
-                _baseService.ChangeSteward(e.StewardId, e.IncomeId);
+                _baseService.ChangeSteward(e.StewardId, e.IncomeId, "Income");
                 DataModel.IncomesCollection.Clear();
                 DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
             }

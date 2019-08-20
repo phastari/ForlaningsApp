@@ -780,13 +780,13 @@ namespace FiefApp.Common.Infrastructure.Services
             }
         }
 
-        public void ChangeSteward(int stewardId, int industryId)
+        public void ChangeSteward(int stewardId, int industryId, string industryType = "")
         {
-            SetIndustryForStewardInStewardsCollection(stewardId, industryId);
+            SetIndustryForStewardInStewardsCollection(stewardId, industryId, industryType);
             SetStewardInIndustriesCollections(stewardId, industryId);
         }
 
-        private void SetIndustryForStewardInStewardsCollection(int stewardId, int industryId)
+        private void SetIndustryForStewardInStewardsCollection(int stewardId, int industryId, string industryType)
         {
             for (int x = 1; x < _fiefService.StewardsDataModel.StewardsCollection.Count; x++)
             {
@@ -794,10 +794,12 @@ namespace FiefApp.Common.Infrastructure.Services
                     && _fiefService.StewardsDataModel.StewardsCollection[x].Id != stewardId)
                 {
                     _fiefService.StewardsDataModel.StewardsCollection[x].IndustryId = -1;
+                    _fiefService.StewardsDataModel.StewardsCollection[x].IndustryType = "";
                 }
                 else if (_fiefService.StewardsDataModel.StewardsCollection[x].Id == stewardId)
                 {
                     _fiefService.StewardsDataModel.StewardsCollection[x].IndustryId = industryId;
+                    _fiefService.StewardsDataModel.StewardsCollection[x].IndustryType = industryType;
                 }
             }
         }

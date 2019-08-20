@@ -91,7 +91,10 @@ namespace FiefApp.Common.Infrastructure.Controls.T6TextBox
                 }
                 else
                 {
-                    if (((string)GetValue(T6ValueProperty)).IndexOf('T') != -1 || ((string)GetValue(T6ValueProperty)).Length < 3)
+                    string str = (string)GetValue(T6ValueProperty);
+                    str.ToUpper();
+                    if (str.IndexOf('T') != -1 
+                        || str.Length < 3)
                     {
                         bool isNegative;
                         string temp;
@@ -173,11 +176,14 @@ namespace FiefApp.Common.Infrastructure.Controls.T6TextBox
         {
             var temp = (string)GetValue(T6ValueProperty);
             string value;
+            string temp3;
             bool isNegative;
 
-            if (temp.Contains("T") || temp.Contains("t"))
+            temp3 = temp.ToUpper();
+            if (temp3.Contains("T"))
             {
-                if (((string)GetValue(T6ValueProperty)).IndexOf('T') != -1 || ((string)GetValue(T6ValueProperty)).Length < 3)
+                if (temp3.IndexOf('T') != -1 
+                    || temp3.Length < 3)
                 {
                     if (((string)GetValue(T6ValueProperty)).IndexOf('-') == -1)
                     {
@@ -307,7 +313,6 @@ namespace FiefApp.Common.Infrastructure.Controls.T6TextBox
             {
                 isNegative = false;
             }
-
 
             var y = Convert.ToInt32(temp);
             var i = y / 4;

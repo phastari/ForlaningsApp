@@ -310,7 +310,7 @@ namespace FiefApp.Module.Port
                 case "Changed":
                 {
                     SaveData();
-                    _baseService.ChangeSteward(e.Model.StewardId, e.Model.Id);
+                    _baseService.ChangeSteward(e.Model.StewardId, e.Model.Id, "Port");
                     break;
                 }
             }
@@ -336,7 +336,7 @@ namespace FiefApp.Module.Port
                 case "Changed":
                     {
                         SaveData();
-                        _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id);
+                        _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id, "Port");
                         break;
                     }
 

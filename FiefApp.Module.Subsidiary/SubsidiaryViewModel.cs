@@ -121,7 +121,7 @@ namespace FiefApp.Module.Subsidiary
 
             if (e.Action == "Changed")
             {
-                _baseService.ChangeSteward(e.StewardId, e.SubsidiaryId);
+                _baseService.ChangeSteward(e.StewardId, e.SubsidiaryId, "Subsidiary");
 
                 List<SubsidiaryModel> tempConstructingList = new List<SubsidiaryModel>(DataModel.ConstructingCollection);
                 List<SubsidiaryModel> tempSubsidiaryList = new List<SubsidiaryModel>(DataModel.SubsidiaryCollection);
@@ -165,7 +165,7 @@ namespace FiefApp.Module.Subsidiary
             {
                 case "Changed":
                 {
-                    _baseService.ChangeSteward(e.StewardId, e.SubsidiaryId);
+                    _baseService.ChangeSteward(e.StewardId, e.SubsidiaryId, "Subsidiary");
 
                     List<SubsidiaryModel> tempConstructingList = new List<SubsidiaryModel>(DataModel.ConstructingCollection);
                     List<SubsidiaryModel> tempSubsidiaryList = new List<SubsidiaryModel>(DataModel.SubsidiaryCollection);
