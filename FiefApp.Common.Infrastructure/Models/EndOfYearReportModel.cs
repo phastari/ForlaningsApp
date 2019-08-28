@@ -74,5 +74,8 @@ namespace FiefApp.Common.Infrastructure.Models
         public int ClearUseless { get; set; }
         public int Felling { get; set; }
         public string Happiness { get; set; }
+
+        // People dying
+        public string Deaths { get; set; }
     }
 }

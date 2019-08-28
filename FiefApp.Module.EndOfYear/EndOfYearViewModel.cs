@@ -10,7 +10,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
+using System.IO;
 
 namespace FiefApp.Module.EndOfYear
 {
@@ -75,7 +75,7 @@ namespace FiefApp.Module.EndOfYear
                             {
                                 DataModel.IncomeListFief[x].EndOfYearOkDictionary[e.Id] = e.Ok;
                             }
-                            
+
                             if (!DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsValue(false))
                             {
                                 tempList.Add(true);
@@ -104,7 +104,7 @@ namespace FiefApp.Module.EndOfYear
                         {
                             DataModel.EnableButton = true;
                         }
-                        
+
                         break;
                     }
 
@@ -392,19 +392,35 @@ namespace FiefApp.Module.EndOfYear
         {
             //if (DataModel.CheckIfAllRollsHaveBeenMade())
             //{
-                DataModel.EnableButton = false;
-                List<EndOfYearReportModel> reports = new List<EndOfYearReportModel>();
-                string str = $"år: {_fiefService.Year}" + Environment.NewLine + Environment.NewLine;
+            DataModel.EnableButton = false;
+            bool checkStewardsDeaths = true;
+            List<EndOfYearReportModel> reports = new List<EndOfYearReportModel>();
+            string str = $"år: {_fiefService.Year}" + Environment.NewLine + Environment.NewLine;
 
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            for (int x = 1; x < _fiefService.InformationList.Count - 1; x++)
+            {
+                EndOfYearReportModel model = new EndOfYearReportModel();
+
+                #region BoatbuildingModule
+
+                for (int y = _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count - 1; y > -1; y--)
                 {
-                    EndOfYearReportModel model = new EndOfYearReportModel();
-
-                    #region BoatbuildingModule
-
-                    for (int y = _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count - 1; y > -1; y--)
+                    if (_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BuildTimeInDaysAll < 365)
                     {
-                        if (_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BuildTimeInDaysAll < 365)
+                        for (int z = 1; z <= _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount; z++)
+                        {
+                            _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
+                            model.FinishedBoats.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BoatType);
+                        }
+
+                        model.FinishedBoatsSilverCost += _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].CostWhenFinishedSilver;
+                        _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
+                    }
+                    else
+                    {
+                        int i = Convert.ToInt32(Math.Floor(365M / _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BuildTimeInDays));
+
+                        if (i > _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount)
                         {
                             for (int z = 1; z <= _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount; z++)
                             {
@@ -417,456 +433,537 @@ namespace FiefApp.Module.EndOfYear
                         }
                         else
                         {
-                            int i = Convert.ToInt32(Math.Floor(365M / _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BuildTimeInDays));
-
-                            if (i > _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount)
+                            _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount -= i;
+                            model.FinishedBoatsSilverCost += _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].CostWhenFinishedSilver / i;
+                            while (i > 0)
                             {
-                                for (int z = 1; z <= _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount; z++)
-                                {
-                                    _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
-                                    model.FinishedBoats.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BoatType);
-                                }
-
-                                model.FinishedBoatsSilverCost += _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].CostWhenFinishedSilver;
-                                _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
+                                _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
+                                model.FinishedBoats.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BoatType);
+                                i--;
                             }
-                            else
-                            {
-                                _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].Amount -= i;
-                                model.FinishedBoatsSilverCost += _fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].CostWhenFinishedSilver / i;
-                                while (i > 0)
-                                {
-                                    _fiefService.PortsList[x].BoatsCollection.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y]);
-                                    model.FinishedBoats.Add(_fiefService.BoatbuildingList[x].BoatsBuildingCollection[y].BoatType);
-                                    i--;
-                                }
-                                _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
-                            }
+                            _fiefService.BoatbuildingList[x].BoatsBuildingCollection.RemoveAt(y);
                         }
                     }
+                }
 
-                    model.BoatbuildersSilverCost += _fiefService.BoatbuildingList[x].BoatBuildersCollection.Count * 1800;
+                model.BoatbuildersSilverCost += _fiefService.BoatbuildingList[x].BoatBuildersCollection.Count * 1800;
 
-                    #endregion
-                    #region BuildingsModule
+                #endregion
+                #region BuildingsModule
 
-                    for (int y = 0; y < _fiefService.BuildingsList[x].BuildsCollection.Count; y++)
+                for (int y = 0; y < _fiefService.BuildingsList[x].BuildsCollection.Count; y++)
+                {
+                    if (_fiefService.BuildingsList[x].BuildsCollection[y].BuilderId > 0)
                     {
-                        if (_fiefService.BuildingsList[x].BuildsCollection[y].BuilderId > 0)
+                        if (_fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].StoneNeededThisYear)
                         {
-                            if (_fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].StoneNeededThisYear)
-                            {
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
-                                model.BuildingsStone += _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear = 0;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear = 0;
-                            }
-                            else
-                            {
-                                decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].StoneNeededThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear));
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
-                                model.BuildingsStone += _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear = 0;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear = 0;
-                            }
-
-                            if (_fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].WoodNeededThisYear)
-                            {
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
-                                model.BuildingsWood += _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear = 0;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear = 0;
-                            }
-                            else
-                            {
-                                decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].WoodNeededThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear));
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
-                                model.BuildingsWood += _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear = 0;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear = 0;
-                            }
-
-                            if (_fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].IronNeededThisYear)
-                            {
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork -= _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron -= _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
-                                model.BuildingsIron += _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear = 0;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear = 0;
-                            }
-                            else
-                            {
-                                decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].IronNeededThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear));
-                                _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron -= _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
-                                model.BuildingsIron += _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear = 0;
-                                _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear = 0;
-                            }
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
+                            model.BuildingsStone += _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear = 0;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear = 0;
                         }
-                    }
-
-                    for (int y = 0; y < _fiefService.BuildingsList[x].BuildingsCollection.Count; y++)
-                    {
-                        model.BuildingsUpkeepBase += Convert.ToInt32(Math.Ceiling(_fiefService.BuildingsList[x].BuildingsCollection[y].Upkeep * _fiefService.BuildingsList[x].BuildingsCollection[y].Amount));
-                    }
-
-                    for (int y = _fiefService.BuildingsList[x].BuildsCollection.Count - 1; y > -1; y--)
-                    {
-                        if (_fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork <= 0
-                            && _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework <= 0
-                            && _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork <= 0
-                            && _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone <= 0
-                            && _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood <= 0
-                            && _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron <= 0)
+                        else
                         {
-                            _fiefService.BuildingsList[x].BuildingsCollection.Add(_fiefService.BuildingsList[x].BuildsCollection[y]);
-                            model.FinishedBuildings.Add(_fiefService.BuildingsList[x].BuildsCollection[y].Building);
-                            _fiefService.BuildingsList[x].BuildsCollection.RemoveAt(y);
+                            decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].StoneNeededThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear));
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone -= _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
+                            model.BuildingsStone += _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].StoneworkThisYear = 0;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].StoneThisYear = 0;
+                        }
+
+                        if (_fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].WoodNeededThisYear)
+                        {
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
+                            model.BuildingsWood += _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear = 0;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear = 0;
+                        }
+                        else
+                        {
+                            decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].WoodNeededThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear));
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood -= _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
+                            model.BuildingsWood += _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].WoodworkThisYear = 0;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].WoodThisYear = 0;
+                        }
+
+                        if (_fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear == _fiefService.BuildingsList[x].BuildsCollection[y].IronNeededThisYear)
+                        {
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork -= _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron -= _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
+                            model.BuildingsIron += _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear = 0;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear = 0;
+                        }
+                        else
+                        {
+                            decimal factor = _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear / _fiefService.BuildingsList[x].BuildsCollection[y].IronNeededThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork -= Convert.ToInt32(Math.Floor(factor * _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear));
+                            _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron -= _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
+                            model.BuildingsIron += _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].SmithsworkThisYear = 0;
+                            _fiefService.BuildingsList[x].BuildsCollection[y].IronThisYear = 0;
                         }
                     }
+                }
 
-                    model.StoneworkersBase += _fiefService.BuildingsList[x].StoneworkersBase;
-                    model.SmithsBase += _fiefService.BuildingsList[x].SmithsBase;
-                    model.WoodworkersBase += _fiefService.BuildingsList[x].WoodworkersDaysWork;
+                for (int y = 0; y < _fiefService.BuildingsList[x].BuildingsCollection.Count; y++)
+                {
+                    model.BuildingsUpkeepBase += Convert.ToInt32(Math.Ceiling(_fiefService.BuildingsList[x].BuildingsCollection[y].Upkeep * _fiefService.BuildingsList[x].BuildingsCollection[y].Amount));
+                }
 
-                    #endregion
-                    #region EmployeesModule
-
-                    model.EmployeesBaseCost += _fiefService.EmployeesList[x].TotalBase;
-                    model.EmployeesLuxuryCost += _fiefService.EmployeesList[x].TotalLuxury;
-
-                    #endregion
-                    #region ExpensesModule
-
-                    model.ResidentAdults = _fiefService.ExpensesList[x].ResidentAdults;
-                    model.ResidentAdultBaseCost = _fiefService.ExpensesList[x].ResidentAdultsBase;
-                    model.ResidentAdultLuxuryCost = _fiefService.ExpensesList[x].ResidentAdultsLuxury;
-                    model.ResidentChildren = _fiefService.ExpensesList[x].ResidentChildren;
-                    model.ResidentChildrenBaseCost = _fiefService.ExpensesList[x].ResidentChildrenBase;
-                    model.ResidentChildrenLuxuryCost = _fiefService.ExpensesList[x].ResidentChildrenLuxury;
-                    model.StableRidinghorses = _fiefService.ExpensesList[x].StableRidingHorses;
-                    model.StableRidinghorsesBaseCost = _fiefService.ExpensesList[x].StableRidingHorsesBase;
-                    model.StableWarhorses = _fiefService.ExpensesList[x].StableWarHorses;
-                    model.StableWarhorsesBaseCost = _fiefService.ExpensesList[x].StableWarHorsesBase;
-
-                    if (_fiefService.ExpensesList[x].FeedingPoor)
+                for (int y = _fiefService.BuildingsList[x].BuildsCollection.Count - 1; y > -1; y--)
+                {
+                    if (_fiefService.BuildingsList[x].BuildsCollection[y].LeftSmithswork <= 0
+                        && _fiefService.BuildingsList[x].BuildsCollection[y].LeftStonework <= 0
+                        && _fiefService.BuildingsList[x].BuildsCollection[y].LeftWoodwork <= 0
+                        && _fiefService.BuildingsList[x].BuildsCollection[y].LeftStone <= 0
+                        && _fiefService.BuildingsList[x].BuildsCollection[y].LeftWood <= 0
+                        && _fiefService.BuildingsList[x].BuildsCollection[y].LeftIron <= 0)
                     {
-                        model.FeedingThePoorBaseCost = _fiefService.ExpensesList[x].FeedingPoorBase;
+                        _fiefService.BuildingsList[x].BuildingsCollection.Add(_fiefService.BuildingsList[x].BuildsCollection[y]);
+                        model.FinishedBuildings.Add(_fiefService.BuildingsList[x].BuildsCollection[y].Building);
+                        _fiefService.BuildingsList[x].BuildsCollection.RemoveAt(y);
+                    }
+                }
 
-                        int loyalty = _baseService.ConvertToNumeric(_fiefService.InformationList[x].Loyalty);
-                        if (loyalty < 20)
-                        {
-                            loyalty++;
-                            _fiefService.InformationList[x].Loyalty = _baseService.ConvertToT6(loyalty);
-                        }
+                model.StoneworkersBase += _fiefService.BuildingsList[x].StoneworkersBase;
+                model.SmithsBase += _fiefService.BuildingsList[x].SmithsBase;
+                model.WoodworkersBase += _fiefService.BuildingsList[x].WoodworkersDaysWork;
+
+                #endregion
+                #region EmployeesModule
+
+                model.EmployeesBaseCost += _fiefService.EmployeesList[x].TotalBase;
+                model.EmployeesLuxuryCost += _fiefService.EmployeesList[x].TotalLuxury;
+
+                #endregion
+                #region ExpensesModule
+
+                model.ResidentAdults = _fiefService.ExpensesList[x].ResidentAdults;
+                model.ResidentAdultBaseCost = _fiefService.ExpensesList[x].ResidentAdultsBase;
+                model.ResidentAdultLuxuryCost = _fiefService.ExpensesList[x].ResidentAdultsLuxury;
+                model.ResidentChildren = _fiefService.ExpensesList[x].ResidentChildren;
+                model.ResidentChildrenBaseCost = _fiefService.ExpensesList[x].ResidentChildrenBase;
+                model.ResidentChildrenLuxuryCost = _fiefService.ExpensesList[x].ResidentChildrenLuxury;
+                model.StableRidinghorses = _fiefService.ExpensesList[x].StableRidingHorses;
+                model.StableRidinghorsesBaseCost = _fiefService.ExpensesList[x].StableRidingHorsesBase;
+                model.StableWarhorses = _fiefService.ExpensesList[x].StableWarHorses;
+                model.StableWarhorsesBaseCost = _fiefService.ExpensesList[x].StableWarHorsesBase;
+
+                if (_fiefService.ExpensesList[x].FeedingPoor)
+                {
+                    model.FeedingThePoorBaseCost = _fiefService.ExpensesList[x].FeedingPoorBase;
+
+                    int loyalty = _baseService.ConvertToNumeric(_fiefService.InformationList[x].Loyalty);
+                    if (loyalty < 20)
+                    {
+                        loyalty++;
+                        _fiefService.InformationList[x].Loyalty = _baseService.ConvertToT6(loyalty);
+                    }
+                }
+                else
+                {
+                    int loyalty = _baseService.ConvertToNumeric(_fiefService.InformationList[x].Loyalty);
+                    loyalty = loyalty - 2;
+                    if (loyalty < 4)
+                    {
+                        loyalty = 4;
+                    }
+                    _fiefService.InformationList[x].Loyalty = _baseService.ConvertToT6(loyalty);
+                }
+
+                if (_fiefService.ExpensesList[x].FeedingDayworkers)
+                {
+                    model.FeedingDayworkersBaseCost = _fiefService.ExpensesList[x].FeedingDayworkersBase;
+                }
+                else
+                {
+                    int loyalty = _baseService.ConvertToNumeric(_fiefService.InformationList[x].Loyalty);
+                    loyalty = loyalty - 4;
+                    if (loyalty < 4)
+                    {
+                        loyalty = 4;
+                    }
+                    _fiefService.InformationList[x].Loyalty = _baseService.ConvertToT6(loyalty);
+                }
+
+                model.UpkeepManorBaseCost = _fiefService.ExpensesList[x].ManorMaintenanceBase;
+
+                if (_fiefService.ExpensesList[x].ImproveRoads)
+                {
+                    model.UpgradingRoadsBaseCost = _fiefService.ExpensesList[x].ImproveRoadsBase;
+                    model.UpgradingRoadsStoneCost = _fiefService.ExpensesList[x].ImproveRoadsStone;
+
+                    switch (_fiefService.InformationList[x].Roads)
+                    {
+                        case "Stigar":
+                            _fiefService.InformationList[x].Roads = "Väg";
+                            break;
+
+                        case "Väg":
+                            _fiefService.InformationList[x].Roads = "Stenlagd väg";
+                            break;
+
+                        case "Stenlagd väg":
+                            _fiefService.InformationList[x].Roads = "Kunglig landsväg";
+                            break;
+
+                        default:
+                            Console.WriteLine("ERROR IN END OF YEAR UPGRADE ROADS");
+                            break;
+                    }
+                }
+
+                model.FeastBaseCost += _fiefService.ExpensesList[x].FeastsBase;
+                model.FeastLuxuryCost += _fiefService.ExpensesList[x].FeastsLuxury;
+                model.PeopleFeastBaseCost += _fiefService.ExpensesList[x].PeopleFeastsBase;
+                model.PeopleFeastLuxuryCost += _fiefService.ExpensesList[x].PeopleFeastsLuxury;
+                model.ReligiousFeastsSilverCost += _fiefService.ExpensesList[x].ReligiousFeastsSilver;
+                model.ReligiousFeastsBaseCost += _fiefService.ExpensesList[x].ReligiousFeastsBase;
+                model.ReligiousFeastsLuxuryCost += _fiefService.ExpensesList[x].ReligiousFeastsLuxury;
+                model.TourneySilverCost += _fiefService.ExpensesList[x].TournamentsSilver;
+                model.TourneyBaseCost += _fiefService.ExpensesList[x].TournamentsBase;
+                model.TourneyLuxuryCost += _fiefService.ExpensesList[x].TournamentsLuxury;
+                model.OtherSilverCost += _fiefService.ExpensesList[x].OthersSilver;
+                model.OtherBaseCost += _fiefService.ExpensesList[x].OthersBase;
+                model.OtherLuxuryCost += _fiefService.ExpensesList[x].OthersLuxury;
+
+                #endregion
+                #region IncomeModule
+
+                for (int y = 0; y < DataModel.IncomeListFief[x].IncomeCollection.Count; y++)
+                {
+                    EndOfYearReportIncomeModel temp = new EndOfYearReportIncomeModel();
+
+                    if (DataModel.IncomeListFief[x].IncomeCollection[y].Result != "-")
+                    {
+                        temp.ResultBase = Convert.ToInt32(DataModel.IncomeListFief[x].IncomeCollection[y].Result);
                     }
                     else
                     {
-                        int loyalty = _baseService.ConvertToNumeric(_fiefService.InformationList[x].Loyalty);
-                        loyalty = loyalty - 2;
-                        if (loyalty < 4)
-                        {
-                            loyalty = 4;
-                        }
-                        _fiefService.InformationList[x].Loyalty = _baseService.ConvertToT6(loyalty);
+                        temp.ResultBase = 0;
                     }
+                }
 
-                    if (_fiefService.ExpensesList[x].FeedingDayworkers)
+                #endregion
+                #region MinesModule
+
+                for (int y = 0; y < DataModel.IncomeListFief[x].MinesCollection.Count; y++)
+                {
+                    if (DataModel.IncomeListFief[x].MinesCollection[y].Result != "-")
                     {
-                        model.FeedingDayworkersBaseCost = _fiefService.ExpensesList[x].FeedingDayworkersBase;
+                        model.IncomesList.Add(new EndOfYearReportIncomeModel()
+                        {
+                            Income = DataModel.IncomeListFief[x].MinesCollection[y].MineType,
+                            ResultSilver = Convert.ToInt32(DataModel.IncomeListFief[x].MinesCollection[y].Result)
+                        });
                     }
                     else
                     {
-                        int loyalty = _baseService.ConvertToNumeric(_fiefService.InformationList[x].Loyalty);
-                        loyalty = loyalty - 4;
-                        if (loyalty < 4)
+                        model.IncomesList.Add(new EndOfYearReportIncomeModel()
                         {
-                            loyalty = 4;
-                        }
-                        _fiefService.InformationList[x].Loyalty = _baseService.ConvertToT6(loyalty);
+                            Income = DataModel.IncomeListFief[x].MinesCollection[y].MineType,
+                            ResultSilver = 0
+                        });
+                    }
+                }
+
+                #endregion
+                #region PortModule
+
+                if (DataModel.IncomeListFief[x].Shipyard.Shipyard != "")
+                {
+                    model.Shipyard = DataModel.IncomeListFief[x].Shipyard.Shipyard;
+                    if (DataModel.IncomeListFief[x].Shipyard.Result != "-")
+                    {
+                        model.ShipyardIncome = Convert.ToInt32(DataModel.IncomeListFief[x].Shipyard.Result);
+                    }
+                    else
+                    {
+                        model.ShipyardIncome = 0;
+                    }
+                }
+
+                #endregion
+                #region SubsidiaryModule
+
+                for (int y = 0; y < DataModel.IncomeListFief[x].SubsidiariesCollection.Count; y++)
+                {
+                    EndOfYearReportIncomeModel temp = new EndOfYearReportIncomeModel();
+                    if (DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultSilver != "-")
+                    {
+                        temp.ResultSilver = Convert.ToInt32(DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultSilver);
+                    }
+                    else
+                    {
+                        temp.ResultSilver = 0;
                     }
 
-                    model.UpkeepManorBaseCost = _fiefService.ExpensesList[x].ManorMaintenanceBase;
-                    
-                    if (_fiefService.ExpensesList[x].ImproveRoads)
+                    if (DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultBase != "-")
                     {
-                        model.UpgradingRoadsBaseCost = _fiefService.ExpensesList[x].ImproveRoadsBase;
-                        model.UpgradingRoadsStoneCost = _fiefService.ExpensesList[x].ImproveRoadsStone;
-
-                        switch (_fiefService.InformationList[x].Roads)
-                        {
-                            case "Stigar":
-                                _fiefService.InformationList[x].Roads = "Väg";
-                                break;
-
-                            case "Väg":
-                                _fiefService.InformationList[x].Roads = "Stenlagd väg";
-                                break;
-
-                            case "Stenlagd väg":
-                                _fiefService.InformationList[x].Roads = "Kunglig landsväg";
-                                break;
-
-                            default:
-                                Console.WriteLine("ERROR IN END OF YEAR UPGRADE ROADS");
-                                break;
-                        }
+                        temp.ResultBase = Convert.ToInt32(DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultBase);
+                    }
+                    else
+                    {
+                        temp.ResultBase = 0;
                     }
 
-                    model.FeastBaseCost += _fiefService.ExpensesList[x].FeastsBase;
-                    model.FeastLuxuryCost += _fiefService.ExpensesList[x].FeastsLuxury;
-                    model.PeopleFeastBaseCost += _fiefService.ExpensesList[x].PeopleFeastsBase;
-                    model.PeopleFeastLuxuryCost += _fiefService.ExpensesList[x].PeopleFeastsLuxury;
-                    model.ReligiousFeastsSilverCost += _fiefService.ExpensesList[x].ReligiousFeastsSilver;
-                    model.ReligiousFeastsBaseCost += _fiefService.ExpensesList[x].ReligiousFeastsBase;
-                    model.ReligiousFeastsLuxuryCost += _fiefService.ExpensesList[x].ReligiousFeastsLuxury;
-                    model.TourneySilverCost += _fiefService.ExpensesList[x].TournamentsSilver;
-                    model.TourneyBaseCost += _fiefService.ExpensesList[x].TournamentsBase;
-                    model.TourneyLuxuryCost += _fiefService.ExpensesList[x].TournamentsLuxury;
-                    model.OtherSilverCost += _fiefService.ExpensesList[x].OthersSilver;
-                    model.OtherBaseCost += _fiefService.ExpensesList[x].OthersBase;
-                    model.OtherLuxuryCost += _fiefService.ExpensesList[x].OthersLuxury;
-
-                    #endregion
-                    #region IncomeModule
-
-                    for (int y = 0; y < DataModel.IncomeListFief[x].IncomeCollection.Count; y++)
+                    if (DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultLuxury != "-")
                     {
-                        EndOfYearReportIncomeModel temp = new EndOfYearReportIncomeModel();
-                        
-                        if (DataModel.IncomeListFief[x].IncomeCollection[y].Result != "-")
-                        {
-                            temp.ResultBase = Convert.ToInt32(DataModel.IncomeListFief[x].IncomeCollection[y].Result);
-                        }
-                        else
-                        {
-                            temp.ResultBase = 0;
-                        }
+                        temp.ResultLuxury = Convert.ToInt32(DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultLuxury);
+                    }
+                    else
+                    {
+                        temp.ResultLuxury = 0;
                     }
 
-                    #endregion
-                    #region MinesModule
+                    temp.ResultStone = 0;
+                    temp.ResultWood = 0;
+                    temp.ResultIron = 0;
+                    temp.Income = DataModel.IncomeListFief[x].SubsidiariesCollection[x].Subsidiary;
 
-                    for (int y = 0; y < DataModel.IncomeListFief[x].MinesCollection.Count; y++)
+                    model.SubsidiariesList.Add(temp);
+                }
+
+                #endregion
+                #region TradeModule
+
+
+
+                #endregion
+                #region WeatherModule
+
+                model.Happiness = _fiefService.WeatherList[x].HappinessTotal;
+                model.NumberUsedFishingBoats = _fiefService.WeatherList[x].NumberUsedFishingBoats;
+                model.AddedManorAcres = _fiefService.WeatherList[x].LandClearing
+                                      + _fiefService.WeatherList[x].LandClearingOfFelling
+                                      + _fiefService.WeatherList[x].ClearUseless;
+                model.LandClearing = _fiefService.WeatherList[x].LandClearing;
+                model.LandClearingOfFelling = _fiefService.WeatherList[x].LandClearingOfFelling;
+                model.ClearUseless = _fiefService.WeatherList[x].ClearUseless;
+                model.Felling = _fiefService.WeatherList[x].Felling;
+                model.Happiness = _fiefService.WeatherList[x].HappinessTotal;
+
+                _fiefService.ManorList[x].ManorAcres += _fiefService.WeatherList[x].LandClearing
+                                                      + _fiefService.WeatherList[x].LandClearingOfFelling
+                                                      + _fiefService.WeatherList[x].ClearUseless;
+                _fiefService.ManorList[x].ManorFelling += _fiefService.WeatherList[x].Felling - _fiefService.WeatherList[x].LandClearingOfFelling;
+                _fiefService.ManorList[x].ManorUseless -= _fiefService.WeatherList[x].ClearUseless;
+                _fiefService.ManorList[x].ManorWoodland -= (_fiefService.WeatherList[x].LandClearing
+                                                         + _fiefService.WeatherList[x].Felling);
+
+                _fiefService.WeatherList[x].SpringRoll = null;
+                _fiefService.WeatherList[x].SummerRoll = null;
+                _fiefService.WeatherList[x].FallRoll = null;
+                _fiefService.WeatherList[x].WinterRoll = null;
+
+                _fiefService.WeatherList[x].NumberUsedFishingBoats = 0;
+                _fiefService.WeatherList[x].LandClearing = 0;
+                _fiefService.WeatherList[x].LandClearingOfFelling = 0;
+                _fiefService.WeatherList[x].ClearUseless = 0;
+
+
+                _fiefService.WeatherList[x].Felling = 0;
+
+                #endregion
+                #region Population
+
+                if (DataModel.IncomeListFief[x].PopulationModel.AddPopulation)
+                {
+                    int nrVillages = _fiefService.ManorList[x].VillagesCollection.Count;
+
+                    for (int i = 0; i < DataModel.IncomeListFief[x].PopulationModel.ResultPopulation; i++)
                     {
-                        if (DataModel.IncomeListFief[x].MinesCollection[y].Result != "-")
+                        int villageNr = _baseService.RollDie(1, nrVillages);
+                        _fiefService.ManorList[x].VillagesCollection[villageNr].Population++;
+                        if (_baseService.RollDie(1, 100) > 97)
                         {
-                            model.IncomesList.Add(new EndOfYearReportIncomeModel()
+                            _fiefService.ManorList[x].VillagesCollection[villageNr].Burgess++;
+
+                            int y = _baseService.RollDie(1, 100);
+                            if (y < 11)
                             {
-                                Income = DataModel.IncomeListFief[x].MinesCollection[y].MineType,
-                                ResultSilver = Convert.ToInt32(DataModel.IncomeListFief[x].MinesCollection[y].Result)
-                            });
-                        }
-                        else
-                        {
-                            model.IncomesList.Add(new EndOfYearReportIncomeModel()
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Boatbuilders++;
+                            }
+                            else if (y < 21)
                             {
-                                Income = DataModel.IncomeListFief[x].MinesCollection[y].MineType,
-                                ResultSilver = 0
-                            });
-                        }
-                    }
-
-                    #endregion
-                    #region PortModule
-
-                    if (DataModel.IncomeListFief[x].Shipyard.Shipyard != "")
-                    {
-                        model.Shipyard = DataModel.IncomeListFief[x].Shipyard.Shipyard;
-                        if (DataModel.IncomeListFief[x].Shipyard.Result != "-")
-                        {
-                            model.ShipyardIncome = Convert.ToInt32(DataModel.IncomeListFief[x].Shipyard.Result);
-                        }
-                        else
-                        {
-                            model.ShipyardIncome = 0;
-                        }
-                    }
-
-                    #endregion
-                    #region SubsidiaryModule
-
-                    for (int y = 0; y < DataModel.IncomeListFief[x].SubsidiariesCollection.Count; y++)
-                    {
-                        EndOfYearReportIncomeModel temp = new EndOfYearReportIncomeModel();
-                        if (DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultSilver != "-")
-                        {
-                            temp.ResultSilver = Convert.ToInt32(DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultSilver);
-                        }
-                        else
-                        {
-                            temp.ResultSilver = 0;
-                        }
-
-                        if (DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultBase != "-")
-                        {
-                            temp.ResultBase = Convert.ToInt32(DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultBase);
-                        }
-                        else
-                        {
-                            temp.ResultBase = 0;
-                        }
-
-                        if (DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultLuxury != "-")
-                        {
-                            temp.ResultLuxury = Convert.ToInt32(DataModel.IncomeListFief[x].SubsidiariesCollection[y].ResultLuxury);
-                        }
-                        else
-                        {
-                            temp.ResultLuxury = 0;
-                        }
-
-                        temp.ResultStone = 0;
-                        temp.ResultWood = 0;
-                        temp.ResultIron = 0;
-                        temp.Income = DataModel.IncomeListFief[x].SubsidiariesCollection[x].Subsidiary;
-
-                        model.SubsidiariesList.Add(temp);
-                    }
-
-                    #endregion
-                    #region TradeModule
-
-
-
-                    #endregion
-                    #region WeatherModule
-
-
-                    model.Happiness = _fiefService.WeatherList[x].HappinessTotal;
-                    model.NumberUsedFishingBoats = _fiefService.WeatherList[x].NumberUsedFishingBoats;
-                    model.AddedManorAcres = _fiefService.WeatherList[x].LandClearing
-                                          + _fiefService.WeatherList[x].LandClearingOfFelling
-                                          + _fiefService.WeatherList[x].ClearUseless;
-                    model.LandClearing = _fiefService.WeatherList[x].LandClearing;
-                    model.LandClearingOfFelling = _fiefService.WeatherList[x].LandClearingOfFelling;
-                    model.ClearUseless = _fiefService.WeatherList[x].ClearUseless;
-                    model.Felling = _fiefService.WeatherList[x].Felling;
-                    model.Happiness = _fiefService.WeatherList[x].HappinessTotal;
-
-                    _fiefService.ManorList[x].ManorAcres += _fiefService.WeatherList[x].LandClearing 
-                                                          + _fiefService.WeatherList[x].LandClearingOfFelling 
-                                                          + _fiefService.WeatherList[x].ClearUseless;
-                    _fiefService.ManorList[x].ManorFelling += _fiefService.WeatherList[x].Felling - _fiefService.WeatherList[x].LandClearingOfFelling;
-                    _fiefService.ManorList[x].ManorUseless -= _fiefService.WeatherList[x].ClearUseless;
-                    _fiefService.ManorList[x].ManorWoodland -= (_fiefService.WeatherList[x].LandClearing
-                                                             + _fiefService.WeatherList[x].Felling);
-
-                    _fiefService.WeatherList[x].SpringRoll = null;
-                    _fiefService.WeatherList[x].SummerRoll = null;
-                    _fiefService.WeatherList[x].FallRoll = null;
-                    _fiefService.WeatherList[x].WinterRoll = null;
-
-                    _fiefService.WeatherList[x].NumberUsedFishingBoats = 0;
-                    _fiefService.WeatherList[x].LandClearing = 0;
-                    _fiefService.WeatherList[x].LandClearingOfFelling = 0;
-                    _fiefService.WeatherList[x].ClearUseless = 0;
-
-                    
-                    _fiefService.WeatherList[x].Felling = 0;
-
-                    #endregion
-                    #region Population
-
-                    if (DataModel.IncomeListFief[x].PopulationModel.AddPopulation)
-                    {
-                        int nrVillages = _fiefService.ManorList[x].VillagesCollection.Count;
-
-                        for (int i = 0; i < DataModel.IncomeListFief[x].PopulationModel.ResultPopulation; i++)
-                        {
-                            int villageNr = _baseService.RollDie(1, nrVillages);
-                            _fiefService.ManorList[x].VillagesCollection[villageNr].Population++;
-                            if (_baseService.RollDie(1, 100) > 97)
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Tanners++;
+                            }
+                            else if (y < 41)
                             {
-                                _fiefService.ManorList[x].VillagesCollection[villageNr].Burgess++;
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Millers++;
+                            }
+                            else if (y < 46)
+                            {
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Furriers++;
+                            }
+                            else if (y < 51)
+                            {
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Tailors++;
+                            }
+                            else if (y < 71)
+                            {
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Carpenters++;
+                            }
+                            else if (y < 91)
+                            {
+                                _fiefService.ManorList[x].VillagesCollection[villageNr].Innkeepers++;
+                            }
+                        }
+                    }
+                }
 
-                                int y = _baseService.RollDie(1, 100);
-                                if (y < 11)
+                #endregion
+                #region People
+
+                List<int> deaths = new List<int>();
+                List<int> stewardDeaths = new List<int>();
+
+                for (int y = 0; y < _fiefService.ManorList[x].ResidentsCollection.Count; y++)
+                {
+                    if (_fiefService.ManorList[x].ResidentsCollection[y].Age > 34)
+                    {
+                        int chanceOfDeath = 0;
+                        int i = 100 - _fiefService.ManorList[x].ResidentsCollection[y].Age;
+                        if (i > 0)
+                        {
+                            int j = Convert.ToInt32(Math.Floor(Math.Pow(i, 2)));
+                            chanceOfDeath = Convert.ToInt32(Math.Floor((decimal)j / 6));
+
+                            if (_baseService.RollDie(1, 100) <= chanceOfDeath)
+                            {
+                                deaths.Add(_fiefService.ManorList[x].ResidentsCollection[y].Id);
+                            }
+                        }
+                    }
+                }
+
+                if (checkStewardsDeaths)
+                {
+                    checkStewardsDeaths = false;
+                    for (int y = 0; y < _fiefService.StewardsDataModel.StewardsCollection.Count; y++)
+                    {
+                        if (_fiefService.StewardsDataModel.StewardsCollection[y].Age > 34)
+                        {
+                            int chanceOfDeath;
+                            int i = 100 - _fiefService.StewardsDataModel.StewardsCollection[y].Age;
+                            if (i > 0)
+                            {
+                                int j = Convert.ToInt32(Math.Floor(Math.Pow(i, 2)));
+                                chanceOfDeath = Convert.ToInt32(Math.Floor((decimal)j / 6));
+
+                                if (_baseService.RollDie(1, 100) <= chanceOfDeath)
                                 {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Boatbuilders++;
-                                }
-                                else if (y < 21)
-                                {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Tanners++;
-                                }
-                                else if (y < 41)
-                                {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Millers++;
-                                }
-                                else if (y < 46)
-                                {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Furriers++;
-                                }
-                                else if (y < 51)
-                                {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Tailors++;
-                                }
-                                else if (y < 71)
-                                {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Carpenters++;
-                                }
-                                else if (y < 91)
-                                {
-                                    _fiefService.ManorList[x].VillagesCollection[villageNr].Innkeepers++;
+                                    stewardDeaths.Add(_fiefService.StewardsDataModel.StewardsCollection[y].Id);
                                 }
                             }
                         }
                     }
 
-                    #endregion
-
-                    #region Write report to text file
-
-                    str += $"{_fiefService.InformationList[x].FiefName}" + Environment.NewLine;
-                    str += $"Årets väder" + Environment.NewLine;
-                    str += $"   Vår: {_fiefService.WeatherList[x].SpringRoll}({_fiefService.WeatherList[x].SpringRollMod})" + Environment.NewLine;
-                    str += $"Sommar: {_fiefService.WeatherList[x].SummerRoll}({_fiefService.WeatherList[x].SummerRollMod})" + Environment.NewLine;
-                    str += $"  Höst: {_fiefService.WeatherList[x].FallRoll}({_fiefService.WeatherList[x].FallRollMod})" + Environment.NewLine;
-                    str += $"Vinter: {_fiefService.WeatherList[x].WinterRoll}({_fiefService.WeatherList[x].WinterRollMod})" + Environment.NewLine + Environment.NewLine;
-                    str += $"Inkomster" + Environment.NewLine;
-
-                    for (int i = 0; i < model.IncomesList.Count; i++)
+                    if (stewardDeaths.Count > 0)
                     {
-                        str += $"{model.IncomesList[i].Income}: ";
-
-                        bool gotSomething = false;
-                        if (model.IncomesList[i].ResultBase > 0)
+                        for (int i = stewardDeaths.Count; i > 0; i--)
                         {
-                            str += $"{model.IncomesList[i].ResultBase}bas";
-                            gotSomething = true;
+                            for (int j = 0; j < _fiefService.StewardsDataModel.StewardsCollection.Count; j++)
+                            {
+                                if (_fiefService.StewardsDataModel.StewardsCollection[j].Id == stewardDeaths[i])
+                                {
+                                    if (string.IsNullOrEmpty(model.Deaths))
+                                    {
+                                        model.Deaths = "Dödsfall" + Environment.NewLine + _fiefService.StewardsDataModel.StewardsCollection[j].PersonName + " dog vid " + _fiefService.StewardsDataModel.StewardsCollection[j].Age + "års ålder." + Environment.NewLine;
+                                    }
+                                    else
+                                    {
+                                        model.Deaths += _fiefService.StewardsDataModel.StewardsCollection[j].PersonName + " dog vid " + _fiefService.StewardsDataModel.StewardsCollection[j].Age + "års ålder." + Environment.NewLine;
+                                    }
+                                    _fiefService.StewardsDataModel.StewardsCollection.RemoveAt(j);
+                                    break;
+                                }
+                            }
                         }
-                        if (model.IncomesList[i].ResultLuxury > 0)
-                        {
-                            str += $"{model.IncomesList[i].ResultLuxury}lyx";
-                            gotSomething = true;
-                        }
-                        if (model.IncomesList[i].ResultIron > 0)
-                        {
-                            str += $"{model.IncomesList[i].ResultIron}järn";
-                            gotSomething = true;
-                        }
-                        if (model.IncomesList[i].ResultStone > 0)
-                        {
-                            str += $"{model.IncomesList[i].ResultStone}sten";
-                            gotSomething = true;
-                        }
-                        if(model.IncomesList[i].ResultWood > 0)
-                        {
-                            str += $"{model.IncomesList[i].ResultWood}timmer";
-                            gotSomething = true;
-                        }
-                        if (!gotSomething)
-                        {
-                            str += $"-";
-                        }
-
-                        str += Environment.NewLine;
                     }
+                }
+
+                if (deaths.Count > 0)
+                {
+                    for (int i = deaths.Count; i > 0; i--)
+                    {
+                        for (int j = 0; j < _fiefService.ManorList[x].ResidentsCollection.Count; j++)
+                        {
+                            if (_fiefService.ManorList[x].ResidentsCollection[j].Id == deaths[i])
+                            {
+                                if (string.IsNullOrEmpty(model.Deaths))
+                                {
+                                    model.Deaths = "Dödsfall" + Environment.NewLine + _fiefService.ManorList[x].ResidentsCollection[j].PersonName + " dog vid " + _fiefService.ManorList[x].ResidentsCollection[j].Age + "års ålder." + Environment.NewLine;
+                                }
+                                else
+                                {
+                                    model.Deaths += _fiefService.ManorList[x].ResidentsCollection[j].PersonName + " dog vid " + _fiefService.ManorList[x].ResidentsCollection[j].Age + "års ålder." + Environment.NewLine;
+                                }
+                                _fiefService.ManorList[x].ResidentsCollection.RemoveAt(j);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                #endregion
+
+                #region Write report to text file
+
+                str += $"{_fiefService.InformationList[x].FiefName}" + Environment.NewLine;
+                str += $"Årets väder" + Environment.NewLine;
+                str += $"   Vår: {_fiefService.WeatherList[x].SpringRoll}({_fiefService.WeatherList[x].SpringRollMod})" + Environment.NewLine;
+                str += $"Sommar: {_fiefService.WeatherList[x].SummerRoll}({_fiefService.WeatherList[x].SummerRollMod})" + Environment.NewLine;
+                str += $"  Höst: {_fiefService.WeatherList[x].FallRoll}({_fiefService.WeatherList[x].FallRollMod})" + Environment.NewLine;
+                str += $"Vinter: {_fiefService.WeatherList[x].WinterRoll}({_fiefService.WeatherList[x].WinterRollMod})" + Environment.NewLine + Environment.NewLine;
+                str += $"Inkomster" + Environment.NewLine;
+
+                for (int i = 0; i < model.IncomesList.Count; i++)
+                {
+                    str += $"{model.IncomesList[i].Income}: ";
+
+                    bool gotSomething = false;
+                    if (model.IncomesList[i].ResultBase > 0)
+                    {
+                        str += $"{model.IncomesList[i].ResultBase}bas";
+                        gotSomething = true;
+                    }
+                    if (model.IncomesList[i].ResultLuxury > 0)
+                    {
+                        str += $"{model.IncomesList[i].ResultLuxury}lyx";
+                        gotSomething = true;
+                    }
+                    if (model.IncomesList[i].ResultIron > 0)
+                    {
+                        str += $"{model.IncomesList[i].ResultIron}järn";
+                        gotSomething = true;
+                    }
+                    if (model.IncomesList[i].ResultStone > 0)
+                    {
+                        str += $"{model.IncomesList[i].ResultStone}sten";
+                        gotSomething = true;
+                    }
+                    if (model.IncomesList[i].ResultWood > 0)
+                    {
+                        str += $"{model.IncomesList[i].ResultWood}timmer";
+                        gotSomething = true;
+                    }
+                    if (!gotSomething)
+                    {
+                        str += $"-";
+                    }
+
+                    str += Environment.NewLine;
+                }
+
+                if (model.SubsidiariesList != null)
+                {
 
                     if (model.SubsidiariesList.Count > 1)
                     {
@@ -905,18 +1002,26 @@ namespace FiefApp.Module.EndOfYear
 
                         str += Environment.NewLine;
                     }
-
-                    #endregion
-
-                    #region End
-
-                    reports.Add(model);
-
-                    #endregion
                 }
 
-                _fiefService.Year++;
+                if (!string.IsNullOrEmpty(model.Deaths))
+                {
+                    str += model.Deaths;
+                }
+
+                #endregion
+
+                #region End
+
+                reports.Add(model);
+
+                #endregion
+            }
+
+            _fiefService.Year++;
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+            File.WriteAllText($@"{AppDomain.CurrentDomain.BaseDirectory}/Reports/{_fiefService.Year - 1}.txt", str);
+            System.Diagnostics.Process.Start($@"{AppDomain.CurrentDomain.BaseDirectory}/Reports/{_fiefService.Year - 1}.txt");
         }
 
         #endregion

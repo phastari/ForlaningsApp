@@ -2,6 +2,7 @@
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -43,7 +44,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public ArmySettingsModel LoadArmySettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ArmySettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ArmySettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ArmySettings.xml";
             XmlDocument doc = new XmlDocument();
             ArmySettingsModel tempModel = new ArmySettingsModel();
             if (File.Exists(filePath))
@@ -511,7 +513,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ArmySettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ArmySettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ArmySettings.xml";
+
             xmlDoc.Save(@filePath);
             ArmySettingsModel = LoadArmySettingsFromXml();
         }
@@ -523,7 +527,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public EmployeeSettingsModel LoadEmployeeSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/EmployeeSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/EmployeeSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/EmployeeSettings.xml";
             XmlDocument doc = new XmlDocument();
             EmployeeSettingsModel tempModel = new EmployeeSettingsModel();
             if (File.Exists(filePath))
@@ -675,7 +680,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/EmployeeSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/EmployeeSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/EmployeeSettings.xml";
+
             xmlDoc.Save(@filePath);
             EmployeeSettingsModel = LoadEmployeeSettingsFromXml();
         }
@@ -687,7 +694,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public InformationSettingsModel LoadInformationSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/InformationSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/InformationSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/InformationSettings.xml";
             XmlDocument doc = new XmlDocument();
             InformationSettingsModel tempModel = new InformationSettingsModel();
             if (File.Exists(filePath))
@@ -851,7 +859,9 @@ namespace FiefApp.Common.Infrastructure.Services
 
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/InformationSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/InformationSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/InformationSettings.xml";
+
             xmlDoc.Save(@filePath);
             InformationSettingsModel = LoadInformationSettingsFromXml();
         }
@@ -863,7 +873,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public ManorSettingsModel LoadManorSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ManorSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ManorSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ManorSettings.xml";
             XmlDocument doc = new XmlDocument();
             ManorSettingsModel tempModel = new ManorSettingsModel();
             if (File.Exists(filePath))
@@ -938,7 +949,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ManorSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ManorSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ManorSettings.xml";
+
             xmlDoc.Save(@filePath);
             ManorSettingsModel = LoadManorSettingsFromXml();
         }
@@ -950,7 +963,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public BoatbuildingSettingsModel LoadBoatbuildingSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BoatbuildingSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BoatbuildingSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/BoatbuildingSettings.xml";
             XmlDocument doc = new XmlDocument();
             BoatbuildingSettingsModel tempModel = new BoatbuildingSettingsModel();
             if (File.Exists(filePath))
@@ -1441,7 +1455,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BoatbuildingSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BoatbuildingSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/BoatbuildingSettings.xml";
+
             xmlDoc.Save(@filePath);
             BoatbuildingSettingsModel = LoadBoatbuildingSettingsFromXml();
         }
@@ -1453,7 +1469,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<ShipyardTypeSettingsModel> LoadShipyardTypeSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ShipyardTypeSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ShipyardTypeSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ShipyardTypeSettings.xml";
             XmlDocument doc = new XmlDocument();
             List<ShipyardTypeSettingsModel> tempList = new List<ShipyardTypeSettingsModel>();
             if (File.Exists(filePath))
@@ -1734,7 +1751,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ShipyardTypeSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ShipyardTypeSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ShipyardTypeSettings.xml";
+
             xmlDoc.Save(@filePath);
             ShipyardTypeSettingsList = LoadShipyardTypeSettingsFromXml();
         }
@@ -1746,7 +1765,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public LivingconditionsSettingsModel LoadLivingconditionsSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/LivingconditionsSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/LivingconditionsSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/LivingconditionsSettings.xml";
             XmlDocument doc = new XmlDocument();
             List<LivingconditionModel> tempList = new List<LivingconditionModel>();
             LivingconditionsSettingsModel livingconditionsSettingsModel = new LivingconditionsSettingsModel();
@@ -1837,7 +1857,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/LivingconditionsSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/LivingconditionsSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/LivingconditionsSettings.xml";
+
             xmlDoc.Save(@filePath);
             LivingconditionsSettingsModel = LoadLivingconditionsSettingsFromXml();
         }
@@ -1849,7 +1871,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public StableSettingsModel LoadStableSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/StableSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/StableSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/StableSettings.xml";
             XmlDocument doc = new XmlDocument();
             List<AnimalModel> tempList = new List<AnimalModel>();
             StableSettingsModel stableSettingsModel = new StableSettingsModel();
@@ -1910,7 +1933,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/StableSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/StableSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/StableSettings.xml";
+
             xmlDoc.Save(@filePath);
             StableSettingsModel = LoadStableSettingsFromXml();
         }
@@ -1922,7 +1947,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public ExpensesSettingsModel LoadExpensesSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ExpensesSettings.xml";
             XmlDocument doc = new XmlDocument();
             List<RoadModel> roadList = new List<RoadModel>();
             List<EventModel> eventList = new List<EventModel>();
@@ -2115,7 +2141,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/ExpensesSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/ExpensesSettings.xml";
+
             xmlDoc.Save(@filePath);
             ExpensesSettingsModel = LoadExpensesSettingsFromXml();
         }
@@ -2127,7 +2155,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<SubsidiarySettingsModel> LoadSubsidiarySettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/SubsidiarySettings.xml";
             XmlDocument doc = new XmlDocument();
             List<SubsidiarySettingsModel> settingsList = new List<SubsidiarySettingsModel>();
             if (File.Exists(filePath))
@@ -2283,7 +2312,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/SubsidiarySettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/SubsidiarySettings.xml";
+
             xmlDoc.Save(@filePath);
             SubsidiarySettingsList = LoadSubsidiarySettingsFromXml();
 
@@ -2296,7 +2327,8 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<BuildingsSettingsModel> LoadBuildingsSettingsFromXml()
         {
             bool foundError = false;
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BuildingsSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BuildingsSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/BuildingsSettings.xml";
             XmlDocument doc = new XmlDocument();
             List<BuildingsSettingsModel> settingsList = new List<BuildingsSettingsModel>();
             if (File.Exists(filePath))
@@ -2668,7 +2700,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 )
             );
 
-            string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BuildingsSettings.xml";
+            // string filePath = "../../../FiefApp.Common.Infrastructure/Settings/BuildingsSettings.xml";
+            string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Settings/BuildingsSettings.xml";
+
             xmlDoc.Save(@filePath);
             BuildingsSettingsList = LoadBuildingsSettingsFromXml();
 

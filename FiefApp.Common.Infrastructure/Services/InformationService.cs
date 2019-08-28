@@ -188,7 +188,18 @@ namespace FiefApp.Common.Infrastructure.Services
 
                 for (int i = 1; i < _fiefService.InformationList[x].ReligionsList.Count; i++)
                 {
-                    religionModelList[i].Followers += _fiefService.InformationList[x].ReligionsList[i].Followers;
+                    religionModelList.Where(t => t.Religion == _fiefService.InformationList[x].ReligionsList[i].Religion).FirstOrDefault().Followers += _fiefService.InformationList[x].ReligionsList[i].Followers;
+                }
+
+                int totalPop = 0;
+                for (int i = 1; i < _fiefService.ManorList.Count; i++)
+                {
+                    totalPop += _fiefService.ManorList[i].ManorPopulation;
+                }
+
+                for (int z = 0; z < religionModelList.Count; z++)
+                {
+                    religionModelList[z].PercentOfPopulation = religionModelList[z].Followers / totalPop;
                 }
             }
 

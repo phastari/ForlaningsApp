@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using Squirrel;
+using System.Threading.Tasks;
 
 namespace FiefApp
 {
@@ -42,6 +44,16 @@ namespace FiefApp
             FileIsSaved = Properties.Settings.Default.IsSaved;
             _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(ExecuteEndOfYear);
+
+            CheckForUpdates();
+        }
+
+        private async Task CheckForUpdates()
+        {
+            using (var manager = new UpdateManager(@"..\"))
+            {
+                await manager.UpdateApp();
+            }
         }
 
         #region DelegateCommand : NewFiefCommand
