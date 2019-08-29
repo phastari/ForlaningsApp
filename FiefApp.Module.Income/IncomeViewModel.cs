@@ -54,8 +54,10 @@ namespace FiefApp.Module.Income
             {
                 SaveData();
                 _baseService.ChangeSteward(e.StewardId, e.IncomeId, "Income");
+                List<IncomeModel> tempIncome = new List<IncomeModel>(DataModel.IncomesCollection);
                 DataModel.IncomesCollection.Clear();
-                DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
+                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, new ObservableCollection<IncomeModel>(tempIncome)));
+                UpdateStewardsCollectionInIncomes();
             }
         }
 
@@ -77,7 +79,7 @@ namespace FiefApp.Module.Income
             if (Index != 0)
             {
                 DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
-                DataModel.IncomesCollection = _incomeService.CheckIncomesCollection(Index);
+                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
                 DataModel.UpdateTotals();
                 DataModel.StewardsCollection = _baseService.GetStewardsCollection();
 
@@ -106,6 +108,17 @@ namespace FiefApp.Module.Income
         {
             Index = 1;
             LoadData();
+        }
+
+        private void UpdateStewardsCollectionInIncomes()
+        {
+            if (DataModel.IncomesCollection.Count > 0)
+            {
+                for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+                {
+                    DataModel.IncomesCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_baseService.GetStewardsCollection());
+                }
+            }
         }
     }
 }

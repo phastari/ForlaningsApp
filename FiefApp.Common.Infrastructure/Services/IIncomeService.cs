@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 
@@ -6,7 +7,7 @@ namespace FiefApp.Common.Infrastructure.Services
 {
     public interface IIncomeService
     {
-        ObservableCollection<IncomeModel> CheckIncomesCollection(int index);
+        List<IncomeModel> SetIncomes(int index, ObservableCollection<IncomeModel> model);
         IncomeDataModel GetAllDataModel();
     }
 }

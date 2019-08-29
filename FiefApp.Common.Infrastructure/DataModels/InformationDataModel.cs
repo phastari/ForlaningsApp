@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace FiefApp.Common.Infrastructure.DataModels
@@ -489,7 +490,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
 
         #region Methods
 
-        public void SortReligionsListIntoReligionsShowCollection()
+        public void SortReligionsListIntoReligionsShowCollection(int population)
         {
             ReligionsList.Sort((x, y) => y.Followers.CompareTo(x.Followers));
             ReligionsShowCollection = new ObservableCollection<ReligionModel>(ReligionsList.GetRange(0, 4));
@@ -498,10 +499,95 @@ namespace FiefApp.Common.Infrastructure.DataModels
 
             for (int x = 0; x < ReligionsShowCollection.Count; x++)
             {
-                total += ReligionsShowCollection[x].PercentOfPopulation;
+                if (ReligionsShowCollection[x].Followers == 0)
+                {
+                    ReligionsShowCollection[x].PercentOfPopulation = 0;
+                }
+                else
+                {
+                    ReligionsShowCollection[x].PercentOfPopulation = Convert.ToInt32(Math.Round(100 / (decimal)population * ReligionsShowCollection[x].Followers));
+                    total += ReligionsShowCollection[x].PercentOfPopulation;
+                }
             }
 
             OtherReligions = 100 - total;
+        }
+
+        public void CheckReligionsList()
+        {
+            List<ReligionModel> tempList = new List<ReligionModel>()
+            {
+                new ReligionModel()
+                    {
+                        Religion = "Daakkyrkan",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Jordesoldatens vittnen",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Vindtron",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Hedendomen",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Samoriska läran",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Kristallorden",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Xinukulten",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Commersium lamia",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    },
+                    new ReligionModel()
+                    {
+                        Religion = "Övriga",
+                        Followers = 0,
+                        Resources = "0",
+                        Loyalty = "0"
+                    }
+            };
+
+            for (int x = 0; x < tempList.Count; x++)
+            {
+                tempList[x].Followers = ReligionsList.Where(o => o.Religion == tempList[x].Religion).Sum(t => t.Followers);
+            }
+
+            ReligionsList = tempList;
         }
 
         #endregion

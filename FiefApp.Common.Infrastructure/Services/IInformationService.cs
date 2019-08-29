@@ -4,9 +4,8 @@ namespace FiefApp.Common.Infrastructure.Services
 {
     public interface IInformationService
     {
-        InformationDataModel GetInformationDataModel(int index);
-        void SetInformationDataModel(InformationDataModel dataModel, int index);
         InformationDataModel GetAllInformationDataModel();
         void SetupPopulationReligion(int index);
+        int GetTotalPopulation(int index);
     }
 }

@@ -15,19 +15,9 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService = fiefService;
         }
 
-        public InformationDataModel GetInformationDataModel(int index)
-        {
-            return _fiefService.InformationList[index];
-        }
-
-        public void SetInformationDataModel(InformationDataModel dataModel, int index)
-        {
-            _fiefService.InformationList[index] = dataModel;
-        }
-
         public InformationDataModel GetAllInformationDataModel()
         {
-            InformationDataModel tempDataModel = _fiefService.InformationList[0];
+            InformationDataModel tempDataModel = new InformationDataModel();
 
             string mountain = "Nej";
             string mountainRange = "Nej";
@@ -186,20 +176,9 @@ namespace FiefApp.Common.Infrastructure.Services
                 woodlandDevelopmentLevel.Add(Convert.ToInt16(_fiefService.InformationList[x].WoodlandDevelopmentLevel));
                 educationDevelopmentLevel.Add(Convert.ToInt16(_fiefService.InformationList[x].EducationDevelopmentLevel));
 
-                for (int i = 1; i < _fiefService.InformationList[x].ReligionsList.Count; i++)
+                for (int i = 0; i < _fiefService.InformationList[x].ReligionsList.Count; i++)
                 {
                     religionModelList.Where(t => t.Religion == _fiefService.InformationList[x].ReligionsList[i].Religion).FirstOrDefault().Followers += _fiefService.InformationList[x].ReligionsList[i].Followers;
-                }
-
-                int totalPop = 0;
-                for (int i = 1; i < _fiefService.ManorList.Count; i++)
-                {
-                    totalPop += _fiefService.ManorList[i].ManorPopulation;
-                }
-
-                for (int z = 0; z < religionModelList.Count; z++)
-                {
-                    religionModelList[z].PercentOfPopulation = religionModelList[z].Followers / totalPop;
                 }
             }
 
@@ -230,8 +209,17 @@ namespace FiefApp.Common.Infrastructure.Services
             tempDataModel.WoodlandDevelopmentLevel = $"{woodlandDevelopmentLevel.Min()} - {woodlandDevelopmentLevel.Max()}";
             tempDataModel.EducationDevelopmentLevel = $"{educationDevelopmentLevel.Min()} - {educationDevelopmentLevel.Max()}";
 
+            int population = 0;
+            for (int h = 1; h < _fiefService.ManorList.Count; h++)
+            {
+                for (int m = 0; m < _fiefService.ManorList[h].VillagesCollection.Count; m++)
+                {
+                    population += _fiefService.ManorList[h].VillagesCollection[m].Population;
+                }
+            }
+                 
             tempDataModel.ReligionsList = religionModelList;
-            tempDataModel.SortReligionsListIntoReligionsShowCollection();
+            tempDataModel.SortReligionsListIntoReligionsShowCollection(population);
 
             string s = "";
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
@@ -404,6 +392,16 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
             }
+        }
+
+        public int GetTotalPopulation(int index)
+        {
+            int population = 0;
+            for (int x = 0; x < _fiefService.ManorList[index].VillagesCollection.Count; x++)
+            {
+                population += _fiefService.ManorList[index].VillagesCollection[x].Population;
+            }
+            return population;
         }
     }
 }

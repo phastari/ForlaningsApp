@@ -157,8 +157,10 @@ namespace FiefApp.Module.Information
 
                 _informationService.SetupPopulationReligion(Index);
                 DataModel = _baseService.GetDataModel<InformationDataModel>(Index);
-                DataModel?.SortReligionsListIntoReligionsShowCollection();
+                DataModel.CheckReligionsList();
+                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
             }
+            
             UpdateFiefCollection();
         }
 
