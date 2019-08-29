@@ -22,5 +22,7 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetMaxFelling(int index);
         int GetMaxUseless(int index);
         int GetMaxLandClearFelling(int index);
+        int GetNumberOfMinesAndQuarries(int index);
+        int GetTotalAmountOfDaysWorkFromQuarries(int index);
     }
 }

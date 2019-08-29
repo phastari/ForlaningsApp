@@ -152,6 +152,7 @@ namespace FiefApp.Module.Weather
             GetTotalAmountOfSlaves();
             GetNumberOfFishingboats();
             GetSubsidiaryData();
+            GetMinesAndQuarriesData();
             GetForecasts();
             GetManorAcresSetManorDaysWork();
             GetMaxFellingLandClearing();
@@ -181,6 +182,12 @@ namespace FiefApp.Module.Weather
         {
             DataModel.NumberOfSubsidiaries = _weatherService.GetTotalNumberOfSubsidaries(Index);
             DataModel.SubsidiariesDayswork = _weatherService.GetTotalAmountOfDaysworkFromSubsidiaries(Index);
+        }
+
+        private void GetMinesAndQuarriesData()
+        {
+            DataModel.NumberOfMinesAndQuarries = _weatherService.GetNumberOfMinesAndQuarries(Index);
+            DataModel.MinesAndQuarriesDaysWork = _weatherService.GetTotalAmountOfDaysWorkFromQuarries(Index);
         }
 
         private void GetForecasts()

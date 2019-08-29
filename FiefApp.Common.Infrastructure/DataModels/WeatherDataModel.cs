@@ -418,6 +418,29 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _numberOfMinesAndQuarries;
+        public int NumberOfMinesAndQuarries
+        {
+            get => _numberOfMinesAndQuarries;
+            set
+            {
+                _numberOfMinesAndQuarries = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _minesAndQuarriesDaysWork;
+        public int MinesAndQuarriesDaysWork
+        {
+            get => _minesAndQuarriesDaysWork;
+            set
+            {
+                _minesAndQuarriesDaysWork = value;
+                CalculateDaysworkLeft();
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _numberOfFishingBoats;
         public int NumberOfFishingBoats
         {
@@ -1127,7 +1150,8 @@ namespace FiefApp.Common.Infrastructure.DataModels
                            - DaysworkClearUseless
                            - DaysworkFelling
                            - ManorUpkeep
-                           - DaysworkOtherExpend;
+                           - DaysworkOtherExpend
+                           - MinesAndQuarriesDaysWork;
         }
 
         private void CalculateRemaining()

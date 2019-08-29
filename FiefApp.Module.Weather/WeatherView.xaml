@@ -210,6 +210,7 @@
             Grid.ColumnSpan="3"
             Grid.Row="7"
             Content="Väder"
+            FontWeight="Bold"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Left"
             VerticalAlignment="Stretch"
@@ -368,6 +369,7 @@
             Grid.ColumnSpan="3"
             Grid.Row="21"
             Content="Umbärande"
+            FontWeight="Bold"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             Padding="20,0,0,0"/>
@@ -499,13 +501,14 @@
             Grid.Column="10"
             Grid.Row="3"
             Content="Dagsverk"
+            FontWeight="Bold"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Padding="0"/>
 
         <Label 
             Grid.Column="12"
-            Grid.Row="5"
+            Grid.Row="3"
             Content="Antal"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -513,7 +516,7 @@
 
         <Label 
             Grid.Column="14"
-            Grid.Row="5"
+            Grid.Row="3"
             Content="# Dagsverk"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -521,7 +524,7 @@
 
         <Label 
             Grid.Column="16"
-            Grid.Row="5"
+            Grid.Row="3"
             Content="st / år"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -529,7 +532,7 @@
 
         <Label 
             Grid.Column="10"
-            Grid.Row="7"
+            Grid.Row="5"
             Content="Daglönare"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -538,7 +541,7 @@
         <TextBox
             Text="{Binding Path=DataModel.Dayworkers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="12"
-            Grid.Row="7"
+            Grid.Row="5"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"/>
@@ -546,7 +549,7 @@
         <TextBox
             Text="{Binding Path=DataModel.DayworkersDayswork}"
             Grid.Column="14"
-            Grid.Row="7"
+            Grid.Row="5"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -555,7 +558,7 @@
 
         <Label 
             Grid.Column="16"
-            Grid.Row="7"
+            Grid.Row="5"
             Content="280"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
@@ -567,7 +570,7 @@
 
         <Label 
             Grid.Column="10"
-            Grid.Row="9"
+            Grid.Row="7"
             Content="Ofriabönder"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -576,7 +579,7 @@
         <TextBox
             Text="{Binding Path=DataModel.Serfs}"
             Grid.Column="12"
-            Grid.Row="9"
+            Grid.Row="7"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -586,7 +589,7 @@
         <TextBox
             Text="{Binding Path=DataModel.SerfsDayswork}"
             Grid.Column="14"
-            Grid.Row="9"
+            Grid.Row="7"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -596,7 +599,7 @@
         <TextBox
             Text="{Binding Path=DataModel.DaysworkRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="16"
-            Grid.Row="9"
+            Grid.Row="7"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -605,7 +608,7 @@
 
         <Label 
             Grid.Column="10"
-            Grid.Row="11"
+            Grid.Row="9"
             Content="Slavar"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -614,7 +617,7 @@
         <TextBox
             Text="{Binding Path=DataModel.Slaves}"
             Grid.Column="12"
-            Grid.Row="11"
+            Grid.Row="9"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -624,7 +627,7 @@
         <TextBox
             Text="{Binding Path=DataModel.SlavesDayswork}"
             Grid.Column="14"
-            Grid.Row="11"
+            Grid.Row="9"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -634,7 +637,7 @@
 
         <Label 
             Grid.Column="16"
-            Grid.Row="11"
+            Grid.Row="9"
             Content="300"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -642,7 +645,7 @@
 
         <Label 
             Grid.Column="10"
-            Grid.Row="13"
+            Grid.Row="11"
             Content="Annat"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Right"
@@ -653,7 +656,7 @@
         <TextBox
             Text="{Binding Path=DataModel.DaysworkOther, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="14"
-            Grid.Row="13"
+            Grid.Row="11"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -661,7 +664,7 @@
 
         <Label 
             Grid.Column="12"
-            Grid.Row="15"
+            Grid.Row="13"
             Content="Totalt"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -670,7 +673,7 @@
         <TextBox
             Text="{Binding Path=DataModel.DaysworkTotal}"
             Grid.Column="14"
-            Grid.Row="15"
+            Grid.Row="13"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -679,8 +682,9 @@
 
         <Label 
             Grid.Column="10"
-            Grid.Row="17"
+            Grid.Row="15"
             Content="Sysslor"
+            FontWeight="Bold"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             VerticalAlignment="Stretch"
@@ -689,7 +693,7 @@
 
         <Label 
             Grid.Column="12"
-            Grid.Row="17"
+            Grid.Row="15"
             Content="Antal"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
@@ -699,7 +703,7 @@
 
         <Label 
             Grid.Column="14"
-            Grid.Row="17"
+            Grid.Row="15"
             Content="# Dagsverk"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
@@ -709,13 +713,43 @@
 
         <Label 
             Grid.Column="16"
-            Grid.Row="17"
+            Grid.Row="15"
             Content="Kvar"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Center"
             Padding="0"/>
+
+        <Label 
+            Grid.Column="10"
+            Grid.Row="17"
+            Content="Binäringar"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.NumberOfSubsidiaries}"
+            Grid.Column="12"
+            Grid.Row="17"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0"
+            IsReadOnly="True"/>
+
+        <TextBox
+            Text="{Binding Path=DataModel.SubsidiariesDayswork}"
+            Grid.Column="14"
+            Grid.Row="17"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            Padding="0,0,6,0"
+            IsReadOnly="True"/>
 
         <Label 
             Grid.Column="10"
@@ -738,7 +772,7 @@
         <Label 
             Grid.Column="10"
             Grid.Row="21"
-            Content="Binäringar"
+            Content="Gruvor/Stenbrott"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Right"
             VerticalAlignment="Stretch"
@@ -746,7 +780,7 @@
             Padding="0"/>
 
         <TextBox
-            Text="{Binding Path=DataModel.NumberOfSubsidiaries}"
+            Text="{Binding Path=DataModel.NumberOfMinesAndQuarries}"
             Grid.Column="12"
             Grid.Row="21"
             HorizontalContentAlignment="Center"
@@ -756,7 +790,7 @@
             IsReadOnly="True"/>
 
         <TextBox
-            Text="{Binding Path=DataModel.SubsidiariesDayswork}"
+            Text="{Binding Path=DataModel.MinesAndQuarriesDaysWork}"
             Grid.Column="14"
             Grid.Row="21"
             HorizontalContentAlignment="Right"
@@ -1038,6 +1072,7 @@
             Grid.ColumnSpan="3"
             Grid.Row="3"
             Content="Prognos"
+            FontWeight="Bold"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -1328,6 +1363,7 @@
             Grid.ColumnSpan="3"
             Grid.Row="19"
             Content="Skatter"
+            FontWeight="Bold"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Padding="0"/>

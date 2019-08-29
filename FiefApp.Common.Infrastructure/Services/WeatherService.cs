@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using FiefApp.Common.Infrastructure.DataModels;
+using System.Linq;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -24,15 +24,13 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Serfdoms);
             }
-            else
+
+            int serfs = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
             {
-                int serfs = 0;
-                for (int x = 1; x < _fiefService.ManorList.Count; x++)
-                {
-                    serfs += _fiefService.ManorList[x].VillagesCollection.Sum(t => t.Serfdoms);
-                }
-                return serfs;
+                serfs += _fiefService.ManorList[x].VillagesCollection.Sum(t => t.Serfdoms);
             }
+            return serfs;
         }
 
         public int GetTotalAmountOfSlaves(int index)
@@ -41,15 +39,13 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ExpensesList[index].Slaves;
             }
-            else
+
+            int slaves = 0;
+            for (int x = 1; x < _fiefService.ExpensesList.Count; x++)
             {
-                int slaves = 0;
-                for (int x = 1; x < _fiefService.ExpensesList.Count; x++)
-                {
-                    slaves += _fiefService.ExpensesList[x].Slaves;
-                }
-                return slaves;
+                slaves += _fiefService.ExpensesList[x].Slaves;
             }
+            return slaves;
         }
 
         public int GetTotalNumberOfSubsidaries(int index)
@@ -59,16 +55,14 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.SubsidiaryList[index].SubsidiaryCollection.Count
                    + _fiefService.SubsidiaryList[index].ConstructingCollection.Count;
             }
-            else
+
+            int subsidiaries = 0;
+            for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
             {
-                int subsidiaries = 0;
-                for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
-                {
-                    subsidiaries += _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count
-                        + _fiefService.SubsidiaryList[x].ConstructingCollection.Count;
-                }
-                return subsidiaries;
+                subsidiaries += _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count
+                                + _fiefService.SubsidiaryList[x].ConstructingCollection.Count;
             }
+            return subsidiaries;
         }
 
         public int GetTotalAmountOfDaysworkFromSubsidiaries(int index)
@@ -78,56 +72,109 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.SubsidiaryList[index].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
                    + _fiefService.SubsidiaryList[index].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
             }
-            else
+
+            int subsidiariesDayswork = 0;
+            for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
             {
-                int subsidiariesDayswork = 0;
-                for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
-                {
-                    subsidiariesDayswork += _fiefService.SubsidiaryList[x].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
-                        + _fiefService.SubsidiaryList[x].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
-                }
-                return subsidiariesDayswork;
+                subsidiariesDayswork += _fiefService.SubsidiaryList[x].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
+                                        + _fiefService.SubsidiaryList[x].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
             }
+            return subsidiariesDayswork;
+        }
+
+        public int GetNumberOfMinesAndQuarries(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.MinesList[index].MinesCollection.Count
+                       + _fiefService.MinesList[index].QuarriesCollection.Count;
+            }
+            int nr = 0;
+            for (int x = 1; x < _fiefService.MinesList.Count; x++)
+            {
+                nr += _fiefService.MinesList[x].MinesCollection.Count
+                   + _fiefService.MinesList[x].QuarriesCollection.Count;
+            }
+
+            return nr;
+        }
+
+        public int GetTotalAmountOfDaysWorkFromQuarries(int index)
+        {
+            if (index != 0)
+            {
+                if (_fiefService.MinesList[index].QuarriesCollection != null)
+                {
+                    return _fiefService.MinesList[index].QuarriesCollection.Sum(o => o.DaysWorkThisYear);
+                }
+            }
+
+            int dayswork = 0;
+            for (int x = 1; x < _fiefService.MinesList.Count; x++)
+            {
+                dayswork += _fiefService.MinesList[x].QuarriesCollection.Sum(o => o.DaysWorkThisYear);
+            }
+
+            return dayswork;
         }
 
         public int GetForecastForSilver(int index)
         {
+            int silver = 0;
             if (index != 0)
             {
-                return _fiefService.IncomeList[index].TotalSilver
-                    - _fiefService.ExpensesList[index].ExpensesSilver;
-            }
-            else
-            {
-                int silver = 0;
-                for (int x = 1; x < _fiefService.IncomeList.Count; x++)
+
+                silver = _fiefService.IncomeList[index].TotalSilver
+                         - _fiefService.PortsList[index].TotalSilver
+                       - _fiefService.ExpensesList[index].ExpensesSilver;
+
+                for (int x = 0; x < _fiefService.MinesList[index].MinesCollection.Count; x++)
                 {
-                    silver += _fiefService.IncomeList[x].TotalSilver
-                        - _fiefService.ExpensesList[x].ExpensesSilver;
+                    if (int.TryParse(_fiefService.MinesList[index].MinesCollection[x].Result, out var temp))
+                    {
+                        silver += temp;
+                    }
                 }
 
                 return silver;
             }
+
+            for (int x = 1; x < _fiefService.IncomeList.Count; x++)
+            {
+                silver += _fiefService.IncomeList[x].TotalSilver
+                          - _fiefService.ExpensesList[x].ExpensesSilver;
+
+                for (int z = 0; z < _fiefService.MinesList[x].MinesCollection.Count; z++)
+                {
+                    if (int.TryParse(_fiefService.MinesList[x].MinesCollection[z].Result, out var temp))
+                    {
+                        silver += temp;
+                    }
+                }
+            }
+
+            return silver;
         }
 
         public int GetForecastForBase(int index)
         {
             if (index != 0)
             {
-                return _fiefService.IncomeList[index].TotalBase
-                   - _fiefService.ExpensesList[index].ExpensesBase;
+                int b = 0;
+                b += _fiefService.IncomeList[index].TotalBase
+                     - _fiefService.ExpensesList[index].ExpensesBase
+                     + (int)_fiefService.SubsidiaryList[index].SubsidiaryCollection.Sum(o => o.IncomeBase)
+                     - _fiefService.PortsList[index].TotalBase;
             }
-            else
-            {
-                int i = 0;
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
-                {
-                    i += _fiefService.IncomeList[x].TotalBase
-                   - _fiefService.ExpensesList[x].ExpensesBase;
-                }
 
-                return i;
+            int i = 0;
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                i += _fiefService.IncomeList[x].TotalBase
+                     - _fiefService.ExpensesList[x].ExpensesBase;
             }
+
+            return i;
         }
 
         public int GetForecastForLuxury(int index)
@@ -137,17 +184,15 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.IncomeList[index].TotalLuxury
                     - _fiefService.ExpensesList[index].ExpensesLuxury;
             }
-            else
-            {
-                int luxury = 0;
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
-                {
-                    luxury += _fiefService.IncomeList[x].TotalLuxury
-                        - _fiefService.ExpensesList[x].ExpensesLuxury;
-                }
 
-                return luxury;
+            int luxury = 0;
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                luxury += _fiefService.IncomeList[x].TotalLuxury
+                          - _fiefService.ExpensesList[x].ExpensesLuxury;
             }
+
+            return luxury;
         }
 
         public int GetForecastForIron(int index)
@@ -157,17 +202,15 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.IncomeList[index].TotalIron
                     - _fiefService.ExpensesList[index].ExpensesIron;
             }
-            else
-            {
-                int iron = 0;
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
-                {
-                    iron += _fiefService.IncomeList[x].TotalIron
-                        - _fiefService.ExpensesList[x].ExpensesIron;
-                }
 
-                return iron;
+            int iron = 0;
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                iron += _fiefService.IncomeList[x].TotalIron
+                        - _fiefService.ExpensesList[x].ExpensesIron;
             }
+
+            return iron;
         }
 
         public int GetForecastForStone(int index)
@@ -177,17 +220,15 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.IncomeList[index].TotalStone
                     - _fiefService.ExpensesList[index].ExpensesStone;
             }
-            else
-            {
-                int stone = 0;
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
-                {
-                    stone += _fiefService.IncomeList[x].TotalStone
-                        - _fiefService.ExpensesList[x].ExpensesStone;
-                }
 
-                return stone;
+            int stone = 0;
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                stone += _fiefService.IncomeList[x].TotalStone
+                         - _fiefService.ExpensesList[x].ExpensesStone;
             }
+
+            return stone;
         }
 
         public int GetForecastForWood(int index)
@@ -197,17 +238,15 @@ namespace FiefApp.Common.Infrastructure.Services
                 return _fiefService.IncomeList[index].TotalWood
                     - _fiefService.ExpensesList[index].ExpensesWood;
             }
-            else
-            {
-                int wood = 0;
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
-                {
-                    wood += _fiefService.IncomeList[x].TotalWood
-                        - _fiefService.ExpensesList[x].ExpensesWood;
-                }
 
-                return wood;
+            int wood = 0;
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                wood += _fiefService.IncomeList[x].TotalWood
+                        - _fiefService.ExpensesList[x].ExpensesWood;
             }
+
+            return wood;
         }
 
         public int GetManorAcres(int index)
@@ -216,34 +255,30 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ManorList[index].ManorAcres;
             }
-            else
-            {
-                int acres = 0;
-                for (int x = 1; x < _fiefService.InformationList.Count; x++)
-                {
-                    acres += _fiefService.ManorList[x].ManorAcres;
-                }
 
-                return acres;
+            int acres = 0;
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                acres += _fiefService.ManorList[x].ManorAcres;
             }
+
+            return acres;
         }
- 
+
         public int GetNumberOfFishingboats(int index)
         {
             if (index != 0)
             {
                 return _fiefService.PortsList[index].FishingBoats;
             }
-            else
-            {
-                int fishingBoats = 0;
-                for (int x = 1; x < _fiefService.PortsList.Count; x++)
-                {
-                    fishingBoats += _fiefService.PortsList[x].FishingBoats;
-                }
 
-                return fishingBoats;
+            int fishingBoats = 0;
+            for (int x = 1; x < _fiefService.PortsList.Count; x++)
+            {
+                fishingBoats += _fiefService.PortsList[x].FishingBoats;
             }
+
+            return fishingBoats;
         }
 
         public void SetNumberOfFishingboats(int index, int fishingboats)
@@ -257,16 +292,14 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ManorList[index].ManorWoodland;
             }
-            else
-            {
-                int landClearing = 0;
-                for (int x = 1; x < _fiefService.ManorList.Count; x++)
-                {
-                    landClearing += _fiefService.ManorList[x].ManorWoodland;
-                }
 
-                return landClearing;
+            int landClearing = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                landClearing += _fiefService.ManorList[x].ManorWoodland;
             }
+
+            return landClearing;
         }
 
         public int GetMaxFelling(int index)
@@ -275,16 +308,14 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ManorList[index].ManorWoodland;
             }
-            else
-            {
-                int felling = 0;
-                for (int x = 1; x < _fiefService.ManorList.Count; x++)
-                {
-                    felling += _fiefService.ManorList[x].ManorWoodland;
-                }
 
-                return felling;
+            int felling = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                felling += _fiefService.ManorList[x].ManorWoodland;
             }
+
+            return felling;
         }
 
         public int GetMaxUseless(int index)
@@ -293,16 +324,14 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ManorList[index].ManorUseless;
             }
-            else
-            {
-                int useless = 0;
-                for (int x = 1; x < _fiefService.ManorList.Count; x++)
-                {
-                    useless += _fiefService.ManorList[x].ManorUseless;
-                }
 
-                return useless;
+            int useless = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                useless += _fiefService.ManorList[x].ManorUseless;
             }
+
+            return useless;
         }
 
         public int GetMaxLandClearFelling(int index)
@@ -311,16 +340,14 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 return _fiefService.ManorList[index].ManorFelling;
             }
-            else
-            {
-                int landClearFelling = 0;
-                for (int x = 1; x < _fiefService.ManorList.Count; x++)
-                {
-                    landClearFelling += _fiefService.ManorList[x].ManorFelling;
-                }
 
-                return landClearFelling;
+            int landClearFelling = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                landClearFelling += _fiefService.ManorList[x].ManorFelling;
             }
+
+            return landClearFelling;
         }
     }
 }

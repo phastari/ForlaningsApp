@@ -108,8 +108,8 @@ namespace FiefApp.Common.Infrastructure.Services
                         string steward = "";
                         string skill = "0";
 
-                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId).PersonName;
-                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId).Skill;
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId).PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId).Skill;
 
                         constructingList.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[j]);
                         dictionary.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[j].Id, false);

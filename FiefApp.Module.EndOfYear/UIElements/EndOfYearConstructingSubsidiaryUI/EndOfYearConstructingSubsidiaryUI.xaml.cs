@@ -138,6 +138,34 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
                 new PropertyMetadata(0)
             );
 
+        public int DaysWorkBuild
+        {
+            get => (int)GetValue(DaysWorkBuildProperty);
+            set => SetValue(DaysWorkBuildProperty, value);
+        }
+
+        public static readonly DependencyProperty DaysWorkBuildProperty =
+            DependencyProperty.Register(
+                "DaysWorkBuild",
+                typeof(int),
+                typeof(EndOfYearConstructingSubsidiaryUI),
+                new PropertyMetadata(0)
+            );
+
+        public int DaysWorkThisYear
+        {
+            get => (int)GetValue(DaysWorkThisYearProperty);
+            set => SetValue(DaysWorkThisYearProperty, value);
+        }
+
+        public static readonly DependencyProperty DaysWorkThisYearProperty =
+            DependencyProperty.Register(
+                "DaysWorkThisYear",
+                typeof(int),
+                typeof(EndOfYearConstructingSubsidiaryUI),
+                new PropertyMetadata(0)
+            );
+
         #endregion
 
         #region UI Properties

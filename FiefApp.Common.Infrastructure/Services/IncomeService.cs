@@ -210,6 +210,17 @@ namespace FiefApp.Common.Infrastructure.Services
                         {
                             model[x].Base = 0;
                         }
+
+                        if (_fiefService.InformationList[index].Coast == "Ja"
+                            || _fiefService.InformationList[index].River == "Ja"
+                            || _fiefService.InformationList[index].Lake == "Ja")
+                        {
+                            model[x].ShowInIncomes = true;
+                        }
+                        else
+                        {
+                            model[x].ShowInIncomes = false;
+                        }
                         break;
 
                     case "Skogsavverkning":
@@ -233,6 +244,16 @@ namespace FiefApp.Common.Infrastructure.Services
                         else
                         {
                             model[x].Wood = 0;
+                        }
+
+                        if (_fiefService.WeatherList[index].Felling > 0
+                            || _fiefService.WeatherList[index].LandClearing > 0)
+                        {
+                            model[x].ShowInIncomes = true;
+                        }
+                        else
+                        {
+                            model[x].ShowInIncomes = false;
                         }
                         break;
                 }

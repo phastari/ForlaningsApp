@@ -393,16 +393,56 @@ namespace FiefApp.Module.EndOfYear
         {
             var tuple = (Tuple<object, object>)obj;
 
-            if (!(tuple.Item2 is EndOfYearEventArgs e))
+            if (!(tuple.Item2 is EndOfYearConstructingSubsidiaryEventArgs e))
             {
                 return;
             }
 
             e.Handled = true;
+
+            List<bool> tempList = new List<bool>();
+            for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
+            {
+                if (DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsKey(e.Id))
+                {
+                    DataModel.IncomeListFief[x].EndOfYearOkDictionary[e.Id] = e.Ok;
+                }
+
+                if (!DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsValue(false))
+                {
+                    tempList.Add(true);
+                }
+                else
+                {
+                    tempList.Add(false);
+                }
+                tempList.Add(DataModel.IncomeListFief[x].PopulationOk);
+                tempList.Add(DataModel.IncomeListFief[x].TaxesOk);
+
+                for (int y = 0; y < DataModel.IncomeListFief[x].ConstructingCollection.Count; y++)
+                {
+                    if (DataModel.IncomeListFief[x].ConstructingCollection[y].Id == e.Id)
+                    {
+                        DataModel.IncomeListFief[x].ConstructingCollection[y].Succeeded = e.Succeeded;
+                        DataModel.IncomeListFief[x].ConstructingCollection[y].DaysWorkBuild += e.DaysWorkMod;
+                        DataModel.IncomeListFief[x].ConstructingCollection[y].Quality = e.Quality;
+                        DataModel.IncomeListFief[x].ConstructingCollection[y].DevelopmentLevel = e.DevelopmentLevel;
+                    }
+                }
+            }
+
+            if (tempList.Contains(false))
+            {
+                DataModel.EnableButton = false;
+            }
+            else
+            {
+                DataModel.EnableButton = true;
+            }
         }
 
         #endregion
-            #region DelegateCommand : CompleteEndOfYearCommand
+        #region DelegateCommand : CompleteEndOfYearCommand
 
         public DelegateCommand CompleteEndOfYearCommand { get; set; }
         private void ExecuteCompleteEndOfYearCommand()
