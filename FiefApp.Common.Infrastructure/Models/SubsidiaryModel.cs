@@ -282,6 +282,8 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        public bool Succeeded { get; set; } = false;
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

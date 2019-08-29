@@ -9,6 +9,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public string FiefName { get; set; }
         public ObservableCollection<EndOfYearIncomeModel> IncomeCollection { get; set; }
         public ObservableCollection<EndOfYearSubsidiaryModel> SubsidiariesCollection { get; set; }
+        public ObservableCollection<SubsidiaryModel> ConstructingCollection { get; set; }
         public ObservableCollection<MineModel> MinesCollection { get; set; }
         public ObservableCollection<QuarryModel> QuarriesCollection { get; set; }
         public ObservableCollection<IndustryBeingDevelopedModel> DevelopmentCollection { get; set; }

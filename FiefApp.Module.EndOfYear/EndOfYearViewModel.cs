@@ -38,6 +38,7 @@ namespace FiefApp.Module.EndOfYear
             EndOfYearCancelCommand = new DelegateCommand(ExecuteEndOfYearCancelCommand);
             CompleteEndOfYearCommand = new DelegateCommand(ExecuteCompleteEndOfYearCommand);
             EndOfYearOkEventHandler = new CustomDelegateCommand(ExecuteEndOfYearOkEventHandler, o => true);
+            EndOfYearConstructingSubsidiaryEventHandler = new CustomDelegateCommand(ExecuteEndOfYearConstructingSubsidiaryEventHandler, o => true);
 
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
         }
@@ -385,7 +386,23 @@ namespace FiefApp.Module.EndOfYear
         }
 
         #endregion
-        #region DelegateCommand : CompleteEndOfYearCommand
+        #region CustomDelegateCommand : EndOfYearConstructingSubsidiaryEventHandler
+
+        public CustomDelegateCommand EndOfYearConstructingSubsidiaryEventHandler { get; set; }
+        private void ExecuteEndOfYearConstructingSubsidiaryEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is EndOfYearEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+        }
+
+        #endregion
+            #region DelegateCommand : CompleteEndOfYearCommand
 
         public DelegateCommand CompleteEndOfYearCommand { get; set; }
         private void ExecuteCompleteEndOfYearCommand()
@@ -730,6 +747,25 @@ namespace FiefApp.Module.EndOfYear
                     model.SubsidiariesList.Add(temp);
                 }
 
+                for (int y = 0; y < DataModel.IncomeListFief[x].ConstructingCollection.Count; y++)
+                {
+                    if (DataModel.IncomeListFief[x].ConstructingCollection[y].DaysWorkBuild == DataModel.IncomeListFief[x].ConstructingCollection[y].DaysWorkThisYear
+                        && DataModel.IncomeListFief[x].ConstructingCollection[y].StewardId > 0
+                        && DataModel.IncomeListFief[x].ConstructingCollection[y].Succeeded)
+                    {
+                        for (int i = 0; i < _fiefService.SubsidiaryList[x].ConstructingCollection.Count; i++)
+                        {
+                            if (_fiefService.SubsidiaryList[x].ConstructingCollection[i].Id == DataModel.IncomeListFief[x].ConstructingCollection[y].Id)
+                            {
+                                DataModel.IncomeListFief[x].ConstructingCollection[y].DaysWorkThisYear = 0;
+                                _fiefService.SubsidiaryList[x].SubsidiaryCollection.Add(DataModel.IncomeListFief[x].ConstructingCollection[y]);
+                                _fiefService.SubsidiaryList[x].ConstructingCollection.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 #endregion
                 #region TradeModule
 
@@ -1047,7 +1083,6 @@ namespace FiefApp.Module.EndOfYear
         protected override void LoadData()
         {
             DataModel.IncomeListFief = new ObservableCollection<EndOfYearIncomeFiefModel>(_endOfYearService.Initialize());
-            Console.WriteLine("Test");
         }
 
         #endregion

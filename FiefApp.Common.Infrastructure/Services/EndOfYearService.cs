@@ -33,6 +33,7 @@ namespace FiefApp.Common.Infrastructure.Services
             List<EndOfYearIncomeFiefModel> tempList = new List<EndOfYearIncomeFiefModel>();
             List<EndOfYearIncomeModel> incomeList = new List<EndOfYearIncomeModel>();
             List<EndOfYearSubsidiaryModel> subsidiaryList = new List<EndOfYearSubsidiaryModel>();
+            List<SubsidiaryModel> constructingList = new List<SubsidiaryModel>();
             List<MineModel> minesList = new List<MineModel>();
             List<QuarryModel> quarriesList = new List<QuarryModel>();
             List<IndustryBeingDevelopedModel> developmentList = new List<IndustryBeingDevelopedModel>();
@@ -97,6 +98,21 @@ namespace FiefApp.Common.Infrastructure.Services
                             BaseIncomeLuxury = _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Luxury
                         });
                         dictionary.Add(_fiefService.SubsidiaryList[x].SubsidiaryCollection[j].Id, false);
+                    }
+                }
+
+                for (int j = 0; j < _fiefService.SubsidiaryList[x].ConstructingCollection.Count; j++)
+                {
+                    if (_fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId > 0)
+                    {
+                        string steward = "";
+                        string skill = "0";
+
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId).PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId).Skill;
+
+                        constructingList.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[j]);
+                        dictionary.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[j].Id, false);
                     }
                 }
 
@@ -299,6 +315,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     FiefName = _fiefService.InformationList[x].FiefName,
                     IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
                     SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
+                    ConstructingCollection = new ObservableCollection<SubsidiaryModel>(constructingList),
                     MinesCollection = new ObservableCollection<MineModel>(minesList),
                     QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
                     DevelopmentCollection = new ObservableCollection<IndustryBeingDevelopedModel>(developmentList),
