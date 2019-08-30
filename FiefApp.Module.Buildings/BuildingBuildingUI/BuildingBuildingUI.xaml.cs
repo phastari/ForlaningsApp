@@ -35,7 +35,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
 
         private void TreeViewItemIsCollapsedCommand(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         #endregion
@@ -332,7 +332,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
             get => _selectedIndex;
             set
             {
-                _selectedIndex = value; 
+                _selectedIndex = value;
                 NotifyPropertyChanged();
             }
         }
@@ -518,35 +518,77 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
             switch (str)
             {
                 case "Iron":
-                    factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
+                    if (LeftSmithswork > 0)
+                    {
+                        factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
+                    }
+                    else
+                    {
+                        factor = 0;
+                    }
                     IronNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftIron * factor));
                     CheckBuildTime();
                     break;
 
                 case "Stone":
-                    factor = (decimal)StoneworkThisYearUC / LeftStonework;
+                    if (LeftStonework > 0)
+                    {
+                        factor = (decimal)StoneworkThisYearUC / LeftStonework;
+                    }
+                    else
+                    {
+                        factor = 0;
+                    }
                     StoneNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftStone * factor));
                     CheckBuildTime();
                     break;
 
                 case "Wood":
-                    factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
+                    if (LeftWoodwork > 0)
+                    {
+                        factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
+                    }
+                    else
+                    {
+                        factor = 0;
+                    }
                     WoodNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftWood * factor));
                     CheckBuildTime();
                     break;
 
                 case "All":
-                    factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
+                    if (LeftSmithswork > 0)
+                    {
+                        factor = (decimal)SmithsworkThisYearUC / LeftSmithswork;
+                    }
+                    else
+                    {
+                        factor = 0;
+                    }
                     IronNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftIron * factor));
 
-                    factor = (decimal)StoneworkThisYearUC / LeftStonework;
+                    if (LeftStonework > 0)
+                    {
+                        factor = (decimal)StoneworkThisYearUC / LeftStonework;
+                    }
+                    else
+                    {
+                        factor = 0;
+                    }
                     StoneNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftStone * factor));
 
-                    factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
+                    if (LeftWoodwork > 0)
+                    {
+                        factor = (decimal)WoodworkThisYearUC / LeftWoodwork;
+                    }
+                    else
+                    {
+                        factor = 0;
+                    }
                     WoodNeededThisYear = Convert.ToInt32(Math.Ceiling(LeftWood * factor));
                     CheckBuildTime();
                     break;
-                }
+            }
 
             if (_loaded)
             {
@@ -582,16 +624,70 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
 
         private void CheckBuildTime()
         {
-            if (SelectedIndex > 0
-                && StoneworkThisYearUC != 0
-                && WoodworkThisYearUC != 0
-                && SmithsworkThisYearUC != 0)
+            if (SelectedIndex > 0)
             {
-                int stonework = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftStoneworkProperty)) / StoneworkThisYearUC));
-                int woodwork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftWoodworkProperty)) / WoodworkThisYearUC));
-                int smithswork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftSmithsworkProperty)) / SmithsworkThisYearUC));
+                int stonework;
+                int woodwork;
+                int smithswork;
 
-                SetValue(BuildingTimeProperty, Math.Max(Math.Max(stonework, woodwork), smithswork).ToString());
+                if (LeftStonework == 0)
+                {
+                    stonework = 1;
+                }
+                else
+                {
+                    if (StoneworkThisYearUC == 0)
+                    {
+                        stonework = 0;
+                    }
+                    else
+                    {
+                        stonework = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftStoneworkProperty)) / StoneworkThisYearUC));
+                    }
+                }
+
+                if (LeftWoodwork == 0)
+                {
+                    woodwork = 1;
+                }
+                else
+                {
+                    if (WoodworkThisYearUC == 0)
+                    {
+                        woodwork = 0;
+                    }
+                    else
+                    {
+                        woodwork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftWoodworkProperty)) / WoodworkThisYearUC));
+                    }
+                }
+
+                if (LeftSmithswork == 0)
+                {
+                    smithswork = 1;
+                }
+                else
+                {
+                    if (WoodworkThisYearUC == 0)
+                    {
+                        smithswork = 0;
+                    }
+                    else
+                    {
+                        smithswork = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal((int)GetValue(LeftSmithsworkProperty)) / SmithsworkThisYearUC));
+                    }
+                }
+
+                if (smithswork == 0
+                    || woodwork == 0
+                    || stonework == 0)
+                {
+                    SetValue(BuildingTimeProperty, "-");
+                }
+                else
+                {
+                    SetValue(BuildingTimeProperty, Math.Max(Math.Max(stonework, woodwork), smithswork).ToString());
+                }
             }
             else
             {
@@ -600,7 +696,7 @@ namespace FiefApp.Module.Buildings.BuildingBuildingUI
         }
 
         private void BuilderComboBox_OnSelectionChanged(
-            object sender, 
+            object sender,
             SelectionChangedEventArgs e)
         {
             CheckBuildTime();

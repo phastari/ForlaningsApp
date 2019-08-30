@@ -344,7 +344,7 @@
         
         <Label 
             Grid.Column="2"
-            Grid.Row="11"
+            Grid.Row="9"
             Content="Levnadsnivå"
             HorizontalAlignment="Right"
             HorizontalContentAlignment="Left"
@@ -370,7 +370,7 @@
             Text="{Binding Path=DataModel.Livingcondition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="4"
             Grid.ColumnSpan="6"
-            Grid.Row="11"
+            Grid.Row="9"
             Grid.ZIndex="1"
             Width="120"
             HorizontalAlignment="Left"
@@ -398,7 +398,7 @@
         <fakeComboBox:FakeComboBox
             Grid.Column="4"
             Grid.ColumnSpan="6"
-            Grid.Row="11"
+            Grid.Row="9"
             Grid.ZIndex="1"
             TextBoxText="{Binding ElementName=LivingconditionsComboBox, Path=Text}"
             Width="120"
@@ -442,7 +442,7 @@
 
         <Label 
             Grid.Column="2"
-            Grid.Row="13"
+            Grid.Row="11"
             Content="Boende"
             FontWeight="Bold"
             HorizontalContentAlignment="Center"
@@ -451,7 +451,7 @@
 
         <Label 
             Grid.Column="4"
-            Grid.Row="13"
+            Grid.Row="11"
             Content="Antal"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -460,7 +460,7 @@
         <Label 
             Grid.Column="6"
             Grid.ColumnSpan="2"
-            Grid.Row="13"
+            Grid.Row="11"
             Content="Silver"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -468,7 +468,7 @@
 
         <Label 
             Grid.Column="8"
-            Grid.Row="13"
+            Grid.Row="11"
             Content="Bas"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -476,7 +476,7 @@
 
         <Label 
             Grid.Column="10"
-            Grid.Row="13"
+            Grid.Row="11"
             Content="Lyx"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -485,7 +485,7 @@
 
         <Label
             Grid.Column="2"
-            Grid.Row="15"
+            Grid.Row="13"
             Content="Vuxna"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -493,7 +493,7 @@
 
         <TextBox
             Grid.Column="4"
-            Grid.Row="15"
+            Grid.Row="13"
             Text="{Binding Path=DataModel.ResidentAdults}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -503,7 +503,7 @@
 
         <TextBox
             Grid.Column="8"
-            Grid.Row="15"
+            Grid.Row="13"
             Text="{Binding Path=DataModel.ResidentAdultsBase}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -513,7 +513,7 @@
 
         <TextBox
             Grid.Column="10"
-            Grid.Row="15"
+            Grid.Row="13"
             Text="{Binding Path=DataModel.ResidentAdultsLuxury}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -524,7 +524,7 @@
 
         <Label
             Grid.Column="2"
-            Grid.Row="17"
+            Grid.Row="15"
             Content="Barn"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -532,7 +532,7 @@
 
         <TextBox
             Grid.Column="4"
-            Grid.Row="17"
+            Grid.Row="15"
             Text="{Binding Path=DataModel.ResidentChildren}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -542,7 +542,7 @@
 
         <TextBox
             Grid.Column="8"
-            Grid.Row="17"
+            Grid.Row="15"
             Text="{Binding Path=DataModel.ResidentChildrenBase}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -552,7 +552,7 @@
 
         <TextBox
             Grid.Column="10"
-            Grid.Row="17"
+            Grid.Row="15"
             Text="{Binding Path=DataModel.ResidentChildrenLuxury}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -562,7 +562,7 @@
 
         <Label
             Grid.Column="2"
-            Grid.Row="19"
+            Grid.Row="17"
             Content="Ridhästar"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -570,7 +570,7 @@
 
         <iTextBox:iTextBox
             Grid.Column="4"
-            Grid.Row="19"
+            Grid.Row="17"
             Value="{Binding Path=DataModel.StableRidingHorses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <iTextBox:iTextBox.Style>
                 <Style TargetType="{x:Type iTextBox:iTextBox}">
@@ -589,7 +589,7 @@
 
         <TextBox
             Grid.Column="8"
-            Grid.Row="19"
+            Grid.Row="17"
             Text="{Binding Path=DataModel.StableRidingHorsesBase}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -598,7 +598,7 @@
 
         <Label
             Grid.Column="2"
-            Grid.Row="21"
+            Grid.Row="19"
             Content="Stridshästar"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -606,7 +606,7 @@
 
         <iTextBox:iTextBox
             Grid.Column="4"
-            Grid.Row="21"
+            Grid.Row="19"
             Value="{Binding Path=DataModel.StableWarHorses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <iTextBox:iTextBox.Style>
                 <Style TargetType="{x:Type iTextBox:iTextBox}">
@@ -625,7 +625,7 @@
 
         <TextBox
             Grid.Column="8"
-            Grid.Row="21"
+            Grid.Row="19"
             Text="{Binding Path=DataModel.StableWarHorsesBase}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -636,7 +636,7 @@
         <Grid
             Grid.Column="2"
             Grid.ColumnSpan="9"
-            Grid.Row="23"
+            Grid.Row="21"
             Grid.RowSpan="12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="21"/>
@@ -931,27 +931,27 @@
         <Grid
             Grid.Column="2"
             Grid.ColumnSpan="9"
-            Grid.Row="35"
-            Grid.RowSpan="4">
+            Grid.Row="33"
+            Grid.RowSpan="6">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="21"/>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="21"/>
                 <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="137"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="65"/>
-                <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="6"/>
-                <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
 
             <Label
@@ -965,6 +965,14 @@
             <Label
                 Content="Silver"
                 Grid.Column="4"
+                Grid.Row="0"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Bas"
+                Grid.Column="6"
                 Grid.Row="0"
                 VerticalContentAlignment="Center"
                 HorizontalContentAlignment="Center"
@@ -997,6 +1005,34 @@
                 Template="{DynamicResource TextBoxTemplate}"
                 IsReadOnly="True"
                 Padding="0,0,6,0"/>
+
+            <Label
+                Content="Stenbrott"
+                Grid.Column="0"
+                Grid.Row="4"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Right"
+                Padding="0"/>
+
+            <TextBox
+                Grid.Column="2"
+                Grid.Row="4"
+                Text="{Binding Path=DataModel.Quarries}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <TextBox
+                Grid.Column="6"
+                Grid.Row="4"
+                Text="{Binding Path=DataModel.QuarriesBase}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                Padding="0"/>
         </Grid>
         
 
@@ -1597,7 +1633,7 @@
                 Grid.Row="4"
                 Content="Sålda varor"
                 HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Left"
+                HorizontalContentAlignment="Right"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Center"
                 Padding="0"/>
@@ -1726,6 +1762,16 @@
                 Grid.Column="2"
                 Grid.Row="2"
                 Text="{Binding Path=DataModel.Employees}"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxTemplate}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <TextBox
+                Grid.Column="4"
+                Grid.Row="2"
+                Text="{Binding Path=DataModel.EmployeesSilver}"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Template="{DynamicResource TextBoxTemplate}"

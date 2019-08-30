@@ -110,16 +110,8 @@ namespace FiefApp.Module.Expenses
 
             if (Index != 0)
             {
-                DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
-                DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
                 DataModel.PropertyChanged += DataModelPropertyChanged;
-
-                DataModel.Army = _expensesService.GetArmyNumbers(Index);
-                DataModel.ArmyBase = _expensesService.GetArmyBaseCost(Index);
-                DataModel.ArmySilver = _expensesService.GetArmySilverCost(Index);
-                DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
-                DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
-                DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
+                
                 GetInformationSetDataModel();
                 DataModel.CalculateTotals();
             }
@@ -232,6 +224,16 @@ namespace FiefApp.Module.Expenses
             GetLivingcondition();
             GetBuildingsCosts();
             GetBoatCosts();
+            GetQuarriesInformation();
+            GetArmyInformation();
+            GetEmployeesInformation();
+            GetResidentsInformation();
+        }
+
+        private void GetResidentsInformation()
+        {
+            DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
+            DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
         }
 
         private void GetBoatCosts()
@@ -267,6 +269,27 @@ namespace FiefApp.Module.Expenses
         private void GetLivingcondition()
         {
             DataModel.Livingcondition = _expensesService.GetLivingcondition(Index);
+        }
+
+        private void GetQuarriesInformation()
+        {
+            DataModel.Quarries = _expensesService.GetNumberOfQuarries(Index);
+            DataModel.QuarriesBase = _expensesService.GetQuarriesBaseCost(Index);
+        }
+
+        private void GetArmyInformation()
+        {
+            DataModel.Army = _expensesService.GetArmyNumbers(Index);
+            DataModel.ArmyBase = _expensesService.GetArmyBaseCost(Index);
+            DataModel.ArmySilver = _expensesService.GetArmySilverCost(Index);
+        }
+
+        private void GetEmployeesInformation()
+        {
+            DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
+            DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
+            DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
+            DataModel.EmployeesSilver = _expensesService.GetEmployeeSilverCost(Index);
         }
 
         #endregion

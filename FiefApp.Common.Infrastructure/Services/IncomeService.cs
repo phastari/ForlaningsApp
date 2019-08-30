@@ -1,9 +1,8 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using FiefApp.Common.Infrastructure.DataModels;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -41,221 +40,238 @@ namespace FiefApp.Common.Infrastructure.Services
 
             for (int x = 0; x < model.Count; x++)
             {
-                switch (model[x].Income)
+                if (model[x].Income.Contains("Avrad"))
                 {
-                    case "Avrad":
-                        containsAvrad = true;
-                        if (_fiefService.EmployeesList[index].Bailiff > 0)
-                        {
-                            model[x].Base = _calculations.GetAvrad(index);
-                        }
-                        else
-                        {
-                            model[x].Base = 0;
-                        }
-                        break;
+                    containsAvrad = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    model[x].Base = _fiefService.EmployeesList[index].Bailiff > 0 ? _calculations.GetAvrad(index) : 0;
+                }
 
-                    case "Skatter":
-                        containsSkatter = true;
-                        if (_fiefService.EmployeesList[index].Bailiff > 0)
-                        {
-                            model[x].Base = _calculations.GetTaxes(index);
-                        }
-                        else
-                        {
-                            model[x].Base = 0;
-                        }
-                        break;
+                if (model[x].Income.Contains("Skatter"))
+                {
+                    containsSkatter = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    model[x].Base = _fiefService.EmployeesList[index].Bailiff > 0 ? _calculations.GetTaxes(index) : 0;
+                }
 
-                    case "Licensavgifter":
-                        containsLicensavgifter = true;
-                        if (_fiefService.EmployeesList[index].Bailiff > 0)
-                        {
-                            model[x].Silver = _calculations.GetLicenseFees(index);
-                        }
-                        else
-                        {
-                            model[x].Silver = 0;
-                        }
-                        break;
+                if (model[x].Income.Contains("Licensavgifter"))
+                {
+                    containsLicensavgifter = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    model[x].Silver = _fiefService.EmployeesList[index].Bailiff > 0 ? _calculations.GetLicenseFees(index) : 0;
+                }
 
-                    case "Tullar":
-                        containsTullar = true;
-                        decimal silver = _fiefService.WeatherList[index].ThisYearLuxury * 33.85M
-                                 + _fiefService.WeatherList[index].ThisYearBase * 9.35M
-                                 + _fiefService.WeatherList[index].ThisYearStone * 37.25M
-                                 + _fiefService.WeatherList[index].ThisYearWood * 25.25M
-                                 + _fiefService.WeatherList[index].ThisYearIron * 213;
+                if (model[x].Income.Contains("Tullar"))
+                {
+                    containsTullar = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    decimal silver = _fiefService.WeatherList[index].ThisYearLuxury * 33.85M
+                                     + _fiefService.WeatherList[index].ThisYearBase * 9.35M
+                                     + _fiefService.WeatherList[index].ThisYearStone * 37.25M
+                                     + _fiefService.WeatherList[index].ThisYearWood * 25.25M
+                                     + _fiefService.WeatherList[index].ThisYearIron * 213;
 
-                        silver /= 10;
-                        silver *= _fiefService.WeatherList[index].Tariffs;
+                    silver /= 10;
+                    silver *= _fiefService.WeatherList[index].Tariffs;
 
-                        if (_fiefService.InformationList[index].Roads == "Stigar")
-                        {
-                            silver *= 0.3M;
-                        }
-                        else if (_fiefService.InformationList[index].Roads == "Stenlagd väg")
-                        {
-                            silver *= 2.75M;
-                        }
-                        else if (_fiefService.InformationList[index].Roads == "Kunglig landsväg")
-                        {
-                            silver *= 5.25M;
-                        }
+                    if (_fiefService.InformationList[index].Roads == "Stigar")
+                    {
+                        silver *= 0.3M;
+                    }
+                    else if (_fiefService.InformationList[index].Roads == "Stenlagd väg")
+                    {
+                        silver *= 2.75M;
+                    }
+                    else if (_fiefService.InformationList[index].Roads == "Kunglig landsväg")
+                    {
+                        silver *= 5.25M;
+                    }
 
-                        if (_fiefService.EmployeesList[index].Bailiff > 0)
-                        {
-                            model[x].Silver = Convert.ToInt32(Math.Floor(silver));
-                        }
-                        else
-                        {
-                            model[x].Silver = 0;
-                        }
-                        break;
+                    model[x].Silver = _fiefService.EmployeesList[index].Bailiff > 0 ? Convert.ToInt32(Math.Floor(silver)) : 0;
+                }
 
-                    case "Djurhållning":
-                        containsDjurhallning = true;
-                        int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.25 * _fiefService.WeatherList[index].SpringRollMod
-                                                              + (decimal)0.25 * _fiefService.WeatherList[index].SummerRollMod
-                                                              + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
-                                                              + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
-                                                              + 8));
-                        if (difficulty < 5)
-                        {
-                            difficulty = 4;
-                        }
+                if (model[x].Income.Contains("Djurhållning"))
+                {
+                    containsDjurhallning = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.25 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.25 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
+                                                                  + 8));
+                    if (difficulty < 5)
+                    {
+                        difficulty = 4;
+                    }
 
-                        model[x].Difficulty = difficulty;
+                    model[x].Difficulty = difficulty;
 
-                        if (model[x].StewardId > 0)
-                        {
-                            model[x].Base = _calculations.GetAnimalHusbandryIncome(index);
-                        }
-                        else
-                        {
-                            model[x].Base = 0;
-                        }
+                    model[x].Base = model[x].StewardId > 0 ? _calculations.GetAnimalHusbandryIncome(index) : 0;
+                }
 
-                        break;
+                if (model[x].Income.Contains("Jordbruk"))
+                {
+                    containsJordbruk = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.9 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.9 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.25 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + (decimal)0.1 * _fiefService.WeatherList[index].WinterRollMod
+                                                                  + 8));
 
-                    case "Jordbruk":
-                        containsJordbruk = true;
-                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.9 * _fiefService.WeatherList[index].SpringRollMod
-                                                          + (decimal)0.9 * _fiefService.WeatherList[index].SummerRollMod
-                                                          + (decimal)0.25 * _fiefService.WeatherList[index].FallRollMod
-                                                          + (decimal)0.1 * _fiefService.WeatherList[index].WinterRollMod
-                                                          + 8));
+                    if (difficulty < 5)
+                    {
+                        difficulty = 4;
+                    }
 
-                        if (difficulty < 5)
-                        {
-                            difficulty = 4;
-                        }
+                    model[x].Difficulty = difficulty;
 
-                        model[x].Difficulty = difficulty;
+                    model[x].Base = model[x].StewardId > 0 ? _calculations.GetAgricultureIncome(index) : 0;
+                }
 
-                        if (model[x].StewardId > 0)
-                        {
-                            model[x].Base = _calculations.GetAgricultureIncome(index);
-                        }
-                        else
-                        {
-                            model[x].Base = 0;
-                        }
-                        break;
+                if (model[x].Income.Contains("Jakt"))
+                {
+                    containsJakt = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.2 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
+                                                                  + 8));
 
-                    case "Jakt":
-                        containsJakt = true;
-                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.2 * _fiefService.WeatherList[index].SpringRollMod
-                                                          + (decimal)0.2 * _fiefService.WeatherList[index].SummerRollMod
-                                                          + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
-                                                          + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
-                                                          + 8));
+                    if (difficulty < 5)
+                    {
+                        difficulty = 4;
+                    }
 
-                        if (difficulty < 5)
-                        {
-                            difficulty = 4;
-                        }
+                    model[x].Difficulty = difficulty;
 
-                        model[x].Difficulty = difficulty;
+                    if (model[x].StewardId > 0 && _fiefService.EmployeesList[index].Hunter > 0)
+                    {
+                        model[x].Base = Convert.ToInt32(Math.Floor((decimal)_fiefService.EmployeesList[index].Hunter * Convert.ToInt32(_fiefService.InformationList[index].HuntingQuality)));
+                    }
+                    else
+                    {
+                        model[x].Base = 0;
+                    }
+                }
 
-                        if (model[x].StewardId > 0 && _fiefService.EmployeesList[index].Hunter > 0)
-                        {
-                            model[x].Base = Convert.ToInt32(Math.Floor((decimal)_fiefService.EmployeesList[index].Hunter * Convert.ToInt32(_fiefService.InformationList[index].HuntingQuality)));
-                        }
-                        else
-                        {
-                            model[x].Base = 0;
-                        }
-                        break;
+                if (model[x].Income.Contains("Fiske"))
+                {
+                    containsFiske = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
+                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + 8));
 
-                    case "Fiske":
-                        containsFiske = true;
-                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
-                                                            + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
-                                                            + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
-                                                            + 8));
+                    if (difficulty < 5)
+                    {
+                        difficulty = 4;
+                    }
 
-                        if (difficulty < 5)
-                        {
-                            difficulty = 4;
-                        }
+                    model[x].Difficulty = difficulty;
 
-                        model[x].Difficulty = difficulty;
+                    if (model[x].StewardId > 0 && _fiefService.WeatherList[index].NumberUsedFishingBoats > 0)
+                    {
+                        model[x].Base = Convert.ToInt32(Math.Floor((decimal)_fiefService.WeatherList[index].NumberUsedFishingBoats * Convert.ToInt32(_fiefService.InformationList[index].FishingQuality)));
+                    }
+                    else
+                    {
+                        model[x].Base = 0;
+                    }
 
-                        if (model[x].StewardId > 0 && _fiefService.WeatherList[index].NumberUsedFishingBoats > 0)
-                        {
-                            model[x].Base = Convert.ToInt32(Math.Floor((decimal)_fiefService.WeatherList[index].NumberUsedFishingBoats * Convert.ToInt32(_fiefService.InformationList[index].FishingQuality)));
-                        }
-                        else
-                        {
-                            model[x].Base = 0;
-                        }
+                    if (_fiefService.InformationList[index].Coast == "Ja"
+                        || _fiefService.InformationList[index].River == "Ja"
+                        || _fiefService.InformationList[index].Lake == "Ja")
+                    {
+                        model[x].ShowInIncomes = true;
+                    }
+                    else
+                    {
+                        model[x].ShowInIncomes = false;
+                    }
+                }
 
-                        if (_fiefService.InformationList[index].Coast == "Ja"
-                            || _fiefService.InformationList[index].River == "Ja"
-                            || _fiefService.InformationList[index].Lake == "Ja")
-                        {
-                            model[x].ShowInIncomes = true;
-                        }
-                        else
-                        {
-                            model[x].ShowInIncomes = false;
-                        }
-                        break;
+                if (model[x].Income.Contains("Skogsavverkning"))
+                {
+                    containsSkogsavverkning = true;
+                    if (model[x].Income.Contains("("))
+                    {
+                        int i = model[x].Income.IndexOf('(');
+                        model[x].Income = model[x].Income.Remove(i);
+                        model[x].Income = model[x].Income.Trim();
+                    }
+                    int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.15 * _fiefService.WeatherList[index].SpringRollMod 
+                                                                  + (decimal)0.15 * _fiefService.WeatherList[index].SummerRollMod
+                                                                  + (decimal)0.15 * _fiefService.WeatherList[index].FallRollMod
+                                                                  + 8));
 
-                    case "Skogsavverkning":
-                        containsSkogsavverkning = true;
-                        difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.15 * _fiefService.WeatherList[index].SpringRollMod
-                                                            + (decimal)0.15 * _fiefService.WeatherList[index].SummerRollMod
-                                                            + (decimal)0.15 * _fiefService.WeatherList[index].FallRollMod
-                                                            + 8));
+                    if (difficulty < 5)
+                    {
+                        difficulty = 4;
+                    }
 
-                        if (difficulty < 5)
-                        {
-                            difficulty = 4;
-                        }
+                    model[x].Difficulty = difficulty;
 
-                        model[x].Difficulty = difficulty;
+                    if (model[x].StewardId > 0 && (_fiefService.WeatherList[index].Felling > 0 || _fiefService.WeatherList[index].LandClearing > 0))
+                    {
+                        model[x].Wood = Convert.ToInt32(Math.Floor((decimal)_fiefService.WeatherList[index].Felling * 6 + (decimal)_fiefService.WeatherList[index].LandClearing * 6));
+                    }
+                    else
+                    {
+                        model[x].Wood = 0;
+                    }
 
-                        if (model[x].StewardId > 0 && (_fiefService.WeatherList[index].Felling > 0 || _fiefService.WeatherList[index].LandClearing > 0))
-                        {
-                            model[x].Wood = Convert.ToInt32(Math.Floor((decimal)_fiefService.WeatherList[index].Felling * 6 + (decimal)_fiefService.WeatherList[index].LandClearing * 6));
-                        }
-                        else
-                        {
-                            model[x].Wood = 0;
-                        }
-
-                        if (_fiefService.WeatherList[index].Felling > 0
-                            || _fiefService.WeatherList[index].LandClearing > 0)
-                        {
-                            model[x].ShowInIncomes = true;
-                        }
-                        else
-                        {
-                            model[x].ShowInIncomes = false;
-                        }
-                        break;
+                    if (_fiefService.WeatherList[index].Felling > 0
+                        || _fiefService.WeatherList[index].LandClearing > 0)
+                    {
+                        model[x].ShowInIncomes = true;
+                    }
+                    else
+                    {
+                        model[x].ShowInIncomes = false;
+                    }
                 }
             }
 
@@ -282,14 +298,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Winter = -1M
                     };
 
-                if (_fiefService.EmployeesList[index].Bailiff > 0)
-                {
-                    temp.Base = _calculations.GetAvrad(index);
-                }
-                else
-                {
-                    temp.Base = 0;
-                }
+                temp.Base = _fiefService.EmployeesList[index].Bailiff > 0 ? _calculations.GetAvrad(index) : 0;
 
                 model.Add(temp);
             }
@@ -297,10 +306,10 @@ namespace FiefApp.Common.Infrastructure.Services
             if (!containsDjurhallning)
             {
                 int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.25 * _fiefService.WeatherList[index].SpringRollMod
-                                                          + (decimal)0.25 * _fiefService.WeatherList[index].SummerRollMod
-                                                          + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
-                                                          + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
-                                                          + 8));
+                                                              + (decimal)0.25 * _fiefService.WeatherList[index].SummerRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
+                                                              + 8));
                 if (difficulty < 5)
                 {
                     difficulty = 4;
@@ -329,14 +338,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Difficulty = difficulty
                     };
 
-                if (temp.StewardId > 0)
-                {
-                    temp.Base = _calculations.GetAnimalHusbandryIncome(index);
-                }
-                else
-                {
-                    temp.Base = 0;
-                }
+                temp.Base = temp.StewardId > 0 ? _calculations.GetAnimalHusbandryIncome(index) : 0;
 
                 model.Add(temp);
                 newId++;
@@ -345,9 +347,9 @@ namespace FiefApp.Common.Infrastructure.Services
             if (!containsFiske)
             {
                 int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.3 * _fiefService.WeatherList[index].SpringRollMod
-                                                        + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
-                                                        + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
-                                                        + 8));
+                                                              + (decimal)0.3 * _fiefService.WeatherList[index].SummerRollMod
+                                                              + (decimal)0.3 * _fiefService.WeatherList[index].FallRollMod
+                                                              + 8));
 
                 if (difficulty < 5)
                 {
@@ -403,10 +405,10 @@ namespace FiefApp.Common.Infrastructure.Services
             if (!containsJakt)
             {
                 int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.2 * _fiefService.WeatherList[index].SpringRollMod
-                                                      + (decimal)0.2 * _fiefService.WeatherList[index].SummerRollMod
-                                                      + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
-                                                      + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
-                                                      + 8));
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].SummerRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].FallRollMod
+                                                              + (decimal)0.2 * _fiefService.WeatherList[index].WinterRollMod
+                                                              + 8));
 
                 if (difficulty < 5)
                 {
@@ -451,10 +453,10 @@ namespace FiefApp.Common.Infrastructure.Services
             if (!containsJordbruk)
             {
                 int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.9 * _fiefService.WeatherList[index].SpringRollMod
-                                                      + (decimal)0.9 * _fiefService.WeatherList[index].SummerRollMod
-                                                      + (decimal)0.25 * _fiefService.WeatherList[index].FallRollMod
-                                                      + (decimal)0.1 * _fiefService.WeatherList[index].WinterRollMod
-                                                      + 8));
+                                                              + (decimal)0.9 * _fiefService.WeatherList[index].SummerRollMod
+                                                              + (decimal)0.25 * _fiefService.WeatherList[index].FallRollMod
+                                                              + (decimal)0.1 * _fiefService.WeatherList[index].WinterRollMod
+                                                              + 8));
 
                 if (difficulty < 5)
                 {
@@ -484,14 +486,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Difficulty = difficulty
                     };
 
-                if (temp.StewardId > 0)
-                {
-                    temp.Base = _calculations.GetAgricultureIncome(index);
-                }
-                else
-                {
-                    temp.Base = 0;
-                }
+                temp.Base = temp.StewardId > 0 ? _calculations.GetAgricultureIncome(index) : 0;
 
                 model.Add(temp);
                 newId++;
@@ -519,14 +514,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Winter = -1M
                     };
 
-                if (_fiefService.EmployeesList[index].Bailiff > 0)
-                {
-                    temp.Silver = _calculations.GetLicenseFees(index);
-                }
-                else
-                {
-                    temp.Silver = 0;
-                }
+                temp.Silver = _fiefService.EmployeesList[index].Bailiff > 0 ? _calculations.GetLicenseFees(index) : 0;
 
                 model.Add(temp);
             }
@@ -553,14 +541,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Winter = -1M
                     };
 
-                if (_fiefService.EmployeesList[index].Bailiff > 0)
-                {
-                    temp.Base = _calculations.GetTaxes(index);
-                }
-                else
-                {
-                    temp.Base = 0;
-                }
+                temp.Base = _fiefService.EmployeesList[index].Bailiff > 0 ? _calculations.GetTaxes(index) : 0;
 
                 model.Add(temp);
             }
@@ -568,9 +549,9 @@ namespace FiefApp.Common.Infrastructure.Services
             if (!containsSkogsavverkning)
             {
                 int difficulty = Convert.ToInt32(Math.Ceiling((decimal)0.15 * _fiefService.WeatherList[index].SpringRollMod
-                                                            + (decimal)0.15 * _fiefService.WeatherList[index].SummerRollMod
-                                                            + (decimal)0.15 * _fiefService.WeatherList[index].FallRollMod
-                                                            + 8));
+                                                              + (decimal)0.15 * _fiefService.WeatherList[index].SummerRollMod
+                                                              + (decimal)0.15 * _fiefService.WeatherList[index].FallRollMod
+                                                              + 8));
 
                 if (difficulty < 5)
                 {
@@ -656,14 +637,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         Winter = -1M
                     };
 
-                if (_fiefService.EmployeesList[index].Bailiff > 0)
-                {
-                    temp.Silver = Convert.ToInt32(Math.Floor(silver));
-                }
-                else
-                {
-                    temp.Silver = 0;
-                }
+                temp.Silver = _fiefService.EmployeesList[index].Bailiff > 0 ? Convert.ToInt32(Math.Floor(silver)) : 0;
 
                 model.Add(temp);
             }

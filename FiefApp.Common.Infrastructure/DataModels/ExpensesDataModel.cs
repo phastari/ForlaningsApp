@@ -365,6 +365,28 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _quarries;
+        public int Quarries
+        {
+            get => _quarries;
+            set
+            {
+                _quarries = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _quarriesBase;
+        public int QuarriesBase
+        {
+            get => _quarriesBase;
+            set
+            {
+                _quarriesBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _manorMaintenance;
         public int ManorMaintenance
         {
@@ -841,6 +863,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _employeesSilver;
+        public int EmployeesSilver
+        {
+            get => _employeesSilver;
+            set
+            {
+                _employeesSilver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _employeesBase;
         public int EmployeesBase
         {
@@ -949,6 +982,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
                              + OthersSilver
                              + ArmySilver
                              + FleetSilver
+                             + EmployeesSilver
                              + BoatBuildsSilver;
 
             ExpensesBase = ResidentAdultsBase
@@ -999,7 +1033,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
         {
             if (LivingconditionIndex != -1)
             {
-                NotifyPropertyChanged("CalculateAdultResidentsCost");
+                NotifyPropertyChanged();
             }
         }
 
@@ -1007,7 +1041,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
         {
             if (LivingconditionIndex != -1)
             {
-                NotifyPropertyChanged("CalculateChildrenResidentsCost");
+                NotifyPropertyChanged();
             }
         }
 

@@ -19,6 +19,8 @@ namespace FiefApp.Module.Mines
         private readonly IMinesService _minesService;
         private readonly IEventAggregator _eventAggregator;
 
+        private bool _ignoreNextIncomeUpdate = false;
+
         public MinesViewModel(
             IBaseService baseService,
             IMinesService minesService,
@@ -143,36 +145,31 @@ namespace FiefApp.Module.Mines
                     break;
                 }
 
-                case "Guards" when _minesService.SetUsedGuards(Index, e.Guards):
-                {
-                    UpdateAvailableGuardsInMines();
-
-                    for (int x = 0; x < DataModel.MinesCollection.Count; x++)
-                    {
-                        if (e.MineId == DataModel.MinesCollection[x].Id)
-                        {
-                            DataModel.MinesCollection[x].Guards += e.Guards;
-                            DataModel.UpdateTotals();
-                            break;
-                        }
-                    }
-                    break;
-                }
-
                 case "Guards":
                 {
-                    for (int x = 0; x < DataModel.MinesCollection.Count; x++)
+                    if (_minesService.SetUsedGuards(Index, e.Guards))
                     {
-                        if (DataModel.MinesCollection[x].Id == e.MineId)
+                        for (int x = 0; x < DataModel.MinesCollection.Count; x++)
                         {
-                            DataModel.MinesCollection[x].Guards = e.OldAmountGuards;
+                            if (e.MineId == DataModel.MinesCollection[x].Id)
+                            {
+                                DataModel.MinesCollection[x].Guards += e.Guards;
+                                break;
+                            }
                         }
-                    }
 
-                    List<MineModel> tempList = new List<MineModel>(DataModel.MinesCollection);
-                    DataModel.MinesCollection.Clear();
-                    DataModel.MinesCollection = new ObservableCollection<MineModel>(tempList);
-                    DataModel.UpdateTotals();
+                        SaveData();
+                        DataModel.UpdateTotals();
+                        UpdateAvailableGuardsInMines();
+                    }
+                    else
+                    {
+                        List<MineModel> tempList = new List<MineModel>(DataModel.MinesCollection);
+                        DataModel.MinesCollection.Clear();
+                        DataModel.MinesCollection = new ObservableCollection<MineModel>(tempList);
+                        DataModel.UpdateTotals();
+                        _ignoreNextIncomeUpdate = true;
+                    }
                     break;
                 }
 
@@ -192,15 +189,23 @@ namespace FiefApp.Module.Mines
 
                 case "IncomeUpdated":
                 {
-                    for (int x = 0; x < DataModel.MinesCollection.Count; x++)
+                    if (!_ignoreNextIncomeUpdate)
                     {
-                        if (DataModel.MinesCollection[x].Id == e.MineId)
+                        for (int x = 0; x < DataModel.MinesCollection.Count; x++)
                         {
-                            DataModel.MinesCollection[x].Income = e.Income;
-                            DataModel.UpdateTotals();
-                            break;
+                            if (DataModel.MinesCollection[x].Id == e.MineId)
+                            {
+                                DataModel.MinesCollection[x].Income = e.Income;
+                                DataModel.UpdateTotals();
+                                break;
+                            }
                         }
                     }
+                    else
+                    {
+                        _ignoreNextIncomeUpdate = false;
+                    }
+                    
                     break;
                 }
             }

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Income.RoutedEvents;
-using Prism.Commands;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FiefApp.Module.Income
 {
@@ -20,7 +19,7 @@ namespace FiefApp.Module.Income
         private readonly IEventAggregator _eventAggregator;
 
         public IncomeViewModel(
-            IBaseService baseService, 
+            IBaseService baseService,
             IIncomeService incomeService,
             IEventAggregator eventAggregator
             ) : base(baseService)

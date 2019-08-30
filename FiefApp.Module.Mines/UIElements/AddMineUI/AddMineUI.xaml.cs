@@ -86,6 +86,15 @@ namespace FiefApp.Module.Mines.UIElements.AddMineUI
                 YearsLeft = YearsLeft
             };
 
+            if (AddAsCompleted)
+            {
+                _model.IsFirstYear = false;
+            }
+            else
+            {
+                _model.IsFirstYear = true;
+            }
+
             AddMineUIEventArgs newEventArgs =
                 new AddMineUIEventArgs(
                     AddMineUIRoutedEvent,
@@ -122,6 +131,17 @@ namespace FiefApp.Module.Mines.UIElements.AddMineUI
         #endregion
 
         #region UI Properties
+
+        private bool _addAsCompleted;
+        public bool AddAsCompleted
+        {
+            get => _addAsCompleted;
+            set
+            {
+                _addAsCompleted = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private int _roll1;
         public int Roll1

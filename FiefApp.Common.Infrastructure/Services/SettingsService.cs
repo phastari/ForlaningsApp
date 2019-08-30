@@ -2,7 +2,6 @@
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using System;
 using System.Collections.Generic;
-using System.Deployment.Application;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -62,7 +61,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         {
                             case "ArmyCrossbowmen":
                                 tempModel.ArmyCrossbowmenSilver =
-                                Convert.ToInt16(xmlAttributeCollection["Silver"].Value);
+                                    Convert.ToInt16(xmlAttributeCollection["Silver"].Value);
                                 tempModel.ArmyCrossbowmenBase = Convert.ToInt16(xmlAttributeCollection["Base"].Value);
                                 break;
 
@@ -604,7 +603,7 @@ namespace FiefApp.Common.Infrastructure.Services
                                     tempModel.ProspectorLuxury = xmlAttributeCollection["Luxury"].Value.Replace(",", ".");
                                 }
                                 break;
-                                
+
                             default:
                                 foundError = true;
                                 break;

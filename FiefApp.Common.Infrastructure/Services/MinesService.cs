@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FiefApp.Common.Infrastructure.DataModels;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -84,7 +84,27 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetAvailableGuards(int index)
         {
-            return _fiefService.ArmyList[index].AvailableGuards;
+            if (index != 0)
+            {
+                int guards = _fiefService.MinesList[index].MinesCollection.Sum(o => o.Guards)
+                             + _fiefService.PortsList[index].Guards;
+
+                _fiefService.ArmyList[index].UsedGuards = guards;
+
+                return _fiefService.ArmyList[index].ArmyGuards - guards;
+            }
+            int usedGuards = 0;
+            int totalGuards = 0;
+
+            for (int x = 1; x < _fiefService.InformationList.Count; x++)
+            {
+                usedGuards += _fiefService.MinesList[x].MinesCollection.Sum(o => o.Guards)
+                              + _fiefService.PortsList[x].Guards;
+
+                totalGuards += _fiefService.ArmyList[x].ArmyGuards;
+            }
+
+            return totalGuards - usedGuards;
         }
 
         public bool SetUsedGuards(int index, int amount)

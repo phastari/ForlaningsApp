@@ -212,6 +212,7 @@ namespace FiefApp.Module.Buildings
                     DataModel.SetDaysWorkLeft();
                     break;
             }
+            SaveData();
         }
 
         #endregion
@@ -259,6 +260,8 @@ namespace FiefApp.Module.Buildings
                         == 0 ? _buildingsService.GetAllBuildingsDataModel()
                 : _baseService.GetDataModel<BuildingsDataModel>(Index);
 
+            CheckBuildersCollection();
+
             if (Index == 0)
             {
                 DataModel.IsAll = true;
@@ -278,9 +281,12 @@ namespace FiefApp.Module.Buildings
             object sender,
             NotifyCollectionChangedEventArgs e)
         {
-            for (int x = 0; x < DataModel.BuildingsCollection.Count; x++)
+            if (DataModel.BuildingsCollection.Count != 0)
             {
-                DataModel.BuildingsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+                for (int x = 0; x < DataModel.BuildingsCollection.Count; x++)
+                {
+                    DataModel.BuildingsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+                }
             }
         }
 
@@ -298,9 +304,26 @@ namespace FiefApp.Module.Buildings
 
         public void SetBuildersInBuildsCollection()
         {
-            for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+            if (DataModel.BuildsCollection.Count != 0)
             {
-                DataModel.BuildsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+                for (int x = 0; x < DataModel.BuildsCollection.Count; x++)
+                {
+                    DataModel.BuildsCollection[x].BuildersCollection = DataModel.BuildersCollection;
+                }
+            }
+        }
+
+        private void CheckBuildersCollection()
+        {
+            if (DataModel.BuildersCollection.Count > 1)
+            {
+                for (int x = DataModel.BuildersCollection.Count - 1; x > 0; x--)
+                {
+                    if (string.IsNullOrEmpty(DataModel.BuildersCollection[x].PersonName))
+                    {
+                        DataModel.BuildersCollection.RemoveAt(x);
+                    }
+                }
             }
         }
     }

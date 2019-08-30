@@ -27,6 +27,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public ExpensesDataModel GetAllExpensesDataModel()
         {
+            // UPDATE ALL EXPENSESDATAMODELS
             ExpensesDataModel model = new ExpensesDataModel();
             model.Livingcondition = "";
 
@@ -44,6 +45,8 @@ namespace FiefApp.Common.Infrastructure.Services
                 model.ResidentChildren += _fiefService.ExpensesList[x].ResidentChildren;
                 model.ResidentChildrenBase += _fiefService.ExpensesList[x].ResidentChildrenBase;
                 model.ResidentChildrenLuxury += _fiefService.ExpensesList[x].ResidentChildrenLuxury;
+                model.Quarries += _fiefService.MinesList[x].QuarriesCollection.Count;
+                model.QuarriesBase += _fiefService.MinesList[x].QuarriesCollection.Sum(o => o.Upkeep);
 
                 if (x == _fiefService.ExpensesList.Count - 1)
                 {
@@ -102,6 +105,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 model.SoldStone += _fiefService.ExpensesList[x].SoldStone;
                 model.SoldWood += _fiefService.ExpensesList[x].SoldWood;
                 model.Employees += _fiefService.ExpensesList[x].Employees;
+                model.EmployeesSilver += _fiefService.ExpensesList[x].EmployeesSilver;
                 model.EmployeesBase += _fiefService.ExpensesList[x].EmployeesBase;
                 model.EmployeesLuxury += _fiefService.ExpensesList[x].EmployeesLuxury;
                 model.Army += _fiefService.ExpensesList[x].Army;
@@ -260,13 +264,27 @@ namespace FiefApp.Common.Infrastructure.Services
                    + _fiefService.EmployeesList[index].Prospector
                    + _fiefService.EmployeesList[index].Scholar
                    + _fiefService.EmployeesList[index].EmployeesCollection.Count
-                   + _fiefService.StewardsDataModel.StewardsCollection.Count - 1;
+                   + _fiefService.StewardsDataModel.StewardsCollection.Count - 1
+                   + _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count
+                   + _fiefService.BuildingsList[index].Smiths
+                   + _fiefService.BuildingsList[index].Woodworkers
+                   + _fiefService.BuildingsList[index].Stoneworkers
+                   + _fiefService.BuildingsList[index].BuildersCollection.Count;
+        }
+
+        public int GetEmployeeSilverCost(int index)
+        {
+            return _fiefService.BuildingsList[index].BuildersCollection.Count * 4850
+                   + _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count * 2250;
         }
 
         public int GetEmployeeBaseCost(int index)
         {
             return _fiefService.EmployeesList[index].TotalBase
-                   + (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 4;
+                   + (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 4
+                   + _fiefService.BuildingsList[index].SmithsBase
+                   + _fiefService.BuildingsList[index].WoodworkersBase
+                   + _fiefService.BuildingsList[index].StoneworkersBase;
         }
 
         public int GetEmployeeLuxuryCost(int index)
@@ -336,6 +354,16 @@ namespace FiefApp.Common.Infrastructure.Services
         public int GetBoatbuildingSilverCost(int index)
         {
             return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Where(t => t.BuildTimeInDaysAll < 365).Sum(t => t.CostWhenFinishedSilver);
+        }
+
+        public int GetNumberOfQuarries(int index)
+        {
+            return _fiefService.MinesList[index].QuarriesCollection.Count;
+        }
+
+        public int GetQuarriesBaseCost(int index)
+        {
+            return _fiefService.MinesList[index].QuarriesCollection.Sum(o => o.Upkeep);
         }
     }
 }

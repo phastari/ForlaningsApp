@@ -92,6 +92,23 @@
             VerticalContentAlignment="Center"
             Padding="0,0,6,0"/>
 
+        <Label
+            Content="Lägg till färdig"
+            Grid.Column="1"
+            Grid.Row="6"
+            ToolTip="Lägg till gruvan som färdig byggd, vanligen så tar det ett år för gruvan att komma igång."
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <CheckBox
+            IsChecked="{Binding Path=AddAsCompleted}"
+            Grid.Column="1"
+            Grid.Row="6"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Margin="0,0,40,0"/>
+
         <Button
             Content="spara"
             Command="{Binding Path=SaveCommand}"

@@ -9,6 +9,7 @@ namespace FiefApp.Common.Infrastructure.Services
         List<LivingconditionModel> GetLivingconditionList();
         ExpensesDataModel GetAllExpensesDataModel();
 
+        int GetEmployeeSilverCost(int index);
         int SetAdultResidents(int index);
         int SetChildrenResidents(int index);
         int CalculateFeedingPoorBaseCost(int index);
@@ -29,5 +30,7 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetStoneCostOfBuildings(int index);
         int GetNumberOfBoatsBuilding(int index);
         int GetBoatbuildingSilverCost(int index);
+        int GetNumberOfQuarries(int index);
+        int GetQuarriesBaseCost(int index);
     }
 }

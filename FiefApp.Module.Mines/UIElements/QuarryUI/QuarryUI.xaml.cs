@@ -228,6 +228,7 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
             }
 
             SelectedIndex = index;
+            UpdateIncome();
             _sendUpdateEvent = true;
         }
 
@@ -246,48 +247,71 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
         {
             if (BaseIncome != 0)
             {
-                if (IsFirstYear)
+                if (SelectedIndex != -1)
                 {
-                    Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded) / 4);
-                }
-                else
-                {
-                    Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded));
+                    if (IsFirstYear)
+                    {
+                        if (SelectedIndex > 0)
+                        {
+                            Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded) / 13.5M);
+                        }
+                        else
+                        {
+                            Income = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (SelectedIndex > 0)
+                        {
+                            Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded));
+                        }
+                        else
+                        {
+                            Income = Convert.ToInt32(Math.Floor(BaseIncome * (decimal)DaysWorkThisYear / DaysWorkNeeded) / 6.33M);
+                        }
+                    }
                 }
             }
         }
 
         private void SendDaysWorkUpdated()
         {
-            QuarryUIEventArgs newEventArgs =
-                new QuarryUIEventArgs(
-                    QuarryUIRoutedEvent,
-                    "DaysWork",
-                    Id,
-                    -1,
-                    "",
-                    "",
-                    DaysWorkThisYear
-                );
+            if (_sendUpdateEvent)
+            {
+                QuarryUIEventArgs newEventArgs =
+                    new QuarryUIEventArgs(
+                        QuarryUIRoutedEvent,
+                        "DaysWork",
+                        Id,
+                        -1,
+                        "",
+                        "",
+                        DaysWorkThisYear
+                    );
 
-            RaiseEvent(newEventArgs);
+                RaiseEvent(newEventArgs);
+            }
         }
 
         private void SendIncomeUpdated(int income)
         {
-            QuarryUIEventArgs newEventArgs =
-                new QuarryUIEventArgs(
-                    QuarryUIRoutedEvent,
-                    "IncomeUpdated",
-                    Id,
-                    -1,
-                    "",
-                    "",
-                    -1,
-                    income
-                );
+            if (_sendUpdateEvent)
+            {
+                QuarryUIEventArgs newEventArgs =
+                    new QuarryUIEventArgs(
+                        QuarryUIRoutedEvent,
+                        "IncomeUpdated",
+                        Id,
+                        -1,
+                        "",
+                        "",
+                        -1,
+                        income
+                    );
 
-            RaiseEvent(newEventArgs);
+                RaiseEvent(newEventArgs);
+            }
         }
 
         private void StewardsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -305,6 +329,7 @@ namespace FiefApp.Module.Mines.UIElements.QuarryUI
                     );
 
                 RaiseEvent(newEventArgs);
+                UpdateIncome();
             }
         }
 
