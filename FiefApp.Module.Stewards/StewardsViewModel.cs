@@ -35,6 +35,7 @@ namespace FiefApp.Module.Stewards
             AddStewardCommand = new DelegateCommand(ExecuteAddStewardCommand);
 
             eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : StewardUIEventHandler
@@ -257,6 +258,11 @@ namespace FiefApp.Module.Stewards
         {
             Index = 1;
             LoadData();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #endregion

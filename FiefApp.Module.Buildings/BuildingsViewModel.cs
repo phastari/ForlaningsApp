@@ -39,6 +39,7 @@ namespace FiefApp.Module.Buildings
             AddBuilderCommand = new DelegateCommand(ExecuteAddBuilderCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : AddBuildingUIEvent
@@ -325,6 +326,11 @@ namespace FiefApp.Module.Buildings
                     }
                 }
             }
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
     }
 }

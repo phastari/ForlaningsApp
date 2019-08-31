@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
@@ -11,6 +8,8 @@ using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using FiefApp.Module.Manor.RoutedEvents;
 using Prism.Commands;
 using Prism.Events;
+using System;
+using System.Collections.ObjectModel;
 
 namespace FiefApp.Module.Manor
 {
@@ -46,6 +45,7 @@ namespace FiefApp.Module.Manor
             SaveEditButton = new DelegateCommand(ExecuteSaveEditButton);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : ResidentUIEventHandler
@@ -54,13 +54,13 @@ namespace FiefApp.Module.Manor
 
         private void ExecuteResidentUIEventHandler(object obj)
         {
-            var tuple = (Tuple<object, object>) obj;
+            var tuple = (Tuple<object, object>)obj;
 
             if (!(tuple.Item2 is ResidentUIEventArgs e))
             {
                 return;
             }
-            
+
             e.Handled = true;
 
             if (e.Action == "Save")
@@ -111,7 +111,7 @@ namespace FiefApp.Module.Manor
 
             if (e.Action == "Save")
             {
-                DataModel.ResidentsList.Add( new ResidentModel()
+                DataModel.ResidentsList.Add(new ResidentModel()
                 {
                     Id = _manorService.GetPeopleId(Index),
                     PersonName = e.ResidentModel.PersonName,
@@ -143,35 +143,35 @@ namespace FiefApp.Module.Manor
             switch (e.Action)
             {
                 case "Expanded":
-                {
-                    for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
                     {
-                        if (e.Id != DataModel.VillagesCollection[x].Id)
+                        for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
                         {
-                            DataModel.VillagesCollection[x].IsExpanded = false;
+                            if (e.Id != DataModel.VillagesCollection[x].Id)
+                            {
+                                DataModel.VillagesCollection[x].IsExpanded = false;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
 
                 case "Save":
-                {
-                    DataModel.VillagesCollection[e.Id] = e.VillageModel;
-                    UpdateManorPopulationFromVillages();
-                    break;
-                }
+                    {
+                        DataModel.VillagesCollection[e.Id] = e.VillageModel;
+                        UpdateManorPopulationFromVillages();
+                        break;
+                    }
 
                 case "Delete":
-                {
-                    for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
                     {
-                        if (e.Id == DataModel.VillagesCollection[x].Id)
+                        for (int x = 0; x < DataModel.VillagesCollection.Count; x++)
                         {
-                            DataModel.VillagesCollection.RemoveAt(x);
+                            if (e.Id == DataModel.VillagesCollection[x].Id)
+                            {
+                                DataModel.VillagesCollection.RemoveAt(x);
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -357,5 +357,10 @@ namespace FiefApp.Module.Manor
         }
 
         #endregion
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
+        }
     }
 }

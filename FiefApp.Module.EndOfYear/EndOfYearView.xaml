@@ -807,15 +807,15 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <endOfYearMineUI:EndOfYearMineUI
-                                                Id="{Binding Path=Id}"
-                                                Type="{Binding Path=MineType}"
-                                                Guards="{Binding Path=Guards}"
-                                                Crime="{Binding Path=Crime}"
-                                                StewardName="{Binding Path=Steward}"
-                                                StewardId="{Binding Path=StewardId}"
-                                                BaseIncomeSilver="{Binding Path=Income}"
-                                                Skill="{Binding Path=Skill}"
-                                                Difficulty="{Binding Path=Difficulty}">
+                                                    Id="{Binding Path=Id}"
+                                                    Type="{Binding Path=MineType}"
+                                                    Guards="{Binding Path=Guards}"
+                                                    Crime="{Binding Path=Crime}"
+                                                    StewardName="{Binding Path=Steward}"
+                                                    StewardId="{Binding Path=StewardId}"
+                                                    BaseIncomeSilver="{Binding Path=Income}"
+                                                    Skill="{Binding Path=Skill}"
+                                                    Difficulty="{Binding Path=Difficulty}">
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="EndOfYearOkEvent">
                                                             <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

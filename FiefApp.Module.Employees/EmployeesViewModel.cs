@@ -39,6 +39,7 @@ namespace FiefApp.Module.Employees
             AddEmployeeUIEventHandler = new CustomDelegateCommand(ExecuteAddEmployeeUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : EmployeeUIEventHandler
@@ -265,6 +266,11 @@ namespace FiefApp.Module.Employees
                     }
                     break;
             }
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #endregion

@@ -33,6 +33,7 @@ namespace FiefApp.Module.Income
             IncomeUIEventUIEventHandler = new CustomDelegateCommand(ExecuteIncomeUIEventUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : IncomeUIEventUIEventHandler
@@ -118,6 +119,14 @@ namespace FiefApp.Module.Income
                     DataModel.IncomesCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_baseService.GetStewardsCollection());
                 }
             }
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
+            DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
+            DataModel.UpdateTotals();
+            SaveData();
         }
     }
 }

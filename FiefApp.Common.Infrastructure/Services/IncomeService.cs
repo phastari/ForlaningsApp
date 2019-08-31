@@ -85,11 +85,11 @@ namespace FiefApp.Common.Infrastructure.Services
                         model[x].Income = model[x].Income.Remove(i);
                         model[x].Income = model[x].Income.Trim();
                     }
-                    decimal silver = _fiefService.WeatherList[index].ThisYearLuxury * 33.85M
-                                     + _fiefService.WeatherList[index].ThisYearBase * 9.35M
-                                     + _fiefService.WeatherList[index].ThisYearStone * 37.25M
-                                     + _fiefService.WeatherList[index].ThisYearWood * 25.25M
-                                     + _fiefService.WeatherList[index].ThisYearIron * 213;
+                    decimal silver = Convert.ToDecimal(Math.Sqrt(Math.Pow(_fiefService.WeatherList[index].ThisYearLuxury * 33.85, 2)))
+                                     + Convert.ToDecimal(Math.Sqrt(Math.Pow(_fiefService.WeatherList[index].ThisYearBase * 9.35, 2)))
+                                     + Convert.ToDecimal(Math.Sqrt(Math.Pow(_fiefService.WeatherList[index].ThisYearStone * 37.25, 2)))
+                                     + Convert.ToDecimal(Math.Sqrt(Math.Pow(_fiefService.WeatherList[index].ThisYearWood * 25.25, 2)))
+                                     + Convert.ToDecimal(Math.Sqrt(Math.Pow(_fiefService.WeatherList[index].ThisYearIron * 213 * 25.25, 2)));
 
                     silver /= 10;
                     silver *= _fiefService.WeatherList[index].Tariffs;
@@ -105,6 +105,11 @@ namespace FiefApp.Common.Infrastructure.Services
                     else if (_fiefService.InformationList[index].Roads == "Kunglig landsväg")
                     {
                         silver *= 5.25M;
+                    }
+
+                    if (_fiefService.PortsList[index].GotShipyard)
+                    {
+                        silver += silver * Convert.ToDecimal(Math.Pow(Convert.ToInt32(_fiefService.PortsList[x].Shipyard.Size), 3) / 100);
                     }
 
                     model[x].Silver = _fiefService.EmployeesList[index].Bailiff > 0 ? Convert.ToInt32(Math.Floor(silver)) : 0;

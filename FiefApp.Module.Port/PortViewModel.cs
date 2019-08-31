@@ -47,6 +47,7 @@ namespace FiefApp.Module.Port
             BuildingShipyardUIEventHandler = new CustomDelegateCommand(ExecuteBuildingShipyardUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region DelegateCommand : ConstructShipyardCommand (Används inte)
@@ -420,5 +421,10 @@ namespace FiefApp.Module.Port
         }
 
         #endregion
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
+        }
     }
 }

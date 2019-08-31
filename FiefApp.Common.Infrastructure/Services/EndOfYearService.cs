@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
+using Prism.Events;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using FiefApp.Common.Infrastructure.DataModels;
-using FiefApp.Common.Infrastructure.Models;
-using Prism.Events;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -31,46 +31,102 @@ namespace FiefApp.Common.Infrastructure.Services
         public List<EndOfYearIncomeFiefModel> Initialize()
         {
             List<EndOfYearIncomeFiefModel> tempList = new List<EndOfYearIncomeFiefModel>();
-            List<EndOfYearIncomeModel> incomeList = new List<EndOfYearIncomeModel>();
-            List<EndOfYearSubsidiaryModel> subsidiaryList = new List<EndOfYearSubsidiaryModel>();
-            List<SubsidiaryModel> constructingList = new List<SubsidiaryModel>();
-            List<MineModel> minesList = new List<MineModel>();
-            List<QuarryModel> quarriesList = new List<QuarryModel>();
-            List<IndustryBeingDevelopedModel> developmentList = new List<IndustryBeingDevelopedModel>();
-            EndOfYearFellingModel fellingModel = new EndOfYearFellingModel();
-            EndOfYearTaxesModel taxesModel = new EndOfYearTaxesModel();
-            EndOfYearPopulationModel populationModel = new EndOfYearPopulationModel();
-            ShipyardModel shipyard = new ShipyardModel();
-            Dictionary<int, bool> dictionary = new Dictionary<int, bool>();
 
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
             {
+                List<EndOfYearIncomeModel> incomeList = new List<EndOfYearIncomeModel>();
+                List<IncomeModel> otherIncomes = new List<IncomeModel>();
+                List<EndOfYearSubsidiaryModel> subsidiaryList = new List<EndOfYearSubsidiaryModel>();
+                List<SubsidiaryModel> constructingList = new List<SubsidiaryModel>();
+                List<MineModel> minesList = new List<MineModel>();
+                List<QuarryModel> quarriesList = new List<QuarryModel>();
+                List<IndustryBeingDevelopedModel> developmentList = new List<IndustryBeingDevelopedModel>();
+                EndOfYearFellingModel fellingModel = new EndOfYearFellingModel();
+                EndOfYearTaxesModel taxesModel = new EndOfYearTaxesModel();
+                EndOfYearPopulationModel populationModel = new EndOfYearPopulationModel();
+                ShipyardModel shipyard = new ShipyardModel();
+                Dictionary<int, bool> dictionary = new Dictionary<int, bool>();
+
                 for (int y = 0; y < _fiefService.IncomeList[x].IncomesCollection.Count; y++)
                 {
-                    if (_fiefService.IncomeList[x].IncomesCollection[y].IsStewardNeeded
-                        && _fiefService.IncomeList[x].IncomesCollection[y]?.StewardId > 0)
+                    if (_fiefService.IncomeList[x].IncomesCollection[y].IsStewardNeeded)
                     {
-                        if (_fiefService.IncomeList[x].IncomesCollection[y].Income != "Skogsavverkning")
+                        if (!_fiefService.IncomeList[x].IncomesCollection[y].Income.Contains("Skogsavverkning"))
                         {
-                            string steward = "";
-                            string skill = "0";
-
-                            steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId).PersonName;
-                            skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId).Skill;
-
-                            incomeList.Add(new EndOfYearIncomeModel()
+                            if (_fiefService.IncomeList[x].IncomesCollection[y].Income.Contains("Jakt"))
                             {
-                                Id = _fiefService.IncomeList[x].IncomesCollection[y].Id,
-                                Income = _fiefService.IncomeList[x].IncomesCollection[y].Income,
-                                Crewed = 1M,
-                                StewardId = _fiefService.IncomeList[x].IncomesCollection[y].StewardId,
-                                StewardName = steward,
-                                Skill = skill,
-                                Difficulty = _fiefService.IncomeList[x].IncomesCollection[y].Difficulty,
-                                BaseIncome = _fiefService.IncomeList[x].IncomesCollection[y].Base
-                            });
-                            dictionary.Add(_fiefService.IncomeList[x].IncomesCollection[y].Id, false);
+                                if (_fiefService.EmployeesList[x].Hunter > 0)
+                                {
+                                    string stew = "";
+                                    string ski = "0";
+
+                                    stew = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
+                                    ski = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
+
+                                    incomeList.Add(new EndOfYearIncomeModel()
+                                    {
+                                        Id = _fiefService.IncomeList[x].IncomesCollection[y].Id,
+                                        Income = _fiefService.IncomeList[x].IncomesCollection[y].Income,
+                                        Crewed = 1M,
+                                        StewardId = _fiefService.IncomeList[x].IncomesCollection[y].StewardId,
+                                        StewardName = stew,
+                                        Skill = ski,
+                                        Difficulty = _fiefService.IncomeList[x].IncomesCollection[y].Difficulty,
+                                        BaseIncome = _fiefService.IncomeList[x].IncomesCollection[y].Base
+                                    });
+                                    dictionary.Add(_fiefService.IncomeList[x].IncomesCollection[y].Id, false);
+                                }
+                            }
+                            else if (_fiefService.IncomeList[x].IncomesCollection[y].Income.Contains("Fiske"))
+                            {
+                                if (_fiefService.WeatherList[x].NumberUsedFishingBoats > 0)
+                                {
+                                    string steward = "";
+                                    string skill = "0";
+
+                                    steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
+                                    skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
+
+                                    incomeList.Add(new EndOfYearIncomeModel()
+                                    {
+                                        Id = _fiefService.IncomeList[x].IncomesCollection[y].Id,
+                                        Income = _fiefService.IncomeList[x].IncomesCollection[y].Income,
+                                        Crewed = 1M,
+                                        StewardId = _fiefService.IncomeList[x].IncomesCollection[y].StewardId,
+                                        StewardName = steward,
+                                        Skill = skill,
+                                        Difficulty = _fiefService.IncomeList[x].IncomesCollection[y].Difficulty,
+                                        BaseIncome = _fiefService.IncomeList[x].IncomesCollection[y].Base
+                                    });
+                                    dictionary.Add(_fiefService.IncomeList[x].IncomesCollection[y].Id, false);
+                                }
+                            }
+                            else
+                            {
+                                string steward = "";
+                                string skill = "0";
+
+                                steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.PersonName;
+                                skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.IncomeList[x].IncomesCollection[y].StewardId)?.Skill;
+
+                                incomeList.Add(new EndOfYearIncomeModel()
+                                {
+                                    Id = _fiefService.IncomeList[x].IncomesCollection[y].Id,
+                                    Income = _fiefService.IncomeList[x].IncomesCollection[y].Income,
+                                    Crewed = 1M,
+                                    StewardId = _fiefService.IncomeList[x].IncomesCollection[y].StewardId,
+                                    StewardName = steward,
+                                    Skill = skill,
+                                    Difficulty = _fiefService.IncomeList[x].IncomesCollection[y].Difficulty,
+                                    BaseIncome = _fiefService.IncomeList[x].IncomesCollection[y].Base
+                                });
+                                dictionary.Add(_fiefService.IncomeList[x].IncomesCollection[y].Id, false);
+                            }
                         }
+                    }
+                    else
+                    {
+                        otherIncomes.Add(_fiefService.IncomeList[x].IncomesCollection[y]);
                     }
                 }
 
@@ -81,8 +137,8 @@ namespace FiefApp.Common.Infrastructure.Services
                         string steward = "";
                         string skill = "0";
 
-                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId).PersonName;
-                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId).Skill;
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId)?.PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].SubsidiaryCollection[j].StewardId)?.Skill;
 
                         subsidiaryList.Add(new EndOfYearSubsidiaryModel()
                         {
@@ -107,11 +163,24 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         string steward = "";
                         string skill = "0";
+                        int diff = Convert.ToInt32(Math.Ceiling((decimal)0.15 * _fiefService.WeatherList[x].SpringRollMod
+                                                                + (decimal)0.15 * _fiefService.WeatherList[x].SummerRollMod
+                                                                + (decimal)0.15 * _fiefService.WeatherList[x].FallRollMod
+                                                                + (decimal)0.15 * _fiefService.WeatherList[x].WinterRollMod
+                                                                + 4));
 
-                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId).PersonName;
-                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId).Skill;
+                        if (diff < 5)
+                        {
+                            diff = 4;
+                        }
+
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId)?.PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.SubsidiaryList[x].ConstructingCollection[j].StewardId)?.Skill;
 
                         constructingList.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[j]);
+                        constructingList[constructingList.Count - 1].Difficulty = diff;
+                        constructingList[constructingList.Count - 1].Steward = steward;
+                        constructingList[constructingList.Count - 1].Skill = skill;
                         dictionary.Add(_fiefService.SubsidiaryList[x].ConstructingCollection[j].Id, false);
                     }
                 }
@@ -123,8 +192,8 @@ namespace FiefApp.Common.Infrastructure.Services
                         string steward = "";
                         string skill = "0";
 
-                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].MinesCollection[k].StewardId).PersonName;
-                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].MinesCollection[k].StewardId).Skill;
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].MinesCollection[k].StewardId)?.PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].MinesCollection[k].StewardId)?.Skill;
 
                         minesList.Add(new MineModel()
                         {
@@ -148,8 +217,8 @@ namespace FiefApp.Common.Infrastructure.Services
                         string steward = "";
                         string skill = "0";
 
-                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].QuarriesCollection[l].StewardId).PersonName;
-                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].QuarriesCollection[l].StewardId).Skill;
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].QuarriesCollection[l].StewardId)?.PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.MinesList[x].QuarriesCollection[l].StewardId)?.Skill;
 
                         quarriesList.Add(new QuarryModel()
                         {
@@ -264,10 +333,10 @@ namespace FiefApp.Common.Infrastructure.Services
                     dictionary.Add(_fiefService.PortsList[x].Shipyard.Id, false);
 
                     difficulty = Convert.ToInt32(Math.Ceiling(0.2 * _fiefService.WeatherList[x].SpringRollMod
-                                                                  + 0.2 * _fiefService.WeatherList[x].SummerRollMod
-                                                                  + 0.2 * _fiefService.WeatherList[x].FallRollMod
-                                                                  + 0.2 * _fiefService.WeatherList[x].WinterRollMod
-                                                                  + 8));
+                                                              + 0.2 * _fiefService.WeatherList[x].SummerRollMod
+                                                              + 0.2 * _fiefService.WeatherList[x].FallRollMod
+                                                              + 0.2 * _fiefService.WeatherList[x].WinterRollMod
+                                                              + 8));
 
                     if (_fiefService.PortsList[x].Shipyard.Upgrading)
                     {
@@ -314,6 +383,7 @@ namespace FiefApp.Common.Infrastructure.Services
                     Id = x,
                     FiefName = _fiefService.InformationList[x].FiefName,
                     IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
+                    OtherIncomesList = otherIncomes,
                     SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
                     ConstructingCollection = new ObservableCollection<SubsidiaryModel>(constructingList),
                     MinesCollection = new ObservableCollection<MineModel>(minesList),

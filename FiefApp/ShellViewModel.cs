@@ -528,6 +528,8 @@ namespace FiefApp
         private void ExecuteEndOfYear()
         {
             EndOfYear = !EndOfYear;
+            ForlaningsNamn = _fiefService.InformationList[1].FiefName;
+            ForlaningsAr = _fiefService.Year;
         }
 
         #endregion

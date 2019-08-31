@@ -10,6 +10,6 @@
         public string Skill { get; set; }
         public int Difficulty { get; set; }
         public int BaseIncome { get; set; }
-        public string Result { get; set; } = "0";
+        public string Result { get; set; }
     }
 }

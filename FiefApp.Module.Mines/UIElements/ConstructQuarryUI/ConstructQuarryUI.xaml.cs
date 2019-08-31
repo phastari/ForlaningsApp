@@ -65,7 +65,7 @@ namespace FiefApp.Module.Mines.UIElements.ConstructQuarryUI
                 model.Id = -1;
                 model.QuarryType = "Stort";
                 model.Crime = 10;
-                model.Population = 250;
+                model.Population = 105;
                 model.Income = 400;
                 model.Modifier = 25;
                 model.Approximate = 5250;

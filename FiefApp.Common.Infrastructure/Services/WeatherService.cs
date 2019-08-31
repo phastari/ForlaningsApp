@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FiefApp.Common.Infrastructure.DataModels;
 using System.Linq;
 
@@ -348,6 +349,83 @@ namespace FiefApp.Common.Infrastructure.Services
             }
 
             return landClearFelling;
+        }
+
+        public bool CheckAllWeather()
+        {
+            List<bool> tempList = new List<bool>();
+            for (int x = 1; x < _fiefService.WeatherList.Count; x++)
+            {
+                if (_fiefService.WeatherList[x].SpringRoll != null)
+                {
+                    if (_fiefService.WeatherList[x].SpringRoll > 0)
+                    {
+                        tempList.Add(true);
+                    }
+                    else
+                    {
+                        tempList.Add(false);
+                    }
+                }
+                else
+                {
+                    tempList.Add(false);
+                }
+
+                if (_fiefService.WeatherList[x].SummerRoll != null)
+                {
+                    if (_fiefService.WeatherList[x].SummerRoll > 0)
+                    {
+                        tempList.Add(true);
+                    }
+                    else
+                    {
+                        tempList.Add(false);
+                    }
+                }
+                else
+                {
+                    tempList.Add(false);
+                }
+
+                if (_fiefService.WeatherList[x].FallRoll != null)
+                {
+                    if (_fiefService.WeatherList[x].FallRoll > 0)
+                    {
+                        tempList.Add(true);
+                    }
+                    else
+                    {
+                        tempList.Add(false);
+                    }
+                }
+                else
+                {
+                    tempList.Add(false);
+                }
+
+                if (_fiefService.WeatherList[x].WinterRoll != null)
+                {
+                    if (_fiefService.WeatherList[x].WinterRoll > 0)
+                    {
+                        tempList.Add(true);
+                    }
+                    else
+                    {
+                        tempList.Add(false);
+                    }
+                }
+                else
+                {
+                    tempList.Add(false);
+                }
+            }
+
+            if (tempList.Contains(false))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

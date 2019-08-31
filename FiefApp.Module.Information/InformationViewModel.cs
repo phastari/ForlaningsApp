@@ -40,6 +40,7 @@ namespace FiefApp.Module.Information
             UpdateInformationTextCommand = new DelegateCommand(ExecuteUpdateInformationTextCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region UI DelegateCommands
@@ -168,6 +169,11 @@ namespace FiefApp.Module.Information
         {
             Index = 1;
             LoadData();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #endregion

@@ -39,6 +39,7 @@ namespace FiefApp.Module.Expenses
             SaveEditedButtonCommand = new DelegateCommand(ExecuteSaveEditedButtonCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region DelegateCommand : EditButtonCommand
@@ -293,5 +294,10 @@ namespace FiefApp.Module.Expenses
         }
 
         #endregion
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
+        }
     }
 }

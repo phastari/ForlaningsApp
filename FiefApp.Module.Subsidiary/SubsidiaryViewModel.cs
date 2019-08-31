@@ -39,6 +39,7 @@ namespace FiefApp.Module.Subsidiary
             EditSubsidiaryUIEventHandler = new CustomDelegateCommand(ExecuteEditSubsidiaryUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region CustomDelegateCommand : ConstructSubsidiaryCommand
@@ -370,6 +371,11 @@ namespace FiefApp.Module.Subsidiary
                     DataModel.SubsidiaryCollection[x].StewardsCollection = new ObservableCollection<StewardModel>(_baseService.GetStewardsCollection());
                 }
             }
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #endregion

@@ -58,6 +58,7 @@ namespace FiefApp.Common.Infrastructure.Models
 
         // MinesModule
         public List<EndOfYearReportIncomeModel> MinesList { get; set; } = new List<EndOfYearReportIncomeModel>();
+        public List<EndOfYearReportIncomeModel> QuarriesList { get; set; } = new List<EndOfYearReportIncomeModel>();
 
         // PortModule
         public string Shipyard { get; set; }

@@ -36,6 +36,22 @@ namespace FiefApp.Module.Army
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+        }
+
+        private void UpdateAndRespond()
+        {
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                _armyService.UpdateSilverExpenses(x, DataModel.TotalSilver);
+                _armyService.UpdateBaseExpenses(x, DataModel.TotalBase);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : BoundToResidentEventHandler

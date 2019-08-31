@@ -275,43 +275,43 @@ namespace FiefApp.Module.Mines.UIElements.AddMineUI
                     case "Tenn":
                         BaseSilver = 24000;
                         Crime = 23;
-                        Population = 100;
+                        Population = 35;
                         break;
 
                     case "Järn":
                         BaseSilver = 48000;
                         Crime = 34;
-                        Population = 120;
+                        Population = 45;
                         break;
 
                     case "Koppar":
                         BaseSilver = 120000;
                         Crime = 50;
-                        Population = 120;
+                        Population = 55;
                         break;
 
                     case "Silver":
                         BaseSilver = 200000;
                         Crime = 75;
-                        Population = 145;
+                        Population = 65;
                         break;
 
                     case "Guld":
                         BaseSilver = 300000;
                         Crime = 111;
-                        Population = 175;
+                        Population = 76;
                         break;
 
                     case "Ädelstenar":
                         BaseSilver = 600000;
                         Crime = 164;
-                        Population = 200;
+                        Population = 85;
                         break;
 
                     case "Valfritt":
                         BaseSilver = 1200000;
                         Crime = 243;
-                        Population = 240;
+                        Population = 95;
                         break;
                 }
 

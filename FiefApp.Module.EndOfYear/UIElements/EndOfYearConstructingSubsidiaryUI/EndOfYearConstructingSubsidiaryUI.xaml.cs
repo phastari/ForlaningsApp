@@ -6,14 +6,13 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
 {
     /// <summary>
     /// Interaction logic for EndOfYearConstructingSubsidiaryUI.xaml
     /// </summary>
-    public partial class EndOfYearConstructingSubsidiaryUI : UserControl
+    public partial class EndOfYearConstructingSubsidiaryUI : INotifyPropertyChanged
     {
         private readonly IBaseService _baseService;
 
@@ -177,14 +176,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
             set
             {
                 _succeeded = value;
-                if (value)
-                {
-                    _succeededText = "Lyckat";
-                }
-                else
-                {
-                    _succeededText = "Misslyckat";
-                }
+                NotifyPropertyChanged();
             }
         }
 
@@ -334,6 +326,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
                     DaysWorkMod = 2500;
                     Quality = 0;
                     DevelopmentLevel = 0;
+                    SucceededText = "Misslyckat";
                 }
                 else if (control < 3)
                 {
@@ -341,6 +334,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
                     DaysWorkMod = 0;
                     Quality = 0;
                     DevelopmentLevel = 0;
+                    SucceededText = "Misslyckat";
                 }
                 else if (control == 3)
                 {
@@ -348,6 +342,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
                     DaysWorkMod = 0;
                     Quality = 3;
                     DevelopmentLevel = 0;
+                    SucceededText = "Lyckat";
                 }
                 else if (control >= 9)
                 {
@@ -355,6 +350,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
                     DaysWorkMod = 0;
                     Quality = 5;
                     DevelopmentLevel = control;
+                    SucceededText = "Lyckat";
                 }
                 else
                 {
@@ -362,6 +358,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI
                     DaysWorkMod = 0;
                     Quality = 4;
                     DevelopmentLevel = control - 3;
+                    SucceededText = "Lyckat";
                 }
                 SendOk(true);
             }

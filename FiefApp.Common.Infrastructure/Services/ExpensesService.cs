@@ -275,7 +275,7 @@ namespace FiefApp.Common.Infrastructure.Services
         public int GetEmployeeSilverCost(int index)
         {
             return _fiefService.BuildingsList[index].BuildersCollection.Count * 4850
-                   + _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count * 2250;
+                   + _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count * 1800;
         }
 
         public int GetEmployeeBaseCost(int index)

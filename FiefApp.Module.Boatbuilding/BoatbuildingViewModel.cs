@@ -41,6 +41,22 @@ namespace FiefApp.Module.Boatbuilding
             AddBoatbuilderCommand = new DelegateCommand(ExecuteAddBoatbuilderCommand);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+        }
+
+        private void UpdateAndRespond()
+        {
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : BuildingBoatUIEventHandler
@@ -322,6 +338,11 @@ namespace FiefApp.Module.Boatbuilding
         private void UpdateTotalBoatBuilders(object sender, NotifyCollectionChangedEventArgs e)
         {
             DataModel.UpdateTotalBoatBuilders();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
     }
 }

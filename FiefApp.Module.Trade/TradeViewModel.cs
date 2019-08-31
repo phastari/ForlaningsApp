@@ -38,6 +38,7 @@ namespace FiefApp.Module.Trade
             SendMerchantUIEventHandler = new CustomDelegateCommand(ExecuteSendMerchantUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region DelegateCommand : AddMerchant
@@ -291,6 +292,11 @@ namespace FiefApp.Module.Trade
         {
             Index = 1;
             LoadData();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
     }
 }

@@ -40,6 +40,7 @@ namespace FiefApp.Module.Mines
             QuarryUIEventHandler = new CustomDelegateCommand(ExecuteQuarryUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
         }
 
         #region DelegateCommand : AddQuarryCommand
@@ -197,6 +198,7 @@ namespace FiefApp.Module.Mines
                             {
                                 DataModel.MinesCollection[x].Income = e.Income;
                                 DataModel.UpdateTotals();
+                                SaveData();
                                 break;
                             }
                         }
@@ -392,6 +394,11 @@ namespace FiefApp.Module.Mines
         {
             Index = 1;
             LoadData();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #endregion

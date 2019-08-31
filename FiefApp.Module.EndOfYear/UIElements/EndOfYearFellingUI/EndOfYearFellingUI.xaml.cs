@@ -337,7 +337,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearFellingUI
             EndOfYearEventArgs newEventArgs =
                 new EndOfYearEventArgs(
                     EndOfYearOkRoutedEvent,
-                    "Industry",
+                    "Felling",
                     Id,
                     ok,
                     Result

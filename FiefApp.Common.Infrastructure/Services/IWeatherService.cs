@@ -24,5 +24,6 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetMaxLandClearFelling(int index);
         int GetNumberOfMinesAndQuarries(int index);
         int GetTotalAmountOfDaysWorkFromQuarries(int index);
+        bool CheckAllWeather();
     }
 }

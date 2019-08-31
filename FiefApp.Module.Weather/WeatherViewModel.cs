@@ -1,12 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Timers;
-using FiefApp.Common.Infrastructure;
+﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using Prism.Commands;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Timers;
 
 namespace FiefApp.Module.Weather
 {
@@ -16,6 +18,75 @@ namespace FiefApp.Module.Weather
         private readonly IWeatherService _weatherService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Timer _timer;
+        private bool _executing = false;
+        private List<UpdateAllEventParameters> _awaitAllModulesList = new List<UpdateAllEventParameters>()
+        {
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            }
+        };
 
         public WeatherViewModel(
             IBaseService baseService,
@@ -32,6 +103,8 @@ namespace FiefApp.Module.Weather
             TabName = "Väder/Dagsverk";
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleResponse);
 
             EndOfYearCommand = new DelegateCommand(ExecuteEndOfYearCommand);
         }
@@ -41,19 +114,22 @@ namespace FiefApp.Module.Weather
         public DelegateCommand EndOfYearCommand { get; set; }
         private void ExecuteEndOfYearCommand()
         {
-            if (DataModel.SpringRoll > 0
-                && DataModel.SummerRoll > 0
-                && DataModel.FallRoll > 0
-                && DataModel.WinterRoll > 0)
+            if (!_executing)
             {
-                _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
-            }
-            else
-            {
-                _timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                _timer.Interval = 2750;
-                _timer.Start();
-                DataModel.EndOfYearError = "Du har inte fyllt i årets väder!";
+                if (_weatherService.CheckAllWeather())
+                {
+                    _executing = true;
+                    SetAwaitAllModules();
+                    //_eventAggregator.GetEvent<UpdateAllEvent>().Publish();
+                    _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+                }
+                else
+                {
+                    _timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                    _timer.Interval = 2750;
+                    _timer.Start();
+                    DataModel.EndOfYearError = "Du har inte fyllt i årets väder!";
+                }
             }
         }
 
@@ -91,7 +167,7 @@ namespace FiefApp.Module.Weather
         }
 
         private void OnTimedEvent(
-            object sender, 
+            object sender,
             ElapsedEventArgs e)
         {
             DataModel.EndOfYearError = "";
@@ -99,34 +175,34 @@ namespace FiefApp.Module.Weather
         }
 
         private void DataModelPropertyChange(
-            object sender, 
+            object sender,
             PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case "Tariffs":
-                {
-                    UpdateForecast();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        break;
+                    }
 
                 case "TaxSerfs":
-                {
-                    UpdateForecast();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        break;
+                    }
 
                 case "TaxFarmers":
-                {
-                    UpdateForecast();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        break;
+                    }
 
                 case "TaxFreemen":
-                {
-                    UpdateForecast();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        break;
+                    }
             }
         }
 
@@ -156,6 +232,11 @@ namespace FiefApp.Module.Weather
             GetForecasts();
             GetManorAcresSetManorDaysWork();
             GetMaxFellingLandClearing();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
         }
 
         #region Methods : GetInformationSetDataModel
@@ -213,5 +294,40 @@ namespace FiefApp.Module.Weather
         }
 
         #endregion
+
+        private void SetAwaitAllModules()
+        {
+            for (int x = 0; x < _awaitAllModulesList.Count; x++)
+            {
+                _awaitAllModulesList[x].Completed = false;
+            }
+        }
+
+        private void HandleResponse(UpdateAllEventParameters param)
+        {
+            if (_awaitAllModulesList != null)
+            {
+                for (int x = 0; x < _awaitAllModulesList.Count; x++)
+                {
+                    if (_awaitAllModulesList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitAllModulesList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitAllModulesList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitAllModulesList.Count; y++)
+                    {
+                        _awaitAllModulesList[y].Completed = false;
+                    }
+                    _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+                }
+            }
+        }
     }
 }
