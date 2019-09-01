@@ -20,6 +20,80 @@ namespace FiefApp.Module.Buildings
         private readonly IBaseService _baseService;
         private readonly IBuildingsService _buildingsService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public BuildingsViewModel(
             IBaseService baseService,
@@ -40,6 +114,100 @@ namespace FiefApp.Module.Buildings
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Buildings"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Buildings")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<BuildingsDataModel>(x);
+                    CheckBuildersCollection();
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Buildings",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            _buildingsService.SetAllBuildsCollectionIsAll(Index);
+            DataModel = Index
+                        == 0 ? _buildingsService.GetAllBuildingsDataModel()
+                : _baseService.GetDataModel<BuildingsDataModel>(Index);
+
+            CheckBuildersCollection();
+
+            if (Index == 0)
+            {
+                DataModel.IsAll = true;
+                SetBuildersInBuildsCollection();
+            }
+            else
+            {
+                DataModel.IsAll = false;
+                GetInformationSetDataModel();
+            }
+            DataModel.BuildersCollection.CollectionChanged += UpdateBuildersCollectionInBuildingsCollection;
+
+            UpdateFiefCollection();
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<BuildingsDataModel>(x);
+                CheckBuildersCollection();
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : AddBuildingUIEvent
@@ -256,26 +424,23 @@ namespace FiefApp.Module.Buildings
 
         protected override void LoadData()
         {
-            _buildingsService.SetAllBuildsCollectionIsAll(Index);
-            DataModel = Index
-                        == 0 ? _buildingsService.GetAllBuildingsDataModel()
-                : _baseService.GetDataModel<BuildingsDataModel>(Index);
-
-            CheckBuildersCollection();
-
-            if (Index == 0)
-            {
-                DataModel.IsAll = true;
-                SetBuildersInBuildsCollection();
-            }
-            else
-            {
-                DataModel.IsAll = false;
-                GetInformationSetDataModel();
-            }
-            DataModel.BuildersCollection.CollectionChanged += UpdateBuildersCollectionInBuildingsCollection;
-
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Buildings")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Buildings");
+            //}
+            CompleteLoadData();
         }
 
         private void UpdateBuildersCollectionInBuildingsCollection(
@@ -293,8 +458,9 @@ namespace FiefApp.Module.Buildings
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         private void GetInformationSetDataModel()

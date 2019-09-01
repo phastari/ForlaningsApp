@@ -10,6 +10,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace FiefApp.Module.Mines
 {
@@ -18,7 +19,80 @@ namespace FiefApp.Module.Mines
         private readonly IBaseService _baseService;
         private readonly IMinesService _minesService;
         private readonly IEventAggregator _eventAggregator;
-
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
         private bool _ignoreNextIncomeUpdate = false;
 
         public MinesViewModel(
@@ -41,6 +115,90 @@ namespace FiefApp.Module.Mines
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Mines"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Mines")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<MinesDataModel>(x);
+                    GetInformationSetDataModel();
+                    DataModel.UpdateTotals();
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Mines",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _minesService.GetAllMinesDataModel()
+                : _baseService.GetDataModel<MinesDataModel>(Index);
+
+            GetInformationSetDataModel();
+            DataModel.UpdateTotals();
+
+            UpdateFiefCollection();
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<MinesDataModel>(x);
+                GetInformationSetDataModel();
+                DataModel.UpdateTotals();
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = true
+            });
         }
 
         #region DelegateCommand : AddQuarryCommand
@@ -314,43 +472,89 @@ namespace FiefApp.Module.Mines
 
         protected override void LoadData()
         {
-            DataModel = Index
-                        == 0 ? _minesService.GetAllMinesDataModel()
-                : _baseService.GetDataModel<MinesDataModel>(Index);
-
-            GetInformationSetDataModel();
-            DataModel.UpdateTotals();
-
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Mines")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Mines");
+            //}
+            CompleteLoadData();
         }
 
-        private void GetInformationSetDataModel()
+        private void GetInformationSetDataModel(int index = -1)
         {
-            UpdateDifficultyInMines();
-            UpdateStewardsCollectionInMines();
-            UpdateAvailableGuardsInMines();
-            UpdateDifficultyInQuarries();
-            UpdateStewardsCollectionInQuarries();
-        }
-
-        private void UpdateDifficultyInMines()
-        {
-            if (DataModel.MinesCollection.Count > 0)
+            if (index == -1)
             {
-                for (int x = 0; x < DataModel.MinesCollection.Count; x++)
+                UpdateDifficultyInMines();
+                UpdateStewardsCollectionInMines();
+                UpdateAvailableGuardsInMines();
+                UpdateDifficultyInQuarries();
+                UpdateStewardsCollectionInQuarries();
+            }
+            else
+            {
+                UpdateDifficultyInMines(index);
+                UpdateStewardsCollectionInMines();
+                UpdateAvailableGuardsInMines();
+                UpdateDifficultyInQuarries(index);
+                UpdateStewardsCollectionInQuarries();
+            }
+        }
+
+        private void UpdateDifficultyInMines(int index = -1)
+        {
+            if (index == -1)
+            {
+                if (DataModel.MinesCollection.Count > 0)
                 {
-                    DataModel.MinesCollection[x].Difficulty = _minesService.GetMinesDifficulty(Index);
+                    for (int x = 0; x < DataModel.MinesCollection.Count; x++)
+                    {
+                        DataModel.MinesCollection[x].Difficulty = _minesService.GetMinesDifficulty(Index);
+                    }
+                }
+            }
+            else
+            {
+                if (DataModel.MinesCollection.Count > 0)
+                {
+                    for (int x = 0; x < DataModel.MinesCollection.Count; x++)
+                    {
+                        DataModel.MinesCollection[x].Difficulty = _minesService.GetMinesDifficulty(index);
+                    }
                 }
             }
         }
 
-        private void UpdateDifficultyInQuarries()
+        private void UpdateDifficultyInQuarries(int index = -1)
         {
-            if (DataModel.QuarriesCollection.Count > 0)
+            if (index == -1)
             {
-                for (int x = 0; x < DataModel.QuarriesCollection.Count; x++)
+                if (DataModel.QuarriesCollection.Count > 0)
                 {
-                    DataModel.QuarriesCollection[x].Difficulty = _minesService.GetQuarriesDifficulty(Index);
+                    for (int x = 0; x < DataModel.QuarriesCollection.Count; x++)
+                    {
+                        DataModel.QuarriesCollection[x].Difficulty = _minesService.GetQuarriesDifficulty(Index);
+                    }
+                }
+            }
+            else
+            {
+                if (DataModel.QuarriesCollection.Count > 0)
+                {
+                    for (int x = 0; x < DataModel.QuarriesCollection.Count; x++)
+                    {
+                        DataModel.QuarriesCollection[x].Difficulty = _minesService.GetQuarriesDifficulty(index);
+                    }
                 }
             }
         }
@@ -392,8 +596,9 @@ namespace FiefApp.Module.Mines
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()

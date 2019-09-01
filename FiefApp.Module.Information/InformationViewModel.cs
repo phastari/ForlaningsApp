@@ -1,10 +1,13 @@
-﻿using FiefApp.Common.Infrastructure;
+﻿using System;
+using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Common.Infrastructure.Settings.SettingsModels;
 using Prism.Commands;
 using Prism.Events;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FiefApp.Module.Information
 {
@@ -14,6 +17,80 @@ namespace FiefApp.Module.Information
         private readonly IBaseService _baseService;
         private readonly ISettingsService _settingsService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public InformationViewModel(
             IBaseService baseService,
@@ -41,6 +118,100 @@ namespace FiefApp.Module.Information
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Information"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Information")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<InformationDataModel>(x);
+                    DataModel.CheckReligionsList();
+                    DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Information",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            if (Index == 0)
+            {
+                DataModel = _informationService.GetAllInformationDataModel();
+            }
+            else
+            {
+                if (RemovedFief)
+                {
+                    RemovedFief = false;
+                }
+
+                _informationService.SetupPopulationReligion(Index);
+                DataModel = _baseService.GetDataModel<InformationDataModel>(Index);
+                DataModel.CheckReligionsList();
+                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
+            }
+
+            UpdateFiefCollection();
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<InformationDataModel>(x);
+                DataModel.CheckReligionsList();
+                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = true
+            });
         }
 
         #region UI DelegateCommands
@@ -76,9 +247,8 @@ namespace FiefApp.Module.Information
         {
             // MAKE BACKUP FILE!
             RemovedFief = true;
-            int newIndex = _baseService.RemoveFief(Index);
-            Index = -1;
-            Index = newIndex;
+            Index = _baseService.RemoveFief(Index);
+            LoadData();
         }
 
         public DelegateCommand UpdateInformationTextCommand { get; set; }
@@ -145,30 +315,30 @@ namespace FiefApp.Module.Information
 
         protected override void LoadData()
         {
-            if (Index == 0)
-            {
-                DataModel = _informationService.GetAllInformationDataModel();
-            }
-            else
-            {
-                if (RemovedFief)
-                {
-                    RemovedFief = false;
-                }
-
-                _informationService.SetupPopulationReligion(Index);
-                DataModel = _baseService.GetDataModel<InformationDataModel>(Index);
-                DataModel.CheckReligionsList();
-                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
-            }
-            
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Information")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Information");
+            //}
+            CompleteLoadData();
         }
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()

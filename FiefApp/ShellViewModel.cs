@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using System;
+using Prism.Commands;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Squirrel;
 using System.Threading.Tasks;
 
@@ -21,6 +23,79 @@ namespace FiefApp
         private IFiefService _fiefService;
         private readonly ISettingsService _settingsService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
 
         public ShellViewModel(
             IFiefService fiefService,
@@ -44,8 +119,37 @@ namespace FiefApp
             FileIsSaved = Properties.Settings.Default.IsSaved;
             _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(ExecuteEndOfYear);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
 
             CheckForUpdates();
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Loaded!"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    SendNewFiefLoadedEvent();
+                }
+            }
         }
 
         private async Task CheckForUpdates()
@@ -116,7 +220,12 @@ namespace FiefApp
                 ForlaningsNamn = _fiefService.InformationList[1].FiefName;
                 ForlaningsAr = _fiefService.Year;
 
-                SendNewFiefLoadedEvent();
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    _awaitResponsList[x].Completed = false;
+                }
+                _eventAggregator.GetEvent<UpdateEvent>().Publish("Loaded!");
+                //SendNewFiefLoadedEvent();
             }
         }
 

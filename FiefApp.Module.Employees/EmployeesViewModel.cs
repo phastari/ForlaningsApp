@@ -1,16 +1,16 @@
 ﻿using FiefApp.Common.Infrastructure;
 using FiefApp.Common.Infrastructure.CustomCommands;
 using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.EventAggregatorEvents;
+using FiefApp.Common.Infrastructure.HelpClasses.StringToFormula;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using FiefApp.Module.Employees.RoutedEvents;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using FiefApp.Common.Infrastructure.EventAggregatorEvents;
-using FiefApp.Common.Infrastructure.HelpClasses.StringToFormula;
-using Prism.Events;
 
 namespace FiefApp.Module.Employees
 {
@@ -20,6 +20,80 @@ namespace FiefApp.Module.Employees
         private readonly IEmployeeService _employeeService;
         private readonly ISettingsService _settingsService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public EmployeesViewModel(
             IBaseService baseService,
@@ -40,6 +114,102 @@ namespace FiefApp.Module.Employees
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Employees"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Employees")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<EmployeesDataModel>(x);
+                    DataModel.UpdateTotalCosts();
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Employees",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _employeeService.GetAllEmployeesDataModel()
+                : _baseService.GetDataModel<EmployeesDataModel>(Index);
+
+            DataModel.PropertyChanged += DataModelPropertyChanged;
+
+            if (Index == 0)
+            {
+                DataModel.Falconer = DataModel.Falconer;
+                DataModel.Bailiff = DataModel.Bailiff;
+                DataModel.Herald = DataModel.Herald;
+                DataModel.Hunter = DataModel.Hunter;
+                DataModel.Physician = DataModel.Physician;
+                DataModel.Scholar = DataModel.Scholar;
+                DataModel.Cupbearer = DataModel.Cupbearer;
+                DataModel.Prospector = DataModel.Prospector;
+                DataModel.UpdateTotalCosts();
+                DataModel.IsAll = true;
+
+            }
+
+            UpdateFiefCollection();
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<EmployeesDataModel>(x);
+                DataModel.UpdateTotalCosts();
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : EmployeeUIEventHandler
@@ -175,34 +345,30 @@ namespace FiefApp.Module.Employees
 
         protected override void LoadData()
         {
-            DataModel = Index
-                        == 0 ? _employeeService.GetAllEmployeesDataModel()
-                : _baseService.GetDataModel<EmployeesDataModel>(Index);
-
-            DataModel.PropertyChanged += DataModelPropertyChanged;
-
-            if (Index == 0)
-            {
-                DataModel.Falconer = DataModel.Falconer;
-                DataModel.Bailiff = DataModel.Bailiff;
-                DataModel.Herald = DataModel.Herald;
-                DataModel.Hunter = DataModel.Hunter;
-                DataModel.Physician = DataModel.Physician;
-                DataModel.Scholar = DataModel.Scholar;
-                DataModel.Cupbearer = DataModel.Cupbearer;
-                DataModel.Prospector = DataModel.Prospector;
-                DataModel.UpdateTotalCosts();
-                DataModel.IsAll = true;
-                
-            }
-
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Employees")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Employees");
+            //}
+            CompleteLoadData();
         }
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         #endregion

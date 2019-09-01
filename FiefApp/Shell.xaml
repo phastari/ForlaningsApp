@@ -137,8 +137,9 @@
         <TabControl 
             x:Name="Test"
             Grid.Column="0" 
-                    Grid.Row="1"
-                    prism:RegionManager.RegionName="TabRegion">
+            Grid.Row="1"
+            prism:RegionManager.RegionName="TabRegion" 
+            Template="{DynamicResource TabControlTemplate}">
             <TabControl.Style>
                 <Style TargetType="{x:Type TabControl}">
                     <Setter Property="Visibility" Value="Visible"/>

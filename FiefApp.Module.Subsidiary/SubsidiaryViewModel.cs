@@ -10,6 +10,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace FiefApp.Module.Subsidiary
 {
@@ -18,6 +19,80 @@ namespace FiefApp.Module.Subsidiary
         private readonly IBaseService _baseService;
         private readonly ISubsidiaryService _subsidiaryService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public SubsidiaryViewModel(
             IBaseService baseService,
@@ -40,6 +115,117 @@ namespace FiefApp.Module.Subsidiary
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Subsidiary"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Subsidiary")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<SubsidiaryDataModel>(x);
+
+                    for (int y = 0; y < DataModel.SubsidiaryCollection.Count; y++)
+                    {
+                        DataModel.SubsidiaryCollection[y].Difficulty = _subsidiaryService.GetAndSetDifficulty(x,
+                            DataModel.SubsidiaryCollection[y].Spring,
+                            DataModel.SubsidiaryCollection[y].Summer,
+                            DataModel.SubsidiaryCollection[y].Fall,
+                            DataModel.SubsidiaryCollection[y].Winter);
+                    }
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Subsidiary",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _subsidiaryService.GetAllSubsidiaryDataModel()
+                : _baseService.GetDataModel<SubsidiaryDataModel>(Index);
+
+            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
+            for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
+            {
+                DataModel.ConstructingCollection[x].StewardsCollection = DataModel.StewardsCollection;
+            }
+
+            for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+            {
+                DataModel.SubsidiaryCollection[x].StewardsCollection = DataModel.StewardsCollection;
+                DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(Index,
+                    DataModel.SubsidiaryCollection[x].Spring,
+                    DataModel.SubsidiaryCollection[x].Summer,
+                    DataModel.SubsidiaryCollection[x].Fall,
+                    DataModel.SubsidiaryCollection[x].Winter);
+            }
+
+            UpdateFiefCollection();
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<SubsidiaryDataModel>(x);
+
+                for (int y = 0; y < DataModel.SubsidiaryCollection.Count; y++)
+                {
+                    DataModel.SubsidiaryCollection[y].Difficulty = _subsidiaryService.GetAndSetDifficulty(x,
+                        DataModel.SubsidiaryCollection[y].Spring,
+                        DataModel.SubsidiaryCollection[y].Summer,
+                        DataModel.SubsidiaryCollection[y].Fall,
+                        DataModel.SubsidiaryCollection[y].Winter);
+                }
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : ConstructSubsidiaryCommand
@@ -150,7 +336,6 @@ namespace FiefApp.Module.Subsidiary
         }
 
         #endregion
-
         #region CustomDelegateCommand : SubsidiaryUIEventHandler
 
         public CustomDelegateCommand SubsidiaryUIEventHandler { get; set; }
@@ -321,33 +506,30 @@ namespace FiefApp.Module.Subsidiary
 
         protected override void LoadData()
         {
-            DataModel = Index
-                        == 0 ? _subsidiaryService.GetAllSubsidiaryDataModel()
-                : _baseService.GetDataModel<SubsidiaryDataModel>(Index);
-
-            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
-            for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
-            {
-                DataModel.ConstructingCollection[x].StewardsCollection = DataModel.StewardsCollection;
-            }
-
-            for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
-            {
-                DataModel.SubsidiaryCollection[x].StewardsCollection = DataModel.StewardsCollection;
-                DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(Index,
-                    DataModel.SubsidiaryCollection[x].Spring,
-                    DataModel.SubsidiaryCollection[x].Summer,
-                    DataModel.SubsidiaryCollection[x].Fall,
-                    DataModel.SubsidiaryCollection[x].Winter);
-            }
-
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Subsidiary")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Subsidiary");
+            //}
+            CompleteLoadData();
         }
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         #endregion

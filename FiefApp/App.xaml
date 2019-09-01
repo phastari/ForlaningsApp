@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="pack://application:,,,/FiefApp.Common.Infrastructure;component/Styles/TextBoxTemplate.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/FiefApp.Common.Infrastructure;component/Styles/ButtonTemplate.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/FiefApp.Common.Infrastructure;component/Styles/CheckBoxTemplate.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/FiefApp.Common.Infrastructure;component/Styles/TabControlTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary> 
     </prism:PrismApplication.Resources>

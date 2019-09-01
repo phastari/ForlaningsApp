@@ -18,6 +18,81 @@ namespace FiefApp.Module.Stewards
     {
         private readonly IBaseService _baseService;
         private readonly IStewardsService _stewardsService;
+        private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public StewardsViewModel(
             IBaseService baseService,
@@ -27,6 +102,7 @@ namespace FiefApp.Module.Stewards
         {
             _baseService = baseService;
             _stewardsService = stewardsService;
+            _eventAggregator = eventAggregator;
 
             TabName = "Förvaltare";
 
@@ -34,8 +110,99 @@ namespace FiefApp.Module.Stewards
             IndustryUIEventHandler = new CustomDelegateCommand(ExecuteIndustryUIEventHandler, o => true);
             AddStewardCommand = new DelegateCommand(ExecuteAddStewardCommand);
 
-            eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
-            eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
+            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Stewards"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Stewards")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<StewardsDataModel>(x);
+                    GetInformationSetDataModel();
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Stewards",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = _baseService.GetDataModel<StewardsDataModel>(Index);
+
+            GetInformationSetDataModel();
+            UpdateFiefCollection();
+
+            if (DataModel.IndustriesBeingDevelopedCollection.Count == 0)
+            {
+                int id = _baseService.GetNewIndustryId();
+
+                DataModel.IndustriesBeingDevelopedCollection = _baseService.CreateNewBeingDevelopedIndustries();
+                SaveData();
+            }
+            else if (DataModel.IndustriesBeingDevelopedCollection.Count / 3 != FiefCollection.Count - 1)
+            {
+                DataModel.IndustriesBeingDevelopedCollection = _baseService.UpdateIndustriesBeingDevelopedCollection(DataModel.IndustriesBeingDevelopedCollection);
+                SaveData();
+            }
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<StewardsDataModel>(x);
+                GetInformationSetDataModel();
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : StewardUIEventHandler
@@ -203,23 +370,23 @@ namespace FiefApp.Module.Stewards
 
         protected override void LoadData()
         {
-            DataModel = _baseService.GetDataModel<StewardsDataModel>(Index);
-
-            GetInformationSetDataModel();
-            UpdateFiefCollection();
-
-            if (DataModel.IndustriesBeingDevelopedCollection.Count == 0)
-            {
-                int id = _baseService.GetNewIndustryId();
-
-                DataModel.IndustriesBeingDevelopedCollection = _baseService.CreateNewBeingDevelopedIndustries();
-                SaveData();
-            }
-            else if (DataModel.IndustriesBeingDevelopedCollection.Count / 3 != FiefCollection.Count - 1)
-            {
-                DataModel.IndustriesBeingDevelopedCollection = _baseService.UpdateIndustriesBeingDevelopedCollection(DataModel.IndustriesBeingDevelopedCollection);
-                SaveData();
-            }
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Stewards")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Stewards");
+            //}
+            CompleteLoadData();
         }
 
         private void GetInformationSetDataModel()
@@ -256,8 +423,9 @@ namespace FiefApp.Module.Stewards
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()

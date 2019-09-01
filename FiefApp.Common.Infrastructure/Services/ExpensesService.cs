@@ -255,33 +255,94 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetEmployeeNumbers(int index)
         {
-            return _fiefService.EmployeesList[index].Bailiff
-                   + _fiefService.EmployeesList[index].Cupbearer
-                   + _fiefService.EmployeesList[index].Falconer
-                   + _fiefService.EmployeesList[index].Herald
-                   + _fiefService.EmployeesList[index].Hunter
-                   + _fiefService.EmployeesList[index].Physician
-                   + _fiefService.EmployeesList[index].Prospector
-                   + _fiefService.EmployeesList[index].Scholar
-                   + _fiefService.EmployeesList[index].EmployeesCollection.Count
-                   + _fiefService.StewardsDataModel.StewardsCollection.Count - 1
-                   + _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count
-                   + _fiefService.BuildingsList[index].Smiths
-                   + _fiefService.BuildingsList[index].Woodworkers
-                   + _fiefService.BuildingsList[index].Stoneworkers
-                   + _fiefService.BuildingsList[index].BuildersCollection.Count;
+            int nr;
+            if (index == 0)
+            {
+                nr = 0;
+                for (int x = 1; x < _fiefService.ExpensesList.Count; x++)
+                {
+                    nr += _fiefService.EmployeesList[x].Bailiff 
+                          + _fiefService.EmployeesList[x].Cupbearer
+                          + _fiefService.EmployeesList[x].Falconer
+                          + _fiefService.EmployeesList[x].Herald
+                          + _fiefService.EmployeesList[x].Hunter
+                          + _fiefService.EmployeesList[x].Physician
+                          + _fiefService.EmployeesList[x].Prospector
+                          + _fiefService.EmployeesList[x].Scholar
+                          + _fiefService.EmployeesList[x].EmployeesCollection.Count
+                          + _fiefService.BuildingsList[x].Smiths
+                          + _fiefService.BuildingsList[x].Woodworkers
+                          + _fiefService.BuildingsList[x].Stoneworkers;
+
+                    if (_fiefService.BoatbuildingList[x].BoatBuildersCollection.Count - 1 > 0)
+                    {
+                        nr += _fiefService.BoatbuildingList[x].BoatBuildersCollection.Count - 1;
+                    }
+                    if (_fiefService.BuildingsList[x].BuildersCollection.Count - 1 > 0)
+                    {
+                        nr += _fiefService.BuildingsList[x].BuildersCollection.Count - 1;
+                    }
+                }
+
+                nr += _fiefService.StewardsDataModel.StewardsCollection.Count - 1;
+                return nr;
+            }
+            nr = 0;
+            nr =+ _fiefService.EmployeesList[index].Bailiff
+                + _fiefService.EmployeesList[index].Cupbearer
+                + _fiefService.EmployeesList[index].Falconer
+                + _fiefService.EmployeesList[index].Herald
+                + _fiefService.EmployeesList[index].Hunter
+                + _fiefService.EmployeesList[index].Physician
+                + _fiefService.EmployeesList[index].Prospector
+                + _fiefService.EmployeesList[index].Scholar
+                + _fiefService.EmployeesList[index].EmployeesCollection.Count
+                + _fiefService.BuildingsList[index].Smiths
+                + _fiefService.BuildingsList[index].Woodworkers
+                + _fiefService.BuildingsList[index].Stoneworkers;
+
+            if (_fiefService.BoatbuildingList[index].BoatBuildersCollection.Count - 1 > 0)
+            {
+                nr += _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count - 1;
+            }
+            if (_fiefService.BuildingsList[index].BuildersCollection.Count - 1 > 0)
+            {
+                nr += _fiefService.BuildingsList[index].BuildersCollection.Count - 1;
+            }
+            return nr;
         }
 
         public int GetEmployeeSilverCost(int index)
         {
-            return _fiefService.BuildingsList[index].BuildersCollection.Count * 4850
-                   + _fiefService.BoatbuildingList[index].BoatBuildersCollection.Count * 1800;
+            int silver = 0;
+            if (_fiefService.BuildingsList[index].BuildersCollection.Count - 1 > 0)
+            {
+                silver += (_fiefService.BuildingsList[index].BuildersCollection.Count - 1) * 4850;
+            }
+
+            if (_fiefService.BoatbuildingList[index].BoatBuildersCollection.Count - 1 > 0)
+            {
+                silver += (_fiefService.BoatbuildingList[index].BoatBuildersCollection.Count - 1) * 1800;
+            }
+            return silver;
         }
 
         public int GetEmployeeBaseCost(int index)
         {
+            if (index == 0)
+            {
+                int bas = 0;
+                for (int x = 1; x < _fiefService.EmployeesList.Count; x++)
+                {
+                    bas += _fiefService.EmployeesList[x].TotalBase
+                           + _fiefService.BuildingsList[x].SmithsBase
+                           + _fiefService.BuildingsList[x].WoodworkersBase
+                           + _fiefService.BuildingsList[x].StoneworkersBase;
+                }
+                bas += (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 4;
+                return bas;
+            }
             return _fiefService.EmployeesList[index].TotalBase
-                   + (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 4
                    + _fiefService.BuildingsList[index].SmithsBase
                    + _fiefService.BuildingsList[index].WoodworkersBase
                    + _fiefService.BuildingsList[index].StoneworkersBase;
@@ -289,8 +350,17 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetEmployeeLuxuryCost(int index)
         {
-            return _fiefService.EmployeesList[index].TotalLuxury
-                   + (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 2;
+            if (index == 0)
+            {
+                int lyx = 0;
+                for (int x = 1; x < _fiefService.EmployeesList.Count; x++)
+                {
+                    lyx += _fiefService.EmployeesList[x].TotalLuxury;
+                }
+                lyx += (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 2;
+                return lyx;
+            }
+            return _fiefService.EmployeesList[index].TotalLuxury;
         }
 
         public int GetManorUpkeep(int index)

@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using Prism.Events;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FiefApp.Module.Boatbuilding
 {
@@ -19,6 +21,80 @@ namespace FiefApp.Module.Boatbuilding
         private readonly IBoatbuildingService _boatbuildingService;
         private readonly ISettingsService _settingsService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public BoatbuildingViewModel(
             IBaseService baseService,
@@ -43,13 +119,84 @@ namespace FiefApp.Module.Boatbuilding
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
             _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Boatbuilding"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Boatbuilding")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(x);
+                    SetDataModelInformation();
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Boatbuilding",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _boatbuildingService.GetAllBoatbuildingDataModel()
+                : _baseService.GetDataModel<BoatbuildingDataModel>(Index);
+
+            DataModel.BoatTypeCollection = new ObservableCollection<BoatModel>(_settingsService.BoatbuildingSettingsModel.BoatSettingsList);
+            if (Index != 0)
+            {
+                SetDataModelInformation();
+            }
+
+            DataModel.ShowButtons = Index != 0;
+            UpdateFiefCollection();
+            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
         {
+            UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(x);
+                SetDataModelInformation();
+                SaveData(x);
             }
 
             _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
@@ -300,38 +447,61 @@ namespace FiefApp.Module.Boatbuilding
 
         protected override void LoadData()
         {
-            DataModel = Index
-                        == 0 ? _boatbuildingService.GetAllBoatbuildingDataModel()
-                : _baseService.GetDataModel<BoatbuildingDataModel>(Index);
-
-            DataModel.BoatTypeCollection = new ObservableCollection<BoatModel>(_settingsService.BoatbuildingSettingsModel.BoatSettingsList);
-            if (Index != 0)
-            {
-                SetDataModelInformation();
-            }
-
-            DataModel.ShowButtons = Index != 0;
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Boatbuilding")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Boatbuilding");
+            //}
+            CompleteLoadData();
         }
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
-        private void SetDataModelInformation()
+        private void SetDataModelInformation(int index = -1)
         {
-            DataModel.VillageBoatBuilders = _boatbuildingService.GetNrVillageBoatbuilders(Index);
-            DataModel.DocksVillage = _boatbuildingService.GetNrVillageBoatbuilders(Index);
-            DataModel.GotShipyard = _boatbuildingService.GetGotShipyard(Index);
-            DataModel.UpgradingShipyard = _boatbuildingService.GetUpgradingShipyard(Index);
-            DataModel.BoatBuildersCollection.CollectionChanged += UpdateTotalBoatBuilders;
-            DataModel.VillageBoatBuilders = _boatbuildingService.GetVillageBoatBuilders(Index);
-
-            if (DataModel.VillageBoatBuilders > 0)
+            if (index == -1)
             {
-                DataModel.GotVillageBoatbuilders = true;
+                DataModel.VillageBoatBuilders = _boatbuildingService.GetNrVillageBoatbuilders(Index);
+                DataModel.DocksVillage = _boatbuildingService.GetNrVillageBoatbuilders(Index);
+                DataModel.GotShipyard = _boatbuildingService.GetGotShipyard(Index);
+                DataModel.UpgradingShipyard = _boatbuildingService.GetUpgradingShipyard(Index);
+                DataModel.BoatBuildersCollection.CollectionChanged += UpdateTotalBoatBuilders;
+                DataModel.VillageBoatBuilders = _boatbuildingService.GetVillageBoatBuilders(Index);
+
+                if (DataModel.VillageBoatBuilders > 0)
+                {
+                    DataModel.GotVillageBoatbuilders = true;
+                }
+            }
+            else
+            {
+                DataModel.VillageBoatBuilders = _boatbuildingService.GetNrVillageBoatbuilders(index);
+                DataModel.DocksVillage = _boatbuildingService.GetNrVillageBoatbuilders(index);
+                DataModel.GotShipyard = _boatbuildingService.GetGotShipyard(index);
+                DataModel.UpgradingShipyard = _boatbuildingService.GetUpgradingShipyard(index);
+                DataModel.UpdateTotalBoatBuilders();
+                DataModel.VillageBoatBuilders = _boatbuildingService.GetVillageBoatBuilders(index);
+
+                if (DataModel.VillageBoatBuilders > 0)
+                {
+                    DataModel.GotVillageBoatbuilders = true;
+                }
             }
         }
 

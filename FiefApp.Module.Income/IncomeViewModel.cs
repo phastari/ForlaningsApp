@@ -9,6 +9,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace FiefApp.Module.Income
 {
@@ -17,6 +18,80 @@ namespace FiefApp.Module.Income
         private readonly IBaseService _baseService;
         private readonly IIncomeService _incomeService;
         private readonly IEventAggregator _eventAggregator;
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public IncomeViewModel(
             IBaseService baseService,
@@ -34,6 +109,100 @@ namespace FiefApp.Module.Income
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Income"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Income")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<IncomeDataModel>(x);
+                    DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
+                    DataModel.UpdateTotals();
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Income",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            if (Index != 0)
+            {
+                DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
+                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
+                DataModel.UpdateTotals();
+                DataModel.StewardsCollection = _baseService.GetStewardsCollection();
+
+                for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
+                {
+                    DataModel.IncomesCollection[x].StewardsCollection = DataModel.StewardsCollection;
+                }
+            }
+            else
+            {
+                DataModel = _incomeService.GetAllDataModel();
+            }
+
+            UpdateFiefCollection();
+            _triggerLoad = true;
+        }
+
+        private void UpdateAndRespond()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<IncomeDataModel>(x);
+                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
+                DataModel.UpdateTotals();
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = true
+            });
         }
 
         #region CustomDelegateCommand : IncomeUIEventUIEventHandler
@@ -76,24 +245,23 @@ namespace FiefApp.Module.Income
 
         protected override void LoadData()
         {
-            if (Index != 0)
-            {
-                DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
-                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
-                DataModel.UpdateTotals();
-                DataModel.StewardsCollection = _baseService.GetStewardsCollection();
-
-                for (int x = 0; x < DataModel.IncomesCollection.Count; x++)
-                {
-                    DataModel.IncomesCollection[x].StewardsCollection = DataModel.StewardsCollection;
-                }
-            }
-            else
-            {
-                DataModel = _incomeService.GetAllDataModel();
-            }
-
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Income")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Income");
+            //}
+            CompleteLoadData();
         }
 
         protected override void SaveData(int index = -1)
@@ -106,8 +274,9 @@ namespace FiefApp.Module.Income
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
         private void UpdateStewardsCollectionInIncomes()

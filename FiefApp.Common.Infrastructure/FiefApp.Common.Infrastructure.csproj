@@ -111,6 +111,8 @@
     <Compile Include="EventAggregatorEvents\SaveDataModelBeforeSaveFileIsCreatedEvent.cs" />
     <Compile Include="EventAggregatorEvents\UpdateAllEvent.cs" />
     <Compile Include="EventAggregatorEvents\UpdateAllResponse.cs" />
+    <Compile Include="EventAggregatorEvents\UpdateEvent.cs" />
+    <Compile Include="EventAggregatorEvents\UpdateResponseEvent.cs" />
     <Compile Include="HelpClasses\NameGenerator\NameGenerator.cs" />
     <Compile Include="HelpClasses\StringToFormula\StringToFormula.cs" />
     <Compile Include="Models\AnimalModel.cs" />
@@ -239,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ComboBoxControlTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TabControlTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

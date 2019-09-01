@@ -299,12 +299,15 @@
                 VerticalContentAlignment="Center"
                 Padding="24,0,0,0"/>
         </Grid>
-        
-        <ItemsControl 
-            x:Name="StewardsUI"
+
+        <ScrollViewer
             Grid.Column="8"
             Grid.Row="5"
             Grid.RowSpan="34"
+            VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl 
+            x:Name="StewardsUI"
             ItemsSource="{Binding Path=DataModel.StewardsCollection}"
             IsTabStop="False">
 
@@ -356,6 +359,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
+        </ScrollViewer>
     </Grid>
 </UserControl>

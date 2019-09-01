@@ -480,7 +480,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _daysworkFishingBoats;
+        private int _daysworkFishingBoats = 0;
         public int DaysworkFishingBoats
         {
             get => _daysworkFishingBoats;
@@ -499,6 +499,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _daysworkFishingBoatsRemaining = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _landClearingMax = 100000;
+        public int LandClearingMax
+        {
+            get => _landClearingMax;
+            set
+            {
+                _landClearingMax = value;
                 NotifyPropertyChanged();
             }
         }
@@ -528,18 +539,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _landClearingMax;
-        public int LandClearingMax
-        {
-            get => _landClearingMax;
-            set
-            {
-                _landClearingMax = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _daysworkLandClearing;
+        private int _daysworkLandClearing = 0;
         public int DaysworkLandClearing
         {
             get => _daysworkLandClearing;
@@ -587,7 +587,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _landClearingOfFellingMax;
+        private int _landClearingOfFellingMax = 100000;
         public int LandClearingOfFellingMax
         {
             get => _landClearingOfFellingMax;
@@ -598,7 +598,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _daysworkLandClearingOfFelling;
+        private int _daysworkLandClearingOfFelling = 0;
         public int DaysworkLandClearingOfFelling
         {
             get => _daysworkLandClearingOfFelling;
@@ -646,7 +646,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _clearUselessMax;
+        private int _clearUselessMax = 100000;
         public int ClearUselessMax
         {
             get => _clearUselessMax;
@@ -657,7 +657,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _daysworkClearUseless;
+        private int _daysworkClearUseless = 0;
         public int DaysworkClearUseless
         {
             get => _daysworkClearUseless;
@@ -705,7 +705,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _fellingMax;
+        private int _fellingMax = 100000;
         public int FellingMax
         {
             get => _fellingMax;
@@ -716,7 +716,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _daysworkFelling;
+        private int _daysworkFelling = 0;
         public int DaysworkFelling
         {
             get => _daysworkFelling;

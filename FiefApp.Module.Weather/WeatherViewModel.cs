@@ -87,6 +87,80 @@ namespace FiefApp.Module.Weather
                 Completed = false
             }
         };
+        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        {
+            new UpdateEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = true
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            },
+            new UpdateEventParameters()
+            {
+                ModuleName = "Weather",
+                Completed = false
+            }
+        };
+        private bool _triggerLoad = true;
 
         public WeatherViewModel(
             IBaseService baseService,
@@ -105,8 +179,75 @@ namespace FiefApp.Module.Weather
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
             _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
             _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleResponse);
+            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
+            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
 
             EndOfYearCommand = new DelegateCommand(ExecuteEndOfYearCommand);
+        }
+
+        private void HandleUpdateEvent(UpdateEventParameters param)
+        {
+            if (param.Publisher == "Weather"
+                && _awaitResponsList != null)
+            {
+                for (int x = 0; x < _awaitResponsList.Count; x++)
+                {
+                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitResponsList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitResponsList.Any(o => o.Completed == false))
+                {
+                    Console.WriteLine("Wait!");
+                }
+                else
+                {
+                    for (int y = 0; y < _awaitResponsList.Count; y++)
+                    {
+                        _awaitResponsList[y].Completed = false;
+                    }
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateResponse(string str)
+        {
+            if (str != "Weather")
+            {
+                UpdateFiefCollection();
+                for (int x = 1; x < FiefCollection.Count; x++)
+                {
+                    DataModel = _baseService.GetDataModel<WeatherDataModel>(x);
+                    GetInformationSetDataModel(x);
+                    SaveData(x);
+                }
+
+                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
+                {
+                    ModuleName = "Weather",
+                    Completed = true,
+                    Publisher = str
+                });
+            }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _weatherService.GetAllWeatherDataModels()
+                : _baseService.GetDataModel<WeatherDataModel>(Index);
+
+            if (DataModel != null)
+            {
+                DataModel.PropertyChanged += DataModelPropertyChange;
+            }
+
+            GetInformationSetDataModel();
+            UpdateFiefCollection();
+            _triggerLoad = true;
         }
 
         #region DelegateCommand : EndOfYearCommand
@@ -120,8 +261,8 @@ namespace FiefApp.Module.Weather
                 {
                     _executing = true;
                     SetAwaitAllModules();
-                    //_eventAggregator.GetEvent<UpdateAllEvent>().Publish();
-                    _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+                    _eventAggregator.GetEvent<UpdateAllEvent>().Publish();
+                    //_eventAggregator.GetEvent<EndOfYearEvent>().Publish();
                 }
                 else
                 {
@@ -129,6 +270,7 @@ namespace FiefApp.Module.Weather
                     _timer.Interval = 2750;
                     _timer.Start();
                     DataModel.EndOfYearError = "Du har inte fyllt i årets väder!";
+                    _executing = false;
                 }
             }
         }
@@ -153,17 +295,23 @@ namespace FiefApp.Module.Weather
 
         protected override void LoadData()
         {
-            DataModel = Index
-                        == 0 ? _weatherService.GetAllWeatherDataModels()
-                : _baseService.GetDataModel<WeatherDataModel>(Index);
-
-            if (DataModel != null)
-            {
-                DataModel.PropertyChanged += DataModelPropertyChange;
-            }
-
-            GetInformationSetDataModel();
-            UpdateFiefCollection();
+            //if (_triggerLoad)
+            //{
+            //    _triggerLoad = false;
+            //    for (int x = 0; x < _awaitResponsList.Count; x++)
+            //    {
+            //        if (_awaitResponsList[x].ModuleName == "Weather")
+            //        {
+            //            _awaitResponsList[x].Completed = true;
+            //        }
+            //        else
+            //        {
+            //            _awaitResponsList[x].Completed = false;
+            //        }
+            //    }
+            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Weather");
+            //}
+            CompleteLoadData();
         }
 
         private void OnTimedEvent(
@@ -218,20 +366,35 @@ namespace FiefApp.Module.Weather
 
         private void ExecuteNewFiefLoadedEvent()
         {
+            _triggerLoad = false;
             Index = 1;
-            LoadData();
+            CompleteLoadData();
         }
 
-        private void GetInformationSetDataModel()
+        private void GetInformationSetDataModel(int index = -1)
         {
-            GetTotalAmountOfSerfs();
-            GetTotalAmountOfSlaves();
-            GetNumberOfFishingboats();
-            GetSubsidiaryData();
-            GetMinesAndQuarriesData();
-            GetForecasts();
-            GetManorAcresSetManorDaysWork();
-            GetMaxFellingLandClearing();
+            if (index == -1)
+            {
+                GetTotalAmountOfSerfs();
+                GetTotalAmountOfSlaves();
+                GetNumberOfFishingboats();
+                GetSubsidiaryData();
+                GetMinesAndQuarriesData();
+                GetForecasts();
+                GetManorAcresSetManorDaysWork();
+                GetMaxFellingLandClearing();
+            }
+            else
+            {
+                GetTotalAmountOfSerfs(index);
+                GetTotalAmountOfSlaves(index);
+                GetNumberOfFishingboats(index);
+                GetSubsidiaryData(index);
+                GetMinesAndQuarriesData(index);
+                GetForecasts(index);
+                GetManorAcresSetManorDaysWork(index);
+                GetMaxFellingLandClearing(index);
+            }
         }
 
         private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
@@ -241,56 +404,124 @@ namespace FiefApp.Module.Weather
 
         #region Methods : GetInformationSetDataModel
 
-        private void GetMaxFellingLandClearing()
+        private void GetMaxFellingLandClearing(int index = -1)
         {
-            DataModel.LandClearingMax = _weatherService.GetMaxLandClearing(Index);
-            DataModel.LandClearingOfFellingMax = _weatherService.GetMaxLandClearFelling(Index);
-            DataModel.FellingMax = _weatherService.GetMaxFelling(Index);
-            DataModel.ClearUselessMax = _weatherService.GetMaxUseless(Index);
+            if (index == -1)
+            {
+                DataModel.LandClearingMax = _weatherService.GetMaxLandClearing(Index);
+                DataModel.LandClearingOfFellingMax = _weatherService.GetMaxLandClearFelling(Index);
+                DataModel.FellingMax = _weatherService.GetMaxFelling(Index);
+                DataModel.ClearUselessMax = _weatherService.GetMaxUseless(Index);
+            }
+            else
+            {
+                DataModel.LandClearingMax = _weatherService.GetMaxLandClearing(index);
+                DataModel.LandClearingOfFellingMax = _weatherService.GetMaxLandClearFelling(index);
+                DataModel.FellingMax = _weatherService.GetMaxFelling(index);
+                DataModel.ClearUselessMax = _weatherService.GetMaxUseless(index);
+            }
         }
 
-        private void GetTotalAmountOfSerfs()
+        private void GetTotalAmountOfSerfs(int index = -1)
         {
-            DataModel.Serfs = _weatherService.GetTotalAmountOfSerfs(Index);
+            if (index == -1)
+            {
+                DataModel.Serfs = _weatherService.GetTotalAmountOfSerfs(Index);
+            }
+            else
+            {
+                DataModel.Serfs = _weatherService.GetTotalAmountOfSerfs(index);
+            }
         }
 
-        private void GetTotalAmountOfSlaves()
+        private void GetTotalAmountOfSlaves(int index = -1)
         {
-            DataModel.Slaves = _weatherService.GetTotalAmountOfSlaves(Index);
+            if (index == -1)
+            {
+                DataModel.Slaves = _weatherService.GetTotalAmountOfSlaves(Index);
+            }
+            else
+            {
+                DataModel.Slaves = _weatherService.GetTotalAmountOfSlaves(index);
+            }
         }
 
-        private void GetSubsidiaryData()
+        private void GetSubsidiaryData(int index = -1)
         {
-            DataModel.NumberOfSubsidiaries = _weatherService.GetTotalNumberOfSubsidaries(Index);
-            DataModel.SubsidiariesDayswork = _weatherService.GetTotalAmountOfDaysworkFromSubsidiaries(Index);
+            if (index == -1)
+            {
+                DataModel.NumberOfSubsidiaries = _weatherService.GetTotalNumberOfSubsidaries(Index);
+                DataModel.SubsidiariesDayswork = _weatherService.GetTotalAmountOfDaysworkFromSubsidiaries(Index);
+            }
+            else
+            {
+                DataModel.NumberOfSubsidiaries = _weatherService.GetTotalNumberOfSubsidaries(index);
+                DataModel.SubsidiariesDayswork = _weatherService.GetTotalAmountOfDaysworkFromSubsidiaries(index);
+            }
         }
 
-        private void GetMinesAndQuarriesData()
+        private void GetMinesAndQuarriesData(int index = -1)
         {
-            DataModel.NumberOfMinesAndQuarries = _weatherService.GetNumberOfMinesAndQuarries(Index);
-            DataModel.MinesAndQuarriesDaysWork = _weatherService.GetTotalAmountOfDaysWorkFromQuarries(Index);
+            if (index == -1)
+            {
+                DataModel.NumberOfMinesAndQuarries = _weatherService.GetNumberOfMinesAndQuarries(Index);
+                DataModel.MinesAndQuarriesDaysWork = _weatherService.GetTotalAmountOfDaysWorkFromQuarries(Index);
+            }
+            else
+            {
+                DataModel.NumberOfMinesAndQuarries = _weatherService.GetNumberOfMinesAndQuarries(index);
+                DataModel.MinesAndQuarriesDaysWork = _weatherService.GetTotalAmountOfDaysWorkFromQuarries(index);
+            }
         }
 
-        private void GetForecasts()
+        private void GetForecasts(int index = -1)
         {
-            DataModel.ThisYearSilver = _weatherService.GetForecastForSilver(Index);
-            DataModel.ThisYearBase = _weatherService.GetForecastForBase(Index);
-            DataModel.ThisYearLuxury = _weatherService.GetForecastForLuxury(Index);
-            DataModel.ThisYearIron = _weatherService.GetForecastForIron(Index);
-            DataModel.ThisYearStone = _weatherService.GetForecastForStone(Index);
-            DataModel.ThisYearWood = _weatherService.GetForecastForWood(Index);
+            if (index == -1)
+            {
+                DataModel.ThisYearSilver = _weatherService.GetForecastForSilver(Index);
+                DataModel.ThisYearBase = _weatherService.GetForecastForBase(Index);
+                DataModel.ThisYearLuxury = _weatherService.GetForecastForLuxury(Index);
+                DataModel.ThisYearIron = _weatherService.GetForecastForIron(Index);
+                DataModel.ThisYearStone = _weatherService.GetForecastForStone(Index);
+                DataModel.ThisYearWood = _weatherService.GetForecastForWood(Index);
+            }
+            else
+            {
+                DataModel.ThisYearSilver = _weatherService.GetForecastForSilver(index);
+                DataModel.ThisYearBase = _weatherService.GetForecastForBase(index);
+                DataModel.ThisYearLuxury = _weatherService.GetForecastForLuxury(index);
+                DataModel.ThisYearIron = _weatherService.GetForecastForIron(index);
+                DataModel.ThisYearStone = _weatherService.GetForecastForStone(index);
+                DataModel.ThisYearWood = _weatherService.GetForecastForWood(index);
+            }
         }
 
-        private void GetManorAcresSetManorDaysWork()
+        private void GetManorAcresSetManorDaysWork(int index = -1)
         {
-            int acres = _weatherService.GetManorAcres(Index);
+            if (index == -1)
+            {
+                int acres = _weatherService.GetManorAcres(Index);
 
-            DataModel.ManorDaysWork = Convert.ToInt32(Math.Ceiling((decimal)acres / 6 * 80));
+                DataModel.ManorDaysWork = Convert.ToInt32(Math.Ceiling((decimal)acres / 6 * 80));
+            }
+            else
+            {
+                int acres = _weatherService.GetManorAcres(index);
+
+                DataModel.ManorDaysWork = Convert.ToInt32(Math.Ceiling((decimal)acres / 6 * 80));
+            }
         }
 
-        private void GetNumberOfFishingboats()
+        private void GetNumberOfFishingboats(int index = -1)
         {
-            DataModel.NumberOfFishingBoats = _weatherService.GetNumberOfFishingboats(Index);
+            if (index == -1)
+            {
+                DataModel.NumberOfFishingBoats = _weatherService.GetNumberOfFishingboats(Index);
+            }
+            else
+            {
+                DataModel.NumberOfFishingBoats = _weatherService.GetNumberOfFishingboats(index);
+            }
         }
 
         #endregion
@@ -326,6 +557,7 @@ namespace FiefApp.Module.Weather
                         _awaitAllModulesList[y].Completed = false;
                     }
                     _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+                    _executing = false;
                 }
             }
         }
