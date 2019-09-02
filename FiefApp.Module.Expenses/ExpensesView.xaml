@@ -494,7 +494,7 @@
         <TextBox
             Grid.Column="4"
             Grid.Row="13"
-            Text="{Binding Path=DataModel.ResidentAdults}"
+            Text="{Binding Path=DataModel.ResidentAdults, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -504,7 +504,7 @@
         <TextBox
             Grid.Column="8"
             Grid.Row="13"
-            Text="{Binding Path=DataModel.ResidentAdultsBase}"
+            Text="{Binding Path=DataModel.ResidentAdultsBase, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -514,7 +514,7 @@
         <TextBox
             Grid.Column="10"
             Grid.Row="13"
-            Text="{Binding Path=DataModel.ResidentAdultsLuxury}"
+            Text="{Binding Path=DataModel.ResidentAdultsLuxury, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -533,7 +533,7 @@
         <TextBox
             Grid.Column="4"
             Grid.Row="15"
-            Text="{Binding Path=DataModel.ResidentChildren}"
+            Text="{Binding Path=DataModel.ResidentChildren, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -543,7 +543,7 @@
         <TextBox
             Grid.Column="8"
             Grid.Row="15"
-            Text="{Binding Path=DataModel.ResidentChildrenBase}"
+            Text="{Binding Path=DataModel.ResidentChildrenBase, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -553,7 +553,7 @@
         <TextBox
             Grid.Column="10"
             Grid.Row="15"
-            Text="{Binding Path=DataModel.ResidentChildrenLuxury}"
+            Text="{Binding Path=DataModel.ResidentChildrenLuxury, UpdateSourceTrigger=PropertyChanged}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"

@@ -402,6 +402,10 @@ namespace FiefApp.Module.Expenses
         {
             DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
             DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
+            //DataModel.ResidentAdultsBase = _expensesService.GetResidentAdultsBase(Index, DataModel.LivingconditionIndex);
+            //DataModel.ResidentChildrenBase = _expensesService.GetResidentChildrenBase(Index, DataModel.LivingconditionIndex);
+            //DataModel.ResidentAdultsLuxury = _expensesService.GetResidentAdultsLuxury(Index, DataModel.LivingconditionIndex);
+            //DataModel.ResidentChildrenLuxury = _expensesService.GetResidentChildrenLuxury(Index, DataModel.LivingconditionIndex);
         }
 
         private void GetBoatCosts()

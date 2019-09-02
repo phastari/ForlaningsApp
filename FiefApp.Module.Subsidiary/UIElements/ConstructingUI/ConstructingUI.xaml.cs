@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Module.Subsidiary.RoutedEvents;
+using Prism.Commands;
 
 namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
 {
@@ -18,7 +19,28 @@ namespace FiefApp.Module.Subsidiary.UIElements.ConstructingUI
         {
             InitializeComponent();
             RootGrid.DataContext = this;
+
+            DeleteSubsidiary = new DelegateCommand(ExecuteDeleteSubsidiary);
         }
+
+        #region DelegateCommands
+
+        public DelegateCommand DeleteSubsidiary { get; set; }
+        private void ExecuteDeleteSubsidiary()
+        {
+            ConstructingUIEventArgs newEventArgs =
+                new ConstructingUIEventArgs(
+                    ConstructingUIRoutedEvent,
+                    "Delete",
+                    Id,
+                    Subsidiary,
+                    StewardId,
+                    ""
+                );
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
 
         #region Dependency Properties
 

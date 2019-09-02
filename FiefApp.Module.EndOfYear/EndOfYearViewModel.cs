@@ -924,9 +924,18 @@ namespace FiefApp.Module.EndOfYear
                     temp.ResultStone = 0;
                     temp.ResultWood = 0;
                     temp.ResultIron = 0;
-                    temp.Income = DataModel.IncomeListFief[x].SubsidiariesCollection[x + 1].Subsidiary;
+                    temp.Income = DataModel.IncomeListFief[x].SubsidiariesCollection[y].Subsidiary;
 
-                    model.SubsidiariesList.Add(temp);
+                    if (model.SubsidiariesList != null)
+                    {
+                        model.SubsidiariesList.Add(temp);
+                    }
+                    else
+                    {
+                        model.SubsidiariesList = new List<EndOfYearReportIncomeModel>();
+                        model.SubsidiariesList.Add(temp);
+                    }
+                    
                 }
 
                 for (int y = 0; y < DataModel.IncomeListFief[x].ConstructingCollection.Count; y++)
@@ -1192,17 +1201,17 @@ namespace FiefApp.Module.EndOfYear
 
                         if (model.SubsidiariesList[i].ResultSilver > 0)
                         {
-                            str += $"{model.SubsidiariesList[i].ResultSilver}silver";
+                            str += $"{model.SubsidiariesList[i].ResultSilver}silver ";
                             gotSomething = true;
                         }
                         if (model.SubsidiariesList[i].ResultBase > 0)
                         {
-                            str += $"{model.SubsidiariesList[i].ResultBase}bas";
+                            str += $"{model.SubsidiariesList[i].ResultBase}bas ";
                             gotSomething = true;
                         }
                         if (model.SubsidiariesList[i].ResultLuxury > 0)
                         {
-                            str += $"{model.SubsidiariesList[i].ResultLuxury}lyx";
+                            str += $"{model.SubsidiariesList[i].ResultLuxury}lyx ";
                             gotSomething = true;
                         }
 
@@ -1252,6 +1261,9 @@ namespace FiefApp.Module.EndOfYear
 
                 #endregion
             }
+
+            bas += (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 2;
+            lyx += (_fiefService.StewardsDataModel.StewardsCollection.Count - 1) * 4;
 
             str += $"TOTALT: {silver}Silver, {bas}Bas, {lyx}Lyx, {iron}Järn, {stone}Sten, {wood}Timmer.";
 

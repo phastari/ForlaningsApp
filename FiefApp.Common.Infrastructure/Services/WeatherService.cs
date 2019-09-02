@@ -51,10 +51,18 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetTotalNumberOfSubsidaries(int index)
         {
+            int nr = 0;
             if (index != 0)
             {
-                return _fiefService.SubsidiaryList[index].SubsidiaryCollection.Count
-                   + _fiefService.SubsidiaryList[index].ConstructingCollection.Count;
+                nr += _fiefService.SubsidiaryList[index].SubsidiaryCollection.Count
+                      + _fiefService.SubsidiaryList[index].ConstructingCollection.Count;
+
+                if (_fiefService.PortsList[index].BuildingShipyard)
+                {
+                    nr++;
+                }
+
+                return nr;
             }
 
             int subsidiaries = 0;
@@ -62,23 +70,44 @@ namespace FiefApp.Common.Infrastructure.Services
             {
                 subsidiaries += _fiefService.SubsidiaryList[x].SubsidiaryCollection.Count
                                 + _fiefService.SubsidiaryList[x].ConstructingCollection.Count;
+
+                if (_fiefService.PortsList[x].BuildingShipyard
+                    || _fiefService.PortsList[x].GotShipyard)
+                {
+                    subsidiaries++;
+                }
             }
             return subsidiaries;
         }
 
         public int GetTotalAmountOfDaysworkFromSubsidiaries(int index)
         {
+            int subsidiariesDayswork = 0;
+
             if (index != 0)
             {
-                return _fiefService.SubsidiaryList[index].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
-                   + _fiefService.SubsidiaryList[index].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
+                subsidiariesDayswork += _fiefService.SubsidiaryList[index].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
+                                     + _fiefService.SubsidiaryList[index].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
+
+                if (_fiefService.PortsList[index].GotShipyard
+                    || _fiefService.PortsList[index].BuildingShipyard)
+                {
+                    subsidiariesDayswork += _fiefService.PortsList[index].Shipyard.DaysWorkThisYear;
+                }
+
+                return subsidiariesDayswork;
             }
 
-            int subsidiariesDayswork = 0;
             for (int x = 1; x < _fiefService.SubsidiaryList.Count; x++)
             {
                 subsidiariesDayswork += _fiefService.SubsidiaryList[x].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
                                         + _fiefService.SubsidiaryList[x].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
+
+                if (_fiefService.PortsList[x].GotShipyard
+                    || _fiefService.PortsList[x].BuildingShipyard)
+                {
+                    subsidiariesDayswork += _fiefService.PortsList[x].Shipyard.DaysWorkThisYear;
+                }
             }
             return subsidiariesDayswork;
         }

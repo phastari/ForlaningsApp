@@ -724,7 +724,7 @@
         <Label 
             Grid.Column="10"
             Grid.Row="17"
-            Content="Binäringar"
+            Content="Binäringar/Anlagda"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Right"
             VerticalAlignment="Stretch"

@@ -506,6 +506,7 @@ namespace FiefApp.Module.Port
                         break;
                     }
             }
+            SaveData();
         }
 
         #endregion

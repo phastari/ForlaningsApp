@@ -12,6 +12,10 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetEmployeeSilverCost(int index);
         int SetAdultResidents(int index);
         int SetChildrenResidents(int index);
+        int GetResidentAdultsBase(int index, int livingConditionIndex);
+        int GetResidentAdultsLuxury(int index, int livingConditionIndex);
+        int GetResidentChildrenBase(int index, int livingConditionIndex);
+        int GetResidentChildrenLuxury(int index, int livingConditionIndex);
         int CalculateFeedingPoorBaseCost(int index);
         int CalculateFeedingDayworkers(int index);
         RoadModel CheckRoadUpgradeCost(int index);

@@ -553,7 +553,7 @@
             </ScrollViewer.Resources>
 
             <ItemsControl
-                ItemsSource="{Binding Path=DataModel.ResidentsCollection}"
+                ItemsSource="{Binding Path=DataModel.ResidentsCollection, UpdateSourceTrigger=PropertyChanged}"
                 Background="Transparent"
                 Grid.ZIndex="0">
 

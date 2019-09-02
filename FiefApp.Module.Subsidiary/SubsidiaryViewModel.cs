@@ -333,6 +333,20 @@ namespace FiefApp.Module.Subsidiary
                     }
                 }
             }
+
+            if (e.Action == "Delete")
+            {
+                for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
+                {
+                    if (DataModel.ConstructingCollection[x].Id == e.SubsidiaryId)
+                    {
+                        DataModel.ConstructingCollection.RemoveAt(x);
+                        break;
+                    }
+                }
+
+                
+            }
         }
 
         #endregion
@@ -384,6 +398,7 @@ namespace FiefApp.Module.Subsidiary
 
                 case "Edit":
                     {
+                        DataModel.EditModel = new SubsidiaryModel();
                         for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
                         {
                             if (DataModel.SubsidiaryCollection[x].Id == e.SubsidiaryId)

@@ -185,7 +185,7 @@ namespace FiefApp.Module.Manor
             else
             {
                 DataModel = _baseService.GetDataModel<ManorDataModel>(Index);
-                // DataModel.ResidentsCollection.Clear();
+                DataModel.ResidentsCollection.Clear();
                 DataModel.ResidentsCollection = new ObservableCollection<IPeopleModel>(_manorService.GetResidentsCollection(Index));
                 GetInformationSetDataModel();
             }
@@ -463,7 +463,7 @@ namespace FiefApp.Module.Manor
                 if (index == -1)
                 {
                     _baseService.SetDataModel(DataModel, Index);
-                    _manorService.SetLivingconditions(Index, DataModel.ManorLivingconditions);
+                    //_manorService.SetLivingconditions(Index, DataModel.ManorLivingconditions);
                 }
                 else
                 {

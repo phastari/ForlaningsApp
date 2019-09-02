@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
 
@@ -123,32 +124,56 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int SetAdultResidents(int index)
         {
-            int i = 0;
-
-            for (int x = 1; x < _fiefService.ManorList[index].ResidentsCollection.Count; x++)
-            {
-                if (_fiefService.ManorList[index].ResidentsCollection[x].Age > 13)
-                {
-                    i++;
-                }
-            }
-
-            return i;
+            return _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age > 13);
         }
 
         public int SetChildrenResidents(int index)
         {
-            int i = 0;
+            return _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age < 14);
+        }
 
-            for (int x = 1; x < _fiefService.ManorList[index].ResidentsCollection.Count; x++)
+        public int GetResidentAdultsBase(int index, int livingConditionIndex)
+        {
+            int adults = _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age > 13);
+            if (livingConditionIndex != -1)
             {
-                if (_fiefService.ManorList[index].ResidentsCollection[x].Age < 14)
-                {
-                    i++;
-                }
+                return adults * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[livingConditionIndex].BaseCost;
             }
 
-            return i;
+            return 0;
+        }
+
+        public int GetResidentAdultsLuxury(int index, int livingConditionIndex)
+        {
+            int adults = _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age > 13);
+            if (livingConditionIndex != -1)
+            {
+                return adults * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[livingConditionIndex].LuxuryCost;
+            }
+
+            return 0;
+        }
+
+        public int GetResidentChildrenBase(int index, int livingConditionIndex)
+        {
+            int children = _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age > 13);
+            if (livingConditionIndex != -1)
+            {
+                return children * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[livingConditionIndex].BaseCost / 2;
+            }
+
+            return 0;
+        }
+
+        public int GetResidentChildrenLuxury(int index, int livingConditionIndex)
+        {
+            int children = _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age > 13);
+            if (livingConditionIndex != -1)
+            {
+                return children * _settingsService.LivingconditionsSettingsModel.LivingconditionsList[livingConditionIndex].LuxuryCost / 2;
+            }
+
+            return 0;
         }
 
         public int CalculateFeedingPoorBaseCost(int index)
