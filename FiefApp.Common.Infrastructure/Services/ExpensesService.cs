@@ -1,9 +1,8 @@
-﻿using System;
+﻿using FiefApp.Common.Infrastructure.DataModels;
+using FiefApp.Common.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using FiefApp.Common.Infrastructure.DataModels;
-using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -13,7 +12,7 @@ namespace FiefApp.Common.Infrastructure.Services
         private readonly IFiefService _fiefService;
 
         public ExpensesService(
-            ISettingsService settingsService, 
+            ISettingsService settingsService,
             IFiefService fiefService
             )
         {
@@ -124,12 +123,21 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int SetAdultResidents(int index)
         {
-            return _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age > 13);
+            int adults = 0;
+            adults += _fiefService.ArmyList[index].TemplarKnightsList.Count;
+            adults += _fiefService.ArmyList[index].KnightsList.Count;
+            adults += _fiefService.ArmyList[index].CavalryTemplarKnightsList.Count;
+            adults += _fiefService.ArmyList[index].OfficerCorporalsList.Count;
+            adults += _fiefService.ArmyList[index].OfficerSergeantsList.Count;
+            adults += _fiefService.ArmyList[index].OfficerCaptainsList.Count;
+            adults += _fiefService.ManorList[index].ResidentsList.Count(t => t.Age > 13);
+            
+            return adults;
         }
 
         public int SetChildrenResidents(int index)
         {
-            return _fiefService.ManorList[index].ResidentsCollection.Count(t => t.Age < 14);
+            return _fiefService.ManorList[index].ResidentsList.Count(t => t.Age < 14);
         }
 
         public int GetResidentAdultsBase(int index, int livingConditionIndex)
@@ -178,30 +186,23 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int CalculateFeedingPoorBaseCost(int index)
         {
-            if (_fiefService.ExpensesList[index].FeedingPoor)
-            {
-                int pop = _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Population);
+            int pop = _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Population);
 
-                return Convert.ToInt32(Math.Ceiling(pop * _settingsService.ExpensesSettingsModel.FeedingPoorFactor));
-            }
-            return 0;
+            return Convert.ToInt32(Math.Ceiling(pop * _settingsService.ExpensesSettingsModel.FeedingPoorFactor));
         }
 
         public int CalculateFeedingDayworkers(int index)
         {
-            if (_fiefService.ExpensesList[index].FeedingDayworkers)
-            {
-                int workers = _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Serfdoms);
+            int workers = _fiefService.ManorList[index].VillagesCollection.Sum(t => t.Serfdoms)
+                          * _fiefService.WeatherList[index].DaysworkRequired;
 
-                return Convert.ToInt32(Math.Ceiling(workers * _settingsService.ExpensesSettingsModel.FeedingDaysWorkFactor));
-            }
-            return 0;
+            return Convert.ToInt32(Math.Ceiling(workers * _settingsService.ExpensesSettingsModel.FeedingDaysWorkFactor));
         }
 
         public RoadModel CheckRoadUpgradeCost(int index)
         {
             if (
-                _fiefService.InformationList[index].Roads != "" 
+                _fiefService.InformationList[index].Roads != ""
                 || _fiefService.InformationList[index].Roads == null
             )
             {
@@ -286,7 +287,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 nr = 0;
                 for (int x = 1; x < _fiefService.ExpensesList.Count; x++)
                 {
-                    nr += _fiefService.EmployeesList[x].Bailiff 
+                    nr += _fiefService.EmployeesList[x].Bailiff
                           + _fiefService.EmployeesList[x].Cupbearer
                           + _fiefService.EmployeesList[x].Falconer
                           + _fiefService.EmployeesList[x].Herald
@@ -313,7 +314,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 return nr;
             }
             nr = 0;
-            nr =+ _fiefService.EmployeesList[index].Bailiff
+            nr = +_fiefService.EmployeesList[index].Bailiff
                 + _fiefService.EmployeesList[index].Cupbearer
                 + _fiefService.EmployeesList[index].Falconer
                 + _fiefService.EmployeesList[index].Herald

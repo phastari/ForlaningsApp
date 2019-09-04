@@ -445,6 +445,7 @@ namespace FiefApp.Module.Mines
                     break;
                 }
             }
+            SaveData();
         }
 
         #endregion

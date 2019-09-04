@@ -496,7 +496,7 @@
                             <quarryUI:QuarryUI
                                 Id="{Binding Path=Id}"
                                 BaseIncome="{Binding Path=Approximate}"
-                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear}"
                                 DaysWorkNeeded="{Binding Path=DaysWorkNeeded}"
                                 Upkeep="{Binding Path=Upkeep}"
                                 StewardsCollection="{Binding Path=StewardsCollection}"

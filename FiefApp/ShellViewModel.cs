@@ -139,7 +139,7 @@ namespace FiefApp
 
                 if (_awaitResponsList.Any(o => o.Completed == false))
                 {
-                    Console.WriteLine("Wait!");
+                    
                 }
                 else
                 {

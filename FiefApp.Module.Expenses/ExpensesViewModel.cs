@@ -402,10 +402,6 @@ namespace FiefApp.Module.Expenses
         {
             DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
             DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
-            //DataModel.ResidentAdultsBase = _expensesService.GetResidentAdultsBase(Index, DataModel.LivingconditionIndex);
-            //DataModel.ResidentChildrenBase = _expensesService.GetResidentChildrenBase(Index, DataModel.LivingconditionIndex);
-            //DataModel.ResidentAdultsLuxury = _expensesService.GetResidentAdultsLuxury(Index, DataModel.LivingconditionIndex);
-            //DataModel.ResidentChildrenLuxury = _expensesService.GetResidentChildrenLuxury(Index, DataModel.LivingconditionIndex);
         }
 
         private void GetBoatCosts()
@@ -434,8 +430,23 @@ namespace FiefApp.Module.Expenses
 
         private void CalculateFeedingCosts()
         {
-            DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(Index);
-            DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(Index);
+            if (DataModel.FeedingPoor)
+            {
+                DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(Index);
+            }
+            else
+            {
+                DataModel.FeedingPoorBase = 0;
+            }
+
+            if (DataModel.FeedingDayworkers)
+            {
+                DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(Index);
+            }
+            else
+            {
+                DataModel.FeedingDayworkersBase = 0;
+            }
         }
 
         private void GetLivingcondition()

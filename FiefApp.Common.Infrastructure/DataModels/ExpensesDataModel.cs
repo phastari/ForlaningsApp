@@ -276,7 +276,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private bool _feedingDayworkers;
+        private bool _feedingDayworkers = true;
         public bool FeedingDayworkers
         {
             get => _feedingDayworkers;

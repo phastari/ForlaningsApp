@@ -198,7 +198,7 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _daysWorkNeeded;
+        private int _daysWorkNeeded = 100000;
         public int DaysWorkNeeded
         {
             get => _daysWorkNeeded;

@@ -5,17 +5,14 @@ namespace FiefApp.Common.Infrastructure.Behaviors
 {
     public class TextBoxBehavior
     {
-        public static bool GetSelectAllTextOnFocus(
-            TextBox textBox
-            )
+        public static bool GetSelectAllTextOnFocus(TextBox textBox)
         {
             return (bool)textBox.GetValue(SelectAllTextOnFocusProperty);
         }
 
         public static void SetSelectAllTextOnFocus(
             TextBox textBox,
-            bool value
-            )
+            bool value)
         {
             textBox.SetValue(SelectAllTextOnFocusProperty, value);
         }
@@ -25,12 +22,13 @@ namespace FiefApp.Common.Infrastructure.Behaviors
                 "SelectAllTextOnFocus",
                 typeof(bool),
                 typeof(TextBoxBehavior),
-                new UIPropertyMetadata(false, OnSelectAllTextOnFocusChanged));
+                new UIPropertyMetadata(
+                    false, 
+                    OnSelectAllTextOnFocusChanged));
 
         private static void OnSelectAllTextOnFocusChanged(
             DependencyObject d,
-            DependencyPropertyChangedEventArgs e
-            )
+            DependencyPropertyChangedEventArgs e)
         {
             var textBox = d as TextBox;
             if (textBox == null)
@@ -57,25 +55,19 @@ namespace FiefApp.Common.Infrastructure.Behaviors
 
         private static void SelectAll(
             object sender,
-            RoutedEventArgs e
-            )
+            RoutedEventArgs e)
         {
             var textBox = e.OriginalSource as TextBox;
-            if (textBox == null)
-            {
-                return;
-            }
-
-            textBox.SelectAll();
+            textBox?.SelectAll();
         }
 
         private static void IgnoreMouseButton(
             object sender,
-            System.Windows.Input.MouseButtonEventArgs e
-            )
+            System.Windows.Input.MouseButtonEventArgs e)
         {
             var textBox = sender as TextBox;
-            if (textBox == null || textBox.IsKeyboardFocusWithin)
+            if (textBox == null 
+                || textBox.IsKeyboardFocusWithin)
             {
                 return;
             }
