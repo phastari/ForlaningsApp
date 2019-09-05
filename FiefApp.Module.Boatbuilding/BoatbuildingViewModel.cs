@@ -94,7 +94,6 @@ namespace FiefApp.Module.Boatbuilding
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public BoatbuildingViewModel(
             IBaseService baseService,
@@ -159,7 +158,7 @@ namespace FiefApp.Module.Boatbuilding
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
                     DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(x);
-                    SetDataModelInformation();
+                    SetDataModelInformation(x);
                     SaveData(x);
                 }
 
@@ -186,7 +185,6 @@ namespace FiefApp.Module.Boatbuilding
 
             DataModel.ShowButtons = Index != 0;
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -195,7 +193,7 @@ namespace FiefApp.Module.Boatbuilding
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(x);
-                SetDataModelInformation();
+                SetDataModelInformation(x);
                 SaveData(x);
             }
 
@@ -420,7 +418,7 @@ namespace FiefApp.Module.Boatbuilding
                 {
                     Id = _boatbuildingService.GetNewBoatbuilderId(),
                     PersonName = _baseService.GetCommonerName(),
-                    Age = _baseService.RollDie(14, 60)
+                    Age = _baseService.RollDie(14, 61)
                 });
         }
 
@@ -468,7 +466,6 @@ namespace FiefApp.Module.Boatbuilding
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

@@ -93,7 +93,6 @@ namespace FiefApp.Module.Buildings
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public BuildingsViewModel(
             IBaseService baseService,
@@ -190,7 +189,6 @@ namespace FiefApp.Module.Buildings
             DataModel.BuildersCollection.CollectionChanged += UpdateBuildersCollectionInBuildingsCollection;
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -396,7 +394,7 @@ namespace FiefApp.Module.Buildings
             {
                 Id = id,
                 PersonName = _baseService.GetCommonerName(),
-                Age = _baseService.RollDie(14, 60)
+                Age = _baseService.RollDie(14, 61)
             });
             SaveData();
         }
@@ -458,7 +456,6 @@ namespace FiefApp.Module.Buildings
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

@@ -93,7 +93,6 @@ namespace FiefApp.Module.Trade
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public TradeViewModel(
             IBaseService baseService,
@@ -175,7 +174,6 @@ namespace FiefApp.Module.Trade
                 : _baseService.GetDataModel<TradeDataModel>(Index);
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -203,7 +201,7 @@ namespace FiefApp.Module.Trade
             {
                 Id = _tradeService.GetNewMerchantId(),
                 PersonName = _baseService.GetCommonerName(),
-                Age = _baseService.RollDie(10,60)
+                Age = _baseService.RollDie(10,61)
             });
         }
 
@@ -455,7 +453,6 @@ namespace FiefApp.Module.Trade
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

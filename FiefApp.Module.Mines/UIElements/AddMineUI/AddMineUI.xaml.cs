@@ -39,7 +39,7 @@ namespace FiefApp.Module.Mines.UIElements.AddMineUI
 
             int i = Convert.ToInt32(obj);
 
-            Roll1 = _baseService.RollDie(1, 100);
+            Roll1 = _baseService.RollDie(1, 101);
 
             if (Roll1 < 26)
             {

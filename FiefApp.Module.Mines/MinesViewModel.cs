@@ -92,7 +92,6 @@ namespace FiefApp.Module.Mines
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
         private bool _ignoreNextIncomeUpdate = false;
 
         public MinesViewModel(
@@ -156,7 +155,7 @@ namespace FiefApp.Module.Mines
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
                     DataModel = _baseService.GetDataModel<MinesDataModel>(x);
-                    GetInformationSetDataModel();
+                    GetInformationSetDataModel(x);
                     DataModel.UpdateTotals();
                     SaveData(x);
                 }
@@ -180,7 +179,6 @@ namespace FiefApp.Module.Mines
             DataModel.UpdateTotals();
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -189,7 +187,7 @@ namespace FiefApp.Module.Mines
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<MinesDataModel>(x);
-                GetInformationSetDataModel();
+                GetInformationSetDataModel(x);
                 DataModel.UpdateTotals();
                 SaveData(x);
             }
@@ -597,7 +595,6 @@ namespace FiefApp.Module.Mines
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

@@ -91,7 +91,6 @@ namespace FiefApp.Module.Income
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public IncomeViewModel(
             IBaseService baseService,
@@ -150,7 +149,7 @@ namespace FiefApp.Module.Income
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
                     DataModel = _baseService.GetDataModel<IncomeDataModel>(x);
-                    DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
+                    DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(x, DataModel.IncomesCollection));
                     DataModel.UpdateTotals();
                     SaveData(x);
                 }
@@ -184,7 +183,6 @@ namespace FiefApp.Module.Income
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -193,7 +191,7 @@ namespace FiefApp.Module.Income
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<IncomeDataModel>(x);
-                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(Index, DataModel.IncomesCollection));
+                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(x, DataModel.IncomesCollection));
                 DataModel.UpdateTotals();
                 SaveData(x);
             }
@@ -274,7 +272,6 @@ namespace FiefApp.Module.Income
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

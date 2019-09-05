@@ -91,7 +91,6 @@ namespace FiefApp.Module.Expenses
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public ExpensesViewModel(
             IBaseService baseService,
@@ -156,7 +155,7 @@ namespace FiefApp.Module.Expenses
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
                     DataModel = _baseService.GetDataModel<ExpensesDataModel>(x);
-                    GetInformationSetDataModel();
+                    GetInformationSetDataModel(x);
                     SaveData(x);
                 }
 
@@ -184,7 +183,6 @@ namespace FiefApp.Module.Expenses
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -193,7 +191,7 @@ namespace FiefApp.Module.Expenses
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<ExpensesDataModel>(x);
-                GetInformationSetDataModel();
+                GetInformationSetDataModel(x);
                 SaveData(x);
             }
 
@@ -288,7 +286,6 @@ namespace FiefApp.Module.Expenses
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }
@@ -384,95 +381,208 @@ namespace FiefApp.Module.Expenses
 
         #region GetInformationSetDataModel
 
-        private void GetInformationSetDataModel()
+        private void GetInformationSetDataModel(int index = -1)
         {
-            GetManorUpkeep();
-            CalculateUpkeepManor();
-            CalculateFeedingCosts();
-            GetLivingcondition();
-            GetBuildingsCosts();
-            GetBoatCosts();
-            GetQuarriesInformation();
-            GetArmyInformation();
-            GetEmployeesInformation();
-            GetResidentsInformation();
-        }
-
-        private void GetResidentsInformation()
-        {
-            DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
-            DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
-        }
-
-        private void GetBoatCosts()
-        {
-            DataModel.BoatBuilds = _expensesService.GetNumberOfBoatsBuilding(Index);
-            DataModel.BoatBuildsSilver = _expensesService.GetBoatbuildingSilverCost(Index);
-        }
-
-        private void GetBuildingsCosts()
-        {
-            DataModel.Builds = _expensesService.GetNumberOfBuildings(Index);
-            DataModel.BuildsIron = _expensesService.GetIronCostOfBuildings(Index);
-            DataModel.BuildsStone = _expensesService.GetStoneCostOfBuildings(Index);
-            DataModel.BuildsWood = _expensesService.GetWoodCostOfBuildings(Index);
-        }
-
-        private void GetManorUpkeep()
-        {
-            DataModel.ManorMaintenance = _expensesService.GetManorUpkeep(Index);
-        }
-
-        private void CalculateUpkeepManor()
-        {
-            DataModel.ManorMaintenanceBase = _expensesService.CalculateManorUpkeepBaseCost(Index);
-        }
-
-        private void CalculateFeedingCosts()
-        {
-            if (DataModel.FeedingPoor)
+            if (index == -1)
             {
-                DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(Index);
+                GetManorUpkeep();
+                CalculateUpkeepManor();
+                CalculateFeedingCosts();
+                GetLivingcondition();
+                GetBuildingsCosts();
+                GetBoatCosts();
+                GetQuarriesInformation();
+                GetArmyInformation();
+                GetEmployeesInformation();
+                GetResidentsInformation();
             }
             else
             {
-                DataModel.FeedingPoorBase = 0;
+                GetManorUpkeep(index);
+                CalculateUpkeepManor(index);
+                CalculateFeedingCosts(index);
+                GetLivingcondition(index);
+                GetBuildingsCosts(index);
+                GetBoatCosts(index);
+                GetQuarriesInformation(index);
+                GetArmyInformation(index);
+                GetEmployeesInformation(index);
+                GetResidentsInformation(index);
             }
+        }
 
-            if (DataModel.FeedingDayworkers)
+        private void GetResidentsInformation(int index = -1)
+        {
+            if (index == -1)
             {
-                DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(Index);
+                DataModel.ResidentAdults = _expensesService.SetAdultResidents(Index);
+                DataModel.ResidentChildren = _expensesService.SetChildrenResidents(Index);
             }
             else
             {
-                DataModel.FeedingDayworkersBase = 0;
+                DataModel.ResidentAdults = _expensesService.SetAdultResidents(index);
+                DataModel.ResidentChildren = _expensesService.SetChildrenResidents(index);
             }
         }
 
-        private void GetLivingcondition()
+        private void GetBoatCosts(int index = -1)
         {
-            DataModel.Livingcondition = _expensesService.GetLivingcondition(Index);
+            if (index == -1)
+            {
+                DataModel.BoatBuilds = _expensesService.GetNumberOfBoatsBuilding(Index);
+                DataModel.BoatBuildsSilver = _expensesService.GetBoatbuildingSilverCost(Index);
+            }
+            else
+            {
+                DataModel.BoatBuilds = _expensesService.GetNumberOfBoatsBuilding(index);
+                DataModel.BoatBuildsSilver = _expensesService.GetBoatbuildingSilverCost(index);
+            }
         }
 
-        private void GetQuarriesInformation()
+        private void GetBuildingsCosts(int index = -1)
         {
-            DataModel.Quarries = _expensesService.GetNumberOfQuarries(Index);
-            DataModel.QuarriesBase = _expensesService.GetQuarriesBaseCost(Index);
+            if (index == -1)
+            {
+                DataModel.Builds = _expensesService.GetNumberOfBuildings(Index);
+                DataModel.BuildsIron = _expensesService.GetIronCostOfBuildings(Index);
+                DataModel.BuildsStone = _expensesService.GetStoneCostOfBuildings(Index);
+                DataModel.BuildsWood = _expensesService.GetWoodCostOfBuildings(Index);
+            }
+            else
+            {
+                DataModel.Builds = _expensesService.GetNumberOfBuildings(index);
+                DataModel.BuildsIron = _expensesService.GetIronCostOfBuildings(index);
+                DataModel.BuildsStone = _expensesService.GetStoneCostOfBuildings(index);
+                DataModel.BuildsWood = _expensesService.GetWoodCostOfBuildings(index);
+            }
         }
 
-        private void GetArmyInformation()
+        private void GetManorUpkeep(int index = -1)
         {
-            DataModel.Army = _expensesService.GetArmyNumbers(Index);
-            DataModel.ArmyBase = _expensesService.GetArmyBaseCost(Index);
-            DataModel.ArmySilver = _expensesService.GetArmySilverCost(Index);
+            if (index == -1)
+            {
+                DataModel.ManorMaintenance = _expensesService.GetManorUpkeep(Index);
+            }
+            else
+            {
+                DataModel.ManorMaintenance = _expensesService.GetManorUpkeep(index);
+            }
         }
 
-        private void GetEmployeesInformation()
+        private void CalculateUpkeepManor(int index = -1)
         {
-            DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
-            DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
-            DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
-            DataModel.EmployeesSilver = _expensesService.GetEmployeeSilverCost(Index);
+            if (index == -1)
+            {
+                DataModel.ManorMaintenanceBase = _expensesService.CalculateManorUpkeepBaseCost(Index);
+            }
+            else
+            {
+                DataModel.ManorMaintenanceBase = _expensesService.CalculateManorUpkeepBaseCost(index);
+            }
+        }
+
+        private void CalculateFeedingCosts(int index = -1)
+        {
+            if (index == -1)
+            {
+                if (DataModel.FeedingPoor)
+                {
+                    DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(Index);
+                }
+                else
+                {
+                    DataModel.FeedingPoorBase = 0;
+                }
+
+                if (DataModel.FeedingDayworkers)
+                {
+                    DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(Index);
+                }
+                else
+                {
+                    DataModel.FeedingDayworkersBase = 0;
+                }
+            }
+            else
+            {
+                if (DataModel.FeedingPoor)
+                {
+                    DataModel.FeedingPoorBase = _expensesService.CalculateFeedingPoorBaseCost(index);
+                }
+                else
+                {
+                    DataModel.FeedingPoorBase = 0;
+                }
+
+                if (DataModel.FeedingDayworkers)
+                {
+                    DataModel.FeedingDayworkersBase = _expensesService.CalculateFeedingDayworkers(index);
+                }
+                else
+                {
+                    DataModel.FeedingDayworkersBase = 0;
+                }
+            }
+        }
+
+        private void GetLivingcondition(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.Livingcondition = _expensesService.GetLivingcondition(Index);
+            }
+            else
+            {
+                DataModel.Livingcondition = _expensesService.GetLivingcondition(index);
+            }
+        }
+
+        private void GetQuarriesInformation(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.Quarries = _expensesService.GetNumberOfQuarries(Index);
+                DataModel.QuarriesBase = _expensesService.GetQuarriesBaseCost(Index);
+            }
+            else
+            {
+                DataModel.Quarries = _expensesService.GetNumberOfQuarries(index);
+                DataModel.QuarriesBase = _expensesService.GetQuarriesBaseCost(index);
+            }
+        }
+
+        private void GetArmyInformation(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.Army = _expensesService.GetArmyNumbers(Index);
+                DataModel.ArmyBase = _expensesService.GetArmyBaseCost(Index);
+                DataModel.ArmySilver = _expensesService.GetArmySilverCost(Index);
+            }
+            else
+            {
+                DataModel.Army = _expensesService.GetArmyNumbers(index);
+                DataModel.ArmyBase = _expensesService.GetArmyBaseCost(index);
+                DataModel.ArmySilver = _expensesService.GetArmySilverCost(index);
+            }
+        }
+
+        private void GetEmployeesInformation(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.Employees = _expensesService.GetEmployeeNumbers(Index);
+                DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(Index);
+                DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(Index);
+                DataModel.EmployeesSilver = _expensesService.GetEmployeeSilverCost(Index);
+            }
+            else
+            {
+                DataModel.Employees = _expensesService.GetEmployeeNumbers(index);
+                DataModel.EmployeesBase = _expensesService.GetEmployeeBaseCost(index);
+                DataModel.EmployeesLuxury = _expensesService.GetEmployeeLuxuryCost(index);
+                DataModel.EmployeesSilver = _expensesService.GetEmployeeSilverCost(index);
+            }
         }
 
         #endregion

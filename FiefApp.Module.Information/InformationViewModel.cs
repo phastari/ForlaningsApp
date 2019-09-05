@@ -90,7 +90,6 @@ namespace FiefApp.Module.Information
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public InformationViewModel(
             IBaseService baseService,
@@ -160,7 +159,7 @@ namespace FiefApp.Module.Information
                 {
                     DataModel = _baseService.GetDataModel<InformationDataModel>(x);
                     DataModel.CheckReligionsList();
-                    DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
+                    DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(x));
                     SaveData(x);
                 }
 
@@ -193,7 +192,6 @@ namespace FiefApp.Module.Information
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -203,7 +201,7 @@ namespace FiefApp.Module.Information
             {
                 DataModel = _baseService.GetDataModel<InformationDataModel>(x);
                 DataModel.CheckReligionsList();
-                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(Index));
+                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(x));
                 SaveData(x);
             }
 
@@ -336,7 +334,6 @@ namespace FiefApp.Module.Information
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

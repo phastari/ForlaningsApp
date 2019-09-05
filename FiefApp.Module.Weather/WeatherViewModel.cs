@@ -160,7 +160,6 @@ namespace FiefApp.Module.Weather
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public WeatherViewModel(
             IBaseService baseService,
@@ -247,7 +246,6 @@ namespace FiefApp.Module.Weather
 
             GetInformationSetDataModel();
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         #region DelegateCommand : EndOfYearCommand
@@ -366,7 +364,6 @@ namespace FiefApp.Module.Weather
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }
@@ -546,11 +543,7 @@ namespace FiefApp.Module.Weather
                     }
                 }
 
-                if (_awaitAllModulesList.Any(o => o.Completed == false))
-                {
-                    Console.WriteLine("Wait!");
-                }
-                else
+                if (_awaitAllModulesList.All(o => o.Completed))
                 {
                     for (int y = 0; y < _awaitAllModulesList.Count; y++)
                     {

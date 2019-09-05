@@ -376,7 +376,7 @@ namespace FiefApp
                     _fiefService.WeatherList.Clear();
                     _fiefService.WeatherList = new List<WeatherDataModel>(obj.WeatherList);
                     _fiefService.StewardsDataModel = new StewardsDataModel();
-                    _fiefService.StewardsDataModel.StewardsCollection = new System.Collections.ObjectModel.ObservableCollection<StewardModel>(obj.StewardsDataModel.StewardsCollection);
+                    _fiefService.StewardsDataModel.StewardsCollection = new ObservableCollection<StewardModel>(obj.StewardsDataModel.StewardsCollection);
 
                     ForlaningsNamn = _fiefService.InformationList[1].FiefName;
                     ForlaningsAr = _fiefService.Year;

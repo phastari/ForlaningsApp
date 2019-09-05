@@ -93,7 +93,6 @@ namespace FiefApp.Module.Employees
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public EmployeesViewModel(
             IBaseService baseService,
@@ -192,7 +191,6 @@ namespace FiefApp.Module.Employees
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -366,7 +364,6 @@ namespace FiefApp.Module.Employees
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

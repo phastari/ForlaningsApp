@@ -94,7 +94,6 @@ namespace FiefApp.Module.Port
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public PortViewModel(
             IBaseService baseService,
@@ -190,7 +189,6 @@ namespace FiefApp.Module.Port
 
             GetInformationSetDataModel();
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -248,7 +246,7 @@ namespace FiefApp.Module.Port
             {
                 Id = _portService.GetNewCaptainId(Index),
                 PersonName = _baseService.GetCommonerName(),
-                Age = _baseService.RollDie(20,60)
+                Age = _baseService.RollDie(20,61)
             });
         }
 
@@ -566,7 +564,6 @@ namespace FiefApp.Module.Port
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

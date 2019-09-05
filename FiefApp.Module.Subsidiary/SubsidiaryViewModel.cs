@@ -92,7 +92,6 @@ namespace FiefApp.Module.Subsidiary
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public SubsidiaryViewModel(
             IBaseService baseService,
@@ -200,7 +199,6 @@ namespace FiefApp.Module.Subsidiary
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -542,7 +540,6 @@ namespace FiefApp.Module.Subsidiary
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

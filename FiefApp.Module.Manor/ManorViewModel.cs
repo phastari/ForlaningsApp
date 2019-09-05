@@ -94,7 +94,6 @@ namespace FiefApp.Module.Manor
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public ManorViewModel(
             IBaseService baseService,
@@ -191,7 +190,6 @@ namespace FiefApp.Module.Manor
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -496,7 +494,6 @@ namespace FiefApp.Module.Manor
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

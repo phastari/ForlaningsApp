@@ -243,18 +243,18 @@ namespace FiefApp.Common.Infrastructure.HelpClasses.NameGenerator
 
         public string GetRandomCommonerName()
         {
-            return _namesArray[_baseService.RollDie(0, _namesArray.Length)];
+            return _namesArray[_baseService.RollDie(0, _namesArray.Length + 1)];
         }
 
         public string GetRandomNoble()
         {
-            if (_baseService.RollDie(0, 14) != 14)
+            if (_baseService.RollDie(0, 15) != 14)
             {
-                return $"{_namesArray[_baseService.RollDie(0, _namesArray.Length)]} {_familyLowArray[_baseService.RollDie(0, _familyLowArray.Length)]}";
+                return $"{_namesArray[_baseService.RollDie(0, _namesArray.Length + 1)]} {_familyLowArray[_baseService.RollDie(0, _familyLowArray.Length + 1)]}";
             }
             else
             {
-                return $"{_namesArray[_baseService.RollDie(0, _namesArray.Length)]} {_familyHighArray[_baseService.RollDie(0, _familyHighArray.Length)]}";
+                return $"{_namesArray[_baseService.RollDie(0, _namesArray.Length + 1)]} {_familyHighArray[_baseService.RollDie(0, _familyHighArray.Length + 1)]}";
             }
         }
 

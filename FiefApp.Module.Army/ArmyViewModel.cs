@@ -92,7 +92,6 @@ namespace FiefApp.Module.Army
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public ArmyViewModel(
             IBaseService baseService,
@@ -178,7 +177,6 @@ namespace FiefApp.Module.Army
             }
 
             UpdateFiefCollection();
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
@@ -336,7 +334,6 @@ namespace FiefApp.Module.Army
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

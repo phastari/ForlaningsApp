@@ -571,12 +571,12 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
 
                 int silver = Convert.ToInt32(
                     Math.Floor(
-                        BaseIncomeSilver
-                        + BaseIncomeBase * BASE_COST
-                        + BaseIncomeLuxury * LUXURY_COST
-                        + BaseIncomeIron * IRON_COST
-                        + BaseIncomeWood * WOOD_COST
-                        + BaseIncomeStone * STONE_COST
+                        (BaseIncomeSilver
+                         + BaseIncomeBase * BASE_COST
+                         + BaseIncomeLuxury * LUXURY_COST
+                         + BaseIncomeIron * IRON_COST
+                         + BaseIncomeWood * WOOD_COST
+                         + BaseIncomeStone * STONE_COST)
                         * resultFactor
                     ));
 
@@ -588,9 +588,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         if (BaseBack)
                         {
-                            factor = _baseService.RollDie(1, 100);
+                            factor = _baseService.RollDie(1, 101);
                             resultBase = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / BASE_COST));
-                            total -= resultBase * BASE_COST / silver;
+                            total -= (decimal)resultBase * BASE_COST / silver;
                             silver -= resultBase * BASE_COST;
                             skipRest = true;
                         }
@@ -600,9 +600,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         if (LuxuryBack)
                         {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)));
+                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
                             resultLuxury = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / LUXURY_COST));
-                            total -= resultLuxury * LUXURY_COST / silver;
+                            total -= (decimal)resultLuxury * LUXURY_COST / silver;
                             silver -= resultLuxury * LUXURY_COST;
                             skipRest = true;
                         }
@@ -612,9 +612,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         if (StoneBack)
                         {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)));
+                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
                             resultStone = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / STONE_COST));
-                            total -= resultStone * STONE_COST / silver;
+                            total -= (decimal)resultStone * STONE_COST / silver;
                             silver -= resultStone * STONE_COST;
                             skipRest = true;
                         }
@@ -624,9 +624,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         if (WoodBack)
                         {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)));
+                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
                             resultWood = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / WOOD_COST));
-                            total -= resultWood * WOOD_COST / silver;
+                            total -= (decimal)resultWood * WOOD_COST / silver;
                             silver -= resultWood * WOOD_COST;
                             skipRest = true;
                         }
@@ -636,9 +636,9 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         if (IronBack)
                         {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)));
+                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
                             resultIron = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / IRON_COST));
-                            total -= resultIron * IRON_COST / silver;
+                            total -= (decimal)resultIron * IRON_COST / silver;
                             silver -= resultIron * IRON_COST;
                             skipRest = true;
                         }

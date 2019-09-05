@@ -92,7 +92,6 @@ namespace FiefApp.Module.Stewards
                 Completed = false
             }
         };
-        private bool _triggerLoad = true;
 
         public StewardsViewModel(
             IBaseService baseService,
@@ -185,18 +184,13 @@ namespace FiefApp.Module.Stewards
                 DataModel.IndustriesBeingDevelopedCollection = _baseService.UpdateIndustriesBeingDevelopedCollection(DataModel.IndustriesBeingDevelopedCollection);
                 SaveData();
             }
-            _triggerLoad = true;
         }
 
         private void UpdateAndRespond()
         {
-            UpdateFiefCollection();
-            for (int x = 1; x < FiefCollection.Count; x++)
-            {
-                DataModel = _baseService.GetDataModel<StewardsDataModel>(x);
-                GetInformationSetDataModel();
-                SaveData(x);
-            }
+            DataModel = _baseService.GetDataModel<StewardsDataModel>(Index);
+            GetInformationSetDataModel();
+            SaveData();
 
             _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
             {
@@ -337,7 +331,7 @@ namespace FiefApp.Module.Stewards
                 {
                     Id = _stewardsService.GetNextStewardId(),
                     PersonName = _baseService.GetNobleName(),
-                    Age = _baseService.RollDie(14, 60),
+                    Age = _baseService.RollDie(14, 61),
                     Skill = "0",
                     Resources = "0",
                     Loyalty = "0",
@@ -423,7 +417,6 @@ namespace FiefApp.Module.Stewards
 
         private void ExecuteNewFiefLoadedEvent()
         {
-            _triggerLoad = false;
             Index = 1;
             CompleteLoadData();
         }

@@ -251,7 +251,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
 
                 if (control == 0)
                 {
-                    change = _baseService.RollDie(1, 10);
+                    change = _baseService.RollDie(1, 11);
                     population = -(TotalPopulation / 100 * change);
                     population += ModificationPopulation;
 
@@ -274,7 +274,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                 }
                 else if (control < 3)
                 {
-                    change = _baseService.RollDie(1, 6);
+                    change = _baseService.RollDie(1, 7);
                     population = -(TotalPopulation / 100 * change);
                     population += ModificationPopulation;
 
@@ -297,7 +297,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                 }
                 else if (control == 3)
                 {
-                    change = _baseService.RollDie(3, 9);
+                    change = _baseService.RollDie(3, 10);
                     population = TotalPopulation / 100 * change;
                     population += ModificationPopulation;
 
@@ -319,7 +319,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI
                 }
                 else
                 {
-                    change = _baseService.RollDie(3, 9);
+                    change = _baseService.RollDie(3, 10);
                     change += _baseService.RollObDice(control - 3);
                     population = TotalPopulation / 100 * change;
                     population += ModificationPopulation;

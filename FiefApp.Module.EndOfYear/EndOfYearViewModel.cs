@@ -479,24 +479,100 @@ namespace FiefApp.Module.EndOfYear
             {
                 str += $"{_fiefService.InformationList[x].FiefName}{Environment.NewLine}";
                 str += $"Väder:{Environment.NewLine}";
-                str += $"Vår {_fiefService.WeatherList[x].SpringRoll} ({_fiefService.WeatherList[x].SpringRollMod}){Environment.NewLine}";
-                str += $"Sommar {_fiefService.WeatherList[x].SummerRoll} ({_fiefService.WeatherList[x].SummerRollMod}){Environment.NewLine}";
-                str += $"Höst {_fiefService.WeatherList[x].FallRoll} ({_fiefService.WeatherList[x].FallRollMod}){Environment.NewLine}";
-                str += $"Vinter {_fiefService.WeatherList[x].WinterRoll} ({_fiefService.WeatherList[x].WinterRollMod}){Environment.NewLine}{Environment.NewLine}";
+                str += $"   Vår {_fiefService.WeatherList[x].SpringRoll.ToString().PadLeft(3)} ({_fiefService.WeatherList[x].SpringRollMod}){Environment.NewLine}";
+                str += $"Sommar {_fiefService.WeatherList[x].SummerRoll.ToString().PadLeft(3)} ({_fiefService.WeatherList[x].SummerRollMod}){Environment.NewLine}";
+                str += $"  Höst {_fiefService.WeatherList[x].FallRoll.ToString().PadLeft(3)} ({_fiefService.WeatherList[x].FallRollMod}){Environment.NewLine}";
+                str += $"Vinter {_fiefService.WeatherList[x].WinterRoll.ToString().PadLeft(3)} ({_fiefService.WeatherList[x].WinterRollMod}){Environment.NewLine}{Environment.NewLine}";
+
                 #region IncomeModule
 
                 str += $"Inkomster:{Environment.NewLine}";
+                for (int i = 0; i < DataModel.IncomeListFief[x - 1].OtherIncomesList.Count; i++)
+                {
+                    if (DataModel.IncomeListFief[x - 1].OtherIncomesList[i].Silver > -1)
+                    {
+                        silver += DataModel.IncomeListFief[x - 1].OtherIncomesList[i].Silver;
+                        str += $"{DataModel.IncomeListFief[x - 1].OtherIncomesList[i].Income.PadRight(15)}{Convert.ToString(DataModel.IncomeListFief[x - 1].OtherIncomesList[i].Silver).PadLeft(8)} Silver{Environment.NewLine}";
+                    }
+                }
+
                 for (int i = 0; i < DataModel.IncomeListFief[x - 1].IncomeCollection.Count; i++)
                 {
                     int temp;
                     if (int.TryParse(DataModel.IncomeListFief[x - 1].IncomeCollection[i].Result, out temp))
                     {
                         bas += temp;
-                        str += $"{DataModel.IncomeListFief[x - 1].IncomeCollection[i].Income.PadRight(15)}{Convert.ToString(DataModel.IncomeListFief[x - 1].IncomeCollection[i].Result.PadRight(4))} Bas{Environment.NewLine}";
+                        str += $"{DataModel.IncomeListFief[x - 1].IncomeCollection[i].Income.PadRight(15)} {Convert.ToString(DataModel.IncomeListFief[x - 1].IncomeCollection[i].Result.PadLeft(7))} Bas{Environment.NewLine}";
                     }
                 }
 
+                str += Environment.NewLine;
+
                 #endregion
+
+                #region SubsidiaryModule
+
+                str += $"Binäringar:{Environment.NewLine}";
+                for (int i = 0; i < DataModel.IncomeListFief[x - 1].SubsidiariesCollection.Count; i++)
+                {
+                    int tmpSilver;
+                    int tmpBas;
+                    int tmpLyx;
+
+                    str += $"{DataModel.IncomeListFief[x - 1].SubsidiariesCollection[i].Subsidiary.PadRight(15)} ";
+                    if (int.TryParse(DataModel.IncomeListFief[x - 1].SubsidiariesCollection[i].ResultSilver, out tmpSilver))
+                    {
+                        silver += tmpSilver;
+                        str += $"{Convert.ToString(tmpSilver).PadLeft(7)} Silver";
+                    }
+                    if (int.TryParse(DataModel.IncomeListFief[x - 1].SubsidiariesCollection[i].ResultBase, out tmpBas))
+                    {
+                        bas += tmpBas;
+                        str += $"{Convert.ToString(tmpBas).PadLeft(5)} Bas";
+                    }
+                    if (int.TryParse(DataModel.IncomeListFief[x - 1].SubsidiariesCollection[i].ResultLuxury, out tmpLyx))
+                    {
+                        lyx += tmpLyx;
+                        str += $"{Convert.ToString(tmpLyx).PadLeft(5)} Lyx";
+                    }
+                }
+
+                str += Environment.NewLine;
+
+                #endregion
+
+                #region MinesModule
+
+                str += $"Gruvor:{Environment.NewLine}";
+                for (int i = 0; i < DataModel.IncomeListFief[x - 1].MinesCollection.Count; i++)
+                {
+                    int tmpSilver;
+
+                    if (int.TryParse(DataModel.IncomeListFief[x - 1].MinesCollection[i].Result, out tmpSilver))
+                    {
+                        silver += tmpSilver;
+                        str += $"{DataModel.IncomeListFief[x - 1].MinesCollection[i].MineType} {Convert.ToString(tmpSilver).PadLeft(7)} Silver{Environment.NewLine}";
+                    }
+                }
+
+                str += Environment.NewLine;
+
+                str += $"Stenbrott:{Environment.NewLine}";
+                for (int i = 0; i < DataModel.IncomeListFief[x - 1].QuarriesCollection.Count; i++)
+                {
+                    int tmpStone;
+
+                    if (int.TryParse(DataModel.IncomeListFief[x - 1].QuarriesCollection[i].Result, out tmpStone))
+                    {
+                        stone += tmpStone;
+                        str += $"{DataModel.IncomeListFief[x - 1].QuarriesCollection[i].QuarryType} {Convert.ToString(tmpStone).PadLeft(7)} Sten{Environment.NewLine}";
+                    }
+                }
+
+                str += Environment.NewLine;
+
+                #endregion
+
                 #region ArmyModule
 
                 //silver += _fiefService.ArmyList[x].TotalSilver;
