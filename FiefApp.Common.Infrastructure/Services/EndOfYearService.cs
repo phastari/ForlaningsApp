@@ -394,7 +394,13 @@ namespace FiefApp.Common.Infrastructure.Services
                     TaxesModel = taxesModel,
                     PopulationModel = populationModel,
                     EndOfYearOkDictionary = dictionary,
-                    ShowShipyard = _fiefService.PortsList[x].GotShipyard
+                    ShowShipyard = _fiefService.PortsList[x].GotShipyard,
+                    ExpensesSilver = _fiefService.ExpensesList[x].ExpensesSilver,
+                    ExpensesBase = _fiefService.ExpensesList[x].ExpensesBase,
+                    ExpensesLuxury = _fiefService.ExpensesList[x].ExpensesLuxury,
+                    ExpensesIron = _fiefService.ExpensesList[x].ExpensesIron,
+                    ExpensesStone = _fiefService.ExpensesList[x].ExpensesStone,
+                    ExpensesWood = _fiefService.ExpensesList[x].ExpensesWood
                 });
             }
 

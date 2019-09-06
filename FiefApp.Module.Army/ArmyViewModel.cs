@@ -151,6 +151,7 @@ namespace FiefApp.Module.Army
                 UpdateFiefCollection();
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
+                    DataModel = _baseService.GetDataModel<ArmyDataModel>(x);
                     _armyService.UpdateSilverExpenses(x, DataModel.TotalSilver);
                     _armyService.UpdateBaseExpenses(x, DataModel.TotalBase);
                     SaveData(x);
@@ -184,6 +185,7 @@ namespace FiefApp.Module.Army
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
+                DataModel = _baseService.GetDataModel<ArmyDataModel>(x);
                 _armyService.UpdateSilverExpenses(x, DataModel.TotalSilver);
                 _armyService.UpdateBaseExpenses(x, DataModel.TotalBase);
                 SaveData(x);

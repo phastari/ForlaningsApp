@@ -109,6 +109,34 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
                 new PropertyMetadata(-1)
             );
 
+        public int DaysWorkThisYear
+        {
+            get => (int)GetValue(DaysWorkThisYearProperty);
+            set => SetValue(DaysWorkThisYearProperty, value);
+        }
+
+        public static readonly DependencyProperty DaysWorkThisYearProperty =
+            DependencyProperty.Register(
+                "DaysWorkThisYear",
+                typeof(int),
+                typeof(EndOfYearSubsidiaryUI),
+                new PropertyMetadata(0)
+            );
+
+        public int DaysWorkUpkeep
+        {
+            get => (int)GetValue(DaysWorkUpkeepProperty);
+            set => SetValue(DaysWorkUpkeepProperty, value);
+        }
+
+        public static readonly DependencyProperty DaysWorkUpkeepProperty =
+            DependencyProperty.Register(
+                "DaysWorkUpkeep",
+                typeof(int),
+                typeof(EndOfYearSubsidiaryUI),
+                new PropertyMetadata(0)
+            );
+
         public string Skill
         {
             get => (string)GetValue(SkillProperty);
@@ -498,5 +526,10 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
         }
 
         #endregion
+
+        private void EndOfYearSubsidiaryUI_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Crewed = decimal.Round((decimal)DaysWorkThisYear / DaysWorkUpkeep, 2);
+        }
     }
 }

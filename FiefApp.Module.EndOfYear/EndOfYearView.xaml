@@ -134,9 +134,6 @@
             Grid.RowSpan="39"
             Grid.ZIndex="1"
             VerticalScrollBarVisibility="Auto">
-            <ScrollViewer.Resources>
-                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">2</sys:Double>
-            </ScrollViewer.Resources>
 
             <StackPanel>
 
@@ -502,7 +499,8 @@
                                                 StewardId="{Binding Path=StewardId}"
                                                 StewardName="{Binding Path=Steward}"
                                                 Skill="{Binding Path=Skill}"
-                                                Crewed="{Binding Path=Crewed}"
+                                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear}"
+                                                DaysWorkUpkeep="{Binding Path=DaysWorkUpkeep}"
                                                 Difficulty="{Binding Path=Difficulty}"
                                                 BaseIncomeSilver="{Binding Path=BaseIncomeSilver}"
                                                 BaseIncomeBase="{Binding Path=BaseIncomeBase}"

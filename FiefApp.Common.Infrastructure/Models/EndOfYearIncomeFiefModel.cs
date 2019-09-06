@@ -22,7 +22,15 @@ namespace FiefApp.Common.Infrastructure.Models
         public Dictionary<int, bool> EndOfYearOkDictionary { get; set; }
         public bool PopulationOk { get; set; }
         public bool TaxesOk { get; set; }
+        public int LoyaltyMod { get; set; }      
         public int AmorNumeric { get; set; }
         public int TaxFactor { get; set; }
+
+        public int ExpensesSilver { get; set; }
+        public int ExpensesBase { get; set; }
+        public int ExpensesLuxury { get; set; }
+        public int ExpensesIron { get; set; }
+        public int ExpensesStone { get; set; }
+        public int ExpensesWood { get; set; }
     }
 }

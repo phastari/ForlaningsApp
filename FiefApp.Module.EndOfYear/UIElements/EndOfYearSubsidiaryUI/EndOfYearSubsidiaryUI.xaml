@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="24" 
              d:DesignWidth="744"
-             x:Name="Self">
+             x:Name="Self"
+             Loaded="EndOfYearSubsidiaryUI_OnLoaded">
 
     <Grid
         x:Name="RootGrid">
