@@ -919,9 +919,16 @@ namespace FiefApp.Module.EndOfYear
                 #region BuildingsModule
 
                 List<int> maxBuildingId = new List<int>();
-                for (int p = 1; p < _fiefService.BuildingsList.Count; p++)
+                if (_fiefService.BuildingsList[x].BuildsCollection.Count > 0)
                 {
-                    maxBuildingId.Add(_fiefService.BuildingsList[x].BuildsCollection.Max(o => o.Id));
+                    for (int p = 1; p < _fiefService.BuildingsList.Count; p++)
+                    {
+                        maxBuildingId.Add(_fiefService.BuildingsList[x].BuildsCollection.Max(o => o.Id));
+                    }
+                }
+                else
+                {
+                    maxBuildingId.Add(0);
                 }
                 int buildingId = maxBuildingId.Max() + 1;
                 str += $"Byggnadsverk:{Environment.NewLine}";
@@ -1015,10 +1022,14 @@ namespace FiefApp.Module.EndOfYear
                     _fiefService.ManorList[x].ManorFelling -= _fiefService.WeatherList[x].LandClearingOfFelling;
                     _fiefService.ManorList[x].ManorUseless -= _fiefService.WeatherList[x].ClearUseless;
                     _fiefService.ManorList[x].ManorWoodland -= _fiefService.WeatherList[x].Felling;
-                    _fiefService.ManorList[x].ManorAcres +=
+                    int acres = 
                         _fiefService.WeatherList[x].LandClearing
                         + _fiefService.WeatherList[x].LandClearingOfFelling
                         + _fiefService.WeatherList[x].ClearUseless;
+
+                    _fiefService.ManorList[x].ManorAcres += acres;
+
+                    str += $"{acres} tunnland domänjord har lagts till på godset.";
 
                     wood += DataModel.IncomeListFief[x - 1].FellingModel.Result;
                 }
@@ -1472,7 +1483,7 @@ namespace FiefApp.Module.EndOfYear
                 && _fiefService.StewardsDataModel.StewardsCollection != null)
             {
                 str += $"Förvaltare:{Environment.NewLine}";
-                for (int i = _fiefService.StewardsDataModel.StewardsCollection.Count; i > 0; i--)
+                for (int i = _fiefService.StewardsDataModel.StewardsCollection.Count - 1; i > 0; i--)
                 {
                     int chance = Convert.ToInt32(Math.Round(Math.Pow(_fiefService.StewardsDataModel.StewardsCollection[i].Age, 1.97D) / 85 - 6, MidpointRounding.ToEven));
                     if (_baseService.RollDie(1, 101) + chance > 100)
@@ -1491,6 +1502,7 @@ namespace FiefApp.Module.EndOfYear
                     }
                 }
             }
+            str += Environment.NewLine;
 
             #endregion
 
@@ -1502,6 +1514,7 @@ namespace FiefApp.Module.EndOfYear
             str += $"{stone.ToString().PadRight(8)} Sten{Environment.NewLine}";
             str += $"{wood.ToString().PadRight(8)} Timmer{Environment.NewLine}";
 
+            _eventAggregator.GetEvent<EndOfYearEvent>().Unsubscribe(LoadData);
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
 
             string filePath = $@"{AppDomain.CurrentDomain.BaseDirectory}/Reports/Bokslut_{_fiefService.Year - 1}.txt";
@@ -1509,6 +1522,7 @@ namespace FiefApp.Module.EndOfYear
             file.Directory?.Create();
             File.WriteAllText(file.FullName, str);
             System.Diagnostics.Process.Start(file.FullName);
+            _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
         }
 
         #endregion
