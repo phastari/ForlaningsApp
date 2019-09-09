@@ -195,13 +195,16 @@ namespace FiefApp.Common.Infrastructure.Services
                      - _fiefService.ExpensesList[index].ExpensesBase
                      + (int)_fiefService.SubsidiaryList[index].SubsidiaryCollection.Sum(o => o.IncomeBase)
                      - _fiefService.PortsList[index].TotalBase;
+                return b;
             }
 
             int i = 0;
             for (int x = 1; x < _fiefService.InformationList.Count; x++)
             {
                 i += _fiefService.IncomeList[x].TotalBase
-                     - _fiefService.ExpensesList[x].ExpensesBase;
+                     - _fiefService.ExpensesList[x].ExpensesBase
+                     + (int) _fiefService.SubsidiaryList[x].SubsidiaryCollection.Sum(o => o.IncomeBase)
+                     - _fiefService.PortsList[index].TotalBase;
             }
 
             return i;

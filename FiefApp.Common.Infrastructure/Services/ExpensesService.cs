@@ -25,6 +25,70 @@ namespace FiefApp.Common.Infrastructure.Services
             return _settingsService.LivingconditionsSettingsModel.LivingconditionsList;
         }
 
+        public int GetNumberOfDayWorkers(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.WeatherList[index].Dayworkers;
+            }
+
+            int dayworkers = 0;
+            for (int i = 1; i < _fiefService.WeatherList.Count; i++)
+            {
+                dayworkers += _fiefService.WeatherList[i].Dayworkers;
+            }
+
+            return dayworkers;
+        }
+
+        public int GetBaseCostForDayWorkers(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.WeatherList[index].Dayworkers * 2;
+            }
+
+            int dayWorkersBase = 0;
+            for (int i = 1; i < _fiefService.WeatherList.Count; i++)
+            {
+                dayWorkersBase += _fiefService.WeatherList[i].Dayworkers * 2;
+            }
+
+            return dayWorkersBase;
+        }
+
+        public int GetNumberOfSlaves(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.WeatherList[index].Slaves;
+            }
+
+            int slaves = 0;
+            for (int i = 1; i < _fiefService.WeatherList.Count; i++)
+            {
+                slaves += _fiefService.WeatherList[i].Slaves;
+            }
+
+            return slaves;
+        }
+
+        public int GetBaseCostForSlaves(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.WeatherList[index].Slaves;
+            }
+
+            int slaves = 0;
+            for (int i = 1; i < _fiefService.WeatherList.Count; i++)
+            {
+                slaves += _fiefService.WeatherList[i].Slaves;
+            }
+
+            return slaves;
+        }
+
         public ExpensesDataModel GetAllExpensesDataModel()
         {
             // UPDATE ALL EXPENSESDATAMODELS
@@ -420,26 +484,58 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetNumberOfBuildings(int index)
         {
+            if (index != 0)
+            {
+                return _fiefService.BuildingsList[index].BuildingsCollection.Sum(o => o.Amount);
+            }
 
-            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.Amount);
+            int buildings = 0;
+            for (int i = 0; i < _fiefService.BuildingsList.Count; i++)
+            {
+                buildings += _fiefService.BuildingsList[i].BuildingsCollection.Sum(o => o.Amount);
+            }
+
+            return buildings;
         }
 
-        public int GetIronCostOfBuildings(int index)
+        public int GetBaseCostForBuildings(int index)
+        {
+            if (index != 0)
+            {
+                return Convert.ToInt32(Math.Ceiling(_fiefService.BuildingsList[index].BuildingsCollection.Sum(o => o.UpkeepTotal)));
+            }
+
+            decimal upkeep = 0M;
+            for (int i = 1; i < _fiefService.BuildingsList.Count; i++)
+            {
+                upkeep += _fiefService.BuildingsList[i].BuildingsCollection.Sum(o => o.UpkeepTotal);
+            }
+
+            return Convert.ToInt32(Math.Ceiling(upkeep));
+        }
+             
+        public int GetNumberOfBuilds(int index)
         {
 
-            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.IronThisYear);
+            return _fiefService.BuildingsList[index].BuildsCollection.Sum(t => t.Amount);
         }
 
-        public int GetWoodCostOfBuildings(int index)
+        public int GetIronCostOfBuilds(int index)
         {
 
-            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.WoodThisYear);
+            return _fiefService.BuildingsList[index].BuildsCollection.Sum(t => t.IronThisYear);
         }
 
-        public int GetStoneCostOfBuildings(int index)
+        public int GetWoodCostOfBuilds(int index)
         {
 
-            return _fiefService.BuildingsList[index].BuildingsCollection.Sum(t => t.StoneThisYear);
+            return _fiefService.BuildingsList[index].BuildsCollection.Sum(t => t.WoodThisYear);
+        }
+
+        public int GetStoneCostOfBuilds(int index)
+        {
+
+            return _fiefService.BuildingsList[index].BuildsCollection.Sum(t => t.StoneThisYear);
         }
 
         public int GetNumberOfBoatsBuilding(int index)

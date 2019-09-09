@@ -389,12 +389,15 @@ namespace FiefApp.Module.Expenses
                 CalculateUpkeepManor();
                 CalculateFeedingCosts();
                 GetLivingcondition();
-                GetBuildingsCosts();
+                GetBuildsCosts();
                 GetBoatCosts();
                 GetQuarriesInformation();
                 GetArmyInformation();
                 GetEmployeesInformation();
                 GetResidentsInformation();
+                GetDayWorkersInformation();
+                GetSlavesInformation();
+                GetBuildingsInformation();
             }
             else
             {
@@ -402,12 +405,29 @@ namespace FiefApp.Module.Expenses
                 CalculateUpkeepManor(index);
                 CalculateFeedingCosts(index);
                 GetLivingcondition(index);
-                GetBuildingsCosts(index);
+                GetBuildsCosts(index);
                 GetBoatCosts(index);
                 GetQuarriesInformation(index);
                 GetArmyInformation(index);
                 GetEmployeesInformation(index);
                 GetResidentsInformation(index);
+                GetDayWorkersInformation(index);
+                GetSlavesInformation(index);
+                GetBuildingsInformation(index);
+            }
+        }
+
+        private void GetDayWorkersInformation(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.DayWorkers = _expensesService.GetNumberOfDayWorkers(Index);
+                DataModel.DayWorkersBase = _expensesService.GetBaseCostForDayWorkers(Index);
+            }
+            else
+            {
+                DataModel.DayWorkers = _expensesService.GetNumberOfDayWorkers(index);
+                DataModel.DayWorkers = _expensesService.GetBaseCostForDayWorkers(index);
             }
         }
 
@@ -425,6 +445,20 @@ namespace FiefApp.Module.Expenses
             }
         }
 
+        private void GetSlavesInformation(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.Slaves = _expensesService.GetNumberOfSlaves(Index);
+                DataModel.SlavesBase = _expensesService.GetBaseCostForSlaves(Index);
+            }
+            else
+            {
+                DataModel.Slaves = _expensesService.GetNumberOfSlaves(index);
+                DataModel.SlavesBase = _expensesService.GetBaseCostForSlaves(index);
+            }
+        }
+
         private void GetBoatCosts(int index = -1)
         {
             if (index == -1)
@@ -439,21 +473,35 @@ namespace FiefApp.Module.Expenses
             }
         }
 
-        private void GetBuildingsCosts(int index = -1)
+        private void GetBuildingsInformation(int index = -1)
         {
             if (index == -1)
             {
-                DataModel.Builds = _expensesService.GetNumberOfBuildings(Index);
-                DataModel.BuildsIron = _expensesService.GetIronCostOfBuildings(Index);
-                DataModel.BuildsStone = _expensesService.GetStoneCostOfBuildings(Index);
-                DataModel.BuildsWood = _expensesService.GetWoodCostOfBuildings(Index);
+                DataModel.BuildingsMaintenance = _expensesService.GetNumberOfBuildings(Index);
+                DataModel.BuildingsMaintenanceBase = _expensesService.GetBaseCostForBuildings(Index);
             }
             else
             {
-                DataModel.Builds = _expensesService.GetNumberOfBuildings(index);
-                DataModel.BuildsIron = _expensesService.GetIronCostOfBuildings(index);
-                DataModel.BuildsStone = _expensesService.GetStoneCostOfBuildings(index);
-                DataModel.BuildsWood = _expensesService.GetWoodCostOfBuildings(index);
+                DataModel.BuildingsMaintenance = _expensesService.GetNumberOfBuildings(index);
+                DataModel.BuildingsMaintenanceBase = _expensesService.GetBaseCostForBuildings(index);
+            }
+        }
+
+        private void GetBuildsCosts(int index = -1)
+        {
+            if (index == -1)
+            {
+                DataModel.Builds = _expensesService.GetNumberOfBuilds(Index);
+                DataModel.BuildsIron = _expensesService.GetIronCostOfBuilds(Index);
+                DataModel.BuildsStone = _expensesService.GetStoneCostOfBuilds(Index);
+                DataModel.BuildsWood = _expensesService.GetWoodCostOfBuilds(Index);
+            }
+            else
+            {
+                DataModel.Builds = _expensesService.GetNumberOfBuilds(index);
+                DataModel.BuildsIron = _expensesService.GetIronCostOfBuilds(index);
+                DataModel.BuildsStone = _expensesService.GetStoneCostOfBuilds(index);
+                DataModel.BuildsWood = _expensesService.GetWoodCostOfBuilds(index);
             }
         }
 

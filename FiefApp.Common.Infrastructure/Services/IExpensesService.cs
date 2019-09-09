@@ -9,6 +9,10 @@ namespace FiefApp.Common.Infrastructure.Services
         List<LivingconditionModel> GetLivingconditionList();
         ExpensesDataModel GetAllExpensesDataModel();
 
+        int GetNumberOfDayWorkers(int index);
+        int GetBaseCostForDayWorkers(int index);
+        int GetNumberOfSlaves(int index);
+        int GetBaseCostForSlaves(int index);
         int GetEmployeeSilverCost(int index);
         int SetAdultResidents(int index);
         int SetChildrenResidents(int index);
@@ -29,9 +33,11 @@ namespace FiefApp.Common.Infrastructure.Services
         int CalculateManorUpkeepBaseCost(int index);
         string GetLivingcondition(int index);
         int GetNumberOfBuildings(int index);
-        int GetIronCostOfBuildings(int index);
-        int GetWoodCostOfBuildings(int index);
-        int GetStoneCostOfBuildings(int index);
+        int GetBaseCostForBuildings(int index);
+        int GetNumberOfBuilds(int index);
+        int GetIronCostOfBuilds(int index);
+        int GetWoodCostOfBuilds(int index);
+        int GetStoneCostOfBuilds(int index);
         int GetNumberOfBoatsBuilding(int index);
         int GetBoatbuildingSilverCost(int index);
         int GetNumberOfQuarries(int index);

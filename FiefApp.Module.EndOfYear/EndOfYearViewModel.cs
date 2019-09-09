@@ -349,6 +349,11 @@ namespace FiefApp.Module.EndOfYear
                     DataModel.IncomeListFief[e.Id - 1].PopulationOk = e.Ok;
                     DataModel.IncomeListFief[e.Id - 1].AmorNumeric = e.Amor;
                     DataModel.IncomeListFief[e.Id - 1].PopulationModel.AddPopulation = e.AddPopulation;
+                    int population;
+                    if (int.TryParse(e.Result, out population))
+                    {
+                        DataModel.IncomeListFief[e.Id - 1].PopulationModel.ResultPopulation = population;
+                    }
 
                     for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
                     {
@@ -626,6 +631,8 @@ namespace FiefApp.Module.EndOfYear
                             str += $" anläggningen misslyckades och kommer att kräva mycket extra arbete för att anläggas.{Environment.NewLine}";
                         }
                     }
+
+                    str += Environment.NewLine;
                 }
 
                 #endregion
@@ -912,6 +919,8 @@ namespace FiefApp.Module.EndOfYear
                             }
                         }
                     }
+
+                    str += Environment.NewLine;
                 }
 
                 #endregion
@@ -1076,8 +1085,12 @@ namespace FiefApp.Module.EndOfYear
                     }
                     for (int i = 0; i < DataModel.IncomeListFief[x - 1].PopulationModel.ResultPopulation; i++)
                     {
+                        int roll = 0;
                         int nrVillages = _fiefService.ManorList[x].VillagesCollection.Count;
-                        int roll = _baseService.RollDie(1, nrVillages + 1);
+                        if (nrVillages > 1)
+                        {
+                            roll = _baseService.RollDie(0, nrVillages);
+                        }
 
                         _fiefService.ManorList[x].VillagesCollection[roll].Population++;
                         int type = _baseService.RollDie(1, 101);
@@ -1162,8 +1175,14 @@ namespace FiefApp.Module.EndOfYear
                     }
                     for (int i = 0; i > DataModel.IncomeListFief[x - 1].PopulationModel.ResultPopulation; i--)
                     {
+                        int roll = 0;
                         int nrVillages = _fiefService.ManorList[x].VillagesCollection.Count;
-                        int roll = _baseService.RollDie(1, nrVillages + 1);
+
+                        if (nrVillages > 1)
+                        {
+                            roll = _baseService.RollDie(0, nrVillages);
+                        }
+                        
                         _fiefService.ManorList[x].VillagesCollection[roll].Population--;
                         int totPop = _fiefService.ManorList[x].VillagesCollection[roll].Boatbuilders
                                      + _fiefService.ManorList[x].VillagesCollection[roll].Carpenters
@@ -1466,7 +1485,7 @@ namespace FiefApp.Module.EndOfYear
                 }
                 else
                 {
-                    str += $"Ingen inneboende har dött under året.{Environment.NewLine}";
+                    str += $"Ingen inneboende har dött under året.{Environment.NewLine}{Environment.NewLine}";
                 }
 
                 #endregion

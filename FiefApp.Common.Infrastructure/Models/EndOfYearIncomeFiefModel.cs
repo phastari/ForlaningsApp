@@ -24,7 +24,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public bool TaxesOk { get; set; }
         public int LoyaltyMod { get; set; }      
         public int AmorNumeric { get; set; }
-        public int TaxFactor { get; set; }
+        public int TaxFactor { get; set; } = 100;
 
         public int ExpensesSilver { get; set; }
         public int ExpensesBase { get; set; }
