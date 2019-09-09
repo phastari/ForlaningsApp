@@ -404,7 +404,7 @@ namespace FiefApp.Module.Stewards
         private void SetStewardsAndIndustriesCount()
         {
             DataModel.NumberOfStewards = DataModel.StewardsCollection.Count - 1;
-            DataModel.NumberOfIndustires = DataModel.IndustriesCollection.Count - 1 - DataModel.IndustriesBeingDevelopedCollection.Count;
+            DataModel.NumberOfIndustires = DataModel.IndustriesCollection.Count - 1;
         }
 
         private void SetAllStewardsIndustiresCollections()

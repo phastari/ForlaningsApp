@@ -16,6 +16,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:endOfYearShipyardUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearShipyardUI"
              xmlns:endOfYearConstructingSubsidiaryUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI"
+             xmlns:endOfYearAddAcresUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearAddAcresUI"
              mc:Ignorable="d" 
              d:DesignHeight="533" 
              d:DesignWidth="792"
@@ -75,8 +76,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="755"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="761"/>
             <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="*"/>
@@ -1122,14 +1123,14 @@
 
                                     <WrapPanel>
                                         <endOfYearShipyardUI:EndOfYearShipyardUI
-                                        Id="{Binding Path=Id}"
-                                        Income="{Binding Path=Shipyard.Income}"
-                                        Upkeep="{Binding Path=Shipyard.OperationCost}"
-                                        Difficulty="{Binding Path=Shipyard.Difficulty}"
-                                        Steward="{Binding Path=Shipyard.Steward}"
-                                        StewardId="{Binding Path=Shipyard.StewardId}"
-                                        Skill="{Binding Path=Shipyard.Skill}"
-                                        ShowShipyard="{Binding Path=ShowShipyard}">
+                                            Id="{Binding Path=Id}"
+                                            Income="{Binding Path=Shipyard.Income}"
+                                            Upkeep="{Binding Path=Shipyard.OperationCost}"
+                                            Difficulty="{Binding Path=Shipyard.Difficulty}"
+                                            Steward="{Binding Path=Shipyard.Steward}"
+                                            StewardId="{Binding Path=Shipyard.StewardId}"
+                                            Skill="{Binding Path=Shipyard.Skill}"
+                                            ShowShipyard="{Binding Path=ShowShipyard}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="EndOfYearOkEvent">
                                                     <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -1138,13 +1139,13 @@
                                         </endOfYearShipyardUI:EndOfYearShipyardUI>
 
                                         <endOfYearFellingUI:EndOfYearFellingUI
-                                        Id="{Binding Path=Id}"
-                                        Felling="{Binding Path=FellingModel.Felling}"
-                                        LandClearing="{Binding Path=FellingModel.LandClearing}"
-                                        Steward="{Binding Path=FellingModel.Steward}"
-                                        StewardId="{Binding Path=FellingModel.StewardId}"
-                                        Skill="{Binding Path=FellingModel.Skill}"
-                                        Difficulty="{Binding Path=FellingModel.Difficulty}">
+                                            Id="{Binding Path=Id}"
+                                            Felling="{Binding Path=FellingModel.Felling}"
+                                            LandClearing="{Binding Path=FellingModel.LandClearing}"
+                                            Steward="{Binding Path=FellingModel.Steward}"
+                                            StewardId="{Binding Path=FellingModel.StewardId}"
+                                            Skill="{Binding Path=FellingModel.Skill}"
+                                            Difficulty="{Binding Path=FellingModel.Difficulty}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="EndOfYearOkEvent">
                                                     <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -1176,6 +1177,17 @@
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </endOfYearPopulationUI:EndOfYearPopulationUI>
+
+                                        <endOfYearAddAcresUI:EndOfYearAddAcresUI
+                                            FiefId="{Binding Path=Id}"
+                                            Acres="{Binding Path=AcresAdded}"
+                                            Visibility="{Binding Path=AddAcresVisibility}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="EndOfYearAddAcresEvent">
+                                                    <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearAddAcresEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </endOfYearAddAcresUI:EndOfYearAddAcresUI>
                                     </WrapPanel>
                                 </StackPanel>
                             </DataTemplate>

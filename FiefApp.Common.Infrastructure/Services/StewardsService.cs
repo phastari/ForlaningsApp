@@ -53,16 +53,70 @@ namespace FiefApp.Common.Infrastructure.Services
                     if (_fiefService.IncomeList[index].IncomesCollection[x].IsStewardNeeded
                         && _fiefService.IncomeList[index].IncomesCollection[x].ShowInIncomes)
                     {
-                        tempList.Add(new StewardIndustryModel()
+                        if (_fiefService.IncomeList[index].IncomesCollection[x].Income.Contains("Fiske"))
                         {
-                            Industry = _fiefService.IncomeList[index].IncomesCollection[x].Income + " (" + _fiefService.InformationList[index].FiefName + ")",
-                            IndustryId = _fiefService.IncomeList[index].IncomesCollection[x].Id,
-                            IndustryType = "Income",
-                            FiefId = index,
-                            StewardId = _fiefService.IncomeList[index].IncomesCollection[x].StewardId,
-                            CanBeDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].CanBeDeveloped,
-                            BeingDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].BeingDeveloped
-                        });
+                            if (_fiefService.WeatherList[index].NumberUsedFishingBoats > 0)
+                            {
+                                tempList.Add(new StewardIndustryModel()
+                                {
+                                    Industry = _fiefService.IncomeList[index].IncomesCollection[x].Income + " (" + _fiefService.InformationList[index].FiefName + ")",
+                                    IndustryId = _fiefService.IncomeList[index].IncomesCollection[x].Id,
+                                    IndustryType = "Income",
+                                    FiefId = index,
+                                    StewardId = _fiefService.IncomeList[index].IncomesCollection[x].StewardId,
+                                    CanBeDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].CanBeDeveloped,
+                                    BeingDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].BeingDeveloped
+                                });
+                            }
+                        }
+                        else if (_fiefService.IncomeList[index].IncomesCollection[x].Income.Contains("Skogsavverkning"))
+                        {
+                            if (_fiefService.WeatherList[index].Felling > 0
+                                || _fiefService.WeatherList[index].ClearUseless > 0
+                                || _fiefService.WeatherList[index].LandClearing > 0
+                                || _fiefService.WeatherList[index].LandClearingOfFelling > 0)
+                            {
+                                tempList.Add(new StewardIndustryModel()
+                                {
+                                    Industry = _fiefService.IncomeList[index].IncomesCollection[x].Income + " (" + _fiefService.InformationList[index].FiefName + ")",
+                                    IndustryId = _fiefService.IncomeList[index].IncomesCollection[x].Id,
+                                    IndustryType = "Income",
+                                    FiefId = index,
+                                    StewardId = _fiefService.IncomeList[index].IncomesCollection[x].StewardId,
+                                    CanBeDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].CanBeDeveloped,
+                                    BeingDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].BeingDeveloped
+                                });
+                            }
+                        }
+                        else if (_fiefService.IncomeList[index].IncomesCollection[x].Income.Contains("Jakt"))
+                        {
+                            if (_fiefService.EmployeesList[index].Hunter > 0)
+                            {
+                                tempList.Add(new StewardIndustryModel()
+                                {
+                                    Industry = _fiefService.IncomeList[index].IncomesCollection[x].Income + " (" + _fiefService.InformationList[index].FiefName + ")",
+                                    IndustryId = _fiefService.IncomeList[index].IncomesCollection[x].Id,
+                                    IndustryType = "Income",
+                                    FiefId = index,
+                                    StewardId = _fiefService.IncomeList[index].IncomesCollection[x].StewardId,
+                                    CanBeDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].CanBeDeveloped,
+                                    BeingDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].BeingDeveloped
+                                });
+                            }
+                        }
+                        else
+                        {
+                            tempList.Add(new StewardIndustryModel()
+                            {
+                                Industry = _fiefService.IncomeList[index].IncomesCollection[x].Income + " (" + _fiefService.InformationList[index].FiefName + ")",
+                                IndustryId = _fiefService.IncomeList[index].IncomesCollection[x].Id,
+                                IndustryType = "Income",
+                                FiefId = index,
+                                StewardId = _fiefService.IncomeList[index].IncomesCollection[x].StewardId,
+                                CanBeDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].CanBeDeveloped,
+                                BeingDeveloped = _fiefService.IncomeList[index].IncomesCollection[x].BeingDeveloped
+                            });
+                        }
                     }
                 }
 
@@ -141,36 +195,40 @@ namespace FiefApp.Common.Infrastructure.Services
                     doOnce = false;
                     for (int x = 0; x < _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection.Count; x++)
                     {
-                        StewardIndustryModel temp = new StewardIndustryModel()
+                        if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].BeingDeveloped)
                         {
-                            IndustryId = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].IndustryId,
-                            Id = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].IndustryId,
-                            IndustryType = "Development",
-                            StewardId = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].StewardId,
-                            BeingDeveloped = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].BeingDeveloped,
-                            FiefId = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].FiefId
-                        };
 
-                        if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry.Contains("()"))
-                        {
-                            string str = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry + " (" + _fiefService.InformationList[temp.FiefId].FiefName + ")";
-                            str = str.Replace("()", "");
-                            str = Regex.Replace(str, @"  ", " ");
-                            temp.Industry = str;
-                            tempList.Add(temp);
-                        }
-                        else
-                        {
-                            if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry.Contains("("))
+                            StewardIndustryModel temp = new StewardIndustryModel()
                             {
-                                temp.Industry = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry;
+                                IndustryId = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].IndustryId,
+                                Id = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].IndustryId,
+                                IndustryType = "Development",
+                                StewardId = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].StewardId,
+                                BeingDeveloped = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].BeingDeveloped,
+                                FiefId = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].FiefId
+                            };
+
+                            if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry.Contains("()"))
+                            {
+                                string str = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry + " (" + _fiefService.InformationList[temp.FiefId].FiefName + ")";
+                                str = str.Replace("()", "");
+                                str = Regex.Replace(str, @"  ", " ");
+                                temp.Industry = str;
+                                tempList.Add(temp);
                             }
                             else
                             {
-                                temp.Industry = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry + " (" + _fiefService.InformationList[temp.FiefId].FiefName + ")";
+                                if (_fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry.Contains("("))
+                                {
+                                    temp.Industry = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry;
+                                }
+                                else
+                                {
+                                    temp.Industry = _fiefService.StewardsDataModel.IndustriesBeingDevelopedCollection[x].Industry + " (" + _fiefService.InformationList[temp.FiefId].FiefName + ")";
+                                }
+
+                                tempList.Add(temp);
                             }
-                            
-                            tempList.Add(temp);
                         }
                     }
                 }

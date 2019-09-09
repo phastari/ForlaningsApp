@@ -45,6 +45,7 @@ namespace FiefApp.Module.EndOfYear
             EndOfYearCancelCommand = new DelegateCommand(ExecuteEndOfYearCancelCommand);
             CompleteEndOfYearCommand = new DelegateCommand(ExecuteCompleteEndOfYearCommand);
             EndOfYearOkEventHandler = new CustomDelegateCommand(ExecuteEndOfYearOkEventHandler, o => true);
+            EndOfYearAddAcresEventHandler = new CustomDelegateCommand(ExecuteEndOfYearAddAcresEventHandler, o => true);
             EndOfYearConstructingSubsidiaryEventHandler = new CustomDelegateCommand(ExecuteEndOfYearConstructingSubsidiaryEventHandler, o => true);
 
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
@@ -56,6 +57,27 @@ namespace FiefApp.Module.EndOfYear
         private void ExecuteEndOfYearCancelCommand()
         {
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
+        }
+
+        #endregion
+
+        #region CustomDelegateCommand : EndOfYearAddAcresEventHandler
+
+        public CustomDelegateCommand EndOfYearAddAcresEventHandler { get; set; }
+
+        private void ExecuteEndOfYearAddAcresEventHandler(object obj)
+        {
+            var tuple = (Tuple<object, object>)obj;
+
+            if (!(tuple.Item2 is EndOfYearAddAcresEventArgs e))
+            {
+                return;
+            }
+
+            e.Handled = true;
+
+            DataModel.IncomeListFief[e.FiefId - 1].Pasture = e.Pasture;
+            DataModel.IncomeListFief[e.FiefId - 1].Agricultural = e.Agricultural;
         }
 
         #endregion
@@ -476,6 +498,9 @@ namespace FiefApp.Module.EndOfYear
         public DelegateCommand CompleteEndOfYearCommand { get; set; }
         private void ExecuteCompleteEndOfYearCommand()
         {
+            // VALIDERA!!!
+            // Har alla tunnland lagts ut på betesmark/åkermark!?
+
             DataModel.EnableButton = false;
             int silver = 0;
             int bas = 0;
@@ -693,7 +718,7 @@ namespace FiefApp.Module.EndOfYear
                         {
                             if (DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear == DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkNeeded)
                             {
-                                str += "Hamnen är anlagd!";
+                                str += $"Hamnen är anlagd!{Environment.NewLine}";
                                 _fiefService.PortsList[x].BuildingShipyard = false;
                                 _fiefService.PortsList[x].GotShipyard = true;
                                 _fiefService.PortsList[x].UpgradingShipyard = false;
@@ -740,7 +765,7 @@ namespace FiefApp.Module.EndOfYear
                         {
                             if (DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear == DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkNeeded)
                             {
-                                str += "Hamnen har upgraderats!";
+                                str += $"Hamnen har upgraderats!{Environment.NewLine}";
                                 int size = Convert.ToInt32(DataModel.IncomeListFief[x - 1].Shipyard.Size) + 1;
                                 _fiefService.PortsList[x].BuildingShipyard = false;
                                 _fiefService.PortsList[x].GotShipyard = true;
@@ -1024,22 +1049,34 @@ namespace FiefApp.Module.EndOfYear
                     _fiefService.ManorList[x].ManorFelling -= growth;
                     str += $"{growth} tunnland av den avverkade skogsmarken växte tillbaka.{Environment.NewLine}";
 
-                    wood += DataModel.IncomeListFief[x - 1].FellingModel.Result;
-                    str += $"{DataModel.IncomeListFief[x - 1].FellingModel.Result.ToString().PadLeft(5)} lass timmer.";
+                    wood += DataModel.IncomeListFief[x - 1].FellingModel.FellingWood;
+                    str += $"{DataModel.IncomeListFief[x - 1].FellingModel.FellingWood.ToString().PadLeft(5)} lass timmer.{Environment.NewLine}";
 
                     _fiefService.ManorList[x].ManorFelling += _fiefService.WeatherList[x].Felling;
                     _fiefService.ManorList[x].ManorFelling -= _fiefService.WeatherList[x].LandClearingOfFelling;
                     _fiefService.ManorList[x].ManorUseless -= _fiefService.WeatherList[x].ClearUseless;
                     _fiefService.ManorList[x].ManorWoodland -= _fiefService.WeatherList[x].Felling;
-                    int acres = 
-                        _fiefService.WeatherList[x].LandClearing
-                        + _fiefService.WeatherList[x].LandClearingOfFelling
-                        + _fiefService.WeatherList[x].ClearUseless;
 
-                    _fiefService.ManorList[x].ManorAcres += acres;
+                    if (_fiefService.WeatherList[x].LandClearingOfFelling > 0
+                        || _fiefService.WeatherList[x].LandClearing > 0
+                        || _fiefService.WeatherList[x].ClearUseless > 0)
+                    {
+                        int acres =
+                            _fiefService.WeatherList[x].LandClearing
+                            + _fiefService.WeatherList[x].LandClearingOfFelling
+                            + _fiefService.WeatherList[x].ClearUseless;
 
-                    str += $"{acres} tunnland domänjord har lagts till på godset.";
+                        _fiefService.ManorList[x].ManorAcres += acres;
+                        _fiefService.ManorList[x].ManorArable += DataModel.IncomeListFief[x - 1].Agricultural;
+                        _fiefService.ManorList[x].ManorPasture += DataModel.IncomeListFief[x - 1].Pasture;
 
+                        str += $"{acres} tunnland domänjord har lagts till på godset.{Environment.NewLine}";
+                        str += $"{DataModel.IncomeListFief[x - 1].Pasture.ToString().PadLeft(3)} tunnland betesmark.{Environment.NewLine}";
+                        str += $"{DataModel.IncomeListFief[x - 1].Agricultural.ToString().PadLeft(3)} tunnland åkermark.{Environment.NewLine}";
+
+                    }
+
+                    str += Environment.NewLine;
                     wood += DataModel.IncomeListFief[x - 1].FellingModel.Result;
                 }
 
@@ -1083,6 +1120,62 @@ namespace FiefApp.Module.EndOfYear
                     {
                         amor--;
                     }
+
+                    if (DataModel.IncomeListFief[x - 1].PopulationModel.ResultPopulation > 59)
+                    {
+                        _fiefService.ManorList[x].VillagesCollection.Add(new VillageModel()
+                        {
+                            Population = 60,
+                            Serfdoms = 45,
+                            Farmers = 15
+                        });
+                        DataModel.IncomeListFief[x - 1].PopulationModel.ResultPopulation -= 60;
+                        int removePop = 60;
+                        bool popRemoved = false;
+                        if (_fiefService.MinesList[x].MinesCollection.Count > 0)
+                        {
+                            for (int i = 0; i < _fiefService.MinesList[x].MinesCollection.Count; i++)
+                            {
+                                if (_fiefService.MinesList[x].MinesCollection[i].Population > 0)
+                                {
+                                    if (_fiefService.MinesList[x].MinesCollection[i].Population >= removePop)
+                                    {
+                                        _fiefService.MinesList[x].MinesCollection[i].Population -= removePop;
+                                        popRemoved = true;
+                                    }
+                                    else
+                                    {
+                                        removePop -= _fiefService.MinesList[x].MinesCollection[i].Population;
+                                        _fiefService.MinesList[x].MinesCollection[i].Population = 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (_fiefService.MinesList[x].QuarriesCollection.Count > 0
+                            && !popRemoved)
+                        {
+                            for (int i = 0; i < _fiefService.MinesList[x].QuarriesCollection.Count; i++)
+                            {
+                                if (_fiefService.MinesList[x].QuarriesCollection[i].Population > 0)
+                                {
+                                    if (Convert.ToInt32(_fiefService.MinesList[x].QuarriesCollection[i].Population) >= removePop)
+                                    {
+                                        _fiefService.MinesList[x].QuarriesCollection[i].Population -= removePop;
+                                        popRemoved = true;
+                                    }
+                                    else
+                                    {
+                                        removePop -= Convert.ToInt32(_fiefService.MinesList[x].QuarriesCollection[i].Population);
+                                        _fiefService.MinesList[x].QuarriesCollection[i].Population = 0M;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        str += $"En ny by grundades på dina ägor. (60 invånare){Environment.NewLine}";
+                    }
+
                     for (int i = 0; i < DataModel.IncomeListFief[x - 1].PopulationModel.ResultPopulation; i++)
                     {
                         int roll = 0;
@@ -1173,6 +1266,7 @@ namespace FiefApp.Module.EndOfYear
                     {
                         amor++;
                     }
+
                     for (int i = 0; i > DataModel.IncomeListFief[x - 1].PopulationModel.ResultPopulation; i--)
                     {
                         int roll = 0;
@@ -1182,7 +1276,7 @@ namespace FiefApp.Module.EndOfYear
                         {
                             roll = _baseService.RollDie(0, nrVillages);
                         }
-                        
+
                         _fiefService.ManorList[x].VillagesCollection[roll].Population--;
                         int totPop = _fiefService.ManorList[x].VillagesCollection[roll].Boatbuilders
                                      + _fiefService.ManorList[x].VillagesCollection[roll].Carpenters
@@ -1366,7 +1460,6 @@ namespace FiefApp.Module.EndOfYear
                         str += Environment.NewLine;
                     }
                 }
-                str += Environment.NewLine;
 
                 #endregion
 
@@ -1540,7 +1633,17 @@ namespace FiefApp.Module.EndOfYear
             System.IO.FileInfo file = new System.IO.FileInfo(filePath);
             file.Directory?.Create();
             File.WriteAllText(file.FullName, str);
-            System.Diagnostics.Process.Start(file.FullName);
+            try
+            {
+                System.Diagnostics.Process.Start(file.FullName);
+            }
+            catch(IOException e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("IOException source: {0}", e.Source);
+                throw;
+            }
+            
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
         }
 

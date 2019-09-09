@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace FiefApp.Common.Infrastructure.Models
 {
@@ -32,5 +33,10 @@ namespace FiefApp.Common.Infrastructure.Models
         public int ExpensesIron { get; set; }
         public int ExpensesStone { get; set; }
         public int ExpensesWood { get; set; }
+
+        public Visibility AddAcresVisibility { get; set; } = Visibility.Collapsed;
+        public int AcresAdded { get; set; }
+        public int Pasture { get; set; }
+        public int Agricultural { get; set; }
     }
 }

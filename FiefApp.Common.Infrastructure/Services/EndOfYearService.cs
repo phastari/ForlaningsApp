@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -378,30 +379,72 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
 
-                tempList.Add(new EndOfYearIncomeFiefModel()
+                if (_fiefService.WeatherList[x].LandClearingOfFelling > 0
+                    || _fiefService.WeatherList[x].LandClearing > 0
+                    || _fiefService.WeatherList[x].ClearUseless > 0)
                 {
-                    Id = x,
-                    FiefName = _fiefService.InformationList[x].FiefName,
-                    IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
-                    OtherIncomesList = otherIncomes,
-                    SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
-                    ConstructingCollection = new ObservableCollection<SubsidiaryModel>(constructingList),
-                    MinesCollection = new ObservableCollection<MineModel>(minesList),
-                    QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
-                    DevelopmentCollection = new ObservableCollection<IndustryBeingDevelopedModel>(developmentList),
-                    FellingModel = fellingModel,
-                    Shipyard = shipyard,
-                    TaxesModel = taxesModel,
-                    PopulationModel = populationModel,
-                    EndOfYearOkDictionary = dictionary,
-                    ShowShipyard = _fiefService.PortsList[x].GotShipyard,
-                    ExpensesSilver = _fiefService.ExpensesList[x].ExpensesSilver,
-                    ExpensesBase = _fiefService.ExpensesList[x].ExpensesBase,
-                    ExpensesLuxury = _fiefService.ExpensesList[x].ExpensesLuxury,
-                    ExpensesIron = _fiefService.ExpensesList[x].ExpensesIron,
-                    ExpensesStone = _fiefService.ExpensesList[x].ExpensesStone,
-                    ExpensesWood = _fiefService.ExpensesList[x].ExpensesWood
-                });
+                    int acres = _fiefService.WeatherList[x].LandClearingOfFelling
+                                + _fiefService.WeatherList[x].LandClearing
+                                + _fiefService.WeatherList[x].ClearUseless;
+
+                    tempList.Add(new EndOfYearIncomeFiefModel()
+                    {
+                        Id = x,
+                        FiefName = _fiefService.InformationList[x].FiefName,
+                        IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
+                        OtherIncomesList = otherIncomes,
+                        SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
+                        ConstructingCollection = new ObservableCollection<SubsidiaryModel>(constructingList),
+                        MinesCollection = new ObservableCollection<MineModel>(minesList),
+                        QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
+                        DevelopmentCollection = new ObservableCollection<IndustryBeingDevelopedModel>(developmentList),
+                        FellingModel = fellingModel,
+                        Shipyard = shipyard,
+                        TaxesModel = taxesModel,
+                        PopulationModel = populationModel,
+                        EndOfYearOkDictionary = dictionary,
+                        ShowShipyard = _fiefService.PortsList[x].GotShipyard,
+                        ExpensesSilver = _fiefService.ExpensesList[x].ExpensesSilver,
+                        ExpensesBase = _fiefService.ExpensesList[x].ExpensesBase,
+                        ExpensesLuxury = _fiefService.ExpensesList[x].ExpensesLuxury,
+                        ExpensesIron = _fiefService.ExpensesList[x].ExpensesIron,
+                        ExpensesStone = _fiefService.ExpensesList[x].ExpensesStone,
+                        ExpensesWood = _fiefService.ExpensesList[x].ExpensesWood,
+                        AcresAdded = acres,
+                        AddAcresVisibility = Visibility.Visible
+                    });
+                }
+                else
+                {
+                    tempList.Add(new EndOfYearIncomeFiefModel()
+                    {
+                        Id = x,
+                        FiefName = _fiefService.InformationList[x].FiefName,
+                        IncomeCollection = new ObservableCollection<EndOfYearIncomeModel>(incomeList),
+                        OtherIncomesList = otherIncomes,
+                        SubsidiariesCollection = new ObservableCollection<EndOfYearSubsidiaryModel>(subsidiaryList),
+                        ConstructingCollection = new ObservableCollection<SubsidiaryModel>(constructingList),
+                        MinesCollection = new ObservableCollection<MineModel>(minesList),
+                        QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
+                        DevelopmentCollection = new ObservableCollection<IndustryBeingDevelopedModel>(developmentList),
+                        FellingModel = fellingModel,
+                        Shipyard = shipyard,
+                        TaxesModel = taxesModel,
+                        PopulationModel = populationModel,
+                        EndOfYearOkDictionary = dictionary,
+                        ShowShipyard = _fiefService.PortsList[x].GotShipyard,
+                        ExpensesSilver = _fiefService.ExpensesList[x].ExpensesSilver,
+                        ExpensesBase = _fiefService.ExpensesList[x].ExpensesBase,
+                        ExpensesLuxury = _fiefService.ExpensesList[x].ExpensesLuxury,
+                        ExpensesIron = _fiefService.ExpensesList[x].ExpensesIron,
+                        ExpensesStone = _fiefService.ExpensesList[x].ExpensesStone,
+                        ExpensesWood = _fiefService.ExpensesList[x].ExpensesWood,
+                        AcresAdded = 0,
+                        AddAcresVisibility = Visibility.Collapsed
+                    });
+                }
+
+                
             }
 
             return tempList;
