@@ -98,6 +98,7 @@
     <Compile Include="DataModels\IDataModelBase.cs" />
     <Compile Include="DataModels\IncomeDataModel.cs" />
     <Compile Include="DataModels\ManorDataModel.cs" />
+    <Compile Include="DataModels\MarketDataModel.cs" />
     <Compile Include="DataModels\MinesDataModel.cs" />
     <Compile Include="DataModels\PortDataModel.cs" />
     <Compile Include="DataModels\StewardsDataModel.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="DataModels\WeatherDataModel.cs" />
     <Compile Include="EventAggregatorEvents\EndOfYearEvent.cs" />
     <Compile Include="EventAggregatorEvents\FiefNameChangedEvent.cs" />
+    <Compile Include="EventAggregatorEvents\FishingBoatsAdded.cs" />
     <Compile Include="EventAggregatorEvents\NewFiefLoadedEvent.cs" />
     <Compile Include="EventAggregatorEvents\SaveDataModelBeforeSaveFileIsCreatedEvent.cs" />
     <Compile Include="EventAggregatorEvents\UpdateAllEvent.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Models\IsAllPortModel.cs" />
     <Compile Include="Models\LivingconditionModel.cs" />
     <Compile Include="Models\ManorModel.cs" />
+    <Compile Include="Models\MarketModel.cs" />
     <Compile Include="Models\MerchantModel.cs" />
     <Compile Include="Models\MineModel.cs" />
     <Compile Include="Models\PeopleBase.cs" />

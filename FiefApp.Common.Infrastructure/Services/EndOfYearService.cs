@@ -42,6 +42,7 @@ namespace FiefApp.Common.Infrastructure.Services
                 List<MineModel> minesList = new List<MineModel>();
                 List<QuarryModel> quarriesList = new List<QuarryModel>();
                 List<IndustryBeingDevelopedModel> developmentList = new List<IndustryBeingDevelopedModel>();
+                List<MerchantModel> tradeList = new List<MerchantModel>();
                 EndOfYearFellingModel fellingModel = new EndOfYearFellingModel();
                 EndOfYearTaxesModel taxesModel = new EndOfYearTaxesModel();
                 EndOfYearPopulationModel populationModel = new EndOfYearPopulationModel();
@@ -164,11 +165,11 @@ namespace FiefApp.Common.Infrastructure.Services
                     {
                         string steward = "";
                         string skill = "0";
-                        int diff = Convert.ToInt32(Math.Ceiling((decimal)0.15 * _fiefService.WeatherList[x].SpringRollMod
-                                                                + (decimal)0.15 * _fiefService.WeatherList[x].SummerRollMod
-                                                                + (decimal)0.15 * _fiefService.WeatherList[x].FallRollMod
-                                                                + (decimal)0.15 * _fiefService.WeatherList[x].WinterRollMod
-                                                                + 4));
+                        int diff = Convert.ToInt32(Math.Ceiling((decimal)0.26 * _fiefService.WeatherList[x].SpringRollMod
+                                                                + (decimal)0.26 * _fiefService.WeatherList[x].SummerRollMod
+                                                                + (decimal)0.26 * _fiefService.WeatherList[x].FallRollMod
+                                                                + (decimal)0.26 * _fiefService.WeatherList[x].WinterRollMod
+                                                                + 8));
 
                         if (diff < 5)
                         {
@@ -264,10 +265,49 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
 
-                int difficulty = Convert.ToInt32(Math.Ceiling(0.1 * _fiefService.WeatherList[x].SpringRollMod
-                                                              + 0.1 * _fiefService.WeatherList[x].SummerRollMod
-                                                              + 0.1 * _fiefService.WeatherList[x].FallRollMod
-                                                              + 8));
+                int difficulty = 8;
+                decimal spring = 0M;
+                decimal summer = 0M;
+                decimal fall = 0M;
+                decimal winter = 0M;
+
+                if (_fiefService.WeatherList[x].SpringRollMod > 0)
+                {
+                    spring += _fiefService.WeatherList[x].SpringRollMod * 0.57M;
+                }
+                else
+                {
+                    spring += _fiefService.WeatherList[x].SpringRollMod * 0.285M;
+                }
+
+                if (_fiefService.WeatherList[x].SummerRollMod > 0)
+                {
+                    summer += _fiefService.WeatherList[x].SummerRollMod * 0.57M;
+                }
+                else
+                {
+                    summer += _fiefService.WeatherList[x].SummerRollMod * 0.285M;
+                }
+
+                if (_fiefService.WeatherList[x].FallRollMod > 0)
+                {
+                    fall += _fiefService.WeatherList[x].FallRollMod * 0.57M;
+                }
+                else
+                {
+                    fall += _fiefService.WeatherList[x].FallRollMod * 0.285M;
+                }
+
+                if (_fiefService.WeatherList[x].WinterRollMod > 0)
+                {
+                    winter += _fiefService.WeatherList[x].WinterRollMod * 0.57M;
+                }
+                else
+                {
+                    winter += _fiefService.WeatherList[x].WinterRollMod * 0.285M;
+                }
+
+                difficulty += Convert.ToInt32(Math.Round(spring + summer + fall + winter));
 
                 if (difficulty < 5)
                 {
@@ -333,10 +373,10 @@ namespace FiefApp.Common.Infrastructure.Services
 
                     dictionary.Add(_fiefService.PortsList[x].Shipyard.Id, false);
 
-                    difficulty = Convert.ToInt32(Math.Ceiling(0.2 * _fiefService.WeatherList[x].SpringRollMod
-                                                              + 0.2 * _fiefService.WeatherList[x].SummerRollMod
-                                                              + 0.2 * _fiefService.WeatherList[x].FallRollMod
-                                                              + 0.2 * _fiefService.WeatherList[x].WinterRollMod
+                    difficulty = Convert.ToInt32(Math.Ceiling(0.26 * _fiefService.WeatherList[x].SpringRollMod
+                                                              + 0.26 * _fiefService.WeatherList[x].SummerRollMod
+                                                              + 0.26 * _fiefService.WeatherList[x].FallRollMod
+                                                              + 0.26 * _fiefService.WeatherList[x].WinterRollMod
                                                               + 8));
 
                     if (_fiefService.PortsList[x].Shipyard.Upgrading)
@@ -379,6 +419,34 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
 
+                if (_fiefService.TradeList[x].MerchantsCollection.Count > 0)
+                {
+                    for (int i = 0; i < _fiefService.TradeList[x].MerchantsCollection.Count; i++)
+                    {
+                        if (!string.IsNullOrEmpty(_fiefService.TradeList[x].MerchantsCollection[i].Assignment))
+                        {
+                            dictionary.Add(_fiefService.TradeList[x].MerchantsCollection[i].Id, false);
+
+                            difficulty = Convert.ToInt32(Math.Ceiling(0.51 * _fiefService.WeatherList[x].SpringRollMod
+                                                                      + 0.51 * _fiefService.WeatherList[x].SummerRollMod
+                                                                      + 0.39 * _fiefService.WeatherList[x].FallRollMod
+                                                                      + 0.19 * _fiefService.WeatherList[x].WinterRollMod
+                                                                      + 8));
+
+                            if (difficulty < 5)
+                            {
+                                _fiefService.TradeList[x].MerchantsCollection[i].Difficulty = 4;
+                            }
+                            else
+                            {
+                                _fiefService.TradeList[x].MerchantsCollection[i].Difficulty = difficulty;
+                            }
+
+                            tradeList.Add(_fiefService.TradeList[x].MerchantsCollection[i]);
+                        }
+                    }
+                }
+
                 if (_fiefService.WeatherList[x].LandClearingOfFelling > 0
                     || _fiefService.WeatherList[x].LandClearing > 0
                     || _fiefService.WeatherList[x].ClearUseless > 0)
@@ -398,6 +466,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         MinesCollection = new ObservableCollection<MineModel>(minesList),
                         QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
                         DevelopmentCollection = new ObservableCollection<IndustryBeingDevelopedModel>(developmentList),
+                        TradeCollection =  new ObservableCollection<MerchantModel>(tradeList),
                         FellingModel = fellingModel,
                         Shipyard = shipyard,
                         TaxesModel = taxesModel,
@@ -427,6 +496,7 @@ namespace FiefApp.Common.Infrastructure.Services
                         MinesCollection = new ObservableCollection<MineModel>(minesList),
                         QuarriesCollection = new ObservableCollection<QuarryModel>(quarriesList),
                         DevelopmentCollection = new ObservableCollection<IndustryBeingDevelopedModel>(developmentList),
+                        TradeCollection = new ObservableCollection<MerchantModel>(tradeList),
                         FellingModel = fellingModel,
                         Shipyard = shipyard,
                         TaxesModel = taxesModel,

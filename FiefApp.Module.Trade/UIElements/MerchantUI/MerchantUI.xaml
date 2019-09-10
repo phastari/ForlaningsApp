@@ -85,6 +85,7 @@
             </Button>
 
             <Button 
+                Command="{Binding Path=EditMerchant}"
                 Grid.Column="2"
                 Grid.Row="0"
                 HorizontalAlignment="Left"
@@ -114,6 +115,7 @@
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=MouseArea}" Value="Collapsed"/>
+                        <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=SendButton}" Value="Collapsed"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
@@ -127,6 +129,7 @@
         </Grid>
 
         <TextBox
+            x:Name="PersonNameTextBox"
             Grid.Column="1"
             Grid.Row="0"
             Text="{Binding Path=PersonName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -170,8 +173,7 @@
         <t6TextBox:T6TextBox
             Grid.Column="5"
             Grid.Row="0"
-            T6Value="{Binding Path=Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ReadOnly="True">
+            T6Value="{Binding Path=Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <t6TextBox:T6TextBox.Style>
                 <Style TargetType="{x:Type t6TextBox:T6TextBox}">
                     <Setter Property="ReadOnly" Value="True"/>
@@ -255,6 +257,11 @@
                     </Style.Triggers>
                 </Style>
             </Button.Style>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=SendButton}" Value="Visible"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </Button>
 
         <Button
@@ -278,6 +285,11 @@
                     </Style.Triggers>
                 </Style>
             </Button.Style>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <customCommands:CustomSetterAction PropertyName="Visibility" TargetObject="{Binding ElementName=SendButton}" Value="Visible"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </Button>
 
         <Button
@@ -295,7 +307,7 @@
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MouseArea, Path=Visibility}" Value="Collapsed">
+                        <DataTrigger Binding="{Binding ElementName=PersonNameTextBox, Path=IsReadOnly}" Value="False">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>

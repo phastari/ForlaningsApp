@@ -29,37 +29,45 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
         public DelegateCommand SaveCommand { get; set; }
         private void ExecuteSaveCommand()
         {
-            BoatModel boatModel = new BoatModel()
+            if (Length > 0)
             {
-                Length = Length,
-                Amount = Amount,
-                Width = BoatWidth,
-                Depth = Depth,
-                Crew = Crew,
-                Rower = Rower,
-                Cargo = Cargo,
-                CostNowSilver = CostNowSilver,
-                CostWhenFinishedSilver = CostWhenFinishedSilver,
-                CostNowBase = CostNowBase,
-                CostNowWood = CostNowWood,
-                BoatType = BoatType,
-                Seaworthiness = Seaworthiness,
-                BuildTimeInDays = BuildTimeInDays,
-                BuildTimeInDaysAll = BuildTimeInDaysAll,
-                NextFinishedDays = BuildTimeInDays,
-                AddAsBuilt = AddAsBuilt
-            };
 
-            BuildingBoatUIEventArgs newEventArgs =
-                new BuildingBoatUIEventArgs(
-                    BuildingBoatUIRoutedEvent,
-                    "Save",
-                    boatModel
-                );
+                BoatModel boatModel = new BoatModel()
+                {
+                    Length = Length,
+                    Amount = Amount,
+                    Width = BoatWidth,
+                    Depth = Depth,
+                    Crew = Crew,
+                    Rower = Rower,
+                    Cargo = Cargo,
+                    CostNowSilver = CostNowSilver,
+                    CostWhenFinishedSilver = CostWhenFinishedSilver,
+                    CostNowBase = CostNowBase,
+                    CostNowWood = CostNowWood,
+                    BoatType = BoatType,
+                    Seaworthiness = Seaworthiness,
+                    BuildTimeInDays = BuildTimeInDays,
+                    BuildTimeInDaysAll = BuildTimeInDaysAll,
+                    NextFinishedDays = BuildTimeInDays,
+                    AddAsBuilt = AddAsBuilt
+                };
 
-            RaiseEvent(newEventArgs);
+                BuildingBoatUIEventArgs newEventArgs =
+                    new BuildingBoatUIEventArgs(
+                        BuildingBoatUIRoutedEvent,
+                        "Save",
+                        boatModel
+                    );
 
-            ResetBoat();
+                RaiseEvent(newEventArgs);
+
+                ResetBoat();
+            }
+            else
+            {
+                MessageBox.Show("Du måste ange längden!");
+            }
         }
 
         public DelegateCommand CancelCommand { get; set; }
@@ -104,7 +112,7 @@ namespace FiefApp.Module.Boatbuilding.UIElements.BuildingBoatUI
             get => _length;
             set
             {
-                if (value > 0 && LengthMin >= value && LengthMax <= value)
+                if (value > 0 && LengthMin <= value && LengthMax >= value)
                 {
                     _length = value;
                 }

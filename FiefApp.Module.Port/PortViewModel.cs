@@ -126,6 +126,13 @@ namespace FiefApp.Module.Port
             _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+            _eventAggregator.GetEvent<FishingBoatsAdded>().Subscribe(HandleFishingBoatsAdded);
+        }
+
+        private void HandleFishingBoatsAdded(int index)
+        {
+            DataModel = _baseService.GetDataModel<PortDataModel>(index);
+            SaveData(index);
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)

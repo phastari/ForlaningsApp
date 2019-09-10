@@ -12,6 +12,7 @@ using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using Prism.Events;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace FiefApp.Module.Boatbuilding
 {
@@ -21,6 +22,7 @@ namespace FiefApp.Module.Boatbuilding
         private readonly IBoatbuildingService _boatbuildingService;
         private readonly ISettingsService _settingsService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ISupplyService _supplyService;
         private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
         {
             new UpdateEventParameters()
@@ -99,13 +101,15 @@ namespace FiefApp.Module.Boatbuilding
             IBaseService baseService,
             IBoatbuildingService boatbuildingService,
             ISettingsService settingsService,
-            IEventAggregator eventAggregator
+            IEventAggregator eventAggregator,
+            ISupplyService supplyService
             ) : base(baseService)
         {
             _baseService = baseService;
             _boatbuildingService = boatbuildingService;
             _settingsService = settingsService;
             _eventAggregator = eventAggregator;
+            _supplyService = supplyService;
 
             TabName = "Skeppsbygge";
 
@@ -225,18 +229,21 @@ namespace FiefApp.Module.Boatbuilding
                     if (e.BoatModel.BoatType == "Fiskebåt")
                     {
                         _boatbuildingService.AddFishingBoat(Index, e.BoatModel.Amount);
-                    }
-                    else
-                    {
-                        e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
-                        _boatbuildingService.AddBoatToCompletedBoats(Index, e.BoatModel);
+                        _eventAggregator.GetEvent<FishingBoatsAdded>().Publish(Index);
                     }
                 }
                 else
                 {
-                    e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
-                    e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
-                    DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                    if (CheckBoatCost(e.BoatModel))
+                    {
+                        e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                        e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                        DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du har inte råd!");
+                    }
                 }
                 SaveData();
             }
@@ -510,6 +517,15 @@ namespace FiefApp.Module.Boatbuilding
         private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
         {
             SaveData();
+        }
+
+        private bool CheckBoatCost(BoatModel model)
+        {
+            if (_supplyService.Withdraw(model.CostNowSilver, model.CostNowBase, 0, 0, 0, model.CostNowWood))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -203,20 +203,6 @@ namespace FiefApp.Module.Trade.UIElements.MerchantUI
                 new PropertyMetadata("0")
             );
 
-        public ObservableCollection<BoatModel> BoatsCollection
-        {
-            get => (ObservableCollection<BoatModel>)GetValue(BoatsCollectionProperty);
-            set => SetValue(BoatsCollectionProperty, value);
-        }
-
-        public static readonly DependencyProperty BoatsCollectionProperty =
-            DependencyProperty.Register(
-                "BoatsCollection",
-                typeof(ObservableCollection<BoatModel>),
-                typeof(MerchantUI),
-                new PropertyMetadata(new ObservableCollection<BoatModel>())
-            );
-
         public string Assignment
         {
             get => (string)GetValue(AssignmentProperty);
@@ -263,28 +249,14 @@ namespace FiefApp.Module.Trade.UIElements.MerchantUI
 
         #region Event Handlers
 
-        private void BoatsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_loaded)
-            {
-                MerchantUIEventArgs newEventArgs =
-                    new MerchantUIEventArgs(
-                        MerchantUIRoutedEvent,
-                        Id,
-                        "Change",
-                        null,
-                        BoatsCollection[SelectedIndex].Id,
-                        BoatsCollection[SelectedIndex].BoatType
-                    );
-
-                RaiseEvent(newEventArgs);
-            }
-        }
-
         private void MerchantUI_OnLoaded(
             object sender, 
             RoutedEventArgs e)
         {
+            if (Id == 0)
+            {
+                Self.Visibility = Visibility.Collapsed;
+            }
             _loaded = true;
             RaiseSetSendButton();
         }

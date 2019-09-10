@@ -226,5 +226,26 @@ namespace FiefApp.Common.Infrastructure.Services
             _fiefService.SupplyDataModel.SupplyStone += stone;
             _fiefService.SupplyDataModel.SupplyWood += wood;
         }
+
+        public bool Withdraw(int silver, int bas, int lyx, int iron, int stone, int wood)
+        {
+            if (silver <= _fiefService.SupplyDataModel.SupplySilver
+                && bas <= _fiefService.SupplyDataModel.SupplyBase
+                && lyx <= _fiefService.SupplyDataModel.SupplyLuxury
+                && iron <= _fiefService.SupplyDataModel.SupplyIron
+                && stone <= _fiefService.SupplyDataModel.SupplyStone
+                && wood <= _fiefService.SupplyDataModel.SupplyWood)
+            {
+                _fiefService.SupplyDataModel.SupplySilver -= silver;
+                _fiefService.SupplyDataModel.SupplyBase -= bas;
+                _fiefService.SupplyDataModel.SupplyLuxury -= lyx;
+                _fiefService.SupplyDataModel.SupplyIron -= iron;
+                _fiefService.SupplyDataModel.SupplyStone -= stone;
+                _fiefService.SupplyDataModel.SupplyWood -= wood;
+
+                return true;
+            }
+            return false;
+        }
     }
 }

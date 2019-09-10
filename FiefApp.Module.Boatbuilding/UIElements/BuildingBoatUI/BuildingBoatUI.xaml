@@ -91,7 +91,7 @@
             Padding="0"/>
 
         <TextBox
-            Text="{Binding Path=Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Length, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             Grid.Column="3"
             Grid.Row="4"
             Template="{DynamicResource TextBoxTemplate}"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -11,9 +12,16 @@ namespace FiefApp.Common.Infrastructure.Models
         public string Type { get; set; }
         public string Position { get; set; }
         public int Age { get; set; }
-        public string Skill { get; set; }
-        public string Resources { get; set; }
-        public string Loyalty { get; set; }
+        public string Skill { get; set; } = "0";
+        public string Resources { get; set; } = "0";
+        public string Loyalty { get; set; } = "0";
+        public int Difficulty { get; set; }
+        public int EndOfYearSilver { get; set; }
+        public int EndOfYearBase { get; set; }
+        public int EndOfYearLuxury { get; set; }
+        public int EndOfYearIron { get; set; }
+        public int EndOfYearStone { get; set; }
+        public int EndOfYearWood { get; set; }
 
         private int _shipId = -1;
         public int ShipId
@@ -81,7 +89,7 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private bool _silverBack;
+        private bool _silverBack = true;
         public bool SilverBack
         {
             get => _silverBack;

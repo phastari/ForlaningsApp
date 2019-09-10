@@ -36,6 +36,25 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
                 );
 
             RaiseEvent(newEventArgs);
+
+            SelectedIndex = -1;
+            SendByCarriage = false;
+            SendWithCaravan = false;
+            Cargo = 0;
+            CargoLeft = 0;
+            Guards = 0;
+            SilverBack = true;
+            SilverWith = 0;
+            BaseToSell = 0;
+            BuyBase = false;
+            LuxuryToSell = 0;
+            BuyLuxury = false;
+            BuyIron = false;
+            IronToSell = 0;
+            WoodToSell = 0;
+            BuyWood = false;
+            StoneToSell = 0;
+            BuyStone = false;
         }
 
         #endregion
@@ -77,6 +96,25 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             {
                 newEventArgs.Model.ShipId = -1;
             }
+
+            SelectedIndex = -1;
+            SendByCarriage = false;
+            SendWithCaravan = false;
+            Cargo = 0;
+            CargoLeft = 0;
+            Guards = 0;
+            SilverBack = true;
+            SilverWith = 0;
+            BaseToSell = 0;
+            BuyBase = false;
+            LuxuryToSell = 0;
+            BuyLuxury = false;
+            BuyIron = false;
+            IronToSell = 0;
+            WoodToSell = 0;
+            BuyWood = false;
+            StoneToSell = 0;
+            BuyStone = false;
 
             RaiseEvent(newEventArgs);
         }
@@ -212,7 +250,7 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             }
         }
 
-        private bool _silverBack;
+        private bool _silverBack = true;
         public bool SilverBack
         {
             get => _silverBack;
@@ -229,7 +267,32 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             get => _baseToSell;
             set
             {
-                _baseToSell = value;
+                if (Cargo != 0)
+                {
+                    if (value <= 0)
+                    {
+                        _baseToSell = 0;
+                        SetCargoLeft();
+                    }
+                    else
+                    {
+                        if (Cargo >= value + LuxuryToSell + IronToSell + StoneToSell + WoodToSell)
+                        {
+                            _baseToSell = value;
+                            SetCargoLeft();
+                        }
+                        else
+                        {
+                            _baseToSell = Cargo - LuxuryToSell - IronToSell - StoneToSell - WoodToSell;
+                            SetCargoLeft();
+                        }
+                    }
+                }
+                else
+                {
+                    _baseToSell = 0;
+                }
+                
                 NotifyPropertyChanged();
             }
         }
@@ -251,7 +314,32 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             get => _luxuryToSell;
             set
             {
-                _luxuryToSell = value;
+                if (Cargo != 0)
+                {
+                    if (value <= 0)
+                    {
+                        _luxuryToSell = 0;
+                        SetCargoLeft();
+                    }
+                    else
+                    {
+                        if (Cargo >= value + BaseToSell + IronToSell + StoneToSell + WoodToSell)
+                        {
+                            _luxuryToSell = value;
+                            SetCargoLeft();
+                        }
+                        else
+                        {
+                            _luxuryToSell = Cargo - BaseToSell - IronToSell - StoneToSell - WoodToSell;
+                            SetCargoLeft();
+                        }
+                    }
+                }
+                else
+                {
+                    _luxuryToSell = 0;
+                }
+
                 NotifyPropertyChanged();
             }
         }
@@ -273,7 +361,32 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             get => _ironToSell;
             set
             {
-                _ironToSell = value;
+                if (Cargo != 0)
+                {
+                    if (value <= 0)
+                    {
+                        _ironToSell = 0;
+                        SetCargoLeft();
+                    }
+                    else
+                    {
+                        if (Cargo >= value + LuxuryToSell + BaseToSell + StoneToSell + WoodToSell)
+                        {
+                            _ironToSell = value;
+                            SetCargoLeft();
+                        }
+                        else
+                        {
+                            _ironToSell = Cargo - LuxuryToSell - BaseToSell - StoneToSell - WoodToSell;
+                            SetCargoLeft();
+                        }
+                    }
+                }
+                else
+                {
+                    _ironToSell = 0;
+                }
+
                 NotifyPropertyChanged();
             }
         }
@@ -295,7 +408,32 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             get => _stoneToSell;
             set
             {
-                _stoneToSell = value;
+                if (Cargo != 0)
+                {
+                    if (value <= 0)
+                    {
+                        _stoneToSell = 0;
+                        SetCargoLeft();
+                    }
+                    else
+                    {
+                        if (Cargo >= value + LuxuryToSell + IronToSell + BaseToSell + WoodToSell)
+                        {
+                            _stoneToSell = value;
+                            SetCargoLeft();
+                        }
+                        else
+                        {
+                            _stoneToSell = Cargo - LuxuryToSell - IronToSell - BaseToSell - WoodToSell;
+                            SetCargoLeft();
+                        }
+                    }
+                }
+                else
+                {
+                    _stoneToSell = 0;
+                }
+
                 NotifyPropertyChanged();
             }
         }
@@ -317,7 +455,32 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             get => _woodToSell;
             set
             {
-                _woodToSell = value;
+                if (Cargo != 0)
+                {
+                    if (value <= 0)
+                    {
+                        _woodToSell = 0;
+                        SetCargoLeft();
+                    }
+                    else
+                    {
+                        if (Cargo >= value + LuxuryToSell + IronToSell + StoneToSell + BaseToSell)
+                        {
+                            _woodToSell = value;
+                            SetCargoLeft();
+                        }
+                        else
+                        {
+                            _woodToSell = Cargo - LuxuryToSell - IronToSell - StoneToSell - BaseToSell;
+                            SetCargoLeft();
+                        }
+                    }
+                }
+                else
+                {
+                    _woodToSell = 0;
+                }
+
                 NotifyPropertyChanged();
             }
         }
@@ -341,10 +504,13 @@ namespace FiefApp.Module.Trade.UIElements.SendMerchantUI
             object sender, 
             SelectionChangedEventArgs e)
         {
-            Cargo = ShipsCollection[SelectedIndex].CargoTotal;
-            SendByCarriage = false;
-            SendWithCaravan = false;
-            SetCargoLeft();
+            if (SelectedIndex != -1)
+            {
+                Cargo = ShipsCollection[SelectedIndex].CargoTotal;
+                SendByCarriage = false;
+                SendWithCaravan = false;
+                SetCargoLeft();
+            }
         }
 
         private void SetCargoLeft()

@@ -15,6 +15,7 @@ namespace FiefApp.Common.Infrastructure.Models
         public ObservableCollection<MineModel> MinesCollection { get; set; }
         public ObservableCollection<QuarryModel> QuarriesCollection { get; set; }
         public ObservableCollection<IndustryBeingDevelopedModel> DevelopmentCollection { get; set; }
+        public ObservableCollection<MerchantModel> TradeCollection { get; set; }
         public EndOfYearFellingModel FellingModel { get; set; }
         public EndOfYearTaxesModel TaxesModel { get; set; }
         public EndOfYearPopulationModel PopulationModel { get; set; }

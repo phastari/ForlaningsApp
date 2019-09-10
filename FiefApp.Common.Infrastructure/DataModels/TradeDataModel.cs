@@ -20,6 +20,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private bool _marketSetThisYear;
+        public bool MarketSetThisYear
+        {
+            get => _marketSetThisYear;
+            set
+            {
+                _marketSetThisYear = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _marketAvailableBase;
         public int MarketAvailableBase
         {
@@ -75,6 +86,156 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _boughtBase;
+        public int BoughtBase
+        {
+            get => _boughtBase;
+            set
+            {
+                if (MarketAvailableBase != 0)
+                {
+                    if (value > MarketAvailableBase)
+                    {
+                        _boughtBase = MarketAvailableBase;
+                    }
+                    else if (value < 0)
+                    {
+                        _boughtBase = 0;
+                    }
+                    else
+                    {
+                        _boughtBase = value;
+                    }
+                }
+                else
+                {
+                    _boughtBase = value;
+                }
+                
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _boughtLuxury;
+        public int BoughtLuxury
+        {
+            get => _boughtLuxury;
+            set
+            {
+                if (MarketAvailableLuxury != 0)
+                {
+                    if (value > MarketAvailableLuxury)
+                    {
+                        _boughtLuxury = MarketAvailableLuxury;
+                    }
+                    else if (value < 0)
+                    {
+                        _boughtLuxury = 0;
+                    }
+                    else
+                    {
+                        _boughtLuxury = value;
+                    }
+                }
+                else
+                {
+                    _boughtLuxury = value;
+                }
+
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _boughtIron;
+        public int BoughtIron
+        {
+            get => _boughtIron;
+            set
+            {
+                if (MarketAvailableIron != 0)
+                {
+                    if (value > MarketAvailableIron)
+                    {
+                        _boughtIron = MarketAvailableIron;
+                    }
+                    else if (value < 0)
+                    {
+                        _boughtIron = 0;
+                    }
+                    else
+                    {
+                        _boughtIron = value;
+                    }
+                }
+                else
+                {
+                    _boughtIron = value;
+                }
+
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _boughtStone;
+        public int BoughtStone
+        {
+            get => _boughtStone;
+            set
+            {
+                if (MarketAvailableStone != 0)
+                {
+                    if (value > MarketAvailableStone)
+                    {
+                        _boughtStone = MarketAvailableStone;
+                    }
+                    else if (value < 0)
+                    {
+                        _boughtStone = 0;
+                    }
+                    else
+                    {
+                        _boughtStone = value;
+                    }
+                }
+                else
+                {
+                    _boughtStone = value;
+                }
+
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _boughtWood;
+        public int BoughtWood
+        {
+            get => _boughtWood;
+            set
+            {
+                if (MarketAvailableWood != 0)
+                {
+                    if (value > MarketAvailableWood)
+                    {
+                        _boughtWood = MarketAvailableWood;
+                    }
+                    else if (value < 0)
+                    {
+                        _boughtWood = 0;
+                    }
+                    else
+                    {
+                        _boughtWood = value;
+                    }
+                }
+                else
+                {
+                    _boughtWood = value;
+                }
+
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _sendMerchantId = -1;
         public int SendMerchantId
         {
@@ -108,23 +269,21 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private ObservableCollection<MerchantModel> _merchantsCollection = new ObservableCollection<MerchantModel>();
-        public ObservableCollection<MerchantModel> MerchantsCollection
+        public ObservableCollection<MerchantModel> MerchantsCollection { get; set; } = new ObservableCollection<MerchantModel>()
         {
-            get => _merchantsCollection;
-            set
+            new MerchantModel()
             {
-                _merchantsCollection = value;
-                NotifyPropertyChanged();
+                Id = 0
             }
-        }
+        };
 
-        private ObservableCollection<BoatModel> _shipsCollection = new ObservableCollection<BoatModel>();
-        public ObservableCollection<BoatModel> ShipsCollection
+        public ObservableCollection<BoatModel> ShipsCollection { get; set; } = new ObservableCollection<BoatModel>()
         {
-            get => _shipsCollection;
-            set => _shipsCollection = value;
-        }
+            new BoatModel()
+            {
+                Id = 0
+            }
+        };
 
         #region INotifyPropertyChanged
 

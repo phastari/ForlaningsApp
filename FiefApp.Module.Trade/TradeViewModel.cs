@@ -9,6 +9,7 @@ using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
@@ -119,6 +120,8 @@ namespace FiefApp.Module.Trade
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
         }
 
+        #region Event Handlers
+
         private void HandleUpdateEvent(UpdateEventParameters param)
         {
             if (param.Publisher == "Trade"
@@ -155,6 +158,7 @@ namespace FiefApp.Module.Trade
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
                     DataModel = _baseService.GetDataModel<TradeDataModel>(x);
+                    GetInformationSetDataModel(x);
                     SaveData(x);
                 }
 
@@ -165,15 +169,6 @@ namespace FiefApp.Module.Trade
                     Publisher = str
                 });
             }
-        }
-
-        private void CompleteLoadData()
-        {
-            DataModel = Index
-                        == 0 ? _tradeService.GetAllTradeDataModel()
-                : _baseService.GetDataModel<TradeDataModel>(Index);
-
-            UpdateFiefCollection();
         }
 
         private void UpdateAndRespond()
@@ -192,17 +187,58 @@ namespace FiefApp.Module.Trade
             });
         }
 
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            CompleteLoadData();
+        }
+
+        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        {
+            SaveData();
+        }
+
+        #endregion
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _tradeService.GetAllTradeDataModel()
+                : _baseService.GetDataModel<TradeDataModel>(Index);
+
+            GetInformationSetDataModel();
+            UpdateFiefCollection();
+        }
+
         #region DelegateCommand : AddMerchant
 
         public DelegateCommand AddMerchant { get; set; }
         private void ExecuteAddMerchant()
         {
-            DataModel.MerchantsCollection.Add(new MerchantModel()
+            int id = _tradeService.GetNewMerchantId();
+            if (id == 0)
             {
-                Id = _tradeService.GetNewMerchantId(),
-                PersonName = _baseService.GetCommonerName(),
-                Age = _baseService.RollDie(10,61)
-            });
+                DataModel.MerchantsCollection.Add(new MerchantModel()
+                {
+                    Id = 0
+                });
+
+                DataModel.MerchantsCollection.Add(new MerchantModel()
+                {
+                    Id = 1,
+                    PersonName = _baseService.GetCommonerName(),
+                    Age = _baseService.RollDie(10, 61)
+                });
+            }
+            else
+            {
+                DataModel.MerchantsCollection.Add(new MerchantModel()
+                {
+                    Id = _tradeService.GetNewMerchantId(),
+                    PersonName = _baseService.GetCommonerName(),
+                    Age = _baseService.RollDie(10, 61)
+                });
+            }
         }
 
         #endregion
@@ -294,37 +330,7 @@ namespace FiefApp.Module.Trade
                     bool stone = true;
                     bool iron = true;
 
-                    if (e.Model.SilverWith > 0)
-                    {
-                        silver = _supplyService.WithdrawSilver(e.Model.SilverWith);
-                    }
-
-                    if (e.Model.BaseToSell > 0)
-                    {
-                        baseW = _supplyService.WithdrawBase(e.Model.BaseToSell);
-                    }
-
-                    if (e.Model.LuxuryToSell > 0)
-                    {
-                        luxury = _supplyService.WithdrawLuxury(e.Model.LuxuryToSell);
-                    }
-
-                    if (e.Model.IronToSell > 0)
-                    {
-                        iron = _supplyService.WithdrawIron(e.Model.IronToSell);
-                    }
-
-                    if (e.Model.WoodToSell > 0)
-                    {
-                        wood = _supplyService.WithdrawWood(e.Model.WoodToSell);
-                    }
-
-                    if (e.Model.StoneToSell > 0)
-                    {
-                        stone = _supplyService.WithdrawStone(e.Model.StoneToSell);
-                    }
-
-                    if (silver && baseW && luxury && iron && wood && stone)
+                    if (_supplyService.Withdraw(e.Model.SilverWith, e.Model.BaseToSell, e.Model.LuxuryToSell, e.Model.IronToSell, e.Model.StoneToSell, e.Model.WoodToSell))
                     {
                         for (int x = 0; x < DataModel.MerchantsCollection.Count; x++)
                         {
@@ -367,6 +373,7 @@ namespace FiefApp.Module.Trade
                                             {
                                                 DataModel.MerchantsCollection[x].ShipModel = (BoatModel)DataModel.ShipsCollection[i].Clone();
                                                 DataModel.ShipsCollection.RemoveAt(i);
+                                                _tradeService.RemoveShipInPortListBoatsCollection(i);
                                                 break;
                                             }
                                         }
@@ -378,35 +385,7 @@ namespace FiefApp.Module.Trade
                     }
                     else
                     {
-                        if (e.Model.SilverWith > 0 && silver)
-                        {
-                            silver = _supplyService.DepositSilver(e.Model.SilverWith);
-                        }
-
-                        if (e.Model.BaseToSell > 0 && baseW)
-                        {
-                            baseW = _supplyService.DepositBase(e.Model.BaseToSell);
-                        }
-
-                        if (e.Model.LuxuryToSell > 0 && luxury)
-                        {
-                            luxury = _supplyService.DepositLuxury(e.Model.LuxuryToSell);
-                        }
-
-                        if (e.Model.IronToSell > 0 && iron)
-                        {
-                            iron = _supplyService.DepositIron(e.Model.IronToSell);
-                        }
-
-                        if (e.Model.WoodToSell > 0 && wood)
-                        {
-                            wood = _supplyService.DepositWood(e.Model.WoodToSell);
-                        }
-
-                        if (e.Model.StoneToSell > 0 && stone)
-                        {
-                            stone = _supplyService.DepositStone(e.Model.StoneToSell);
-                        }
+                        MessageBox.Show("Du har inte nog med resurser!");
                     }
                     break;
             }
@@ -432,34 +411,45 @@ namespace FiefApp.Module.Trade
 
         protected override void LoadData()
         {
-            //if (_triggerLoad)
-            //{
-            //    _triggerLoad = false;
-            //    for (int x = 0; x < _awaitResponsList.Count; x++)
-            //    {
-            //        if (_awaitResponsList[x].ModuleName == "Trade")
-            //        {
-            //            _awaitResponsList[x].Completed = true;
-            //        }
-            //        else
-            //        {
-            //            _awaitResponsList[x].Completed = false;
-            //        }
-            //    }
-            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Trade");
-            //}
             CompleteLoadData();
         }
 
-        private void ExecuteNewFiefLoadedEvent()
+        private void GetInformationSetDataModel(int index = -1)
         {
-            Index = 1;
-            CompleteLoadData();
+            if (index == -1)
+            {
+                GetMarket(Index);
+                GetBoatsCollectionFromPortList(Index);
+            }
+            else
+            {
+                GetMarket(index);
+                GetBoatsCollectionFromPortList(index);
+            }
         }
 
-        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        #region GetInformationSetDataModel
+
+        private void GetMarket(int index)
         {
-            SaveData();
+            if (!DataModel.MarketSetThisYear)
+            {
+                var model = _tradeService.GetMarket(index);
+                DataModel.MarketAvailableBase = model.MarketBase;
+                DataModel.MarketAvailableLuxury = model.MarketLuxury;
+                DataModel.MarketAvailableIron = model.MarketIron;
+                DataModel.MarketAvailableStone = model.MarketStone;
+                DataModel.MarketAvailableWood = model.MarketWood;
+                DataModel.MarketSetThisYear = true;
+                SaveData(index);
+            }
         }
+
+        private void GetBoatsCollectionFromPortList(int index)
+        {
+            DataModel.ShipsCollection = new ObservableCollection<BoatModel>(_tradeService.GetBoatsFromPortLists());
+        }
+
+        #endregion
     }
 }

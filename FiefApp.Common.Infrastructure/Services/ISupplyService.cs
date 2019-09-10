@@ -20,5 +20,6 @@ namespace FiefApp.Common.Infrastructure.Services
         bool WithdrawWood(int amount);
         bool DepositWood(int amount);
         void ModifySupply(int silver, int bas, int lyx, int iron, int stone, int wood);
+        bool Withdraw(int silver, int bas, int lyx, int iron, int stone, int wood);
     }
 }

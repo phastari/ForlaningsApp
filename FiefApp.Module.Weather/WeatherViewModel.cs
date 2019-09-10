@@ -327,28 +327,28 @@ namespace FiefApp.Module.Weather
             switch (e.PropertyName)
             {
                 case "Tariffs":
-                    {
-                        UpdateForecast();
-                        break;
-                    }
+                {
+                    UpdateForecast();
+                    break;
+                }
 
                 case "TaxSerfs":
-                    {
-                        UpdateForecast();
-                        break;
-                    }
+                {
+                    UpdateForecast();
+                    break;
+                }
 
                 case "TaxFarmers":
-                    {
-                        UpdateForecast();
-                        break;
-                    }
+                {
+                    UpdateForecast();
+                    break;
+                }
 
                 case "TaxFreemen":
-                    {
-                        UpdateForecast();
-                        break;
-                    }
+                {
+                    UpdateForecast();
+                    break;
+                }
             }
         }
 

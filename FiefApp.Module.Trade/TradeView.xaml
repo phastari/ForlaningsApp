@@ -7,6 +7,7 @@
              xmlns:customCommands="clr-namespace:FiefApp.Common.Infrastructure.CustomCommands;assembly=FiefApp.Common.Infrastructure"
              xmlns:merchantUI="clr-namespace:FiefApp.Module.Trade.UIElements.MerchantUI"
              xmlns:sendMerchantUI="clr-namespace:FiefApp.Module.Trade.UIElements.SendMerchantUI"
+             xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="485" 
              d:DesignWidth="778">
@@ -65,8 +66,10 @@
             <ColumnDefinition Width="8"/>
 
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="104"/>
+            <ColumnDefinition Width="53"/>
             <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="60"/>
@@ -81,7 +84,7 @@
 
         <Frame 
             Grid.Column="1" 
-            Grid.ColumnSpan="7" 
+            Grid.ColumnSpan="9" 
             Grid.Row="1" 
             Grid.RowSpan="20" 
             Background="LightGray" 
@@ -91,7 +94,7 @@
             Margin="0,0,0,15"/>
 
         <Frame 
-            Grid.Column="9" 
+            Grid.Column="11" 
             Grid.Row="1" 
             Grid.RowSpan="38" 
             Background="LightGray" 
@@ -108,7 +111,7 @@
         <ComboBox 
             x:Name="FiefComboBox"
             Grid.Column="1"
-            Grid.ColumnSpan="5"
+            Grid.ColumnSpan="7"
             Grid.Row="3"
             Width="120"
             ItemsSource="{Binding Path=FiefCollection}"
@@ -163,15 +166,17 @@
 
         <Label
             Content="Lokala marknaden"
+            FontWeight="Bold"
             Grid.Column="2"
-            Grid.Row="7"
+            Grid.ColumnSpan="5"
+            Grid.Row="5"
             VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
+            HorizontalContentAlignment="Left"
             Padding="0"
             ToolTip="Läge"/>
 
         <Label
-            Content="Finns"
+            Content="Köp"
             Grid.Column="4"
             Grid.Row="7"
             VerticalContentAlignment="Center"
@@ -180,12 +185,21 @@
             ToolTip="Läge"/>
 
         <Label
-            Content="Silver"
+            Content="Finns"
             Grid.Column="6"
             Grid.Row="7"
             VerticalContentAlignment="Center"
             HorizontalContentAlignment="Center"
             Padding="0"
+            ToolTip="Läge"/>
+
+        <Label
+            Content="Silver"
+            Grid.Column="8"
+            Grid.Row="7"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Right"
+            Padding="0,0,8,0"
             ToolTip="Läge"/>
 
         <Label
@@ -197,10 +211,15 @@
             Padding="0"
             ToolTip="Läge"/>
 
-        <TextBox
+        <iTextBox:iTextBox
             Grid.Column="4"
             Grid.Row="9"
-            Text="{Binding Path=MarketAvailableBase}"
+            Value="{Binding Path=DataModel.BoughtBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="9"
+            Text="{Binding Path=DataModel.MarketAvailableBase, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -208,9 +227,9 @@
             IsReadOnly="True"/>
 
         <TextBox
-            Grid.Column="6"
+            Grid.Column="8"
             Grid.Row="9"
-            Text="{Binding Path=MarketCostBase}"
+            Text="360"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -226,10 +245,15 @@
             Padding="0"
             ToolTip="Läge"/>
 
-        <TextBox
+        <iTextBox:iTextBox
             Grid.Column="4"
             Grid.Row="11"
-            Text="{Binding Path=MarketAvailableLuxury}"
+            Value="{Binding Path=DataModel.BoughtLuxury, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="11"
+            Text="{Binding Path=DataModel.MarketAvailableLuxury, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -237,9 +261,9 @@
             IsReadOnly="True"/>
 
         <TextBox
-            Grid.Column="6"
+            Grid.Column="8"
             Grid.Row="11"
-            Text="{Binding Path=MarketCostLuxury}"
+            Text="720"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -255,10 +279,15 @@
             Padding="0"
             ToolTip="Läge"/>
 
-        <TextBox
+        <iTextBox:iTextBox
             Grid.Column="4"
             Grid.Row="13"
-            Text="{Binding Path=MarketAvailableIron}"
+            Value="{Binding Path=DataModel.BoughtIron, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="13"
+            Text="{Binding Path=DataModel.MarketAvailableIron, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -266,9 +295,9 @@
             IsReadOnly="True"/>
 
         <TextBox
-            Grid.Column="6"
+            Grid.Column="8"
             Grid.Row="13"
-            Text="{Binding Path=MarketCostIron}"
+            Text="50"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -284,10 +313,15 @@
             Padding="0"
             ToolTip="Läge"/>
 
-        <TextBox
+        <iTextBox:iTextBox
             Grid.Column="4"
             Grid.Row="15"
-            Text="{Binding Path=MarketAvailableStone}"
+            Value="{Binding Path=DataModel.BoughtStone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="15"
+            Text="{Binding Path=DataModel.MarketAvailableStone, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -295,9 +329,9 @@
             IsReadOnly="True"/>
 
         <TextBox
-            Grid.Column="6"
+            Grid.Column="8"
             Grid.Row="15"
-            Text="{Binding Path=MarketCostStone}"
+            Text="27"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -313,10 +347,15 @@
             Padding="0"
             ToolTip="Läge"/>
 
-        <TextBox
+        <iTextBox:iTextBox
             Grid.Column="4"
             Grid.Row="17"
-            Text="{Binding Path=MarketAvailableWood}"
+            Value="{Binding Path=DataModel.BoughtWood, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox
+            Grid.Column="6"
+            Grid.Row="17"
+            Text="{Binding Path=DataModel.MarketAvailableWood, UpdateSourceTrigger=PropertyChanged}"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -324,9 +363,9 @@
             IsReadOnly="True"/>
 
         <TextBox
-            Grid.Column="6"
+            Grid.Column="8"
             Grid.Row="17"
-            Text="{Binding Path=MarketCostWood}"
+            Text="18"
             Template="{DynamicResource TextBoxTemplate}"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
@@ -335,7 +374,7 @@
 
 
         <Grid
-            Grid.Column="9"
+            Grid.Column="11"
             Grid.Row="3"
             Height="24">
             <Grid.RowDefinitions>
@@ -411,7 +450,7 @@
         </Grid>
 
         <ItemsControl
-            Grid.Column="9"
+            Grid.Column="11"
             Grid.Row="5"
             Grid.RowSpan="34"
             ItemsSource="{Binding Path=DataModel.MerchantsCollection}">
@@ -472,7 +511,8 @@
             VerticalAlignment="Center"
             Margin="200,-20,0,0"
             Id="{Binding Path=DataModel.SendMerchantId}"
-            Visibility="{Binding Path=DataModel.SendMerchantVisibility}">
+            ShipsCollection="{Binding Path=DataModel.ShipsCollection}"
+            Visibility="{Binding Path=DataModel.SendMerchantVisibility, FallbackValue=Collapsed}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SendMerchantUIEvent">
                     <customCommands:CustomCommandAction Command="{Binding Path=DataContext.SendMerchantUIEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>

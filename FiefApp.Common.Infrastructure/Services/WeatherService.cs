@@ -87,7 +87,7 @@ namespace FiefApp.Common.Infrastructure.Services
             if (index != 0)
             {
                 subsidiariesDayswork += _fiefService.SubsidiaryList[index].SubsidiaryCollection.Sum(t => t.DaysWorkThisYear)
-                                     + _fiefService.SubsidiaryList[index].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
+                                        + _fiefService.SubsidiaryList[index].ConstructingCollection.Sum(t => t.DaysWorkThisYear);
 
                 if (_fiefService.PortsList[index].GotShipyard
                     || _fiefService.PortsList[index].BuildingShipyard)
@@ -123,7 +123,7 @@ namespace FiefApp.Common.Infrastructure.Services
             for (int x = 1; x < _fiefService.MinesList.Count; x++)
             {
                 nr += _fiefService.MinesList[x].MinesCollection.Count
-                   + _fiefService.MinesList[x].QuarriesCollection.Count;
+                      + _fiefService.MinesList[x].QuarriesCollection.Count;
             }
 
             return nr;
@@ -156,7 +156,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
                 silver = _fiefService.IncomeList[index].TotalSilver
                          - _fiefService.PortsList[index].TotalSilver
-                       - _fiefService.ExpensesList[index].ExpensesSilver;
+                         - _fiefService.ExpensesList[index].ExpensesSilver;
 
                 for (int x = 0; x < _fiefService.MinesList[index].MinesCollection.Count; x++)
                 {
@@ -215,7 +215,7 @@ namespace FiefApp.Common.Infrastructure.Services
             if (index != 0)
             {
                 return _fiefService.IncomeList[index].TotalLuxury
-                    - _fiefService.ExpensesList[index].ExpensesLuxury;
+                       - _fiefService.ExpensesList[index].ExpensesLuxury;
             }
 
             int luxury = 0;
@@ -233,7 +233,7 @@ namespace FiefApp.Common.Infrastructure.Services
             if (index != 0)
             {
                 return _fiefService.IncomeList[index].TotalIron
-                    - _fiefService.ExpensesList[index].ExpensesIron;
+                       - _fiefService.ExpensesList[index].ExpensesIron;
             }
 
             int iron = 0;
@@ -251,7 +251,7 @@ namespace FiefApp.Common.Infrastructure.Services
             if (index != 0)
             {
                 return _fiefService.IncomeList[index].TotalStone
-                    - _fiefService.ExpensesList[index].ExpensesStone;
+                       - _fiefService.ExpensesList[index].ExpensesStone;
             }
 
             int stone = 0;
@@ -269,7 +269,7 @@ namespace FiefApp.Common.Infrastructure.Services
             if (index != 0)
             {
                 return _fiefService.IncomeList[index].TotalWood
-                    - _fiefService.ExpensesList[index].ExpensesWood;
+                       - _fiefService.ExpensesList[index].ExpensesWood;
             }
 
             int wood = 0;

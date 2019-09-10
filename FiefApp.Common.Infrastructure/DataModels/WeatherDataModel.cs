@@ -441,7 +441,7 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _numberOfFishingBoats;
+        private int _numberOfFishingBoats = 10000;
         public int NumberOfFishingBoats
         {
             get => _numberOfFishingBoats;
@@ -924,7 +924,20 @@ namespace FiefApp.Common.Infrastructure.DataModels
             get => _taxSerfs;
             set
             {
-                _taxSerfs = value;
+                if (value <= 0)
+                {
+                    _taxSerfs = 0;
+                }
+                else if (value >= 100)
+                {
+                    _taxSerfs = 100;
+                }
+                else
+                {
+                    _taxSerfs = value;
+                }
+                CalculateTaxHappiness();
+
                 NotifyPropertyChanged();
             }
         }
@@ -1358,6 +1371,15 @@ namespace FiefApp.Common.Infrastructure.DataModels
             {
                 return value;
             }
+        }
+
+        #endregion
+
+        #region Happiness
+
+        public void CalculateTaxHappiness()
+        {
+
         }
 
         #endregion
