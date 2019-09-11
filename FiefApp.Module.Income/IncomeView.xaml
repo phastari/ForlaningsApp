@@ -61,10 +61,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Rectangle x:Name="InitialFocus" 
-                   Grid.Column="0"
-                   Grid.Row="0"
-                   Focusable="True"/>
+        <Rectangle 
+            x:Name="InitialFocus" 
+            Grid.Column="0"
+            Grid.Row="0"
+            Focusable="True"
+            FocusVisualStyle="{x:Null}"/>
+
         <Frame 
             Grid.Column="1" 
             Grid.Row="1" 
