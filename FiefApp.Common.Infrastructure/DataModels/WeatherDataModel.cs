@@ -918,6 +918,17 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
+        private int _taxSerfsLastYear = 20;
+        public int TaxSerfsLastYear
+        {
+            get => _taxSerfsLastYear;
+            set
+            {
+                _taxSerfsLastYear = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _taxSerfs = 20;
         public int TaxSerfs
         {
@@ -936,8 +947,18 @@ namespace FiefApp.Common.Infrastructure.DataModels
                 {
                     _taxSerfs = value;
                 }
-                CalculateTaxHappiness();
 
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxFarmersLastYear = 20;
+        public int TaxFarmersLastYear
+        {
+            get => _taxFarmersLastYear;
+            set
+            {
+                _taxFarmersLastYear = value;
                 NotifyPropertyChanged();
             }
         }
@@ -953,13 +974,35 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        private int _taxFreemen = 20;
-        public int TaxFreemen
+        private int _taxBurgessLastYear = 20;
+        public int TaxBurgessLastYear
         {
-            get => _taxFreemen;
+            get => _taxBurgessLastYear;
             set
             {
-                _taxFreemen = value;
+                _taxBurgessLastYear = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxBurgess = 20;
+        public int TaxBurgess
+        {
+            get => _taxBurgess;
+            set
+            {
+                _taxBurgess = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _taxVassalsLastYear = 10;
+        public int TaxVassalsLastYear
+        {
+            get => _taxVassalsLastYear;
+            set
+            {
+                _taxVassalsLastYear = value;
                 NotifyPropertyChanged();
             }
         }
@@ -1371,15 +1414,6 @@ namespace FiefApp.Common.Infrastructure.DataModels
             {
                 return value;
             }
-        }
-
-        #endregion
-
-        #region Happiness
-
-        public void CalculateTaxHappiness()
-        {
-
         }
 
         #endregion

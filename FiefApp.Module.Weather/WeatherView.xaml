@@ -1455,7 +1455,7 @@
             <iTextBox:iTextBox
                 Grid.Column="2"
                 Grid.Row="6"
-                Value="{Binding Path=DataModel.TaxFreemen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Value="{Binding Path=DataModel.TaxBurgess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label 
                 Grid.Column="0"

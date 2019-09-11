@@ -49,6 +49,37 @@ namespace FiefApp.Common.Infrastructure.Services
             return slaves;
         }
 
+        public int GetTotalAmountOfBurgess(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.ManorList[index].VillagesCollection.Sum(o => o.Burgess);
+            }
+
+            int burgess = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                burgess += _fiefService.ManorList[x].VillagesCollection.Sum(o => o.Burgess);
+            }
+            return burgess;
+        }
+
+        public int GetTotalPopulation(int index)
+        {
+            if (index != 0)
+            {
+                return _fiefService.ManorList[index].ManorPopulation;
+            }
+
+            int population = 0;
+            for (int x = 1; x < _fiefService.ManorList.Count; x++)
+            {
+                population += _fiefService.ManorList[x].ManorPopulation;
+            }
+
+            return population;
+        }
+
         public int GetTotalNumberOfSubsidaries(int index)
         {
             int nr = 0;

@@ -81,7 +81,7 @@ namespace FiefApp.Common.Infrastructure.Services
             license += license / 100 * (Convert.ToDecimal(_fiefService.ManorList[index].ManorWealth) * 5);
 
             license /= 20;
-            license *= _fiefService.WeatherList[index].TaxFreemen;
+            license *= _fiefService.WeatherList[index].TaxBurgess;
 
             return Convert.ToInt32(Math.Floor(license));
         }

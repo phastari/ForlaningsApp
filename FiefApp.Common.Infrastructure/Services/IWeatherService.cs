@@ -7,6 +7,8 @@ namespace FiefApp.Common.Infrastructure.Services
         WeatherDataModel GetAllWeatherDataModels();
         int GetTotalAmountOfSerfs(int index);
         int GetTotalAmountOfSlaves(int index);
+        int GetTotalAmountOfBurgess(int index);
+        int GetTotalPopulation(int index);
         int GetTotalNumberOfSubsidaries(int index);
         int GetTotalAmountOfDaysworkFromSubsidiaries(int index);
         int GetForecastForSilver(int index);

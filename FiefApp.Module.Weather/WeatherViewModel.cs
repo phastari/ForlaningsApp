@@ -293,22 +293,6 @@ namespace FiefApp.Module.Weather
 
         protected override void LoadData()
         {
-            //if (_triggerLoad)
-            //{
-            //    _triggerLoad = false;
-            //    for (int x = 0; x < _awaitResponsList.Count; x++)
-            //    {
-            //        if (_awaitResponsList[x].ModuleName == "Weather")
-            //        {
-            //            _awaitResponsList[x].Completed = true;
-            //        }
-            //        else
-            //        {
-            //            _awaitResponsList[x].Completed = false;
-            //        }
-            //    }
-            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Weather");
-            //}
             CompleteLoadData();
         }
 
@@ -329,24 +313,28 @@ namespace FiefApp.Module.Weather
                 case "Tariffs":
                 {
                     UpdateForecast();
+                    CalculateHappiness();
                     break;
                 }
 
                 case "TaxSerfs":
                 {
                     UpdateForecast();
+                    CalculateHappiness();
                     break;
                 }
 
                 case "TaxFarmers":
                 {
                     UpdateForecast();
+                    CalculateHappiness();
                     break;
                 }
 
-                case "TaxFreemen":
+                case "TaxBurgess":
                 {
                     UpdateForecast();
+                    CalculateHappiness();
                     break;
                 }
             }
@@ -360,6 +348,39 @@ namespace FiefApp.Module.Weather
             DataModel.ThisYearIron = _weatherService.GetForecastForIron(Index);
             DataModel.ThisYearStone = _weatherService.GetForecastForStone(Index);
             DataModel.ThisYearWood = _weatherService.GetForecastForWood(Index);
+        }
+
+        private void CalculateHappiness()
+        {
+            if (Index != 0)
+            {
+                int totalPopulation = _weatherService.GetTotalPopulation(Index);
+                int serfs = _weatherService.GetTotalAmountOfSerfs(Index);
+                int burgess = _weatherService.GetTotalAmountOfBurgess(Index);
+                int farmers = totalPopulation - serfs - burgess;
+
+                double pSerfs = (double)serfs / totalPopulation;
+                double pBurgess = (double)burgess / totalPopulation;
+                double pFarmers = 1 - pSerfs - pBurgess;
+
+                int happinessSerfs = (int)Math.Floor((DataModel.TaxSerfs - 20) * pSerfs + (DataModel.TaxSerfs - DataModel.TaxSerfsLastYear) * pSerfs);
+                int happinessBurgess = (int)Math.Floor(((DataModel.TaxBurgess - 20) * pBurgess + (DataModel.TaxBurgess - DataModel.TaxBurgessLastYear) * pBurgess) * 18);
+                int happinessFarmers = (int)Math.Floor(((DataModel.TaxFarmers - 20) * pFarmers + (DataModel.TaxFarmers - DataModel.TaxFarmersLastYear) * pFarmers) * 6);
+
+                if (happinessSerfs < 0)
+                {
+                    happinessSerfs /= 2;
+                }
+                if (happinessFarmers < 0)
+                {
+                    happinessFarmers /= 2;
+                }
+                if (happinessBurgess < 0)
+                {
+                    happinessBurgess /= 2;
+                }
+                DataModel.HappinessTaxes = (happinessSerfs + happinessBurgess + happinessFarmers).ToString();
+            }
         }
 
         private void ExecuteNewFiefLoadedEvent()
