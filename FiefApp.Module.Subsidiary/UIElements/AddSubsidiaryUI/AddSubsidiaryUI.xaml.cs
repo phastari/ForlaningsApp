@@ -3,6 +3,7 @@ using FiefApp.Module.Subsidiary.RoutedEvents;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -65,6 +66,7 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
             Fall = "0";
             Winter = "0";
             CantEdit = true;
+            Subsidiary = "";
         }
 
         #endregion
@@ -89,6 +91,13 @@ namespace FiefApp.Module.Subsidiary.UIElements.AddSubsidiaryUI
             set
             {
                 _subsidiary = value;
+                if (value != "")
+                {
+                    if (SubsidiaryCollection.Any(o => o.Subsidiary != value))
+                    {
+                        CantEdit = false;
+                    }
+                }
                 NotifyPropertyChanged();
             }
         }

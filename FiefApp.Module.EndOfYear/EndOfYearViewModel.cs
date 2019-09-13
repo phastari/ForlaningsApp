@@ -98,6 +98,38 @@ namespace FiefApp.Module.EndOfYear
             List<bool> tempList = new List<bool>();
             switch (e.Action)
             {
+                case "Trade":
+                    for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
+                    {
+                        if (DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsKey(e.Id + 1000000))
+                        {
+                            DataModel.IncomeListFief[x].EndOfYearOkDictionary[e.Id] = e.Ok;
+                        }
+
+                        tempList.Add(!DataModel.IncomeListFief[x].EndOfYearOkDictionary.ContainsValue(false));
+                        tempList.Add(DataModel.IncomeListFief[x].PopulationOk);
+                        tempList.Add(DataModel.IncomeListFief[x].TaxesOk);
+
+                        for (int i = 0; i < DataModel.IncomeListFief[x].TradeCollection.Count; i++)
+                        {
+                            if (e.Id == DataModel.IncomeListFief[x].TradeCollection[i].Id)
+                            {
+                                DataModel.IncomeListFief[x].TradeCollection[i].EndOfYearSilver = e.IncomeSilver != "-" ? int.Parse(e.IncomeSilver) : 0;
+
+                                DataModel.IncomeListFief[x].TradeCollection[i].EndOfYearBase = e.IncomeBase != "-" ? int.Parse(e.IncomeBase) : 0;
+
+                                DataModel.IncomeListFief[x].TradeCollection[i].EndOfYearLuxury = e.IncomeLuxury != "-" ? int.Parse(e.IncomeLuxury) : 0;
+
+                                DataModel.IncomeListFief[x].TradeCollection[i].EndOfYearIron = e.IncomeIron != "-" ? int.Parse(e.IncomeIron) : 0;
+
+                                DataModel.IncomeListFief[x].TradeCollection[i].EndOfYearStone = e.IncomeStone != "-" ? int.Parse(e.IncomeStone) : 0;
+
+                                DataModel.IncomeListFief[x].TradeCollection[i].EndOfYearWood = e.IncomeWood != "-" ? int.Parse(e.IncomeWood) : 0;
+                            }
+                        }
+                    }
+                    break;
+
                 case "Felling":
                     for (int x = 0; x < DataModel.IncomeListFief.Count; x++)
                     {
@@ -638,9 +670,26 @@ namespace FiefApp.Module.EndOfYear
                             if (DataModel.IncomeListFief[x - 1].ConstructingCollection[i].DaysWorkBuild
                                 == DataModel.IncomeListFief[x - 1].ConstructingCollection[i].DaysWorkThisYear)
                             {
+                                bool found = false;
                                 str += $" anlades under året!{Environment.NewLine}";
                                 _fiefService.SubsidiaryList[x].SubsidiaryCollection.Add(DataModel.IncomeListFief[x - 1].ConstructingCollection[i]);
-                                DataModel.IncomeListFief[x - 1].ConstructingCollection.RemoveAt(i);
+                                for (int p = 1; p < _fiefService.SubsidiaryList.Count; p++)
+                                {
+                                    for (int o = 0; o < _fiefService.SubsidiaryList[p].ConstructingCollection.Count; o++)
+                                    {
+                                        if (_fiefService.SubsidiaryList[p].ConstructingCollection[o].Id == DataModel.IncomeListFief[x - 1].ConstructingCollection[i].Id)
+                                        {
+                                            _fiefService.SubsidiaryList[p].ConstructingCollection.RemoveAt(o);
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (found)
+                                    {
+                                        break;
+                                    }
+                                }
                             }
                             else
                             {
@@ -676,6 +725,17 @@ namespace FiefApp.Module.EndOfYear
                     }
                 }
 
+                for (int i = 1; i < _fiefService.MinesList.Count; i++)
+                {
+                    for (int y = 0; y < _fiefService.MinesList[i].MinesCollection.Count; y++)
+                    {
+                        if (_fiefService.MinesList[i].MinesCollection[y].IsFirstYear)
+                        {
+                            _fiefService.MinesList[i].MinesCollection[y].IsFirstYear = false;
+                        }
+                    }
+                }
+
                 str += Environment.NewLine;
 
                 str += $"Stenbrott:{Environment.NewLine}";
@@ -687,6 +747,17 @@ namespace FiefApp.Module.EndOfYear
                     {
                         stone += tmpStone;
                         str += $"{DataModel.IncomeListFief[x - 1].QuarriesCollection[i].QuarryType} {Convert.ToString(tmpStone).PadLeft(7)} Sten{Environment.NewLine}";
+                    }
+                }
+
+                for (int i = 1; i < _fiefService.MinesList.Count; i++)
+                {
+                    for (int y = 0; y < _fiefService.MinesList[i].QuarriesCollection.Count; y++)
+                    {
+                        if (_fiefService.MinesList[i].QuarriesCollection[y].IsFirstYear)
+                        {
+                            _fiefService.MinesList[i].QuarriesCollection[y].IsFirstYear = false;
+                        }
                     }
                 }
 
@@ -1172,7 +1243,7 @@ namespace FiefApp.Module.EndOfYear
                                 }
                             }
                         }
-                        
+
                         str += $"En ny by grundades på dina ägor. (60 invånare){Environment.NewLine}";
                     }
 
@@ -1583,6 +1654,172 @@ namespace FiefApp.Module.EndOfYear
 
                 #endregion
 
+                #region TradeModule
+
+                if (DataModel.IncomeListFief[x - 1].TradeCollection.Count > 0
+                    && DataModel.IncomeListFief[x - 1].TradeCollection != null)
+                {
+                    str += $"Handel:{Environment.NewLine}";
+                    for (int i = 0; i < DataModel.IncomeListFief[x - 1].TradeCollection.Count; i++)
+                    {
+                        int deadGuards = 0;
+                        int chance = 0;
+                        bool deadMerchant = false;
+                        bool tradeLost = false;
+
+                        if (DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards > 0)
+                        {
+                            chance = (int)(Math.Floor(DataModel.IncomeListFief[x - 1].TradeCollection[i].SilverWith / 360D)
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].BaseToSell
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].LuxuryToSell * 3
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].IronToSell
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].StoneToSell * 2
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].WoodToSell * 2)
+                                     / (DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards
+                                        * DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards);
+                        }
+                        else
+                        {
+                            chance = (int)(Math.Floor(DataModel.IncomeListFief[x - 1].TradeCollection[i].SilverWith / 360D)
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].BaseToSell
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].LuxuryToSell * 3
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].IronToSell
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].StoneToSell * 2
+                                           + DataModel.IncomeListFief[x - 1].TradeCollection[i].WoodToSell * 2)
+                                     * 2;
+                        }
+
+                        if (chance > 74)
+                        {
+                            chance = 75;
+                        }
+
+                        if (_baseService.RollDie(1, 101) <= chance)
+                        {
+                            // RÅNADE
+                            int roll = _baseService.RollDie(1, 101);
+                            if (roll <= DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards * 2
+                                || roll == 100)
+                            {
+                                str += $"";
+                                for (int nr = 0; nr < DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards; nr++)
+                                {
+                                    if (_baseService.RollDie(1, 101) > 74)
+                                    {
+                                        deadGuards++;
+                                    }
+                                }
+                                if (_baseService.RollDie(1, 101) >= 80)
+                                {
+                                    deadMerchant = true;
+                                }
+                                if (deadGuards >= DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards)
+                                {
+                                    tradeLost = true;
+                                }
+                            }
+                            else
+                            {
+                                deadMerchant = true;
+                                deadGuards = DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards;
+                                tradeLost = true;
+                            }
+                        }
+
+                        // Lägg till att tabort fartyget om det var på ett fartyg handelsmannen åkte.
+                        // tabort döda merchants och vakter.
+                        if (deadMerchant)
+                        {
+                            if (tradeLost)
+                            {
+                                str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].PersonName} återkom inte under året. ({DataModel.IncomeListFief[x - 1].TradeCollection[i].Assignment}){Environment.NewLine}";
+                            }
+                            else
+                            {
+                                str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].PersonName} dog i ett rånförsök.{Environment.NewLine}";
+                                str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].Guards - deadGuards} vakter kom tillbaka med varorna.{Environment.NewLine}";
+
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearSilver > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearSilver.ToString().PadLeft(7)} Silver{Environment.NewLine}";
+                                    silver += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearSilver;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearBase > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearBase.ToString().PadLeft(7)} Bas{Environment.NewLine}";
+                                    bas += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearBase;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearLuxury > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearLuxury.ToString().PadLeft(7)} Lyx{Environment.NewLine}";
+                                    lyx += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearLuxury;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearIron > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearIron.ToString().PadLeft(7)} Järn{Environment.NewLine}";
+                                    iron += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearIron;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearStone > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearStone.ToString().PadLeft(7)} Sten{Environment.NewLine}";
+                                    stone += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearStone;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood.ToString().PadLeft(7)} Timmer{Environment.NewLine}";
+                                    wood += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (tradeLost)
+                            {
+                                str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].PersonName} kom tillbaka tomhänt. ({DataModel.IncomeListFief[x - 1].TradeCollection[i].Assignment}){Environment.NewLine}";
+                            }
+                            else
+                            {
+                                str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].PersonName} kom tillbaka med ({DataModel.IncomeListFief[x - 1].TradeCollection[i].Assignment}){Environment.NewLine}";
+
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearSilver > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearSilver.ToString().PadLeft(7)} Silver{Environment.NewLine}";
+                                    silver += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearSilver;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearBase > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearBase.ToString().PadLeft(7)} Bas{Environment.NewLine}";
+                                    bas += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearBase;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearLuxury > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearLuxury.ToString().PadLeft(7)} Lyx{Environment.NewLine}";
+                                    lyx += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearLuxury;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearIron > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearIron.ToString().PadLeft(7)} Järn{Environment.NewLine}";
+                                    iron += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearIron;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearStone > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearStone.ToString().PadLeft(7)} Sten{Environment.NewLine}";
+                                    stone += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearStone;
+                                }
+                                if (DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood > 0)
+                                {
+                                    str += $"{DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood.ToString().PadLeft(7)} Timmer{Environment.NewLine}";
+                                    wood += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood;
+                                }
+                            }
+                        }
+
+                        str += Environment.NewLine;
+                    }
+                }
+
+                #endregion
+
                 str += incomeStr + Environment.NewLine;
                 _fiefService.InformationList[x].Loyalty = ConvertToT6(loyalty);
                 _fiefService.InformationList[x].Amor = ConvertToT6(amor);
@@ -1594,6 +1831,9 @@ namespace FiefApp.Module.EndOfYear
             if (_fiefService.StewardsDataModel.StewardsCollection.Count > 0
                 && _fiefService.StewardsDataModel.StewardsCollection != null)
             {
+                bas -= _fiefService.StewardsDataModel.StewardsCollection.Count * 4;
+                lyx -= _fiefService.StewardsDataModel.StewardsCollection.Count * 2;
+
                 str += $"Förvaltare:{Environment.NewLine}";
                 for (int i = _fiefService.StewardsDataModel.StewardsCollection.Count - 1; i > 0; i--)
                 {
@@ -1626,6 +1866,7 @@ namespace FiefApp.Module.EndOfYear
             str += $"{stone.ToString().PadRight(8)} Sten{Environment.NewLine}";
             str += $"{wood.ToString().PadRight(8)} Timmer{Environment.NewLine}";
 
+            _fiefService.Year++;
             _eventAggregator.GetEvent<EndOfYearEvent>().Unsubscribe(LoadData);
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
 
@@ -1637,13 +1878,13 @@ namespace FiefApp.Module.EndOfYear
             {
                 System.Diagnostics.Process.Start(file.FullName);
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 if (e.Source != null)
                     Console.WriteLine("IOException source: {0}", e.Source);
                 throw;
             }
-            
+
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
         }
 

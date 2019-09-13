@@ -365,10 +365,7 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             int total = 0;
             int nrDice = Convert.ToInt32(Math.Floor((decimal)skill / 4));
-            int temp = nrDice;
             int mod = skill - nrDice * 4;
-            List<int> tempList = new List<int>();
-            string str = "";
 
             while (nrDice > 0)
             {
@@ -376,42 +373,17 @@ namespace FiefApp.Common.Infrastructure.Services
 
                 if (roll == 6)
                 {
-                    tempList.Add(6);
                     nrDice++;
                 }
                 else
                 {
                     total += roll;
-                    tempList.Add(roll);
                     nrDice--;
                 }
             }
 
             total += mod;
 
-            if (mod > 0)
-            {
-                str += $"Tärningsslag: { temp }T6+{ mod } = ";
-            }
-            else
-            {
-                str += $"Tärningsslag: { temp }T6 = ";
-            }
-            
-            for (int i = 0; i < tempList.Count; i++)
-            {
-                if (i == 0)
-                {
-                    str += $"{ tempList[i] } ";
-                }
-                else
-                {
-                    str +=$",{ tempList[i] } ";
-                }
-            }
-
-            str += $"Totalt={ total }";
-            Console.WriteLine(str);
             return total;
         }
 

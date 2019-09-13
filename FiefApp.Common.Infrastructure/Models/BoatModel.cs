@@ -103,6 +103,10 @@ namespace FiefApp.Common.Infrastructure.Models
         }
 
         public bool AddAsBuilt { get; set; }
+        public bool BuildingInSmallDock { get; set; }
+        public bool BuildingInVillageDock { get; set; }
+        public bool BuildingInMediumDock { get; set; }
+        public bool BuildingInLargeDock { get; set; }
 
         #region INotifyPropertyChanged
 

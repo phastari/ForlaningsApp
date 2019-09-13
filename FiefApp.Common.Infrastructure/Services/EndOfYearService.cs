@@ -321,13 +321,13 @@ namespace FiefApp.Common.Infrastructure.Services
                 taxesModel.Loyalty = _fiefService.InformationList[x].Loyalty;
 
                 int happiness = _baseService.ConvertToNumeric(_fiefService.WeatherList[x].HappinessTotal);
-                if (happiness / 2 < 5)
+                if (happiness < 5)
                 {
                     taxesModel.Difficulty = 0;
                 }
                 else
                 {
-                    taxesModel.Difficulty = happiness / 2;
+                    taxesModel.Difficulty = 3 + happiness / 2;
                 }
 
                 if (8 + happiness / 4 < 5)
@@ -419,13 +419,14 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
 
-                if (_fiefService.TradeList[x].MerchantsCollection.Count > 0)
+                if (_fiefService.TradeList[x].MerchantsCollection.Count > 0
+                    && _fiefService.TradeList[x].MerchantsCollection != null)
                 {
                     for (int i = 0; i < _fiefService.TradeList[x].MerchantsCollection.Count; i++)
                     {
                         if (!string.IsNullOrEmpty(_fiefService.TradeList[x].MerchantsCollection[i].Assignment))
                         {
-                            dictionary.Add(_fiefService.TradeList[x].MerchantsCollection[i].Id, false);
+                            dictionary.Add(_fiefService.TradeList[x].MerchantsCollection[i].Id + 1000000, false);
 
                             difficulty = Convert.ToInt32(Math.Ceiling(0.51 * _fiefService.WeatherList[x].SpringRollMod
                                                                       + 0.51 * _fiefService.WeatherList[x].SummerRollMod

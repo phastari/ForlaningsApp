@@ -85,7 +85,7 @@
             IsTextSearchEnabled="True"
             IsTextSearchCaseSensitive="False"
             ItemsSource="{Binding Path=SubsidiaryCollection}"
-            Text="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Subsidiary, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             SelectedIndex="{Binding Path=Id}"
             DisplayMemberPath="Subsidiary"
             SelectionChanged="SubsidiaryTypeChanged"/>

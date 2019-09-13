@@ -2,9 +2,11 @@
 using FiefApp.Common.Infrastructure.Services;
 using Prism.Commands;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using FiefApp.Module.EndOfYear.RoutedEvents;
 
 namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
 {
@@ -80,7 +82,7 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
 
         public static readonly DependencyProperty SubsidiaryProperty =
             DependencyProperty.Register(
-                "Subsidiary",
+                "Type",
                 typeof(string),
                 typeof(EndOfYearTradeUI),
                 new PropertyMetadata("")
@@ -98,20 +100,6 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                 typeof(string),
                 typeof(EndOfYearTradeUI),
                 new PropertyMetadata("")
-            );
-
-        public int MerchantId
-        {
-            get => (int)GetValue(MerchantIdProperty);
-            set => SetValue(MerchantIdProperty, value);
-        }
-
-        public static readonly DependencyProperty MerchantIdProperty =
-            DependencyProperty.Register(
-                "MerchantId",
-                typeof(int),
-                typeof(EndOfYearTradeUI),
-                new PropertyMetadata(-1)
             );
 
         public string Skill
@@ -440,7 +428,47 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
 
         #endregion
 
+        private void SendOk(bool ok)
+        {
+            EndOfYearEventArgs newEventArgs =
+                new EndOfYearEventArgs(
+                    EndOfYearOkRoutedEvent,
+                    "Trade",
+                    Id,
+                    ok,
+                    "",
+                    0,
+                    ResultSilver,
+                    ResultBase,
+                    ResultLuxury,
+                    true,
+                    ResultIron,
+                    ResultStone,
+                    ResultWood
+                );
+
+            RaiseEvent(newEventArgs);
+        }
+
         #region Methods
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent EndOfYearOkRoutedEvent =
+            EventManager.RegisterRoutedEvent(
+                "EndOfYearOkEvent",
+                RoutingStrategy.Bubble,
+                typeof(RoutedEventHandler),
+                typeof(EndOfYearTradeUI)
+            );
+
+        public event RoutedEventHandler EndOfYearOkEvent
+        {
+            add => AddHandler(EndOfYearOkRoutedEvent, value);
+            remove => RemoveHandler(EndOfYearOkRoutedEvent, value);
+        }
+
+        #endregion
 
         private static void RaiseSkillChanged(
             DependencyObject d,
@@ -485,11 +513,19 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         i *= 15;
                     }
+                    else
+                    {
+                        i = 0;
+                    }
 
                     int j = Roll2 - Difficulty;
                     if (j < 0)
                     {
                         j *= 15;
+                    }
+                    else
+                    {
+                        j = 0;
                     }
 
                     int k = Roll3 - Difficulty;
@@ -497,8 +533,12 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                     {
                         k *= 15;
                     }
+                    else
+                    {
+                        k = 0;
+                    }
 
-                    resultFactor = i + j + k / 100;
+                    resultFactor = 1 + (i + j + k) / 100M;
                 }
                 else if (control == 3)
                 {
@@ -506,8 +546,10 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                 }
                 else
                 {
-                    resultFactor = (control - 3) * 0.25M;
+                    resultFactor = (control - 3) * 0.25M + 1;
                 }
+                Console.WriteLine($"control: {control}");
+                Console.WriteLine($"resultFactor: {resultFactor}");
             }
             else
             {
@@ -518,50 +560,42 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                 ResultIron = "-";
                 ResultWood = "-";
                 calculateFinalResult = false;
+                SendOk(false);
             }
 
             if (calculateFinalResult)
             {
-                int nrResourcesBack = 0;
-
+                List<string> resourcesBack = new List<string>();
                 if (SilverBack)
                 {
-                    nrResourcesBack++;
+                    resourcesBack.Add("silver");
                 }
 
                 if (BaseBack)
                 {
-                    nrResourcesBack++;
+                    resourcesBack.Add("base");
                 }
 
                 if (LuxuryBack)
                 {
-                    nrResourcesBack++;
+                    resourcesBack.Add("luxury");
                 }
 
                 if (StoneBack)
                 {
-                    nrResourcesBack++;
+                    resourcesBack.Add("stone");
                 }
 
                 if (WoodBack)
                 {
-                    nrResourcesBack++;
+                    resourcesBack.Add("wood");
                 }
 
                 if (IronBack)
                 {
-                    nrResourcesBack++;
+                    resourcesBack.Add("iron");
                 }
 
-                bool silverBackDone = false;
-                bool baseBackDone = false;
-                bool luxuryBackDone = false;
-                bool stoneBackDone = false;
-                bool woodBackDone = false;
-                bool ironBackDone = false;
-                int factor;
-                decimal total = 100;
                 int resultSilver = 0;
                 int resultBase = 0;
                 int resultLuxury = 0;
@@ -580,77 +614,69 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI
                         * resultFactor
                     ));
 
-                for (int x = 0; x < nrResourcesBack; x++)
+                while (silver > 0)
                 {
-                    bool skipRest = false;
+                    switch (resourcesBack[_baseService.RollDie(0, resourcesBack.Count)])
+                    {
+                        case "luxury":
+                            if (silver >= LUXURY_COST)
+                            {
+                                resultLuxury++;
+                                silver -= LUXURY_COST;
+                            }
+                            break;
 
-                    if (!baseBackDone)
-                    {
-                        if (BaseBack)
-                        {
-                            factor = _baseService.RollDie(1, 101);
-                            resultBase = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / BASE_COST));
-                            total -= (decimal)resultBase * BASE_COST / silver;
-                            silver -= resultBase * BASE_COST;
-                            skipRest = true;
-                        }
-                        baseBackDone = true;
+                        case "base":
+                            if (silver >= BASE_COST)
+                            {
+                                resultBase++;
+                                silver -= BASE_COST;
+                            }
+                            break;
+
+                        case "iron":
+                            if (silver >= IRON_COST)
+                            {
+                                resultIron++;
+                                silver -= IRON_COST;
+                            }
+                            break;
+
+                        case "stone":
+                            if (silver >= STONE_COST)
+                            {
+                                resultStone++;
+                                silver -= STONE_COST;
+                            }
+                            break;
+
+                        case "wood":
+                            if (silver >= WOOD_COST)
+                            {
+                                resultWood++;
+                                silver -= WOOD_COST;
+                            }
+                            break;
+
+                        case "silver":
+                            int temp = (int)Math.Floor(silver / 25D);
+                            resultSilver += temp;
+                            silver -= temp;
+                            break;
                     }
-                    else if (!luxuryBackDone && !skipRest)
+                    if (silver < LUXURY_COST)
                     {
-                        if (LuxuryBack)
-                        {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
-                            resultLuxury = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / LUXURY_COST));
-                            total -= (decimal)resultLuxury * LUXURY_COST / silver;
-                            silver -= resultLuxury * LUXURY_COST;
-                            skipRest = true;
-                        }
-                        luxuryBackDone = true;
-                    }
-                    else if (!stoneBackDone && !skipRest)
-                    {
-                        if (StoneBack)
-                        {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
-                            resultStone = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / STONE_COST));
-                            total -= (decimal)resultStone * STONE_COST / silver;
-                            silver -= resultStone * STONE_COST;
-                            skipRest = true;
-                        }
-                        stoneBackDone = true;
-                    }
-                    else if (!woodBackDone && !skipRest)
-                    {
-                        if (WoodBack)
-                        {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
-                            resultWood = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / WOOD_COST));
-                            total -= (decimal)resultWood * WOOD_COST / silver;
-                            silver -= resultWood * WOOD_COST;
-                            skipRest = true;
-                        }
-                        woodBackDone = true;
-                    }
-                    else if (!ironBackDone && !skipRest)
-                    {
-                        if (IronBack)
-                        {
-                            factor = _baseService.RollDie(1, Convert.ToInt32(Math.Floor(total)) + 1);
-                            resultIron = Convert.ToInt32(Math.Floor(factor / (decimal)100 * silver / IRON_COST));
-                            total -= (decimal)resultIron * IRON_COST / silver;
-                            silver -= resultIron * IRON_COST;
-                            skipRest = true;
-                        }
-                        ironBackDone = true;
-                    }
-                    else if (!silverBackDone && !skipRest)
-                    {
-                        resultSilver = silver;
-                        skipRest = true;
-                        silverBackDone = true;
+                        resultSilver += silver;
+                        silver = 0;
                     }
                 }
+                ResultSilver = resultSilver.ToString();
+                ResultBase = resultBase.ToString();
+                ResultLuxury = resultLuxury.ToString();
+                ResultIron = resultIron.ToString();
+                ResultStone = resultStone.ToString();
+                ResultWood = resultWood.ToString();
+                SendOk(true);
             }
         }
 

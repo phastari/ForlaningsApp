@@ -346,9 +346,30 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
 
         private void CalculateIncomes()
         {
-            Silver = Convert.ToInt32(Math.Floor((Quality * IncomeFactor * IncomeSilver + Quality * IncomeFactor * IncomeSilver / 20 * (DevelopmentLevel - 1)) * DaysWorkThisYear / DaysWorkLeft));
-            Base = Convert.ToInt32(Math.Floor((Quality * IncomeFactor * IncomeBase + Quality * IncomeFactor * IncomeBase / 20 * (DevelopmentLevel - 1)) * DaysWorkThisYear / DaysWorkLeft));
-            Luxury = Convert.ToInt32(Math.Floor((Quality * IncomeFactor * IncomeLuxury + Quality * IncomeFactor * IncomeLuxury / 20 * (DevelopmentLevel - 1)) * DaysWorkThisYear / DaysWorkLeft));
+            if (SelectedIndex > 0)
+            {
+                Silver = Convert.ToInt32(Math.Floor(
+                    (Quality * IncomeFactor * IncomeSilver * 360
+                     + Quality * IncomeFactor * IncomeSilver * 360 / 100 * (DevelopmentLevel - 1) * 5)
+                    * ((decimal)DaysWorkThisYear / DaysWorkLeft)));
+
+                Base = Convert.ToInt32(Math.Floor(
+                    (Quality * IncomeFactor * IncomeBase
+                     + Quality * IncomeFactor * IncomeBase / 100 * (DevelopmentLevel - 1) * 5)
+                    * ((decimal)DaysWorkThisYear / DaysWorkLeft)));
+
+                Luxury = Convert.ToInt32(Math.Floor(
+                    (Quality * IncomeFactor * IncomeLuxury
+                     + Quality * IncomeFactor * IncomeLuxury / 100 * (DevelopmentLevel - 1) * 5)
+                    * ((decimal)DaysWorkThisYear / DaysWorkLeft)));
+            }
+            else
+            {
+                Silver = 0;
+                Base = 0;
+                Luxury = 0;
+            }
+
             UpdateSubsidiary();
         }
 
@@ -367,7 +388,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
                     {
                         Silver = Silver,
                         Base = Base,
-                        Luxury = Luxury
+                        Luxury = Luxury,
+                        DaysWorkThisYear = DaysWorkThisYear
                     }
                 );
             RaiseEvent(newEventArgs);

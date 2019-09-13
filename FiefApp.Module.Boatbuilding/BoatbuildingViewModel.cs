@@ -126,6 +126,8 @@ namespace FiefApp.Module.Boatbuilding
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
         }
 
+        #region EventHandlers
+
         private void HandleUpdateEvent(UpdateEventParameters param)
         {
             if (param.Publisher == "Boatbuilding"
@@ -208,6 +210,8 @@ namespace FiefApp.Module.Boatbuilding
             });
         }
 
+        #endregion
+
         #region CustomDelegateCommand : BuildingBoatUIEventHandler
 
         public CustomDelegateCommand BuildingBoatUIEventHandler { get; set; }
@@ -236,9 +240,55 @@ namespace FiefApp.Module.Boatbuilding
                 {
                     if (CheckBoatCost(e.BoatModel))
                     {
-                        e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
-                        e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
-                        DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                        if (CheckBuildInVillageDocks(e.BoatModel.Length))
+                        {
+                            e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                            e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                            e.BoatModel.BuildingInVillageDock = true;
+                            DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                            DataModel.DocksVillageFree--;
+                            SaveData();
+                        }
+                        else
+                        {
+                            if (CheckBuildInSmallDocks(e.BoatModel.Length))
+                            {
+                                e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                                e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                                e.BoatModel.BuildingInSmallDock = true;
+                                DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                                DataModel.DocksSmallFree--;
+                                SaveData();
+                            }
+                            else
+                            {
+                                if (CheckBuildInMediumDocks(e.BoatModel.Length))
+                                {
+                                    e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                                    e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                                    e.BoatModel.BuildingInMediumDock = true;
+                                    DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                                    DataModel.DocksMediumFree--;
+                                    SaveData();
+                                }
+                                else
+                                {
+                                    if (CheckBuildInLargeDocks(e.BoatModel.Length))
+                                    {
+                                        e.BoatModel.Id = _boatbuildingService.GetNewBuildingBoatId(Index);
+                                        e.BoatModel.BoatBuildersCollection = DataModel.BoatBuildersCollection;
+                                        e.BoatModel.BuildingInLargeDock = true;
+                                        DataModel.BoatsBuildingCollection.Add(e.BoatModel);
+                                        DataModel.DocksLargeFree--;
+                                        SaveData();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Det finns inte någon plats för båtbygget.");
+                                    }
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -452,22 +502,6 @@ namespace FiefApp.Module.Boatbuilding
 
         protected override void LoadData()
         {
-            //if (_triggerLoad)
-            //{
-            //    _triggerLoad = false;
-            //    for (int x = 0; x < _awaitResponsList.Count; x++)
-            //    {
-            //        if (_awaitResponsList[x].ModuleName == "Boatbuilding")
-            //        {
-            //            _awaitResponsList[x].Completed = true;
-            //        }
-            //        else
-            //        {
-            //            _awaitResponsList[x].Completed = false;
-            //        }
-            //    }
-            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Boatbuilding");
-            //}
             CompleteLoadData();
         }
 
@@ -487,6 +521,7 @@ namespace FiefApp.Module.Boatbuilding
                 DataModel.UpgradingShipyard = _boatbuildingService.GetUpgradingShipyard(Index);
                 DataModel.BoatBuildersCollection.CollectionChanged += UpdateTotalBoatBuilders;
                 DataModel.VillageBoatBuilders = _boatbuildingService.GetVillageBoatBuilders(Index);
+                CheckDocks(Index);
 
                 if (DataModel.VillageBoatBuilders > 0)
                 {
@@ -501,6 +536,7 @@ namespace FiefApp.Module.Boatbuilding
                 DataModel.UpgradingShipyard = _boatbuildingService.GetUpgradingShipyard(index);
                 DataModel.UpdateTotalBoatBuilders();
                 DataModel.VillageBoatBuilders = _boatbuildingService.GetVillageBoatBuilders(index);
+                CheckDocks(index);
 
                 if (DataModel.VillageBoatBuilders > 0)
                 {
@@ -526,6 +562,75 @@ namespace FiefApp.Module.Boatbuilding
                 return true;
             }
             return false;
+        }
+
+        private bool CheckBuildInSmallDocks(int length)
+        {
+            if (length != 0)
+            {
+                if (length < 11)
+                {
+                    if (DataModel.DocksSmallFree > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool CheckBuildInVillageDocks(int length)
+        {
+            if (length != 0)
+            {
+                if (length < 11)
+                {
+                    if (DataModel.DocksVillageFree > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool CheckBuildInMediumDocks(int length)
+        {
+            if (length != 0)
+            {
+                if (length < 21)
+                {
+                    if (DataModel.DocksMediumFree > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool CheckBuildInLargeDocks(int length)
+        {
+            if (length != 0)
+            {
+                if (DataModel.DocksLargeFree > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void CheckDocks(int index)
+        {
+            DataModel.DocksSmallFree = DataModel.DocksSmall - _boatbuildingService.GetUsedSmallDocks(index);
+            DataModel.DocksVillageFree = DataModel.DocksVillage - _boatbuildingService.GetUsedVillageDocks(index);
+            DataModel.DocksMediumFree = DataModel.DocksMedium - _boatbuildingService.GetUsedMediumDocks(index);
+            DataModel.DocksLargeFree = DataModel.DocksLarge - _boatbuildingService.GetUsedLargeDocks(index);
         }
     }
 }

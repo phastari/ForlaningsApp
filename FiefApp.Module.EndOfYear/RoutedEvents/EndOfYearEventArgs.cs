@@ -30,6 +30,15 @@ namespace FiefApp.Module.EndOfYear.RoutedEvents
 
         public bool AddPopulation { get; set; }
 
+        private readonly string _incomeIron;
+        public string IncomeIron => _incomeIron;
+
+        private readonly string _incomeStone;
+        public string IncomeStone => _incomeStone;
+
+        private readonly string _incomeWood;
+        public string IncomeWood => _incomeWood;
+
         public EndOfYearEventArgs(
             RoutedEvent routedEvent,
             string action,
@@ -40,7 +49,10 @@ namespace FiefApp.Module.EndOfYear.RoutedEvents
             string incomeSilver = "-",
             string incomeBase = "-",
             string incomeLuxury = "-",
-            bool addPopulation = true)
+            bool addPopulation = true,
+            string incomeIron = "-",
+            string incomeStone = "-",
+            string incomeWood = "-")
             : base(routedEvent)
         {
             _action = action;
@@ -52,6 +64,9 @@ namespace FiefApp.Module.EndOfYear.RoutedEvents
             _incomeBase = incomeBase;
             _incomeLuxury = incomeLuxury;
             AddPopulation = addPopulation;
+            _incomeIron = incomeIron;
+            _incomeStone = incomeStone;
+            _incomeWood = incomeWood;
         }
     }
 }

@@ -355,15 +355,15 @@ namespace FiefApp.Module.Trade
 
                                 if (e.Model.SendWithCaravan)
                                 {
-                                    DataModel.MerchantsCollection[x].Assignment = "Karavan";
+                                    DataModel.MerchantsCollection[x].Assignment = "K";
                                 }
                                 else if (e.Model.SendByCarriage)
                                 {
-                                    DataModel.MerchantsCollection[x].Assignment = "Häst och vagn";
+                                    DataModel.MerchantsCollection[x].Assignment = "HV";
                                 }
                                 else
                                 {
-                                    DataModel.MerchantsCollection[x].Assignment = "Fartyg";
+                                    DataModel.MerchantsCollection[x].Assignment = "F";
 
                                     if (e.Model.ShipId != -1)
                                     {

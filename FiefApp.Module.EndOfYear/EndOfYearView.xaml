@@ -13,10 +13,10 @@
              xmlns:endOfYearTaxesUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI"
              xmlns:endOfYearPopulationUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearPopulationUI"
              xmlns:endOfYearDevelopmentUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearDevelopmentUI"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:endOfYearShipyardUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearShipyardUI"
              xmlns:endOfYearConstructingSubsidiaryUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearConstructingSubsidiaryUI"
              xmlns:endOfYearAddAcresUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearAddAcresUI"
+             xmlns:endOfYearTradeUI="clr-namespace:FiefApp.Module.EndOfYear.UIElements.EndOfYearTradeUI"
              mc:Ignorable="d" 
              d:DesignHeight="533" 
              d:DesignWidth="792"
@@ -76,9 +76,9 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="2"/>
-            <ColumnDefinition Width="761"/>
-            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="750"/>
+            <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -137,7 +137,6 @@
             VerticalScrollBarVisibility="Auto">
 
             <StackPanel>
-
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" x:Name="Row1"/>
@@ -188,17 +187,17 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <Label
-                                    Height="21"
-                                    Width="180"
-                                    FontWeight="Bold"
-                                    Content="{Binding Path=FiefName}"
-                                    HorizontalAlignment="Left"
-                                    HorizontalContentAlignment="Left"
-                                    VerticalContentAlignment="Center"
-                                    Padding="12,0,0,0"/>
+                                        Height="21"
+                                        Width="180"
+                                        FontWeight="Bold"
+                                        Content="{Binding Path=FiefName}"
+                                        HorizontalAlignment="Left"
+                                        HorizontalContentAlignment="Left"
+                                        VerticalContentAlignment="Center"
+                                        Padding="12,0,0,0"/>
 
                                     <Grid
-                                    Height="27">
+                                        Height="27">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="3"/>
                                             <RowDefinition Height="21"/>
@@ -327,14 +326,14 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <endOfYearIncomeUI:EndOfYearIncomeUI
-                                                Id="{Binding Path=Id}"
-                                                Income="{Binding Path=Income}"
-                                                StewardId="{Binding Path=StewardId}"
-                                                StewardName="{Binding Path=StewardName}"
-                                                Skill="{Binding Path=Skill}"
-                                                Crewed="{Binding Path=Crewed}"
-                                                Difficulty="{Binding Path=Difficulty}"
-                                                BaseIncome="{Binding Path=BaseIncome}">
+                                                    Id="{Binding Path=Id}"
+                                                    Income="{Binding Path=Income}"
+                                                    StewardId="{Binding Path=StewardId}"
+                                                    StewardName="{Binding Path=StewardName}"
+                                                    Skill="{Binding Path=Skill}"
+                                                    Crewed="{Binding Path=Crewed}"
+                                                    Difficulty="{Binding Path=Difficulty}"
+                                                    BaseIncome="{Binding Path=BaseIncome}">
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="EndOfYearOkEvent">
                                                             <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -495,17 +494,17 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <endOfYearSubsidiaryUI:EndOfYearSubsidiaryUI
-                                                Id="{Binding Path=Id}"
-                                                Subsidiary="{Binding Path=Subsidiary}"
-                                                StewardId="{Binding Path=StewardId}"
-                                                StewardName="{Binding Path=Steward}"
-                                                Skill="{Binding Path=Skill}"
-                                                DaysWorkThisYear="{Binding Path=DaysWorkThisYear}"
-                                                DaysWorkUpkeep="{Binding Path=DaysWorkUpkeep}"
-                                                Difficulty="{Binding Path=Difficulty}"
-                                                BaseIncomeSilver="{Binding Path=BaseIncomeSilver}"
-                                                BaseIncomeBase="{Binding Path=BaseIncomeBase}"
-                                                BaseIncomeLuxury="{Binding Path=BaseIncomeLuxury}">
+                                                    Id="{Binding Path=Id}"
+                                                    Subsidiary="{Binding Path=Subsidiary}"
+                                                    StewardId="{Binding Path=StewardId}"
+                                                    StewardName="{Binding Path=Steward}"
+                                                    Skill="{Binding Path=Skill}"
+                                                    DaysWorkThisYear="{Binding Path=DaysWorkThisYear}"
+                                                    DaysWorkUpkeep="{Binding Path=DaysWorkUpkeep}"
+                                                    Difficulty="{Binding Path=Difficulty}"
+                                                    BaseIncomeSilver="{Binding Path=BaseIncomeSilver}"
+                                                    BaseIncomeBase="{Binding Path=BaseIncomeBase}"
+                                                    BaseIncomeLuxury="{Binding Path=BaseIncomeLuxury}">
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="EndOfYearOkEvent">
                                                             <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
@@ -1119,7 +1118,203 @@
                                     </ItemsControl>
 
                                     <Rectangle
-                                    Height="24"/>
+                                        Height="24"/>
+
+                                    <Grid
+                                        Height="27">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3"/>
+                                            <RowDefinition Height="21"/>
+                                            <RowDefinition Height="3"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="21"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="65"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            Content="Typ"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="2"
+                                            Grid.Row="1"
+                                            Content="Köpman"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="3"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="1"
+                                            Content="Färdighet"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="6"
+                                            Grid.Row="1"
+                                            Content="SG"
+                                            ToolTip="Svårighetsgrad"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="8"
+                                            Grid.Row="1"
+                                            Content="Slag #1"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="11"
+                                            Grid.Row="1"
+                                            Content="Slag #2"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="14"
+                                            Grid.Row="1"
+                                            Content="Slag #3"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="17"
+                                            Grid.Row="1"
+                                            Content="Silver"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="19"
+                                            Grid.Row="1"
+                                            Content="Bas"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="21"
+                                            Grid.Row="1"
+                                            Content="Lyx"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="23"
+                                            Grid.Row="1"
+                                            Content="Järn"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="25"
+                                            Grid.Row="1"
+                                            Content="Sten"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+
+                                        <Label
+                                            Grid.Column="27"
+                                            Grid.Row="1"
+                                            Content="Timmer"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Padding="0"/>
+                                    </Grid>
+
+                                    <ItemsControl
+                                        ItemsSource="{Binding Path=TradeCollection}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel 
+                                                    IsItemsHost="True" 
+                                                    Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <StackPanel>
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <endOfYearTradeUI:EndOfYearTradeUI
+                                                    Id="{Binding Path=Id}"
+                                                    Type="{Binding Path=Assignment}"
+                                                    Merchant="{Binding Path=PersonName}"
+                                                    Skill="{Binding Path=Skill}"
+                                                    Difficulty="{Binding Path=Difficulty}"
+                                                    BaseIncomeSilver="{Binding Path=SilverWith}"
+                                                    BaseIncomeBase="{Binding Path=BaseToSell}"
+                                                    BaseIncomeLuxury="{Binding Path=LuxuryToSell}"
+                                                    BaseIncomeIron="{Binding Path=IronToSell}"
+                                                    BaseIncomeStone="{Binding Path=StoneToSell}"
+                                                    BaseIncomeWood="{Binding Path=WoodToSell}"
+                                                    SilverBack="{Binding Path=SilverBack}"
+                                                    BaseBack="{Binding Path=BuyBase}"
+                                                    LuxuryBack="{Binding Path=BuyLuxury}"
+                                                    IronBack="{Binding Path=BuyIron}"
+                                                    StoneBack="{Binding Path=BuyStone}"
+                                                    WoodBack="{Binding Path=BuyWood}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="EndOfYearOkEvent">
+                                                            <customCommands:CustomCommandAction Command="{Binding Path=DataContext.EndOfYearOkEventHandler, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=2}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </endOfYearTradeUI:EndOfYearTradeUI>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <Rectangle
+                                        Height="24"/>
 
                                     <WrapPanel>
                                         <endOfYearShipyardUI:EndOfYearShipyardUI

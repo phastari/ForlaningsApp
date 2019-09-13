@@ -1,9 +1,7 @@
-﻿using System;
-using FiefApp.Common.Infrastructure.DataModels;
+﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.Models;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace FiefApp.Common.Infrastructure.Services
 {
@@ -161,23 +159,58 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public int GetAndSetDifficulty(int index, decimal spring, decimal summer, decimal fall, decimal winter)
         {
-            int difficulty = Convert.ToInt32(Math.Ceiling(spring * _fiefService.WeatherList[index].SpringRollMod
-                                                          + summer * _fiefService.WeatherList[index].SummerRollMod
-                                                          + fall * _fiefService.WeatherList[index].FallRollMod
-                                                          + winter * _fiefService.WeatherList[index].WinterRollMod
-                                                          + 8));
+            int difficulty = 8;
+
+            if (_fiefService.WeatherList[index].SpringRollMod > 0)
+            {
+                spring += _fiefService.WeatherList[index].SpringRollMod * 1.5M;
+            }
+            else
+            {
+                spring += _fiefService.WeatherList[index].SpringRollMod * 0.5M;
+            }
+
+            if (_fiefService.WeatherList[index].SummerRollMod > 0)
+            {
+                summer += _fiefService.WeatherList[index].SummerRollMod * 1.5M;
+            }
+            else
+            {
+                summer += _fiefService.WeatherList[index].SummerRollMod * 0.5M;
+            }
+
+            if (_fiefService.WeatherList[index].FallRollMod > 0)
+            {
+                fall += _fiefService.WeatherList[index].FallRollMod * 1.5M;
+            }
+            else
+            {
+                fall += _fiefService.WeatherList[index].FallRollMod * 0.5M;
+            }
+
+            if (_fiefService.WeatherList[index].WinterRollMod > 0)
+            {
+                winter += _fiefService.WeatherList[index].WinterRollMod * 1.5M;
+            }
+            else
+            {
+                winter += _fiefService.WeatherList[index].WinterRollMod * 0.5M;
+            }
+
+            difficulty += Convert.ToInt32(Math.Round(spring + summer + fall + winter));
 
             if (difficulty < 5)
             {
-                return 4;
+                difficulty = 4;
             }
+
             return difficulty;
         }
 
         public int GetSilverIncome(int quality, int developmentLevel, decimal incomeFactor, decimal silverFactor)
         {
-            return Convert.ToInt32(Math.Floor(quality * incomeFactor * silverFactor
-                                              + (quality * incomeFactor * silverFactor
+            return Convert.ToInt32(Math.Floor(quality * incomeFactor * silverFactor * 540
+                                              + (quality * incomeFactor * silverFactor * 540
                                                  / 100
                                                  * (developmentLevel - 1)
                                                  * 5)));

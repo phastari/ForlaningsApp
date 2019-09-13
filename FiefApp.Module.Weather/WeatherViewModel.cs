@@ -337,6 +337,11 @@ namespace FiefApp.Module.Weather
                     CalculateHappiness();
                     break;
                 }
+
+                case "HappinessTotal":
+                    UpdateForecast();
+                    SaveData();
+                    break;
             }
         }
 

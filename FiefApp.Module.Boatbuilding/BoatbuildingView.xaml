@@ -75,7 +75,6 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-
             <CheckBox
                 x:Name="ShowButton"
                 IsChecked="{Binding Path=DataModel.ShowButtons}"
@@ -143,10 +142,11 @@
                 IsTabStop="False"
                 Margin="0,15,0,0"/>
 
-            <Rectangle x:Name="InitialFocus" 
-                       Grid.Column="0"
-                       Grid.Row="0"
-                       Focusable="True"/>
+            <Rectangle 
+                x:Name="InitialFocus" 
+                Grid.Column="0"
+                Grid.Row="0"
+                Focusable="True"/>
 
 
             <ComboBox 
@@ -430,10 +430,7 @@
                     Template="{DynamicResource TextBoxTemplate}"
                     Padding="0"
                     IsReadOnly="True"/>
-
-                
             </Grid>
-
 
             <Label
                 Content="Båtbyggare"
@@ -482,7 +479,6 @@
                 Margin="277,0,0,0"
                 Template="{DynamicResource TextBoxTemplate}"
                 IsReadOnly="True"/>
-
 
             <StackPanel
                 Grid.Column="5"

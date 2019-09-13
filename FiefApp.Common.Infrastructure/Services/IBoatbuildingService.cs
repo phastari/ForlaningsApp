@@ -18,5 +18,9 @@ namespace FiefApp.Common.Infrastructure.Services
         int GetVillageBoatBuilders(int index);
         void AddBoatToCompletedBoats(int index, BoatModel model);
         void AddFishingBoat(int index, int amount);
+        int GetUsedSmallDocks(int index);
+        int GetUsedVillageDocks(int index);
+        int GetUsedMediumDocks(int index);
+        int GetUsedLargeDocks(int index);
     }
 }

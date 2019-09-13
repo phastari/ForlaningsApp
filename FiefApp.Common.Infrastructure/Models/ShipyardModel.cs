@@ -40,7 +40,7 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _un;
+        private int _un = 1;
         public int UN
         {
             get => _un;

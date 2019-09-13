@@ -119,6 +119,8 @@ namespace FiefApp.Module.Subsidiary
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
         }
 
+        #region Event Handlers
+
         private void HandleUpdateEvent(UpdateEventParameters param)
         {
             if (param.Publisher == "Subsidiary"
@@ -176,31 +178,6 @@ namespace FiefApp.Module.Subsidiary
             }
         }
 
-        private void CompleteLoadData()
-        {
-            DataModel = Index
-                        == 0 ? _subsidiaryService.GetAllSubsidiaryDataModel()
-                : _baseService.GetDataModel<SubsidiaryDataModel>(Index);
-
-            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
-            for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
-            {
-                DataModel.ConstructingCollection[x].StewardsCollection = DataModel.StewardsCollection;
-            }
-
-            for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
-            {
-                DataModel.SubsidiaryCollection[x].StewardsCollection = DataModel.StewardsCollection;
-                DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(Index,
-                    DataModel.SubsidiaryCollection[x].Spring,
-                    DataModel.SubsidiaryCollection[x].Summer,
-                    DataModel.SubsidiaryCollection[x].Fall,
-                    DataModel.SubsidiaryCollection[x].Winter);
-            }
-
-            UpdateFiefCollection();
-        }
-
         private void UpdateAndRespond()
         {
             UpdateFiefCollection();
@@ -225,6 +202,8 @@ namespace FiefApp.Module.Subsidiary
                 Completed = true
             });
         }
+
+        #endregion
 
         #region CustomDelegateCommand : ConstructSubsidiaryCommand
 
@@ -256,7 +235,11 @@ namespace FiefApp.Module.Subsidiary
                 if (e.Action == "Save")
                 {
                     e.SubsidiaryModel.Id = _baseService.GetNewIndustryId();
-                    _subsidiaryService.AddCustomSubsidiary(e.SubsidiaryModel);
+                    if (DataModel.SubsidiaryTypesCollection.Any(o => o.Subsidiary != e.SubsidiaryModel.Subsidiary)
+                        && e.SubsidiaryModel.Subsidiary != "")
+                    {
+                        _subsidiaryService.AddCustomSubsidiary(e.SubsidiaryModel);
+                    }
                     e.SubsidiaryModel.StewardsCollection = DataModel.StewardsCollection;
                     e.SubsidiaryModel.StewardId = -1;
                     e.SubsidiaryModel.Steward = "";
@@ -278,9 +261,6 @@ namespace FiefApp.Module.Subsidiary
                     e.SubsidiaryModel.Steward = "";
                     e.SubsidiaryModel.DevelopmentLevel = 1;
                     e.SubsidiaryModel.Difficulty = _subsidiaryService.GetAndSetDifficulty(Index, e.SubsidiaryModel.Spring, e.SubsidiaryModel.Summer, e.SubsidiaryModel.Fall, e.SubsidiaryModel.Winter);
-                    e.SubsidiaryModel.Silver = _subsidiaryService.GetSilverIncome(e.SubsidiaryModel.Quality, e.SubsidiaryModel.DevelopmentLevel, e.SubsidiaryModel.IncomeFactor, e.SubsidiaryModel.IncomeSilver);
-                    e.SubsidiaryModel.Base = _subsidiaryService.GetBaseIncome(e.SubsidiaryModel.Quality, e.SubsidiaryModel.DevelopmentLevel, e.SubsidiaryModel.IncomeFactor, e.SubsidiaryModel.IncomeBase);
-                    e.SubsidiaryModel.Luxury = _subsidiaryService.GetLuxuryIncome(e.SubsidiaryModel.Quality, e.SubsidiaryModel.DevelopmentLevel, e.SubsidiaryModel.IncomeFactor, e.SubsidiaryModel.IncomeLuxury);
 
                     DataModel.SubsidiaryCollection.Add(e.SubsidiaryModel);
 
@@ -365,73 +345,74 @@ namespace FiefApp.Module.Subsidiary
             switch (e.Action)
             {
                 case "Changed":
-                    {
-                        SaveData();
-                        _baseService.ChangeSteward(e.StewardId, e.SubsidiaryId, "Subsidiary");
+                {
+                    SaveData();
+                    _baseService.ChangeSteward(e.StewardId, e.SubsidiaryId, "Subsidiary");
 
-                        List<SubsidiaryModel> tempConstructingList = new List<SubsidiaryModel>(DataModel.ConstructingCollection);
-                        List<SubsidiaryModel> tempSubsidiaryList = new List<SubsidiaryModel>(DataModel.SubsidiaryCollection);
+                    List<SubsidiaryModel> tempConstructingList = new List<SubsidiaryModel>(DataModel.ConstructingCollection);
+                    List<SubsidiaryModel> tempSubsidiaryList = new List<SubsidiaryModel>(DataModel.SubsidiaryCollection);
 
-                        DataModel.ConstructingCollection.Clear();
-                        DataModel.ConstructingCollection = new ObservableCollection<SubsidiaryModel>(tempConstructingList);
+                    DataModel.ConstructingCollection.Clear();
+                    DataModel.ConstructingCollection = new ObservableCollection<SubsidiaryModel>(tempConstructingList);
 
-                        DataModel.SubsidiaryCollection.Clear();
-                        DataModel.SubsidiaryCollection = new ObservableCollection<SubsidiaryModel>(tempSubsidiaryList);
+                    DataModel.SubsidiaryCollection.Clear();
+                    DataModel.SubsidiaryCollection = new ObservableCollection<SubsidiaryModel>(tempSubsidiaryList);
 
-                        UpdateStewardsCollectionInCollections();
-                        break;
-                    }
+                    UpdateStewardsCollectionInCollections();
+                    break;
+                }
 
                 case "Delete":
+                {
+                    for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
                     {
-                        for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                        if (e.SubsidiaryId == DataModel.SubsidiaryCollection[x].Id)
                         {
-                            if (e.SubsidiaryId == DataModel.SubsidiaryCollection[x].Id)
-                            {
-                                DataModel.SubsidiaryCollection.RemoveAt(x);
-                            }
+                            DataModel.SubsidiaryCollection.RemoveAt(x);
                         }
-                        break;
                     }
+                    break;
+                }
 
                 case "Edit":
+                {
+                    DataModel.EditModel = new SubsidiaryModel();
+                    for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
                     {
-                        DataModel.EditModel = new SubsidiaryModel();
-                        for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                        if (DataModel.SubsidiaryCollection[x].Id == e.SubsidiaryId)
                         {
-                            if (DataModel.SubsidiaryCollection[x].Id == e.SubsidiaryId)
-                            {
-                                DataModel.EditModel.IncomeFactor = DataModel.SubsidiaryCollection[x].IncomeFactor;
-                                DataModel.EditModel.IncomeBase = DataModel.SubsidiaryCollection[x].IncomeBase;
-                                DataModel.EditModel.IncomeLuxury = DataModel.SubsidiaryCollection[x].IncomeLuxury;
-                                DataModel.EditModel.IncomeSilver = DataModel.SubsidiaryCollection[x].IncomeSilver;
-                                DataModel.EditModel.DaysWorkUpkeep = DataModel.SubsidiaryCollection[x].DaysWorkUpkeep;
-                                DataModel.EditModel.Spring = DataModel.SubsidiaryCollection[x].Spring;
-                                DataModel.EditModel.Summer = DataModel.SubsidiaryCollection[x].Summer;
-                                DataModel.EditModel.Fall = DataModel.SubsidiaryCollection[x].Fall;
-                                DataModel.EditModel.Winter = DataModel.SubsidiaryCollection[x].Winter;
-                                DataModel.EditModel.Quality = DataModel.SubsidiaryCollection[x].Quality;
-                                DataModel.EditModel.DevelopmentLevel = DataModel.SubsidiaryCollection[x].DevelopmentLevel;
-                                break;
-                            }
+                            DataModel.EditModel.IncomeFactor = DataModel.SubsidiaryCollection[x].IncomeFactor;
+                            DataModel.EditModel.IncomeBase = DataModel.SubsidiaryCollection[x].IncomeBase;
+                            DataModel.EditModel.IncomeLuxury = DataModel.SubsidiaryCollection[x].IncomeLuxury;
+                            DataModel.EditModel.IncomeSilver = DataModel.SubsidiaryCollection[x].IncomeSilver;
+                            DataModel.EditModel.DaysWorkUpkeep = DataModel.SubsidiaryCollection[x].DaysWorkUpkeep;
+                            DataModel.EditModel.Spring = DataModel.SubsidiaryCollection[x].Spring;
+                            DataModel.EditModel.Summer = DataModel.SubsidiaryCollection[x].Summer;
+                            DataModel.EditModel.Fall = DataModel.SubsidiaryCollection[x].Fall;
+                            DataModel.EditModel.Winter = DataModel.SubsidiaryCollection[x].Winter;
+                            DataModel.EditModel.Quality = DataModel.SubsidiaryCollection[x].Quality;
+                            DataModel.EditModel.DevelopmentLevel = DataModel.SubsidiaryCollection[x].DevelopmentLevel;
+                            break;
                         }
-                        break;
                     }
+                    break;
+                }
 
                 case "Update":
+                {
+                    for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
                     {
-                        for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                        if (DataModel.SubsidiaryCollection[x].Id == e.SubsidiaryId)
                         {
-                            if (DataModel.SubsidiaryCollection[x].Id == e.SubsidiaryId)
-                            {
-                                DataModel.SubsidiaryCollection[x].Silver = e.Model.Silver;
-                                DataModel.SubsidiaryCollection[x].Base = e.Model.Base;
-                                DataModel.SubsidiaryCollection[x].Luxury = e.Model.Luxury;
-                                break;
-                            }
+                            DataModel.SubsidiaryCollection[x].Silver = e.Model.Silver;
+                            DataModel.SubsidiaryCollection[x].Base = e.Model.Base;
+                            DataModel.SubsidiaryCollection[x].Luxury = e.Model.Luxury;
+                            DataModel.SubsidiaryCollection[x].DaysWorkThisYear = e.Model.DaysWorkThisYear;
+                            break;
                         }
-                        break;
                     }
+                    break;
+                }
             }
         }
 
@@ -519,23 +500,32 @@ namespace FiefApp.Module.Subsidiary
 
         protected override void LoadData()
         {
-            //if (_triggerLoad)
-            //{
-            //    _triggerLoad = false;
-            //    for (int x = 0; x < _awaitResponsList.Count; x++)
-            //    {
-            //        if (_awaitResponsList[x].ModuleName == "Subsidiary")
-            //        {
-            //            _awaitResponsList[x].Completed = true;
-            //        }
-            //        else
-            //        {
-            //            _awaitResponsList[x].Completed = false;
-            //        }
-            //    }
-            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Subsidiary");
-            //}
             CompleteLoadData();
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _subsidiaryService.GetAllSubsidiaryDataModel()
+                : _baseService.GetDataModel<SubsidiaryDataModel>(Index);
+
+            DataModel.StewardsCollection = _baseService.GetStewardsCollection();
+            for (int x = 0; x < DataModel.ConstructingCollection.Count; x++)
+            {
+                DataModel.ConstructingCollection[x].StewardsCollection = DataModel.StewardsCollection;
+            }
+
+            for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+            {
+                DataModel.SubsidiaryCollection[x].StewardsCollection = DataModel.StewardsCollection;
+                DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(Index,
+                    DataModel.SubsidiaryCollection[x].Spring,
+                    DataModel.SubsidiaryCollection[x].Summer,
+                    DataModel.SubsidiaryCollection[x].Fall,
+                    DataModel.SubsidiaryCollection[x].Winter);
+            }
+
+            UpdateFiefCollection();
         }
 
         private void ExecuteNewFiefLoadedEvent()

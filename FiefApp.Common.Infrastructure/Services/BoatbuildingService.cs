@@ -264,5 +264,89 @@ namespace FiefApp.Common.Infrastructure.Services
         {
             _fiefService.PortsList[index].FishingBoats += amount;
         }
+
+        public int GetUsedSmallDocks(int index)
+        {
+            if (index < _fiefService.BoatbuildingList.Count)
+            {
+                if (index != 0)
+                {
+                    return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Count(t => t.BuildingInSmallDock);
+                }
+
+                int usedSmall = 0;
+                for (int x = 1; x < _fiefService.BoatbuildingList.Count; x++)
+                {
+                    usedSmall += _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count(t => t.BuildingInSmallDock);
+                }
+
+                return usedSmall;
+            }
+
+            return 0;
+        }
+
+        public int GetUsedVillageDocks(int index)
+        {
+            if (index < _fiefService.BoatbuildingList.Count)
+            {
+                if (index != 0)
+                {
+                    return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Count(t => t.BuildingInVillageDock);
+                }
+
+                int usedVillage = 0;
+                for (int x = 1; x < _fiefService.BoatbuildingList.Count; x++)
+                {
+                    usedVillage += _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count(t => t.BuildingInVillageDock);
+                }
+
+                return usedVillage;
+            }
+
+            return 0;
+        }
+
+        public int GetUsedMediumDocks(int index)
+        {
+            if (index < _fiefService.BoatbuildingList.Count)
+            {
+                if (index != 0)
+                {
+                    return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Count(t => t.BuildingInMediumDock);
+                }
+
+                int usedMedium = 0;
+                for (int x = 1; x < _fiefService.BoatbuildingList.Count; x++)
+                {
+                    usedMedium += _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count(t => t.BuildingInMediumDock);
+                }
+
+                return usedMedium;
+            }
+
+            return 0;
+        }
+
+        public int GetUsedLargeDocks(int index)
+        {
+            if (index < _fiefService.BoatbuildingList.Count)
+            {
+                if (index != 0)
+                {
+                    return _fiefService.BoatbuildingList[index].BoatsBuildingCollection.Count(t => t.BuildingInLargeDock);
+                }
+
+                int usedLarge = 0;
+                for (int x = 1; x < _fiefService.BoatbuildingList.Count; x++)
+                {
+                    usedLarge += _fiefService.BoatbuildingList[x].BoatsBuildingCollection.Count(t => t.BuildingInLargeDock);
+                }
+
+                return usedLarge;
+            }
+
+            return 0;
+        }
     }
 }

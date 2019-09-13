@@ -191,73 +191,73 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearTaxesUI
 
         private void CalculateResult()
         {
-                if (Roll1 > 0 && Roll2 > 0 && Roll3 > 0)
+            if (Roll1 > 0 && Roll2 > 0 && Roll3 > 0)
+            {
+                int control = 0;
+
+                if (Roll1 - Difficulty >= 0)
                 {
-                    int control = 0;
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll1 - Difficulty) / 5) + 1);
+                }
 
-                    if (Roll1 - Difficulty >= 0)
+                if (Roll2 - Difficulty >= 0)
+                {
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll2 - Difficulty) / 5) + 1);
+                }
+
+                if (Roll3 - Difficulty >= 0)
+                {
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll3 - Difficulty) / 5) + 1);
+                }
+
+                if (control == 0)
+                {
+                    Outcome = "Dina undersåtar vägrar betala skatt! Bondeuppror!";
+                    TaxFactor = 0;
+                    LoyaltyNumeric -= 4;
+                }
+                else if (control < 3)
+                {
+                    int i = Roll1 - Difficulty;
+                    if (i < 0)
                     {
-                        control += Convert.ToInt32(Math.Floor(((decimal)Roll1 - Difficulty) / 5) + 1);
+                        TaxFactor -= 16;
                     }
 
-                    if (Roll2 - Difficulty >= 0)
+                    int j = Roll2 - Difficulty;
+                    if (j < 0)
                     {
-                        control += Convert.ToInt32(Math.Floor(((decimal)Roll2 - Difficulty) / 5) + 1);
+                        TaxFactor -= 16;
                     }
 
-                    if (Roll3 - Difficulty >= 0)
+                    int k = Roll3 - Difficulty;
+                    if (k < 0)
                     {
-                        control += Convert.ToInt32(Math.Floor(((decimal)Roll3 - Difficulty) / 5) + 1);
+                        TaxFactor -= 16;
                     }
-
-                    if (control == 0)
-                    {
-                        Outcome = "Dina undersåtar vägrar betala skatt! Bondeuppror!";
-                        TaxFactor = 0;
-                        LoyaltyNumeric -= 4;
-                    }
-                    else if (control < 3)
-                    {
-                        int i = Roll1 - Difficulty;
-                        if (i < 0)
-                        {
-                            TaxFactor -= 16;
-                        }
-
-                        int j = Roll2 - Difficulty;
-                        if (j < 0)
-                        {
-                            TaxFactor -= 16;
-                        }
-
-                        int k = Roll3 - Difficulty;
-                        if (k < 0)
-                        {
-                            TaxFactor -= 16;
-                        }
-                        Outcome = "Dina undersåtar betalar knappt hälften!";
-                        LoyaltyNumeric -= 2;
-                    }
-                    else if (control == 3)
-                    {
-                        TaxFactor = 100;
-                        Outcome = "Skatten kommer in utan problem!";
-                    }
-                    else
-                    {
-                        TaxFactor = 100;
-                        Outcome = "Dina undersåtar betalar glatt sina skatter!";
-                        LoyaltyNumeric += control - 3;
-                    }
-                    SendOk(true);
+                    Outcome = "Dina undersåtar betalar knappt hälften!";
+                    LoyaltyNumeric -= 2;
+                }
+                else if (control == 3)
+                {
+                    TaxFactor = 100;
+                    Outcome = "Skatten kommer in utan problem!";
                 }
                 else
                 {
-                    if (Difficulty > 0)
-                    {
-                        SendOk(false);
-                    }
+                    TaxFactor = 100;
+                    Outcome = "Dina undersåtar betalar glatt sina skatter!";
+                    LoyaltyNumeric += control - 3;
                 }
+                SendOk(true);
+            }
+            else
+            {
+                if (Difficulty > 0)
+                {
+                    SendOk(false);
+                }
+            }
         }
 
         private static void RaiseLoyaltyChanged(
