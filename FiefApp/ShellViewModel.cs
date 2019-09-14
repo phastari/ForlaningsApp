@@ -236,7 +236,8 @@ namespace FiefApp
 
         private void SaveFiefCommandExecute()
         {
-            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
+            //_eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Publish();
             if (string.IsNullOrEmpty(Properties.Settings.Default.FileName))
             {
                 FileIsSaved = false;
@@ -297,7 +298,8 @@ namespace FiefApp
 
         private void SaveAsFiefCommandExecute()
         {
-            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Publish();
+            //_eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Förlänings fil (*.forlaning)|*.forlaning";

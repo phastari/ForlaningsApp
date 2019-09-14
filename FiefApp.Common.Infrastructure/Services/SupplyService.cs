@@ -247,5 +247,15 @@ namespace FiefApp.Common.Infrastructure.Services
             }
             return false;
         }
+
+        public void Deposit(int silver, int bas, int lyx, int iron, int stone, int wood)
+        {
+            _fiefService.SupplyDataModel.SupplySilver += silver;
+            _fiefService.SupplyDataModel.SupplyBase += bas;
+            _fiefService.SupplyDataModel.SupplyLuxury += lyx;
+            _fiefService.SupplyDataModel.SupplyIron += iron;
+            _fiefService.SupplyDataModel.SupplyStone += stone;
+            _fiefService.SupplyDataModel.SupplyWood += wood;
+        }
     }
 }

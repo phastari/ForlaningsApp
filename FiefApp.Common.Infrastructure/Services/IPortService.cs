@@ -9,5 +9,6 @@ namespace FiefApp.Common.Infrastructure.Services
         bool CheckShipyardPossibility(int index);
         ShipyardTypeSettingsModel GetShipyardTypeSettingsModel(int size);
         int GetNewCaptainId(int index);
+        int GetAvailableGuards(int index);
     }
 }

@@ -2,6 +2,7 @@
 using FiefApp.Module.Port.RoutedEvents;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,6 +66,19 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
             }
         }
 
+        private string _size;
+        public string Size
+        {
+            get => _size;
+            set
+            {
+                _size = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _loaded = false;
+
         #endregion
 
         #region Methods
@@ -81,17 +95,20 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
 
         private void StewardChanged()
         {
-            ShipyardModel.StewardId = ShipyardModel.StewardsCollection[SelectedIndex].Id;
-            ShipyardModel.Steward = ShipyardModel.StewardsCollection[SelectedIndex].PersonName;
+            if (_loaded && SelectedIndex != -1)
+            {
+                ShipyardModel.StewardId = ShipyardModel.StewardsCollection[SelectedIndex].Id;
+                ShipyardModel.Steward = ShipyardModel.StewardsCollection[SelectedIndex].PersonName;
 
-            GotShipyardUIEventArgs newEventArgs =
-                new GotShipyardUIEventArgs(
-                    GotShipyardUIRoutedEvent,
-                    "Changed",
-                    ShipyardModel
-                );
+                GotShipyardUIEventArgs newEventArgs =
+                    new GotShipyardUIEventArgs(
+                        GotShipyardUIRoutedEvent,
+                        "Changed",
+                        ShipyardModel
+                    );
 
-            RaiseEvent(newEventArgs);
+                RaiseEvent(newEventArgs);
+            }
         }
 
         private void ShipyardModelPropertyChanged(
@@ -101,6 +118,10 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
             switch (e.PropertyName)
             {
                 case "Taxes":
+
+                    break;
+
+                case "Income":
 
                     break;
             }
@@ -141,7 +162,56 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
             object sender,
             RoutedEventArgs e)
         {
+            SetInformation();
+
+            if (ShipyardModel.StewardId > 0)
+            {
+                SelectedIndex = ShipyardModel.StewardsCollection.IndexOf(ShipyardModel.StewardsCollection.FirstOrDefault(o => o.Id == ShipyardModel.StewardId));
+            }
+
             ShipyardModel.PropertyChanged += ShipyardModelPropertyChanged;
+            _loaded = true;
         }
+
+        private void SetInformation()
+        {
+            SetSize();
+        }
+
+        #region SetInformation
+
+        private void SetSize()
+        {
+            if (ShipyardModel.Size == "0")
+            {
+                Size = "Byhamn";
+            }
+            else if (ShipyardModel.Size == "1")
+            {
+                Size = "Fiskehamn";
+            }
+            else if (ShipyardModel.Size == "2")
+            {
+                Size = "Liten hamn";
+            }
+            else if (ShipyardModel.Size == "3")
+            {
+                Size = "Hamn";
+            }
+            else if (ShipyardModel.Size == "4")
+            {
+                Size = "Handelshamn";
+            }
+            else if (ShipyardModel.Size == "5")
+            {
+                Size = "Stor handelshamn";
+            }
+            else if (ShipyardModel.Size == "6")
+            {
+                Size = "Enorm handelshamn";
+            }
+        }
+
+        #endregion
     }
 }

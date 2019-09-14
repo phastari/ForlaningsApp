@@ -106,6 +106,7 @@
     <Compile Include="DataModels\SupplyDataModel.cs" />
     <Compile Include="DataModels\TradeDataModel.cs" />
     <Compile Include="DataModels\WeatherDataModel.cs" />
+    <Compile Include="EventAggregatorEvents\EndOfYearCompletedEvent.cs" />
     <Compile Include="EventAggregatorEvents\EndOfYearEvent.cs" />
     <Compile Include="EventAggregatorEvents\FiefNameChangedEvent.cs" />
     <Compile Include="EventAggregatorEvents\FishingBoatsAdded.cs" />

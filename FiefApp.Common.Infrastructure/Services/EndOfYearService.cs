@@ -355,67 +355,70 @@ namespace FiefApp.Common.Infrastructure.Services
                     }
                 }
 
-
-                if (_fiefService.PortsList[x].GotShipyard && _fiefService.PortsList[x].Shipyard.StewardId > 0)
+                if (_fiefService.PortsList[x].GotShipyard || _fiefService.PortsList[x].BuildingShipyard)
                 {
-                    PortDataModel temp = (PortDataModel)_fiefService.PortsList[x].Clone();
-                    shipyard = temp.Shipyard;
 
-                    string steward = "";
-                    string skill = "0";
+                    if (_fiefService.PortsList[x].Shipyard.StewardId > 0)
+                    {
+                        PortDataModel temp = (PortDataModel)_fiefService.PortsList[x].Clone();
+                        shipyard = temp.Shipyard;
 
-                    steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.PortsList[x].Shipyard.StewardId)?.PersonName;
-                    skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.PortsList[x].Shipyard.StewardId)?.Skill;
+                        string steward = "";
+                        string skill = "0";
 
-                    shipyard.Steward = steward;
-                    shipyard.Skill = skill;
-                    shipyard.Id = _fiefService.PortsList[x].Shipyard.Id;
+                        steward = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.PortsList[x].Shipyard.StewardId)?.PersonName;
+                        skill = _fiefService.StewardsDataModel.StewardsCollection.FirstOrDefault(o => o.Id == _fiefService.PortsList[x].Shipyard.StewardId)?.Skill;
 
-                    dictionary.Add(_fiefService.PortsList[x].Shipyard.Id, false);
+                        shipyard.Steward = steward;
+                        shipyard.Skill = skill;
+                        shipyard.Id = _fiefService.PortsList[x].Shipyard.Id;
 
-                    difficulty = Convert.ToInt32(Math.Ceiling(0.26 * _fiefService.WeatherList[x].SpringRollMod
-                                                              + 0.26 * _fiefService.WeatherList[x].SummerRollMod
-                                                              + 0.26 * _fiefService.WeatherList[x].FallRollMod
-                                                              + 0.26 * _fiefService.WeatherList[x].WinterRollMod
-                                                              + 8));
+                        dictionary.Add(_fiefService.PortsList[x].Shipyard.Id, false);
 
-                    if (_fiefService.PortsList[x].Shipyard.Upgrading)
-                    {
-                        difficulty += 4;
-                    }
+                        difficulty = Convert.ToInt32(Math.Ceiling(0.26 * _fiefService.WeatherList[x].SpringRollMod
+                                                                  + 0.26 * _fiefService.WeatherList[x].SummerRollMod
+                                                                  + 0.26 * _fiefService.WeatherList[x].FallRollMod
+                                                                  + 0.26 * _fiefService.WeatherList[x].WinterRollMod
+                                                                  + 8));
 
-                    if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards)
-                    {
-                        difficulty -= 8;
-                    }
-                    else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 1.37M)
-                    {
-                        difficulty -= 4;
-                    }
-                    else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 2.74M)
-                    {
-                        difficulty += 0;
-                    }
-                    else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 5.48M)
-                    {
-                        difficulty += 4;
-                    }
-                    else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 11.96M)
-                    {
-                        difficulty += 8;
-                    }
-                    else
-                    {
-                        difficulty += 12;
-                    }
+                        if (_fiefService.PortsList[x].Shipyard.Upgrading)
+                        {
+                            difficulty += 4;
+                        }
 
-                    if (difficulty < 5)
-                    {
-                        shipyard.Difficulty = 4;
-                    }
-                    else
-                    {
-                        shipyard.Difficulty = difficulty;
+                        if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards)
+                        {
+                            difficulty -= 8;
+                        }
+                        else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 1.37M)
+                        {
+                            difficulty -= 4;
+                        }
+                        else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 2.74M)
+                        {
+                            difficulty += 0;
+                        }
+                        else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 5.48M)
+                        {
+                            difficulty += 4;
+                        }
+                        else if (_fiefService.PortsList[x].Shipyard.CrimeRate < _fiefService.PortsList[x].Shipyard.Guards * 11.96M)
+                        {
+                            difficulty += 8;
+                        }
+                        else
+                        {
+                            difficulty += 12;
+                        }
+
+                        if (difficulty < 5)
+                        {
+                            shipyard.Difficulty = 4;
+                        }
+                        else
+                        {
+                            shipyard.Difficulty = difficulty;
+                        }
                     }
                 }
 

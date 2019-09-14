@@ -127,6 +127,17 @@ namespace FiefApp.Module.Port
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<FishingBoatsAdded>().Subscribe(HandleFishingBoatsAdded);
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<PortDataModel>(x);
+                SaveData(x);
+            }
         }
 
         private void HandleFishingBoatsAdded(int index)
@@ -189,9 +200,13 @@ namespace FiefApp.Module.Port
                         == 0 ? _portService.GetAllPortDataModel()
                 : _baseService.GetDataModel<PortDataModel>(Index);
 
-            if (!DataModel.BuildingShipyard && !DataModel.GotShipyard)
+            if (!DataModel.BuildingShipyard || !DataModel.GotShipyard)
             {
                 DataModel.CanBuildShipyard = _portService.CheckShipyardPossibility(Index);
+            }
+            else
+            {
+                DataModel.CanBuildShipyard = false;
             }
 
             GetInformationSetDataModel();
@@ -433,23 +448,17 @@ namespace FiefApp.Module.Port
 
             e.Handled = true;
 
-            if (_supplyService.WithdrawBase(25))
+            if (_supplyService.Withdraw(0, 25, 0, 0, 0, 30))
             {
-                if (_supplyService.WithdrawWood(30))
-                {
-                    DataModel.BuildingShipyard = true;
-                    DataModel.CanBuildShipyard = false;
-                    DataModel.Shipyard.Id = _baseService.GetNewIndustryId();
-                    DataModel.Shipyard.DaysWorkNeeded = 2500;
-                    SaveData();
-                }
-                else
-                {
-                    _supplyService.DepositBase(25);
-                }
+                DataModel.BuildingShipyard = true;
+                DataModel.CanBuildShipyard = false;
+                DataModel.Shipyard.Id = _baseService.GetNewIndustryId();
+                DataModel.Shipyard.DaysWorkNeeded = 2500;
+                SaveData();
             }
             else
             {
+                MessageBox.Show("Du har inte råd!");
                 DataModel.CanBuildShipyard = true;
                 DataModel.BuildingShipyard = false;
             }
@@ -499,17 +508,17 @@ namespace FiefApp.Module.Port
             switch (e.Action)
             {
                 case "Changed":
-                    {
-                        SaveData();
-                        _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id, "Port");
-                        break;
-                    }
+                {
+                    SaveData();
+                    _baseService.ChangeSteward(e.StewardId, DataModel.Shipyard.Id, "Port");
+                    break;
+                }
 
                 case "DaysWorkChanged":
-                    {
-                        DataModel.Shipyard.DaysWorkThisYear = e.DaysWorkThisYear;
-                        break;
-                    }
+                {
+                    DataModel.Shipyard.DaysWorkThisYear = e.DaysWorkThisYear;
+                    break;
+                }
             }
             SaveData();
         }
@@ -550,22 +559,6 @@ namespace FiefApp.Module.Port
 
         protected override void LoadData()
         {
-            //if (_triggerLoad)
-            //{
-            //    _triggerLoad = false;
-            //    for (int x = 0; x < _awaitResponsList.Count; x++)
-            //    {
-            //        if (_awaitResponsList[x].ModuleName == "Port")
-            //        {
-            //            _awaitResponsList[x].Completed = true;
-            //        }
-            //        else
-            //        {
-            //            _awaitResponsList[x].Completed = false;
-            //        }
-            //    }
-            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Port");
-            //}
             CompleteLoadData();
         }
 
@@ -575,10 +568,20 @@ namespace FiefApp.Module.Port
             CompleteLoadData();
         }
 
-        private void GetInformationSetDataModel()
+        private void GetInformationSetDataModel(int index = -1)
         {
-            GetStewardsCollection();
-            SetShipyardsStewardsCollection();
+            if (index == -1)
+            {
+                GetStewardsCollection();
+                SetShipyardsStewardsCollection();
+                SetAvailableGuards(Index);
+            }
+            else
+            {
+                GetStewardsCollection();
+                SetShipyardsStewardsCollection();
+                SetAvailableGuards(index);
+            }
         }
 
         private void GetStewardsCollection()
@@ -589,6 +592,11 @@ namespace FiefApp.Module.Port
         private void SetShipyardsStewardsCollection()
         {
             DataModel.Shipyard.StewardsCollection = DataModel.StewardsCollection;
+        }
+
+        private void SetAvailableGuards(int index)
+        {
+            DataModel.Shipyard.AvailableGuards = _portService.GetAvailableGuards(index);
         }
 
         #endregion

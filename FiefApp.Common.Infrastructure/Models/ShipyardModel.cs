@@ -245,7 +245,7 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _daysWorkNeeded;
+        private int _daysWorkNeeded = 1000000;
         public int DaysWorkNeeded
         {
             get => _daysWorkNeeded;
@@ -262,7 +262,18 @@ namespace FiefApp.Common.Infrastructure.Models
             get => _daysWorkThisYear;
             set
             {
-                _daysWorkThisYear = value > DaysWorkNeeded ? DaysWorkNeeded : value;
+                if (value > DaysWorkNeeded)
+                {
+                    _daysWorkThisYear = DaysWorkNeeded;
+                }
+                else if (value <= 0)
+                {
+                    _daysWorkThisYear = 0;
+                }
+                else
+                {
+                    _daysWorkThisYear = value;
+                }
                 NotifyPropertyChanged();
             }
         }
@@ -339,7 +350,7 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
-        private int _availableGuards;
+        private int _availableGuards = 1000000;
         public int AvailableGuards
         {
             get => _availableGuards;
@@ -433,18 +444,18 @@ namespace FiefApp.Common.Infrastructure.Models
 
         private void CalculateIncome()
         {
-            decimal factor = 1 - Convert.ToDecimal(Math.Pow(0.9, Bailiffs + 1));
+            decimal factor = Convert.ToDecimal(Math.Pow(0.9, Bailiffs + 1) / (Bailiffs + 1));
             decimal factor2 = Guards * (((decimal)127 / (Guards + 1)) / (CrimeRate * CrimeRate + 1));
 
             decimal baseIncome;
 
             if (Upgrading)
             {
-                baseIncome = OperationBaseIncome * factor * factor2 * 0.67M + OperationBaseIncome / 100 * UN;
+                baseIncome = (OperationBaseIncome * factor * factor2 * 0.67M + OperationBaseIncome / 100 * UN) / 4.75M;
             }
             else
             {
-                baseIncome = OperationBaseIncome * factor * factor2 + OperationBaseIncome / 100 * UN;
+                baseIncome = (OperationBaseIncome * factor * factor2 + OperationBaseIncome / 100 * UN) / 4.75M;
             }
 
             Income = Convert.ToInt32(Math.Floor(baseIncome + (Taxes - 20) * baseIncome / 100));

@@ -63,199 +63,179 @@
         </Grid.ColumnDefinitions>
 
         <Frame 
-                Grid.Column="0" 
-                Grid.ColumnSpan="9"
-                Grid.Row="0" 
-                Grid.RowSpan="35" 
-                Background="LightGray" 
-                BorderBrush="Gray" 
-                BorderThickness="0.5, 0, 0.5, 0.5"
-                IsTabStop="False"/>
+            Grid.Column="0" 
+            Grid.ColumnSpan="9"
+            Grid.Row="0" 
+            Grid.RowSpan="35" 
+            Background="LightGray" 
+            BorderBrush="Gray" 
+            BorderThickness="0.5, 0, 0.5, 0.5"
+            IsTabStop="False"/>
 
 
         <Label
-                Content="Hamn"
-                Grid.Column="1"
-                Grid.Row="0"
-                FontWeight="Bold"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Padding="14,0,0,0"/>
+            Content="Hamn"
+            Grid.Column="1"
+            Grid.Row="0"
+            FontWeight="Bold"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Padding="14,0,0,0"/>
 
         <Label
-                Content="Namn"
-                Grid.Column="1"
-                Grid.Row="2"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Namn"
+            Grid.Column="1"
+            Grid.Row="2"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="3"
-                Grid.ColumnSpan="5"
-                Grid.Row="2"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="{Binding Path=CantEdit}"
-                Padding="6,0,0,0">
+            Text="{Binding Path=ShipyardModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="3"
+            Grid.ColumnSpan="5"
+            Grid.Row="2"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="6,0,0,0"/>
+
+        <Label
+            Content="Storlek"
+            Grid.Column="1"
+            Grid.Row="4"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
+
+        <TextBox
+            Text="{Binding Path=Size}"
+            Grid.Column="3"
+            Grid.ColumnSpan="5"
+            Grid.Row="4"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            IsReadOnly="True"
+            Padding="6,0,0,0">
         </TextBox>
 
         <Label
-                Content="Storlek"
-                Grid.Column="1"
-                Grid.Row="4"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
-
-        <TextBox
-                Text="{Binding Path=ShipyardModel.Size}"
-                Grid.Column="3"
-                Grid.ColumnSpan="5"
-                Grid.Row="4"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                IsReadOnly="True"
-                Padding="6,0,0,0">
-        </TextBox>
-
-        <Label
-                Content="Förvaltare"
-                Grid.Column="1"
-                Grid.Row="6"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Förvaltare"
+            Grid.Column="1"
+            Grid.Row="6"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <ComboBox
-                x:Name="StewardComboBox"
-                ItemsSource="{Binding Path=StewardsCollection}"
-                DisplayMemberPath="PersonName"
-                Grid.Column="3"
-                Grid.ColumnSpan="5"
-                Grid.Row="6"
-                Grid.ZIndex="2"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource ComboBoxControlTemplate}"
-                ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
-                SelectedIndex="{Binding Path=SelectedIndex}"
-                SelectionChanged="StewardComboBox_OnSelectionChanged"
-                IsTabStop="False"
-                Padding="6,0,0,0">
-            <ComboBox.Style>
-                <Style TargetType="{x:Type ComboBox}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=CantEdit}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ComboBox.Style>
+            x:Name="StewardComboBox"
+            ItemsSource="{Binding Path=ShipyardModel.StewardsCollection}"
+            DisplayMemberPath="PersonName"
+            Grid.Column="3"
+            Grid.ColumnSpan="5"
+            Grid.Row="6"
+            Grid.ZIndex="2"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource ComboBoxControlTemplate}"
+            ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+            SelectedIndex="{Binding Path=SelectedIndex}"
+            SelectionChanged="StewardComboBox_OnSelectionChanged"
+            IsTabStop="False"
+            Padding="6,0,0,0">
         </ComboBox>
 
-        <fakeComboBox:FakeComboBox 
-                Grid.Column="3"
-                Grid.ColumnSpan="5"
-                Grid.Row="6"
-                Grid.ZIndex="1"
-                IsSmall="False"
-                TextBoxText="{Binding Path=Text, ElementName=StewardComboBox}">
-        </fakeComboBox:FakeComboBox>
-
         <Label
-                Content="Utvecklingsnivå(UN)"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="8"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Utvecklingsnivå(UN)"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="8"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.UN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="7"
-                Grid.Row="8"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxTemplate}"
-                IsReadOnly="{Binding Path=CantEdit}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.UN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="7"
+            Grid.Row="8"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxTemplate}"
+            IsReadOnly="{Binding Path=CantEdit}"
+            Padding="0"/>
 
         <Label
-                Content="Driftskostnad i bas"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="10"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Driftskostnad i bas"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="10"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.OperationCost}"
-                Grid.Column="7"
-                Grid.Row="10"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                IsReadOnly="True"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.OperationCost}"
+            Grid.Column="7"
+            Grid.Row="10"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            IsReadOnly="True"
+            Padding="0"/>
 
         <Label
-                Content="Tull/Skatt (%)"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="12"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Tull/Skatt (%)"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="12"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <iTextBox:iTextBox
-                Value="{Binding Path=ShipyardModel.Taxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="7"
-                Grid.Row="12"
-                TextBoxReadOnly="{Binding Path=CantEdit}">
+            Value="{Binding Path=ShipyardModel.Taxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="7"
+            Grid.Row="12"
+            TextBoxReadOnly="{Binding Path=CantEdit}">
         </iTextBox:iTextBox>
 
         <Label
-                Content="Inkomst i bas"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="14"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Inkomst i bas"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="14"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.Income}"
-                Grid.Column="7"
-                Grid.Row="14"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                IsReadOnly="True"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.Income}"
+            Grid.Column="7"
+            Grid.Row="14"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            IsReadOnly="True"
+            Padding="0"/>
 
         <Label
-                Content="Upgradera hamnen"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="16"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Upgradera hamnen"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="16"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <CheckBox
-                IsChecked="{Binding Path=ShipyardModel.IsBeingUpgraded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="7"
-                Grid.Row="16"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center" 
-                Template="{DynamicResource CheckBoxTemplate}">
+            IsChecked="{Binding Path=ShipyardModel.IsBeingUpgraded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="7"
+            Grid.Row="16"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" 
+            Template="{DynamicResource CheckBoxTemplate}">
             <CheckBox.Style>
                 <Style TargetType="{x:Type CheckBox}">
                     <Setter Property="IsEnabled" Value="False"/>
@@ -269,173 +249,173 @@
         </CheckBox>
 
         <Label
-                Content="Fogdar"
-                Grid.Column="3"
-                Grid.ColumnSpan="3"
-                Grid.Row="18"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Fogdar"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Grid.Row="18"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <iTextBox:iTextBox
-                Value="{Binding Path=ShipyardModel.Bailiffs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="7"
-                Grid.Row="18">
+            Value="{Binding Path=ShipyardModel.Bailiffs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="7"
+            Grid.Row="18">
         </iTextBox:iTextBox>
 
         <Label
-                Content="Vaktkaptener"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="20"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Vaktkaptener"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="20"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <iTextBox:iTextBox
-                Value="{Binding Path=ShipyardModel.Captains, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="7"
-                Grid.Row="20">
+            Value="{Binding Path=ShipyardModel.Captains, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="7"
+            Grid.Row="20">
         </iTextBox:iTextBox>
 
         <Label
-                Content="Vaktstyrka"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="22"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Vaktstyrka"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="22"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <iTextBox:iTextBox
-                Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Grid.Column="7"
-                Grid.Row="22">
+            Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="7"
+            Grid.Row="22">
         </iTextBox:iTextBox>
 
         <Label
-                Content="Kriminalitet"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Grid.Row="24"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Kriminalitet"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="24"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.Crime}"
-                Grid.Column="7"
-                Grid.Row="24"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.Crime}"
+            Grid.Column="7"
+            Grid.Row="24"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
         <Label
-                Content="Dockplatser"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                Grid.Row="26"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Dockplatser"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="26"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <Label
-                Content="Antal"
-                Grid.Column="5"
-                Grid.Row="26"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Antal"
+            Grid.Column="5"
+            Grid.Row="26"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <Label
-                Content="Lediga"
-                Grid.Column="7"
-                Grid.Row="26"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Lediga"
+            Grid.Column="7"
+            Grid.Row="26"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <Label
-                Content="Små, &lt; 11 meter"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                Grid.Row="28"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Små, &lt; 11 meter"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="28"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.DockSmall}"
-                Grid.Column="5"
-                Grid.Row="28"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.DockSmall}"
+            Grid.Column="5"
+            Grid.Row="28"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.DockSmallFree}"
-                Grid.Column="7"
-                Grid.Row="28"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.DockSmallFree}"
+            Grid.Column="7"
+            Grid.Row="28"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
         <Label
-                Content="Medel, &lt; 21 meter"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                Grid.Row="30"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Medel, &lt; 21 meter"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="30"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.DockMedium}"
-                Grid.Column="5"
-                Grid.Row="30"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.DockMedium}"
+            Grid.Column="5"
+            Grid.Row="30"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.DockMediumFree}"
-                Grid.Column="7"
-                Grid.Row="30"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.DockMediumFree}"
+            Grid.Column="7"
+            Grid.Row="30"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
         <Label
-                Content="Stora, 21+ meter"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                Grid.Row="32"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Padding="0"/>
+            Content="Stora, 21+ meter"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Grid.Row="32"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.DockLarge}"
-                Grid.Column="5"
-                Grid.Row="32"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.DockLarge}"
+            Grid.Column="5"
+            Grid.Row="32"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
         <TextBox
-                Text="{Binding Path=ShipyardModel.DockLargeFree}"
-                Grid.Column="7"
-                Grid.Row="32"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Template="{DynamicResource TextBoxDisabled}"
-                Padding="0"/>
+            Text="{Binding Path=ShipyardModel.DockLargeFree}"
+            Grid.Column="7"
+            Grid.Row="32"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Template="{DynamicResource TextBoxDisabled}"
+            Padding="0"/>
 
     </Grid>
 </UserControl>

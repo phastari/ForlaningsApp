@@ -258,72 +258,68 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearIncomeUI
             if (Roll1 > 0 && Roll2 > 0 && Roll3 > 0)
             {
                 int control = 0;
-
-                if (Roll1 > 0 && Roll2 > 0 && Roll3 > 0)
+                if (Roll1 - Difficulty >= 0)
                 {
-                    if (Roll1 - Difficulty >= 0)
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll1 - Difficulty) / 5) + 1);
+                }
+
+                if (Roll2 - Difficulty >= 0)
+                {
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll2 - Difficulty) / 5) + 1);
+                }
+
+                if (Roll3 - Difficulty >= 0)
+                {
+                    control += Convert.ToInt32(Math.Floor(((decimal)Roll3 - Difficulty) / 5) + 1);
+                }
+
+                if (control == 0)
+                {
+                    Result = "0";
+                }
+                else if (control < 3)
+                {
+                    int i = Roll1 - Difficulty;
+                    if (i < 0)
                     {
-                        control += Convert.ToInt32(Math.Floor(((decimal)Roll1 - Difficulty) / 5) + 1);
+                        i *= 15;
                     }
 
-                    if (Roll2 - Difficulty >= 0)
+                    int j = Roll2 - Difficulty;
+                    if (j < 0)
                     {
-                        control += Convert.ToInt32(Math.Floor(((decimal)Roll2 - Difficulty) / 5) + 1);
+                        j *= 15;
                     }
 
-                    if (Roll3 - Difficulty >= 0)
+                    int k = Roll3 - Difficulty;
+                    if (k < 0)
                     {
-                        control += Convert.ToInt32(Math.Floor(((decimal)Roll3 - Difficulty) / 5) + 1);
+                        k *= 15;
                     }
-
-                    if (control == 0)
+                    int r = BaseIncome + Convert.ToInt32(Math.Floor(BaseIncome * ((decimal)(i + j + k) / 100)));
+                    if (r <= 0)
                     {
                         Result = "0";
                     }
-                    else if (control < 3)
-                    {
-                        int i = Roll1 - Difficulty;
-                        if (i < 0)
-                        {
-                            i *= 15;
-                        }
-
-                        int j = Roll2 - Difficulty;
-                        if (j < 0)
-                        {
-                            j *= 15;
-                        }
-
-                        int k = Roll3 - Difficulty;
-                        if (k < 0)
-                        {
-                            k *= 15;
-                        }
-                        int r = BaseIncome + Convert.ToInt32(Math.Floor(BaseIncome * ((decimal)(i + j + k) / 100)));
-                        if (r <= 0)
-                        {
-                            Result = "0";
-                        }
-                        else
-                        {
-                            Result = Convert.ToString(r);
-                        }
-                    }
-                    else if (control == 3)
-                    {
-                        Result = BaseIncome.ToString();
-                    }
                     else
                     {
-                        Result = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncome * ((control - 3) * 0.25M + 1))));
+                        Result = Convert.ToString(r);
                     }
-                    SendOk(true);
+                }
+                else if (control == 3)
+                {
+                    Result = BaseIncome.ToString();
                 }
                 else
                 {
-                    Result = "-";
-                    SendOk(false);
+                    Result = Convert.ToString(Convert.ToInt32(Math.Floor(BaseIncome * ((control - 3) * 0.25M + 1))));
                 }
+                SendOk(true);
+            }
+            else
+            {
+                Result = "-";
+                SendOk(false);
             }
         }
 

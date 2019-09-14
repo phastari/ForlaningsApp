@@ -793,6 +793,7 @@ namespace FiefApp.Module.EndOfYear
                                 _fiefService.PortsList[x].BuildingShipyard = false;
                                 _fiefService.PortsList[x].GotShipyard = true;
                                 _fiefService.PortsList[x].UpgradingShipyard = false;
+                                _fiefService.PortsList[x].CanBuildShipyard = false;
                                 _fiefService.PortsList[x].Shipyard = new ShipyardModel()
                                 {
                                     Id = _baseService.GetNewIndustryId(),
@@ -816,7 +817,7 @@ namespace FiefApp.Module.EndOfYear
                                 _fiefService.PortsList[x].Shipyard.DaysWorkNeeded -= _fiefService.PortsList[x].Shipyard.DaysWorkThisYear;
                             }
                         }
-                        else if (_fiefService.PortsList[x].GotShipyard)
+                        else if (_fiefService.PortsList[x].GotShipyard && !_fiefService.PortsList[x].UpgradingShipyard)
                         {
                             int temp;
 
@@ -834,6 +835,20 @@ namespace FiefApp.Module.EndOfYear
                         }
                         else if (_fiefService.PortsList[x].UpgradingShipyard)
                         {
+                            int temp;
+
+                            if (int.TryParse(DataModel.IncomeListFief[x - 1].Shipyard.Result, out temp))
+                            {
+                                if (temp > 0)
+                                {
+                                    bas += temp;
+                                }
+                                else
+                                {
+                                    bas -= temp;
+                                }
+                            }
+
                             if (DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear == DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkNeeded)
                             {
                                 str += $"Hamnen har upgraderats!{Environment.NewLine}";
@@ -1866,6 +1881,8 @@ namespace FiefApp.Module.EndOfYear
             str += $"{stone.ToString().PadRight(8)} Sten{Environment.NewLine}";
             str += $"{wood.ToString().PadRight(8)} Timmer{Environment.NewLine}";
 
+            _supplyService.Deposit(silver, bas, lyx, iron, stone, wood);
+
             _fiefService.Year++;
             _eventAggregator.GetEvent<EndOfYearEvent>().Unsubscribe(LoadData);
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
@@ -1886,6 +1903,7 @@ namespace FiefApp.Module.EndOfYear
             }
 
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(LoadData);
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Publish();
         }
 
         #endregion

@@ -180,8 +180,20 @@ namespace FiefApp.Module.Weather
             _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleResponse);
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
 
             EndOfYearCommand = new DelegateCommand(ExecuteEndOfYearCommand);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<WeatherDataModel>(x);
+                GetInformationSetDataModel(x);
+                SaveData(x);
+            }
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)

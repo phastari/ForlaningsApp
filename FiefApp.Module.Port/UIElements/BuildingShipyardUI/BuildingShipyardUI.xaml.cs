@@ -65,6 +65,20 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                 new PropertyMetadata(0)
             );
 
+        public int DaysWorkThisYear
+        {
+            get => (int)GetValue(DaysWorkThisYearProperty);
+            set => SetValue(DaysWorkThisYearProperty, value);
+        }
+
+        public static readonly DependencyProperty DaysWorkThisYearProperty =
+            DependencyProperty.Register(
+                "DaysWorkThisYear",
+                typeof(int),
+                typeof(BuildingShipyardUI),
+                new PropertyMetadata(0, RaiseDaysWorkThisYearChanged)
+            );
+
         public ObservableCollection<StewardModel> StewardsCollection
         {
             get => (ObservableCollection<StewardModel>)GetValue(StewardsCollectionProperty);
@@ -106,30 +120,7 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                 _selectedIndex = value;
                 NotifyPropertyChanged();
             }
-        }
-
-        private int _daysWorkThisYear;
-        public int DaysWorkThisYear
-        {
-            get => _daysWorkThisYear;
-            set
-            {
-                if (value < 0)
-                {
-                    _daysWorkThisYear = 0;
-                }
-                else if (value > DaysWorkNeeded)
-                {
-                    _daysWorkThisYear = DaysWorkNeeded;
-                }
-                else
-                {
-                    _daysWorkThisYear = value;
-                }
-                RaiseDaysWorkThisYearChanged();
-                NotifyPropertyChanged();
-            }
-        }        
+        }      
 
         private bool _loaded = false;
 
@@ -163,23 +154,56 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                     index = x;
                 }
             }
-
+            Console.WriteLine($"DaysWorkThisYear = {DaysWorkThisYear}");
             SelectedIndex = index;
             _loaded = true;
         }
 
-        private void RaiseDaysWorkThisYearChanged()
+        private static void RaiseDaysWorkThisYearChanged(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
         {
-            BuildingShipyardUIEventArgs newEventArgs =
-                    new BuildingShipyardUIEventArgs(
-                        BuildingShipyardUIRoutedEvent,
-                        "DaysWorkChanged",
-                        StewardsCollection[SelectedIndex].Id,
-                        Id,
-                        DaysWorkThisYear
-                    );
+            if (d is BuildingShipyardUI c)
+                c.ExecuteDaysWorkThisYearChanged();
+        }
 
-            RaiseEvent(newEventArgs);
+        private void ExecuteDaysWorkThisYearChanged()
+        {
+            if (_loaded && SelectedIndex != -1)
+            {
+                if (DaysWorkThisYear > DaysWorkNeeded)
+                {
+                    DaysWorkThisYear = DaysWorkNeeded;
+
+                    BuildingShipyardUIEventArgs newEventArgs =
+                        new BuildingShipyardUIEventArgs(
+                            BuildingShipyardUIRoutedEvent,
+                            "DaysWorkChanged",
+                            StewardsCollection[SelectedIndex].Id,
+                            Id,
+                            DaysWorkThisYear
+                        );
+
+                    RaiseEvent(newEventArgs);
+                }
+                else if (DaysWorkThisYear <= 0)
+                {
+                    DaysWorkThisYear = 0;
+                }
+                else
+                {
+                    BuildingShipyardUIEventArgs newEventArgs =
+                        new BuildingShipyardUIEventArgs(
+                            BuildingShipyardUIRoutedEvent,
+                            "DaysWorkChanged",
+                            StewardsCollection[SelectedIndex].Id,
+                            Id,
+                            DaysWorkThisYear
+                        );
+
+                    RaiseEvent(newEventArgs);
+                }
+            }
         }
 
         #region RoutedEvents

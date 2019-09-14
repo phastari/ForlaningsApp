@@ -147,5 +147,27 @@ namespace FiefApp.Common.Infrastructure.Services
             }
             return 0;
         }
+
+        public int GetAvailableGuards(int index)
+        {
+            if (index > 0 && index < _fiefService.PortsList.Count)
+            {
+                if (index != 0)
+                {
+                    return _fiefService.ArmyList[index].AvailableGuards;
+                }
+                else
+                {
+                    int available = 0;
+                    for (int i = 1; i < _fiefService.ArmyList.Count; i++)
+                    {
+                        available += _fiefService.ArmyList[i].AvailableGuards;
+                    }
+
+                    return available;
+                }
+            }
+            return 0;
+        }
     }
 }

@@ -116,6 +116,18 @@ namespace FiefApp.Module.Employees
             _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<EmployeesDataModel>(x);
+                DataModel.UpdateTotalCosts();
+                SaveData(x);
+            }
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)

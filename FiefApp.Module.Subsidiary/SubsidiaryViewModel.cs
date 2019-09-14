@@ -117,9 +117,29 @@ namespace FiefApp.Module.Subsidiary
             _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
         }
 
         #region Event Handlers
+
+        private void HandleEndOfYearComplete()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<SubsidiaryDataModel>(x);
+
+                for (int y = 0; y < DataModel.SubsidiaryCollection.Count; y++)
+                {
+                    DataModel.SubsidiaryCollection[y].Difficulty = _subsidiaryService.GetAndSetDifficulty(x,
+                        DataModel.SubsidiaryCollection[y].Spring,
+                        DataModel.SubsidiaryCollection[y].Summer,
+                        DataModel.SubsidiaryCollection[y].Fall,
+                        DataModel.SubsidiaryCollection[y].Winter);
+                }
+                SaveData(x);
+            }
+        }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
         {

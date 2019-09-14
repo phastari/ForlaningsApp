@@ -120,6 +120,19 @@ namespace FiefApp.Module.Information
             _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<InformationDataModel>(x);
+                DataModel.CheckReligionsList();
+                DataModel?.SortReligionsListIntoReligionsShowCollection(_informationService.GetTotalPopulation(x));
+                SaveData(x);
+            }
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)

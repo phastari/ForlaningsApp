@@ -115,7 +115,7 @@ namespace FiefApp.Common.Infrastructure.Services
 
                     if (_fiefService.PortsList[index].GotShipyard)
                     {
-                        silver += silver * Convert.ToDecimal(Math.Pow(Convert.ToInt32(_fiefService.PortsList[x].Shipyard.Size), 3) / 100);
+                        silver += silver * Convert.ToDecimal(Math.Pow(Convert.ToInt32(_fiefService.PortsList[index].Shipyard.Size), 3) / 100);
                     }
 
                     model[x].Silver = _fiefService.EmployeesList[index].Bailiff > 0 ? Convert.ToInt32(Math.Floor(silver)) : 0;

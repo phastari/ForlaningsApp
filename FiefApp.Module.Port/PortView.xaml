@@ -106,7 +106,7 @@
                 BorderBrush="Transparent"
                 IsTabStop="False"/>
 
-            <CheckBox
+                <CheckBox
                 x:Name="UpgradingShipyard"
                 IsChecked="{Binding Path=DataModel.UpgradingShipyard, FallbackValue=False}"
                 Grid.Column="0"
@@ -536,6 +536,7 @@
                 <buildingShipyardUI:BuildingShipyardUI
                     Id="{Binding Path=DataModel.Shipyard.Id}"
                     DaysWorkNeeded="{Binding Path=DataModel.Shipyard.DaysWorkNeeded}"
+                    DaysWorkThisYear="{Binding Path=DataModel.Shipyard.DaysWorkThisYear}"
                     StewardsCollection="{Binding Path=DataModel.StewardsCollection}"
                     StewardId="{Binding Path=DataModel.Shipyard.StewardId}">
                     <buildingShipyardUI:BuildingShipyardUI.Style>
@@ -592,6 +593,9 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=CanBuildShipyard, Path=IsChecked}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=GotShipyard, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
