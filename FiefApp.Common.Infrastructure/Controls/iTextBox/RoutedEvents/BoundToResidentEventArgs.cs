@@ -8,18 +8,18 @@ namespace FiefApp.Common.Infrastructure.Controls.iTextBox.RoutedEvents
         private readonly string _action;
         public string Action => _action;
 
-        private readonly SoldierModel _model;
-        public SoldierModel Model => _model;
+        private readonly SoldierModel _soldierModel;
+        public SoldierModel SoldierModel => _soldierModel;
 
         public BoundToResidentEventArgs(
             RoutedEvent routedEvent,
             string action,
-            SoldierModel model
+            SoldierModel soldierModel
             )
             : base(routedEvent)
         {
             _action = action;
-            _model = model;
+            _soldierModel = soldierModel;
         }
     }
 }

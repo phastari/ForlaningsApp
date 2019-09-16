@@ -529,7 +529,10 @@ namespace FiefApp.Module.EndOfYear.UIElements.EndOfYearSubsidiaryUI
 
         private void EndOfYearSubsidiaryUI_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Crewed = decimal.Round((decimal)DaysWorkThisYear / DaysWorkUpkeep, 2);
+            if (DaysWorkUpkeep != 0)
+            {
+                Crewed = decimal.Round((decimal)DaysWorkThisYear / DaysWorkUpkeep, 2);
+            }
         }
     }
 }

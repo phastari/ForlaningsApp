@@ -1,20 +1,19 @@
-﻿using System;
-using Prism.Commands;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows;
-using FiefApp.Common.Infrastructure.DataModels;
+﻿using FiefApp.Common.Infrastructure.DataModels;
 using FiefApp.Common.Infrastructure.EventAggregatorEvents;
 using FiefApp.Common.Infrastructure.Models;
 using FiefApp.Common.Infrastructure.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Squirrel;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace FiefApp
 {
@@ -96,6 +95,74 @@ namespace FiefApp
                 Completed = false
             }
         };
+        private List<UpdateAllEventParameters> _awaitAllModulesList = new List<UpdateAllEventParameters>()
+        {
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Army",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Boatbuilding",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Buildings",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Employees",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Expenses",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Income",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Information",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Manor",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Mines",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Port",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Stewards",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Subsidiary",
+                Completed = false
+            },
+            new UpdateAllEventParameters()
+            {
+                ModuleName = "Trade",
+                Completed = false
+            }
+        };
 
         public ShellViewModel(
             IFiefService fiefService,
@@ -120,8 +187,41 @@ namespace FiefApp
             _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(ExecuteEndOfYear);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(SaveEventHandler);
 
             CheckForUpdates();
+        }
+
+        private void SaveEventHandler(UpdateAllEventParameters param)
+        {
+            if (_awaitAllModulesList != null)
+            {
+                for (int x = 0; x < _awaitAllModulesList.Count; x++)
+                {
+                    if (_awaitAllModulesList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitAllModulesList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitAllModulesList.All(o => o.Completed))
+                {
+                    for (int y = 0; y < _awaitAllModulesList.Count; y++)
+                    {
+                        _awaitAllModulesList[y].Completed = false;
+                    }
+
+                    if (_fromSaveAs)
+                    {
+                        ExecuteSave(true);
+                        _fromSaveAs = false;
+                    }
+                    else
+                    {
+                        ExecuteSave(false);
+                    }
+                }
+            }
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
@@ -137,16 +237,13 @@ namespace FiefApp
                     }
                 }
 
-                if (_awaitResponsList.Any(o => o.Completed == false))
-                {
-                    
-                }
-                else
+                if (_awaitResponsList.All(o => o.Completed != false))
                 {
                     for (int y = 0; y < _awaitResponsList.Count; y++)
                     {
                         _awaitResponsList[y].Completed = false;
                     }
+
                     SendNewFiefLoadedEvent();
                 }
             }
@@ -236,59 +333,8 @@ namespace FiefApp
 
         private void SaveFiefCommandExecute()
         {
-            //_eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
-            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Publish();
-            if (string.IsNullOrEmpty(Properties.Settings.Default.FileName))
-            {
-                FileIsSaved = false;
-                SaveAsFiefCommandExecute();
-            }
-            else
-            {
-                if (FileIsSaved)
-                {
-                    string filePath = System.AppDomain.CurrentDomain.BaseDirectory;
-                    string fileName = Properties.Settings.Default.FileName;
-                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-
-                    if (File.Exists(filePath + fileName))
-                    {
-                        int x = 1;
-                        bool doLoop = true;
-                        while (doLoop)
-                        {
-                            if (File.Exists(filePath + "\\Backup\\" + fileNameWithoutExtension + "(" + x + ")" + ".forlaning"))
-                            {
-                                x++;
-                            }
-                            else
-                            {
-                                doLoop = false;
-                            }
-                        }
-                        if (!Directory.Exists(filePath + "\\Backup\\"))
-                            Directory.CreateDirectory(filePath + "\\Backup\\");
-                        File.Copy(filePath + fileName, filePath + "\\Backup\\" + fileNameWithoutExtension + "(" + x + ")" + ".forlaning");
-
-                    }
-                    string json = JsonConvert.SerializeObject(
-                        _fiefService,
-                        Formatting.Indented,
-                        new JsonSerializerSettings
-                        {
-                            PreserveReferencesHandling = PreserveReferencesHandling.All,
-                            TypeNameHandling = TypeNameHandling.Auto
-                        });
-                    System.IO.File.WriteAllText(filePath + fileName, json);
-
-                    Properties.Settings.Default.FileName = fileName;
-                    Properties.Settings.Default.Save();
-                }
-                else
-                {
-                    SaveAsFiefCommandExecute();
-                }
-            }
+            SetAwaitAllModules();
+            _eventAggregator.GetEvent<UpdateAllEvent>().Publish();
         }
 
         #endregion
@@ -298,32 +344,9 @@ namespace FiefApp
 
         private void SaveAsFiefCommandExecute()
         {
-            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Publish();
-            //_eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Publish();
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Förlänings fil (*.forlaning)|*.forlaning";
-            saveFileDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
-            saveFileDialog.Title = "Spara förläningen";
-            saveFileDialog.DefaultExt = ".forlaning";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string json = JsonConvert.SerializeObject(
-                    _fiefService,
-                    Formatting.Indented,
-                    new JsonSerializerSettings
-                    {
-                        PreserveReferencesHandling = PreserveReferencesHandling.All,
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
-                System.IO.File.WriteAllText(saveFileDialog.FileName, json);
-
-                FileIsSaved = true;
-                Properties.Settings.Default.FileName = Path.GetFileName(saveFileDialog.FileName);
-                Properties.Settings.Default.IsSaved = true;
-                Properties.Settings.Default.Save();
-            }
+            _fromSaveAs = true;
+            SetAwaitAllModules();
+            _eventAggregator.GetEvent<UpdateAllEvent>().Publish();
         }
 
         #endregion
@@ -423,6 +446,8 @@ namespace FiefApp
 
         #region UI Properties
 
+        private bool _fromSaveAs = false;
+
         private string _forlaningsNamn;
         public string ForlaningsNamn
         {
@@ -497,6 +522,98 @@ namespace FiefApp
         #endregion
 
         #region Methods
+
+        private void ExecuteSave(bool saveAs)
+        {
+            if (saveAs)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Förlänings fil (*.forlaning)|*.forlaning";
+                saveFileDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                saveFileDialog.Title = "Spara förläningen";
+                saveFileDialog.DefaultExt = ".forlaning";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string json = JsonConvert.SerializeObject(
+                        _fiefService,
+                        Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.All,
+                            TypeNameHandling = TypeNameHandling.Auto
+                        });
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, json);
+
+                    FileIsSaved = true;
+                    Properties.Settings.Default.FileName = Path.GetFileName(saveFileDialog.FileName);
+                    Properties.Settings.Default.IsSaved = true;
+                    Properties.Settings.Default.Save();
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Properties.Settings.Default.FileName))
+                {
+                    FileIsSaved = false;
+                    ExecuteSave(true);
+                }
+                else
+                {
+                    if (FileIsSaved)
+                    {
+                        string filePath = System.AppDomain.CurrentDomain.BaseDirectory;
+                        string fileName = Properties.Settings.Default.FileName;
+                        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+
+                        if (File.Exists(filePath + fileName))
+                        {
+                            int x = 1;
+                            bool doLoop = true;
+                            while (doLoop)
+                            {
+                                if (File.Exists(filePath + "\\Backup\\" + fileNameWithoutExtension + "(" + x + ")" + ".forlaning"))
+                                {
+                                    x++;
+                                }
+                                else
+                                {
+                                    doLoop = false;
+                                }
+                            }
+                            if (!Directory.Exists(filePath + "\\Backup\\"))
+                                Directory.CreateDirectory(filePath + "\\Backup\\");
+                            File.Copy(filePath + fileName, filePath + "\\Backup\\" + fileNameWithoutExtension + "(" + x + ")" + ".forlaning");
+
+                        }
+                        string json = JsonConvert.SerializeObject(
+                            _fiefService,
+                            Formatting.Indented,
+                            new JsonSerializerSettings
+                            {
+                                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                                TypeNameHandling = TypeNameHandling.Auto
+                            });
+                        System.IO.File.WriteAllText(filePath + fileName, json);
+
+                        Properties.Settings.Default.FileName = fileName;
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        ExecuteSave(true);
+                    }
+                }
+            }
+        }
+
+        private void SetAwaitAllModules()
+        {
+            for (int x = 0; x < _awaitAllModulesList.Count; x++)
+            {
+                _awaitAllModulesList[x].Completed = false;
+            }
+        }
 
         private void CreateEmptyFief()
         {

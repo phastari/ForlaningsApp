@@ -117,6 +117,8 @@ namespace FiefApp.Module.Army
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
         }
 
+        #region Event Handlers
+
         private void HandleEndOfYearComplete()
         {
             UpdateFiefCollection();
@@ -179,20 +181,6 @@ namespace FiefApp.Module.Army
             }
         }
 
-        private void CompleteLoadData()
-        {
-            DataModel = Index
-                        == 0 ? _armyService.GetAllArmyDataModel()
-                : _baseService.GetDataModel<ArmyDataModel>(Index);
-
-            if (DataModel != null)
-            {
-                DataModel.PropertyChanged += DataModelPropertyChanged;
-            }
-
-            UpdateFiefCollection();
-        }
-
         private void UpdateAndRespond()
         {
             UpdateFiefCollection();
@@ -210,6 +198,8 @@ namespace FiefApp.Module.Army
                 Completed = true
             });
         }
+
+        #endregion
 
         #region CustomDelegateCommand : BoundToResidentEventHandler
 
@@ -313,37 +303,38 @@ namespace FiefApp.Module.Army
 
         #region Methods 
 
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _armyService.GetAllArmyDataModel()
+                : _baseService.GetDataModel<ArmyDataModel>(Index);
+
+            if (DataModel != null)
+            {
+                DataModel.PropertyChanged += DataModelPropertyChanged;
+            }
+
+            UpdateFiefCollection();
+        }
+
         protected override void SaveData(int index = -1)
         {
-            if (Index != 0)
+            _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
+            if (DataModel != null
+                && index == -1)
             {
-                _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
-                if (DataModel != null)
-                {
-                    _armyService.UpdateSilverExpenses(Index, DataModel.TotalSilver);
-                    _armyService.UpdateBaseExpenses(Index, DataModel.TotalBase);
-                }
+                _armyService.UpdateSilverExpenses(Index, DataModel.TotalSilver);
+                _armyService.UpdateBaseExpenses(Index, DataModel.TotalBase);
+            }
+            else
+            {
+                _armyService.UpdateSilverExpenses(index, DataModel.TotalSilver);
+                _armyService.UpdateBaseExpenses(index, DataModel.TotalBase);
             }
         }
 
         protected override void LoadData()
         {
-            //if (_triggerLoad)
-            //{
-            //    _triggerLoad = false;
-            //    for (int x = 0; x < _awaitResponsList.Count; x++)
-            //    {
-            //        if (_awaitResponsList[x].ModuleName == "Army")
-            //        {
-            //            _awaitResponsList[x].Completed = true;
-            //        }
-            //        else
-            //        {
-            //            _awaitResponsList[x].Completed = false;
-            //        }
-            //    }
-            //    _eventAggregator.GetEvent<UpdateEvent>().Publish("Army");
-            //}
             CompleteLoadData();
         }
 
