@@ -187,12 +187,12 @@ namespace FiefApp
             _eventAggregator.GetEvent<FiefNameChangedEvent>().Subscribe(ExecuteFiefNameChangedEvent);
             _eventAggregator.GetEvent<EndOfYearEvent>().Subscribe(ExecuteEndOfYear);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
-            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(SaveEventHandler);
+            _eventAggregator.GetEvent<SaveEventResponse>().Subscribe(SaveEventHandler);
 
             CheckForUpdates();
         }
 
-        private void SaveEventHandler(UpdateAllEventParameters param)
+        private void SaveEventHandler(SaveEventParameters param)
         {
             if (_awaitAllModulesList != null)
             {
@@ -334,7 +334,7 @@ namespace FiefApp
         private void SaveFiefCommandExecute()
         {
             SetAwaitAllModules();
-            _eventAggregator.GetEvent<UpdateAllEvent>().Publish();
+            _eventAggregator.GetEvent<SaveEvent>().Publish();
         }
 
         #endregion
@@ -346,7 +346,7 @@ namespace FiefApp
         {
             _fromSaveAs = true;
             SetAwaitAllModules();
-            _eventAggregator.GetEvent<UpdateAllEvent>().Publish();
+            _eventAggregator.GetEvent<SaveEvent>().Publish();
         }
 
         #endregion

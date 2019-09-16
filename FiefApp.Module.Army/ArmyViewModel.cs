@@ -115,6 +115,27 @@ namespace FiefApp.Module.Army
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<SaveEvent>().Subscribe(ExecuteSaveEventResponse);
+        }
+
+        private void ExecuteSaveEventResponse()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<ArmyDataModel>(x);
+                _armyService.UpdateSilverExpenses(x, DataModel.TotalSilver);
+                _armyService.UpdateBaseExpenses(x, DataModel.TotalBase);
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<SaveEventResponse>().Publish(new SaveEventParameters()
+            {
+                Completed = true,
+                ModuleName = "Army"
+            });
+
+            DataModel = _baseService.GetDataModel<ArmyDataModel>(Index);
         }
 
         #region Event Handlers

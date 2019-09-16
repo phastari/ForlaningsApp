@@ -125,6 +125,26 @@ namespace FiefApp.Module.Boatbuilding
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<SaveEvent>().Subscribe(ExecuteSaveEventResponse);
+        }
+
+        private void ExecuteSaveEventResponse()
+        {
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(x);
+                SetDataModelInformation(x);
+                SaveData(x);
+            }
+
+            _eventAggregator.GetEvent<SaveEventResponse>().Publish(new SaveEventParameters()
+            {
+                Completed = true,
+                ModuleName = "Boatbuilding"
+            });
+
+            DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(Index);
         }
 
         #region EventHandlers

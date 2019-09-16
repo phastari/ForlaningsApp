@@ -112,6 +112,8 @@
     <Compile Include="EventAggregatorEvents\FishingBoatsAdded.cs" />
     <Compile Include="EventAggregatorEvents\NewFiefLoadedEvent.cs" />
     <Compile Include="EventAggregatorEvents\SaveDataModelBeforeSaveFileIsCreatedEvent.cs" />
+    <Compile Include="EventAggregatorEvents\SaveEvent.cs" />
+    <Compile Include="EventAggregatorEvents\SaveEventResponse.cs" />
     <Compile Include="EventAggregatorEvents\UpdateAllEvent.cs" />
     <Compile Include="EventAggregatorEvents\UpdateAllResponse.cs" />
     <Compile Include="EventAggregatorEvents\UpdateEvent.cs" />
