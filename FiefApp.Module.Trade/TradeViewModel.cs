@@ -21,76 +21,71 @@ namespace FiefApp.Module.Trade
         private readonly ITradeService _tradeService;
         private readonly IEventAggregator _eventAggregator;
         private readonly ISupplyService _supplyService;
-        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        private List<UpdateAllEventParameters> _awaitAllModulesList = new List<UpdateAllEventParameters>()
         {
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Army",
-                Completed = true
+                Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Boatbuilding",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Buildings",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Employees",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Expenses",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Income",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Information",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Manor",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Mines",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Port",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Stewards",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Subsidiary",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Trade",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Weather",
                 Completed = false
             }
         };
@@ -114,17 +109,36 @@ namespace FiefApp.Module.Trade
             SendMerchantUIEventHandler = new CustomDelegateCommand(ExecuteSendMerchantUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
-            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
-            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
-            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
-            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
-            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleUpdateAllEventResponses);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAllAndRespond);
         }
 
-        #region Event Handlers
+        #region EventAggregator Events
 
-        private void HandleEndOfYearComplete()
+        private void HandleUpdateAllEventResponses(UpdateAllEventParameters param)
         {
+            if (param.Publisher == "Trade"
+                && _awaitAllModulesList != null)
+            {
+                for (int x = 0; x < _awaitAllModulesList.Count; x++)
+                {
+                    if (_awaitAllModulesList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitAllModulesList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitAllModulesList.All(o => o.Completed))
+                {
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateAllAndRespond(string str)
+        {
+            SaveData(Index);
+
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -132,70 +146,12 @@ namespace FiefApp.Module.Trade
                 GetInformationSetDataModel(x);
                 SaveData(x);
             }
-        }
-
-        private void HandleUpdateEvent(UpdateEventParameters param)
-        {
-            if (param.Publisher == "Trade"
-                && _awaitResponsList != null)
-            {
-                for (int x = 0; x < _awaitResponsList.Count; x++)
-                {
-                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
-                    {
-                        _awaitResponsList[x].Completed = param.Completed;
-                    }
-                }
-
-                if (_awaitResponsList.Any(o => o.Completed == false))
-                {
-                    Console.WriteLine("Wait!");
-                }
-                else
-                {
-                    for (int y = 0; y < _awaitResponsList.Count; y++)
-                    {
-                        _awaitResponsList[y].Completed = false;
-                    }
-                    CompleteLoadData();
-                }
-            }
-        }
-
-        private void UpdateResponse(string str)
-        {
-            if (str != "Trade")
-            {
-                UpdateFiefCollection();
-                for (int x = 1; x < FiefCollection.Count; x++)
-                {
-                    DataModel = _baseService.GetDataModel<TradeDataModel>(x);
-                    GetInformationSetDataModel(x);
-                    SaveData(x);
-                }
-
-                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
-                {
-                    ModuleName = "Trade",
-                    Completed = true,
-                    Publisher = str
-                });
-            }
-        }
-
-        private void UpdateAndRespond()
-        {
-            UpdateFiefCollection();
-            for (int x = 1; x < FiefCollection.Count; x++)
-            {
-                DataModel = _baseService.GetDataModel<TradeDataModel>(x);
-                SaveData(x);
-            }
 
             _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
             {
                 ModuleName = "Trade",
-                Completed = true
+                Completed = true,
+                Publisher = str
             });
         }
 
@@ -203,11 +159,6 @@ namespace FiefApp.Module.Trade
         {
             Index = 1;
             CompleteLoadData();
-        }
-
-        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
-        {
-            SaveData();
         }
 
         #endregion

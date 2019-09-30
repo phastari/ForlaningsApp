@@ -19,76 +19,71 @@ namespace FiefApp.Module.Subsidiary
         private readonly IBaseService _baseService;
         private readonly ISubsidiaryService _subsidiaryService;
         private readonly IEventAggregator _eventAggregator;
-        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
+        private List<UpdateAllEventParameters> _awaitAllModulesList = new List<UpdateAllEventParameters>()
         {
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Army",
-                Completed = true
+                Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Boatbuilding",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Buildings",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Employees",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Expenses",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Income",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Information",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Manor",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Mines",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Port",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Stewards",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Subsidiary",
                 Completed = false
             },
-            new UpdateEventParameters()
+            new UpdateAllEventParameters()
             {
                 ModuleName = "Trade",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Weather",
                 Completed = false
             }
         };
@@ -113,114 +108,56 @@ namespace FiefApp.Module.Subsidiary
             EditSubsidiaryUIEventHandler = new CustomDelegateCommand(ExecuteEditSubsidiaryUIEventHandler, o => true);
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
-            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
-            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAndRespond);
-            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
-            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
-            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleUpdateAllEventResponses);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAllAndRespond);
         }
 
-        #region Event Handlers
+        #region EventAggregator Events
 
-        private void HandleEndOfYearComplete()
-        {
-            UpdateFiefCollection();
-            for (int x = 1; x < FiefCollection.Count; x++)
-            {
-                DataModel = _baseService.GetDataModel<SubsidiaryDataModel>(x);
-
-                for (int y = 0; y < DataModel.SubsidiaryCollection.Count; y++)
-                {
-                    DataModel.SubsidiaryCollection[y].Difficulty = _subsidiaryService.GetAndSetDifficulty(x,
-                        DataModel.SubsidiaryCollection[y].Spring,
-                        DataModel.SubsidiaryCollection[y].Summer,
-                        DataModel.SubsidiaryCollection[y].Fall,
-                        DataModel.SubsidiaryCollection[y].Winter);
-                }
-                SaveData(x);
-            }
-        }
-
-        private void HandleUpdateEvent(UpdateEventParameters param)
+        private void HandleUpdateAllEventResponses(UpdateAllEventParameters param)
         {
             if (param.Publisher == "Subsidiary"
-                && _awaitResponsList != null)
+                && _awaitAllModulesList != null)
             {
-                for (int x = 0; x < _awaitResponsList.Count; x++)
+                for (int x = 0; x < _awaitAllModulesList.Count; x++)
                 {
-                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
+                    if (_awaitAllModulesList[x].ModuleName == param.ModuleName)
                     {
-                        _awaitResponsList[x].Completed = param.Completed;
+                        _awaitAllModulesList[x].Completed = param.Completed;
                     }
                 }
 
-                if (_awaitResponsList.Any(o => o.Completed == false))
+                if (_awaitAllModulesList.All(o => o.Completed))
                 {
-                    Console.WriteLine("Wait!");
-                }
-                else
-                {
-                    for (int y = 0; y < _awaitResponsList.Count; y++)
-                    {
-                        _awaitResponsList[y].Completed = false;
-                    }
                     CompleteLoadData();
                 }
             }
         }
 
-        private void UpdateResponse(string str)
+        private void UpdateAllAndRespond(string str)
         {
-            if (str != "Subsidiary")
-            {
-                UpdateFiefCollection();
-                for (int x = 1; x < FiefCollection.Count; x++)
-                {
-                    DataModel = _baseService.GetDataModel<SubsidiaryDataModel>(x);
+            SaveData(Index);
 
-                    for (int y = 0; y < DataModel.SubsidiaryCollection.Count; y++)
-                    {
-                        DataModel.SubsidiaryCollection[y].Difficulty = _subsidiaryService.GetAndSetDifficulty(x,
-                            DataModel.SubsidiaryCollection[y].Spring,
-                            DataModel.SubsidiaryCollection[y].Summer,
-                            DataModel.SubsidiaryCollection[y].Fall,
-                            DataModel.SubsidiaryCollection[y].Winter);
-                    }
-                    SaveData(x);
-                }
-
-                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
-                {
-                    ModuleName = "Subsidiary",
-                    Completed = true,
-                    Publisher = str
-                });
-            }
-        }
-
-        private void UpdateAndRespond()
-        {
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<SubsidiaryDataModel>(x);
-
-                for (int y = 0; y < DataModel.SubsidiaryCollection.Count; y++)
-                {
-                    DataModel.SubsidiaryCollection[y].Difficulty = _subsidiaryService.GetAndSetDifficulty(x,
-                        DataModel.SubsidiaryCollection[y].Spring,
-                        DataModel.SubsidiaryCollection[y].Summer,
-                        DataModel.SubsidiaryCollection[y].Fall,
-                        DataModel.SubsidiaryCollection[y].Winter);
-                }
+                GetInformationSetDataModel(x);
                 SaveData(x);
             }
 
             _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
             {
                 ModuleName = "Subsidiary",
-                Completed = true
+                Completed = true,
+                Publisher = str
             });
+        }
+
+        private void ExecuteNewFiefLoadedEvent()
+        {
+            Index = 1;
+            CompleteLoadData();
         }
 
         #endregion
@@ -535,23 +472,9 @@ namespace FiefApp.Module.Subsidiary
                 DataModel.ConstructingCollection[x].StewardsCollection = DataModel.StewardsCollection;
             }
 
-            for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
-            {
-                DataModel.SubsidiaryCollection[x].StewardsCollection = DataModel.StewardsCollection;
-                DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(Index,
-                    DataModel.SubsidiaryCollection[x].Spring,
-                    DataModel.SubsidiaryCollection[x].Summer,
-                    DataModel.SubsidiaryCollection[x].Fall,
-                    DataModel.SubsidiaryCollection[x].Winter);
-            }
+            GetInformationSetDataModel(Index);
 
             UpdateFiefCollection();
-        }
-
-        private void ExecuteNewFiefLoadedEvent()
-        {
-            Index = 1;
-            CompleteLoadData();
         }
 
         #endregion
@@ -577,9 +500,43 @@ namespace FiefApp.Module.Subsidiary
             }
         }
 
-        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
+        private void GetInformationSetDataModel(int index = -1)
         {
-            SaveData();
+            UpdateStewardsCollectionInCollections();
+            if (index == -1)
+            {
+                SetDifficultyInSubsidiaries(Index);
+            }
+            else
+            {
+                SetDifficultyInSubsidiaries(index);
+            }
+        }
+
+        private void SetDifficultyInSubsidiaries(int index = -1)
+        {
+            if (index == -1)
+            {
+                for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                {
+                    DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(Index,
+                        DataModel.SubsidiaryCollection[x].Spring,
+                        DataModel.SubsidiaryCollection[x].Summer,
+                        DataModel.SubsidiaryCollection[x].Fall,
+                        DataModel.SubsidiaryCollection[x].Winter);
+                }
+            }
+            else
+            {
+                for (int x = 0; x < DataModel.SubsidiaryCollection.Count; x++)
+                {
+                    DataModel.SubsidiaryCollection[x].Difficulty = _subsidiaryService.GetAndSetDifficulty(index,
+                        DataModel.SubsidiaryCollection[x].Spring,
+                        DataModel.SubsidiaryCollection[x].Summer,
+                        DataModel.SubsidiaryCollection[x].Fall,
+                        DataModel.SubsidiaryCollection[x].Winter);
+                }
+            }
         }
 
         #endregion

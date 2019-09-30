@@ -38,6 +38,12 @@
                 BorderThickness="0.5, 0, 0.5, 0.5"
                 IsTabStop="False"/>
 
+        <CheckBox
+            Grid.Column="0"
+            Grid.Row="0"
+            Visibility="Collapsed"
+            IsChecked="{Binding Path=Checker, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
         <Label
                 Grid.Column="1"
                 Grid.Row="0"

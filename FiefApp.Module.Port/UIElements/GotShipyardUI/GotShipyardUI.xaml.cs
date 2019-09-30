@@ -48,8 +48,34 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
                 "ShipyardModel",
                 typeof(ShipyardModel),
                 typeof(GotShipyardUI),
-                new PropertyMetadata(null)
+                new FrameworkPropertyMetadata(
+                    null,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    new PropertyChangedCallback(RaiseUpdate))
             );
+
+        private static void RaiseUpdate(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs args)
+        {
+            if (d is GotShipyardUI c)
+                c.ExecuteUpdate();
+        }
+
+        private void ExecuteUpdate()
+        {
+            if (ShipyardModel != null)
+            {
+                SetSize();
+
+                if (ShipyardModel.StewardId > -1)
+                {
+                    SelectedIndex = ShipyardModel.StewardsCollection.IndexOf(ShipyardModel.StewardsCollection.FirstOrDefault(o => o.Id == ShipyardModel.StewardId));
+                }
+
+                ShipyardModel.PropertyChanged += ShipyardModelPropertyChanged;
+            }
+        }
 
         #endregion
 
@@ -78,6 +104,7 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
         }
 
         private bool _loaded = false;
+        private int _check = 0;
 
         #endregion
 
@@ -124,7 +151,43 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
                 case "Income":
 
                     break;
+
+                case "Size":
+                    SetSize();
+                    break;
+
+                case "StewardId":
+                    if (ShipyardModel.StewardId > -1)
+                    {
+                        SelectedIndex = ShipyardModel.StewardsCollection.IndexOf(ShipyardModel.StewardsCollection.FirstOrDefault(o => o.Id == ShipyardModel.StewardId));
+                    }
+                    break;
+
+                case "IsBeingUpgraded":
+                    if (_check == 0)
+                    {
+                        _check++;
+                        if (ShipyardModel.IsBeingUpgraded
+                            && _loaded
+                            && !ShipyardModel.Upgrading)
+                        {
+                            GotShipyardUIEventArgs newEventArgs =
+                                new GotShipyardUIEventArgs(
+                                    GotShipyardUIRoutedEvent,
+                                    "Upgrading"
+                                );
+
+                            RaiseEvent(newEventArgs);
+                        }
+                    }
+                    else
+                    {
+                        _check = 0;
+                    }
+                    
+                    break;
             }
+            NotifyPropertyChanged();
         }
 
         #endregion
@@ -182,33 +245,36 @@ namespace FiefApp.Module.Port.UIElements.GotShipyardUI
 
         private void SetSize()
         {
-            if (ShipyardModel.Size == "0")
+            if (ShipyardModel != null)
             {
-                Size = "Byhamn";
-            }
-            else if (ShipyardModel.Size == "1")
-            {
-                Size = "Fiskehamn";
-            }
-            else if (ShipyardModel.Size == "2")
-            {
-                Size = "Liten hamn";
-            }
-            else if (ShipyardModel.Size == "3")
-            {
-                Size = "Hamn";
-            }
-            else if (ShipyardModel.Size == "4")
-            {
-                Size = "Handelshamn";
-            }
-            else if (ShipyardModel.Size == "5")
-            {
-                Size = "Stor handelshamn";
-            }
-            else if (ShipyardModel.Size == "6")
-            {
-                Size = "Enorm handelshamn";
+                if (ShipyardModel.Size == "0")
+                {
+                    Size = "Byhamn";
+                }
+                else if (ShipyardModel.Size == "1")
+                {
+                    Size = "Fiskehamn";
+                }
+                else if (ShipyardModel.Size == "2")
+                {
+                    Size = "Liten hamn";
+                }
+                else if (ShipyardModel.Size == "3")
+                {
+                    Size = "Hamn";
+                }
+                else if (ShipyardModel.Size == "4")
+                {
+                    Size = "Handelshamn";
+                }
+                else if (ShipyardModel.Size == "5")
+                {
+                    Size = "Stor handelshamn";
+                }
+                else if (ShipyardModel.Size == "6")
+                {
+                    Size = "Enorm handelshamn";
+                }
             }
         }
 

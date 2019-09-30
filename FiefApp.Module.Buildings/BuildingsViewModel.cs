@@ -117,10 +117,12 @@ namespace FiefApp.Module.Buildings
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<SaveEvent>().Subscribe(ExecuteSaveEventResponse);
         }
 
-        private void HandleEndOfYearComplete()
+        private void ExecuteSaveEventResponse()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -128,6 +130,27 @@ namespace FiefApp.Module.Buildings
                 CheckBuildersCollection();
                 SaveData(x);
             }
+
+            _eventAggregator.GetEvent<SaveEventResponse>().Publish(new SaveEventParameters()
+            {
+                Completed = true,
+                ModuleName = "Buildings"
+            });
+
+            DataModel = _baseService.GetDataModel<BuildingsDataModel>(Index);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            DataModel = null;
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<BuildingsDataModel>(x);
+                CheckBuildersCollection();
+                SaveData(x);
+            }
+            DataModel = _baseService.GetDataModel<BuildingsDataModel>(Index);
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
@@ -160,6 +183,7 @@ namespace FiefApp.Module.Buildings
 
         private void UpdateResponse(string str)
         {
+            SaveData(Index);
             if (str != "Buildings")
             {
                 UpdateFiefCollection();
@@ -205,6 +229,7 @@ namespace FiefApp.Module.Buildings
 
         private void UpdateAndRespond()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {

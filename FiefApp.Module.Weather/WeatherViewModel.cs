@@ -87,79 +87,6 @@ namespace FiefApp.Module.Weather
                 Completed = false
             }
         };
-        private List<UpdateEventParameters> _awaitResponsList = new List<UpdateEventParameters>()
-        {
-            new UpdateEventParameters()
-            {
-                ModuleName = "Army",
-                Completed = true
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Boatbuilding",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Buildings",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Employees",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Expenses",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Income",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Information",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Manor",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Mines",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Port",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Stewards",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Subsidiary",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Trade",
-                Completed = false
-            },
-            new UpdateEventParameters()
-            {
-                ModuleName = "Weather",
-                Completed = false
-            }
-        };
 
         public WeatherViewModel(
             IBaseService baseService,
@@ -176,17 +103,38 @@ namespace FiefApp.Module.Weather
             TabName = "Väder/Dagsverk";
 
             _eventAggregator.GetEvent<NewFiefLoadedEvent>().Subscribe(ExecuteNewFiefLoadedEvent);
-            _eventAggregator.GetEvent<SaveDataModelBeforeSaveFileIsCreatedEvent>().Subscribe(ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent);
-            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleResponse);
-            _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
-            _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
-            _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Subscribe(HandleUpdateAllEventResponses);
+            _eventAggregator.GetEvent<UpdateAllEvent>().Subscribe(UpdateAllAndRespond);
 
             EndOfYearCommand = new DelegateCommand(ExecuteEndOfYearCommand);
         }
 
-        private void HandleEndOfYearComplete()
+        #region EventAggregator Events
+
+        private void HandleUpdateAllEventResponses(UpdateAllEventParameters param)
         {
+            if (param.Publisher == "Weather"
+                && _awaitAllModulesList != null)
+            {
+                for (int x = 0; x < _awaitAllModulesList.Count; x++)
+                {
+                    if (_awaitAllModulesList[x].ModuleName == param.ModuleName)
+                    {
+                        _awaitAllModulesList[x].Completed = param.Completed;
+                    }
+                }
+
+                if (_awaitAllModulesList.All(o => o.Completed))
+                {
+                    CompleteLoadData();
+                }
+            }
+        }
+
+        private void UpdateAllAndRespond(string str)
+        {
+            SaveData(Index);
+
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -194,56 +142,16 @@ namespace FiefApp.Module.Weather
                 GetInformationSetDataModel(x);
                 SaveData(x);
             }
-        }
 
-        private void HandleUpdateEvent(UpdateEventParameters param)
-        {
-            if (param.Publisher == "Weather"
-                && _awaitResponsList != null)
+            _eventAggregator.GetEvent<UpdateAllResponseEvent>().Publish(new UpdateAllEventParameters()
             {
-                for (int x = 0; x < _awaitResponsList.Count; x++)
-                {
-                    if (_awaitResponsList[x].ModuleName == param.ModuleName)
-                    {
-                        _awaitResponsList[x].Completed = param.Completed;
-                    }
-                }
-
-                if (_awaitResponsList.Any(o => o.Completed == false))
-                {
-                    Console.WriteLine("Wait!");
-                }
-                else
-                {
-                    for (int y = 0; y < _awaitResponsList.Count; y++)
-                    {
-                        _awaitResponsList[y].Completed = false;
-                    }
-                    CompleteLoadData();
-                }
-            }
+                ModuleName = "Weather",
+                Completed = true,
+                Publisher = str
+            });
         }
 
-        private void UpdateResponse(string str)
-        {
-            if (str != "Weather")
-            {
-                UpdateFiefCollection();
-                for (int x = 1; x < FiefCollection.Count; x++)
-                {
-                    DataModel = _baseService.GetDataModel<WeatherDataModel>(x);
-                    GetInformationSetDataModel(x);
-                    SaveData(x);
-                }
-
-                _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
-                {
-                    ModuleName = "Weather",
-                    Completed = true,
-                    Publisher = str
-                });
-            }
-        }
+        #endregion
 
         private void CompleteLoadData()
         {
@@ -272,7 +180,6 @@ namespace FiefApp.Module.Weather
                     _executing = true;
                     SetAwaitAllModules();
                     _eventAggregator.GetEvent<UpdateAllEvent>().Publish();
-                    //_eventAggregator.GetEvent<EndOfYearEvent>().Publish();
                 }
                 else
                 {
@@ -323,32 +230,32 @@ namespace FiefApp.Module.Weather
             switch (e.PropertyName)
             {
                 case "Tariffs":
-                {
-                    UpdateForecast();
-                    CalculateHappiness();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        CalculateHappiness();
+                        break;
+                    }
 
                 case "TaxSerfs":
-                {
-                    UpdateForecast();
-                    CalculateHappiness();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        CalculateHappiness();
+                        break;
+                    }
 
                 case "TaxFarmers":
-                {
-                    UpdateForecast();
-                    CalculateHappiness();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        CalculateHappiness();
+                        break;
+                    }
 
                 case "TaxBurgess":
-                {
-                    UpdateForecast();
-                    CalculateHappiness();
-                    break;
-                }
+                    {
+                        UpdateForecast();
+                        CalculateHappiness();
+                        break;
+                    }
 
                 case "HappinessTotal":
                     UpdateForecast();
@@ -430,11 +337,6 @@ namespace FiefApp.Module.Weather
                 GetManorAcresSetManorDaysWork(index);
                 GetMaxFellingLandClearing(index);
             }
-        }
-
-        private void ExecuteSaveDataModelBeforeSaveFileIsCreatedEvent()
-        {
-            SaveData();
         }
 
         #region Methods : GetInformationSetDataModel

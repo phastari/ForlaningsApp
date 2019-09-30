@@ -349,8 +349,8 @@ namespace FiefApp.Module.Subsidiary.UIElements.SubsidiaryUI
             if (SelectedIndex > 0)
             {
                 Silver = Convert.ToInt32(Math.Floor(
-                    (Quality * IncomeFactor * IncomeSilver * 360
-                     + Quality * IncomeFactor * IncomeSilver * 360 / 100 * (DevelopmentLevel - 1) * 5)
+                    (Quality * IncomeFactor * IncomeSilver * 2
+                     + Quality * IncomeFactor * IncomeSilver * 2/ 100 * (DevelopmentLevel - 1) * 5)
                     * ((decimal)DaysWorkThisYear / DaysWorkLeft)));
 
                 Base = Convert.ToInt32(Math.Floor(

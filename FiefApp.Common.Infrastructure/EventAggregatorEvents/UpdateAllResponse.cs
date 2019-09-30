@@ -8,5 +8,6 @@ namespace FiefApp.Common.Infrastructure.EventAggregatorEvents
     {
         public bool Completed { get; set; }
         public string ModuleName { get; set; }
+        public string Publisher { get; set; }
     }
 }

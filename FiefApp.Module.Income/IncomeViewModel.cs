@@ -112,10 +112,12 @@ namespace FiefApp.Module.Income
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<SaveEvent>().Subscribe(ExecuteSaveEventResponse);
         }
 
-        private void HandleEndOfYearComplete()
+        private void ExecuteSaveEventResponse()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -124,6 +126,28 @@ namespace FiefApp.Module.Income
                 DataModel.UpdateTotals();
                 SaveData(x);
             }
+
+            _eventAggregator.GetEvent<SaveEventResponse>().Publish(new SaveEventParameters()
+            {
+                Completed = true,
+                ModuleName = "Income"
+            });
+
+            DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            DataModel = null;
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<IncomeDataModel>(x);
+                DataModel.IncomesCollection = new ObservableCollection<IncomeModel>(_incomeService.SetIncomes(x, DataModel.IncomesCollection));
+                DataModel.UpdateTotals();
+                SaveData(x);
+            }
+            DataModel = _baseService.GetDataModel<IncomeDataModel>(Index);
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
@@ -156,6 +180,7 @@ namespace FiefApp.Module.Income
 
         private void UpdateResponse(string str)
         {
+            SaveData(Index);
             if (str != "Income")
             {
                 UpdateFiefCollection();
@@ -200,6 +225,7 @@ namespace FiefApp.Module.Income
 
         private void UpdateAndRespond()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {

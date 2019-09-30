@@ -229,12 +229,12 @@ namespace FiefApp.Common.Infrastructure.Services
 
         public bool Withdraw(int silver, int bas, int lyx, int iron, int stone, int wood)
         {
-            if (silver <= _fiefService.SupplyDataModel.SupplySilver
-                && bas <= _fiefService.SupplyDataModel.SupplyBase
-                && lyx <= _fiefService.SupplyDataModel.SupplyLuxury
-                && iron <= _fiefService.SupplyDataModel.SupplyIron
-                && stone <= _fiefService.SupplyDataModel.SupplyStone
-                && wood <= _fiefService.SupplyDataModel.SupplyWood)
+            if ((silver <= _fiefService.SupplyDataModel.SupplySilver || silver == 0)
+                && (bas <= _fiefService.SupplyDataModel.SupplyBase || bas == 0)
+                && (lyx <= _fiefService.SupplyDataModel.SupplyLuxury || lyx == 0)
+                && (iron <= _fiefService.SupplyDataModel.SupplyIron || iron == 0)
+                && (stone <= _fiefService.SupplyDataModel.SupplyStone || stone == 0)
+                && (wood <= _fiefService.SupplyDataModel.SupplyWood || wood == 0))
             {
                 _fiefService.SupplyDataModel.SupplySilver -= silver;
                 _fiefService.SupplyDataModel.SupplyBase -= bas;

@@ -672,6 +672,7 @@ namespace FiefApp.Module.EndOfYear
                             {
                                 bool found = false;
                                 str += $" anlades under året!{Environment.NewLine}";
+                                DataModel.IncomeListFief[x - 1].ConstructingCollection[i].DaysWorkThisYear = 0;
                                 _fiefService.SubsidiaryList[x].SubsidiaryCollection.Add(DataModel.IncomeListFief[x - 1].ConstructingCollection[i]);
                                 for (int p = 1; p < _fiefService.SubsidiaryList.Count; p++)
                                 {
@@ -804,9 +805,11 @@ namespace FiefApp.Module.EndOfYear
                                     DockMedium = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
                                     DockLarge = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
                                     CrimeRate = _settingsService.ShipyardTypeSettingsList[0].CrimeRate,
-                                    DaysWorkNeeded = _settingsService.ShipyardTypeSettingsList[0].DaysWork,
-                                    DaysWorkThisYear = 0,
-                                    Guards = 0
+                                    DaysWorkNeeded = _settingsService.ShipyardTypeSettingsList[1].DaysWork,
+                                    BuildCostBase = _settingsService.ShipyardTypeSettingsList[1].BuildCostBase,
+                                    BuildCostIron = _settingsService.ShipyardTypeSettingsList[1].BuildCostIron,
+                                    BuildCostStone = _settingsService.ShipyardTypeSettingsList[1].BuildCostStone,
+                                    BuildCostWood = _settingsService.ShipyardTypeSettingsList[1].BuildCostWood
                                 };
                             }
                             else
@@ -849,7 +852,8 @@ namespace FiefApp.Module.EndOfYear
                                 }
                             }
 
-                            if (DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear == DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkNeeded)
+                            if (DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear == DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkNeeded
+                                && DataModel.IncomeListFief[x - 1].Shipyard.StewardId > 0)
                             {
                                 str += $"Hamnen har upgraderats!{Environment.NewLine}";
                                 int size = Convert.ToInt32(DataModel.IncomeListFief[x - 1].Shipyard.Size) + 1;
@@ -858,7 +862,7 @@ namespace FiefApp.Module.EndOfYear
                                 _fiefService.PortsList[x].UpgradingShipyard = false;
                                 _fiefService.PortsList[x].Shipyard = new ShipyardModel()
                                 {
-                                    Id = _baseService.GetNewIndustryId(),
+                                    Id = DataModel.IncomeListFief[x - 1].Shipyard.Id,
                                     Size = _settingsService.ShipyardTypeSettingsList[size].DockSize.ToString(),
                                     OperationBaseCost = _settingsService.ShipyardTypeSettingsList[size].OperationBaseCostModifier,
                                     OperationBaseIncome = _settingsService.ShipyardTypeSettingsList[size].OperationBaseIncomeModifier,
@@ -866,18 +870,30 @@ namespace FiefApp.Module.EndOfYear
                                     DockMedium = _settingsService.ShipyardTypeSettingsList[size].DockMedium,
                                     DockLarge = _settingsService.ShipyardTypeSettingsList[size].DockLarge,
                                     CrimeRate = _settingsService.ShipyardTypeSettingsList[size].CrimeRate,
-                                    DaysWorkNeeded = _settingsService.ShipyardTypeSettingsList[size].DaysWork,
+                                    DaysWorkNeeded = _settingsService.ShipyardTypeSettingsList[size + 1].DaysWork,
                                     DaysWorkThisYear = 0,
                                     Guards = DataModel.IncomeListFief[x - 1].Shipyard.Guards,
-                                    AvailableGuards = DataModel.IncomeListFief[x - 1].Shipyard.AvailableGuards
+                                    AvailableGuards = DataModel.IncomeListFief[x - 1].Shipyard.AvailableGuards,
+                                    Bailiffs = DataModel.IncomeListFief[x - 1].Shipyard.Bailiffs,
+                                    Captains = DataModel.IncomeListFief[x - 1].Shipyard.Captains,
+                                    BuildCostBase = _settingsService.ShipyardTypeSettingsList[size + 1].BuildCostBase,
+                                    BuildCostIron = _settingsService.ShipyardTypeSettingsList[size + 1].BuildCostIron,
+                                    BuildCostStone = _settingsService.ShipyardTypeSettingsList[size + 1].BuildCostStone,
+                                    BuildCostWood = _settingsService.ShipyardTypeSettingsList[size + 1].BuildCostWood,
+                                    Steward = DataModel.IncomeListFief[x - 1].Shipyard.Steward,
+                                    StewardId = DataModel.IncomeListFief[x - 1].Shipyard.StewardId
                                 };
                             }
-                            else
+                            else if (DataModel.IncomeListFief[x - 1].Shipyard.StewardId > 0)
                             {
                                 str += $"{DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear.ToString().PadLeft(5)} har lagds på att upgradera hamnen.{Environment.NewLine}";
                                 str +=
                                     $"{(DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkNeeded - DataModel.IncomeListFief[x - 1].Shipyard.DaysWorkThisYear).ToString().PadLeft(5)} dagsverk behövs för att färdigställa upgraderingen.{Environment.NewLine}";
                                 _fiefService.PortsList[x].Shipyard.DaysWorkNeeded -= _fiefService.PortsList[x].Shipyard.DaysWorkThisYear;
+                            }
+                            else
+                            {
+                                str += $"Ingen förvaltare arbetade med utvecklingen av hamnen.{Environment.NewLine}";
                             }
                         }
                         str += Environment.NewLine;
@@ -1556,7 +1572,7 @@ namespace FiefApp.Module.EndOfYear
                 if (_fiefService.ManorList[x].ResidentsList.Count > 0
                     && _fiefService.ManorList[x].ResidentsList != null)
                 {
-                    for (int i = _fiefService.ManorList[x].ResidentsList.Count; i > 0; i--)
+                    for (int i = _fiefService.ManorList[x].ResidentsList.Count - 1; i >= 0; i--)
                     {
                         int chance = Convert.ToInt32(Math.Round(Math.Pow(_fiefService.ManorList[x].ResidentsList[i].Age, 1.97D) / 85 - 6, MidpointRounding.ToEven));
                         if (_baseService.RollDie(1, 101) + chance > 100)
@@ -1785,6 +1801,10 @@ namespace FiefApp.Module.EndOfYear
                                     wood += DataModel.IncomeListFief[x - 1].TradeCollection[i].EndOfYearWood;
                                 }
                             }
+
+                            _fiefService.TradeList[x].MerchantsCollection.RemoveAt(
+                                _fiefService.TradeList[x].MerchantsCollection.IndexOf(
+                                    _fiefService.TradeList[x].MerchantsCollection.FirstOrDefault(o => o.Id == DataModel.IncomeListFief[x - 1].TradeCollection[i].Id)));
                         }
                         else
                         {
@@ -1884,6 +1904,25 @@ namespace FiefApp.Module.EndOfYear
             _supplyService.Deposit(silver, bas, lyx, iron, stone, wood);
 
             _fiefService.Year++;
+            for (int x = 1; x < _fiefService.WeatherList.Count; x++)
+            {
+                _fiefService.WeatherList[x].SpringRoll = null;
+                _fiefService.WeatherList[x].SpringRollMod = 0;
+                _fiefService.WeatherList[x].SpringShow = "";
+
+                _fiefService.WeatherList[x].SummerRoll = null;
+                _fiefService.WeatherList[x].SummerRollMod = 0;
+                _fiefService.WeatherList[x].SummerShow = "";
+
+                _fiefService.WeatherList[x].FallRoll = null;
+                _fiefService.WeatherList[x].FallRollMod = 0;
+                _fiefService.WeatherList[x].FallShow = "";
+
+                _fiefService.WeatherList[x].WinterRoll = null;
+                _fiefService.WeatherList[x].WinterRollMod = 0;
+                _fiefService.WeatherList[x].WinterShow = "";
+            }
+
             _eventAggregator.GetEvent<EndOfYearEvent>().Unsubscribe(LoadData);
             _eventAggregator.GetEvent<EndOfYearEvent>().Publish();
 

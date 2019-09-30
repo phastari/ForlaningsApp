@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using FiefApp.Common.Infrastructure;
@@ -111,8 +112,6 @@ namespace FiefApp.Module.Port
             _eventAggregator = eventAggregator;
             _supplyService = supplyService;
 
-            ConstructShipyardCommand = new DelegateCommand(ExecuteConstructShipyardCommand);
-
             AddCaptain = new DelegateCommand(ExecuteAddCaptain);
             CaptainUIEventHandler = new CustomDelegateCommand(ExecuteCaptainUIEventHandler, o => true);
             BoatUIEventHandler = new CustomDelegateCommand(ExecuteBoatUIEventHandler, o => true);
@@ -128,16 +127,40 @@ namespace FiefApp.Module.Port
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<FishingBoatsAdded>().Subscribe(HandleFishingBoatsAdded);
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<SaveEvent>().Subscribe(ExecuteSaveEventResponse);
         }
 
-        private void HandleEndOfYearComplete()
+        #region Event Handlers
+
+        private void ExecuteSaveEventResponse()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
                 DataModel = _baseService.GetDataModel<PortDataModel>(x);
                 SaveData(x);
             }
+
+            _eventAggregator.GetEvent<SaveEventResponse>().Publish(new SaveEventParameters()
+            {
+                Completed = true,
+                ModuleName = "Port"
+            });
+
+            DataModel = _baseService.GetDataModel<PortDataModel>(Index);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            DataModel = null;
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<PortDataModel>(x);
+                SaveData(x);
+            }
+            DataModel = _baseService.GetDataModel<PortDataModel>(Index);
         }
 
         private void HandleFishingBoatsAdded(int index)
@@ -176,14 +199,18 @@ namespace FiefApp.Module.Port
 
         private void UpdateResponse(string str)
         {
+            SaveData(Index);
             if (str != "Port")
             {
+                SaveData(Index);
                 UpdateFiefCollection();
                 for (int x = 1; x < FiefCollection.Count; x++)
                 {
                     DataModel = _baseService.GetDataModel<PortDataModel>(x);
                     SaveData(x);
                 }
+                DataModel = null;
+                DataModel = _baseService.GetDataModel<PortDataModel>(Index);
 
                 _eventAggregator.GetEvent<UpdateResponseEvent>().Publish(new UpdateEventParameters()
                 {
@@ -194,27 +221,9 @@ namespace FiefApp.Module.Port
             }
         }
 
-        private void CompleteLoadData()
-        {
-            DataModel = Index
-                        == 0 ? _portService.GetAllPortDataModel()
-                : _baseService.GetDataModel<PortDataModel>(Index);
-
-            if (!DataModel.BuildingShipyard || !DataModel.GotShipyard)
-            {
-                DataModel.CanBuildShipyard = _portService.CheckShipyardPossibility(Index);
-            }
-            else
-            {
-                DataModel.CanBuildShipyard = false;
-            }
-
-            GetInformationSetDataModel();
-            UpdateFiefCollection();
-        }
-
         private void UpdateAndRespond()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -229,36 +238,8 @@ namespace FiefApp.Module.Port
             });
         }
 
-        #region DelegateCommand : ConstructShipyardCommand (Används inte)
-
-        public DelegateCommand ConstructShipyardCommand { get; set; }
-        private void ExecuteConstructShipyardCommand()
-        {
-            // TA BETALT FÖR BYGGET!
-
-            DataModel.BuildingShipyard = true;
-            DataModel.CanBuildShipyard = false;
-            DataModel.Shipyard = new ShipyardModel()
-            {
-                Shipyard = "",
-                Size = _settingsService.ShipyardTypeSettingsList[0].DockType,
-                UN = 1,
-                OperationBaseCost = _settingsService.ShipyardTypeSettingsList[0].OperationBaseCostModifier,
-                OperationBaseIncome = _settingsService.ShipyardTypeSettingsList[0].OperationBaseIncomeModifier,
-                IsBeingUpgraded = false,
-                DockSmall = _settingsService.ShipyardTypeSettingsList[0].DockSmall,
-                DockSmallFree = _settingsService.ShipyardTypeSettingsList[0].DockSmall,
-                DockMedium = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
-                DockMediumFree = _settingsService.ShipyardTypeSettingsList[0].DockMedium,
-                DockLarge = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
-                DockLargeFree = _settingsService.ShipyardTypeSettingsList[0].DockLarge,
-                Taxes = 20
-            };
-
-            SaveData();
-        }
-
         #endregion
+
         #region DelegateCommand : AddCaptain
 
         public DelegateCommand AddCaptain { get; set; }
@@ -487,6 +468,21 @@ namespace FiefApp.Module.Port
                     _baseService.ChangeSteward(e.Model.StewardId, e.Model.Id, "Port");
                     break;
                 }
+
+                case "Upgrading":
+                {
+                    if (_supplyService.Withdraw(0, DataModel.Shipyard.BuildCostBase, 0, DataModel.Shipyard.BuildCostIron, DataModel.Shipyard.BuildCostStone, DataModel.Shipyard.BuildCostWood))
+                    {
+                        DataModel.UpgradingShipyard = true;
+                        DataModel.Shipyard.Upgrading = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du har inte råd att upgradera hamnen!");
+                        DataModel.Shipyard.IsBeingUpgraded = false;
+                    }
+                    break;
+                }
             }
         }
 
@@ -555,6 +551,23 @@ namespace FiefApp.Module.Port
             {
                 _baseService.SetDataModel(DataModel, index == -1 ? Index : index);
             }
+        }
+
+        private void CompleteLoadData()
+        {
+            DataModel = Index
+                        == 0 ? _portService.GetAllPortDataModel()
+                : _baseService.GetDataModel<PortDataModel>(Index);
+
+            if (!DataModel.BuildingShipyard || !DataModel.GotShipyard)
+            {
+                DataModel.CanBuildShipyard = _portService.CheckShipyardPossibility(Index);
+                DataModel.CheckShipyardStates();
+            }
+
+            GetInformationSetDataModel();
+
+            UpdateFiefCollection();
         }
 
         protected override void LoadData()

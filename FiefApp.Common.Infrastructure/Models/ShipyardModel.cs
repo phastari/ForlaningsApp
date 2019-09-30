@@ -181,6 +181,7 @@ namespace FiefApp.Common.Infrastructure.Models
             set
             {
                 _stewardId = value;
+                CalculateIncome();
                 NotifyPropertyChanged();
             }
         }
@@ -405,6 +406,50 @@ namespace FiefApp.Common.Infrastructure.Models
             }
         }
 
+        private int _buildCostBase = 75;
+        public int BuildCostBase
+        {
+            get => _buildCostBase;
+            set
+            {
+                _buildCostBase = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _buildCostIron;
+        public int BuildCostIron
+        {
+            get => _buildCostIron;
+            set
+            {
+                _buildCostIron = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _buildCostStone = 20;
+        public int BuildCostStone
+        {
+            get => _buildCostStone;
+            set
+            {
+                _buildCostStone = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _buildCostWood = 60;
+        public int BuildCostWood
+        {
+            get => _buildCostWood;
+            set
+            {
+                _buildCostWood = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private bool _canBeDeveloped = true;
         public bool CanBeDeveloped
         {
@@ -444,21 +489,63 @@ namespace FiefApp.Common.Infrastructure.Models
 
         private void CalculateIncome()
         {
-            decimal factor = Convert.ToDecimal(Math.Pow(0.9, Bailiffs + 1) / (Bailiffs + 1));
-            decimal factor2 = Guards * (((decimal)127 / (Guards + 1)) / (CrimeRate * CrimeRate + 1));
-
-            decimal baseIncome;
-
-            if (Upgrading)
+            double baseIncome = (double)OperationBaseIncome * 3D;
+            double bailiffMod = Math.Round(Bailiffs / (Bailiffs + 1.66), 6);
+            int guardCapacity = Captains * 6;
+            int effectiveGuards;
+            if (guardCapacity - Guards >= 0)
             {
-                baseIncome = (OperationBaseIncome * factor * factor2 * 0.67M + OperationBaseIncome / 100 * UN) / 4.75M;
+                effectiveGuards = Guards;
             }
             else
             {
-                baseIncome = (OperationBaseIncome * factor * factor2 + OperationBaseIncome / 100 * UN) / 4.75M;
+                effectiveGuards = guardCapacity;
             }
+            int lessEffectiveGuards = Guards - effectiveGuards;
+            int crimeRate = Crime - Convert.ToInt32(Math.Floor(Math.Pow(effectiveGuards + 1, 2)));
+            crimeRate -= lessEffectiveGuards * 2;
 
-            Income = Convert.ToInt32(Math.Floor(baseIncome + (Taxes - 20) * baseIncome / 100));
+            if (crimeRate < 0)
+            {
+                if (StewardId > 0)
+                {
+                    Income = Convert.ToInt32(Math.Floor(baseIncome * bailiffMod));
+                }
+                else
+                {
+                    Income = Convert.ToInt32(Math.Floor(baseIncome * bailiffMod * 0.89));
+                }
+            }
+            else
+            {
+                for (int i = crimeRate; i > 0; i--)
+                {
+                    bailiffMod -= 0.05;
+                }
+
+                if (bailiffMod > 0)
+                {
+                    if (StewardId > 0)
+                    {
+                        Income = Convert.ToInt32(Math.Floor(baseIncome * bailiffMod));
+                    }
+                    else
+                    {
+                        Income = Convert.ToInt32(Math.Floor(baseIncome * bailiffMod * 0.67));
+                    }
+                }
+                else
+                {
+                    if (StewardId > 0)
+                    {
+                        Income = Convert.ToInt32(Math.Floor(baseIncome * bailiffMod * 0.23));
+                    }
+                    else
+                    {
+                        Income = 0;
+                    }
+                }
+            }
         }
 
         private void UpdateOperationCost()

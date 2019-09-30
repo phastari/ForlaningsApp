@@ -62,7 +62,7 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                 "DaysWorkNeeded",
                 typeof(int),
                 typeof(BuildingShipyardUI),
-                new PropertyMetadata(0)
+                new PropertyMetadata(0, Update)
             );
 
         public int DaysWorkThisYear
@@ -76,7 +76,9 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                 "DaysWorkThisYear",
                 typeof(int),
                 typeof(BuildingShipyardUI),
-                new PropertyMetadata(0, RaiseDaysWorkThisYearChanged)
+                new FrameworkPropertyMetadata(
+                    0, 
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
             );
 
         public ObservableCollection<StewardModel> StewardsCollection
@@ -104,7 +106,7 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                 "StewardId",
                 typeof(int),
                 typeof(BuildingShipyardUI),
-                new PropertyMetadata(0)
+                new PropertyMetadata(0, Update)
             );
 
         #endregion
@@ -154,7 +156,29 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
                     index = x;
                 }
             }
-            Console.WriteLine($"DaysWorkThisYear = {DaysWorkThisYear}");
+            SelectedIndex = index;
+            _loaded = true;
+        }
+
+        private static void Update(
+            DependencyObject d, 
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BuildingShipyardUI c)
+                c.ExecuteUpdate();
+        }
+
+        private void ExecuteUpdate()
+        {
+            _loaded = false;
+            int index = -1;
+            for (int x = 0; x < StewardsCollection.Count; x++)
+            {
+                if (StewardsCollection[x].Id == StewardId)
+                {
+                    index = x;
+                }
+            }
             SelectedIndex = index;
             _loaded = true;
         }
@@ -169,8 +193,9 @@ namespace FiefApp.Module.Port.UIElements.BuildingShipyardUI
 
         private void ExecuteDaysWorkThisYearChanged()
         {
-            if (_loaded && SelectedIndex != -1)
+            if (_loaded && SelectedIndex > -1)
             {
+                Console.WriteLine($"DaysWorkThisYear: {DaysWorkThisYear}");
                 if (DaysWorkThisYear > DaysWorkNeeded)
                 {
                     DaysWorkThisYear = DaysWorkNeeded;

@@ -130,6 +130,7 @@ namespace FiefApp.Module.Boatbuilding
 
         private void ExecuteSaveEventResponse()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -151,6 +152,7 @@ namespace FiefApp.Module.Boatbuilding
 
         private void HandleEndOfYearComplete()
         {
+            DataModel = null;
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -158,6 +160,7 @@ namespace FiefApp.Module.Boatbuilding
                 SetDataModelInformation(x);
                 SaveData(x);
             }
+            DataModel = _baseService.GetDataModel<BoatbuildingDataModel>(Index);
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
@@ -190,6 +193,7 @@ namespace FiefApp.Module.Boatbuilding
 
         private void UpdateResponse(string str)
         {
+            SaveData(Index);
             if (str != "Boatbuilding")
             {
                 UpdateFiefCollection();
@@ -227,6 +231,7 @@ namespace FiefApp.Module.Boatbuilding
 
         private void UpdateAndRespond()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {

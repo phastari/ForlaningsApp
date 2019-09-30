@@ -2,5 +2,5 @@
 
 namespace FiefApp.Common.Infrastructure.EventAggregatorEvents
 {
-    public class UpdateAllEvent : PubSubEvent { }
+    public class UpdateAllEvent : PubSubEvent<string> { }
 }

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:fakeComboBox="clr-namespace:FiefApp.Common.Infrastructure.UIElements.FakeComboBox;assembly=FiefApp.Common.Infrastructure"
              xmlns:iTextBox="clr-namespace:FiefApp.Common.Infrastructure.Controls.iTextBox;assembly=FiefApp.Common.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="417" 
@@ -82,19 +81,12 @@
             VerticalContentAlignment="Center"
             Padding="14,0,0,0"/>
 
-        <Label
-            Content="Namn"
-            Grid.Column="1"
-            Grid.Row="2"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
-
         <TextBox
             Text="{Binding Path=ShipyardModel.Shipyard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="Hamnens namn"
             Grid.Column="3"
             Grid.ColumnSpan="5"
-            Grid.Row="2"
+            Grid.Row="0"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -104,7 +96,7 @@
         <Label
             Content="Storlek"
             Grid.Column="1"
-            Grid.Row="4"
+            Grid.Row="2"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -113,7 +105,7 @@
             Text="{Binding Path=Size}"
             Grid.Column="3"
             Grid.ColumnSpan="5"
-            Grid.Row="4"
+            Grid.Row="2"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxDisabled}"
@@ -124,7 +116,7 @@
         <Label
             Content="Förvaltare"
             Grid.Column="1"
-            Grid.Row="6"
+            Grid.Row="4"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -135,7 +127,7 @@
             DisplayMemberPath="PersonName"
             Grid.Column="3"
             Grid.ColumnSpan="5"
-            Grid.Row="6"
+            Grid.Row="4"
             Grid.ZIndex="2"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
@@ -151,7 +143,7 @@
             Content="Utvecklingsnivå(UN)"
             Grid.Column="1"
             Grid.ColumnSpan="5"
-            Grid.Row="8"
+            Grid.Row="6"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -159,7 +151,7 @@
         <TextBox
             Text="{Binding Path=ShipyardModel.UN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="7"
-            Grid.Row="8"
+            Grid.Row="6"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxTemplate}"
@@ -170,7 +162,7 @@
             Content="Driftskostnad i bas"
             Grid.Column="1"
             Grid.ColumnSpan="5"
-            Grid.Row="10"
+            Grid.Row="8"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -178,7 +170,7 @@
         <TextBox
             Text="{Binding Path=ShipyardModel.OperationCost}"
             Grid.Column="7"
-            Grid.Row="10"
+            Grid.Row="8"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxDisabled}"
@@ -189,7 +181,7 @@
             Content="Tull/Skatt (%)"
             Grid.Column="1"
             Grid.ColumnSpan="5"
-            Grid.Row="12"
+            Grid.Row="10"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -197,7 +189,7 @@
         <iTextBox:iTextBox
             Value="{Binding Path=ShipyardModel.Taxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="7"
-            Grid.Row="12"
+            Grid.Row="10"
             TextBoxReadOnly="{Binding Path=CantEdit}">
         </iTextBox:iTextBox>
 
@@ -205,7 +197,7 @@
             Content="Inkomst i bas"
             Grid.Column="1"
             Grid.ColumnSpan="5"
-            Grid.Row="14"
+            Grid.Row="12"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -213,46 +205,247 @@
         <TextBox
             Text="{Binding Path=ShipyardModel.Income}"
             Grid.Column="7"
-            Grid.Row="14"
+            Grid.Row="12"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Template="{DynamicResource TextBoxDisabled}"
             IsReadOnly="True"
             Padding="0"/>
 
-        <Label
-            Content="Upgradera hamnen"
-            Grid.Column="1"
-            Grid.ColumnSpan="5"
-            Grid.Row="16"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
-
         <CheckBox
-            IsChecked="{Binding Path=ShipyardModel.IsBeingUpgraded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Grid.Column="7"
-            Grid.Row="16"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center" 
-            Template="{DynamicResource CheckBoxTemplate}">
-            <CheckBox.Style>
-                <Style TargetType="{x:Type CheckBox}">
-                    <Setter Property="IsEnabled" Value="False"/>
+            x:Name="Upgrading"
+            IsChecked="{Binding Path=ShipyardModel.Upgrading, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="0"
+            Grid.Row="0"
+            Visibility="Collapsed"/>
+
+        <Grid
+            x:Name="CanUpgradeGrid"
+            Grid.Column="1"
+            Grid.ColumnSpan="7"
+            Grid.Row="14"
+            Grid.RowSpan="6">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=StewardComboBox, Path=Visibility}" Value="Visible">
-                            <Setter Property="IsEnabled" Value="True"/>
+                        <DataTrigger Binding="{Binding ElementName=Upgrading, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </CheckBox.Style>
-        </CheckBox>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="Upgradera hamnen"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="0"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <CheckBox
+                x:Name="UpgradeCheckBox"
+                IsChecked="{Binding Path=ShipyardModel.IsBeingUpgraded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="7"
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" 
+                Template="{DynamicResource CheckBoxTemplate}">
+                <CheckBox.Style>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=Upgrading, Path=IsChecked}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+
+            <Label
+                Content="Bas"
+                ToolTip="Upgraderings kostnad"
+                Grid.Column="1"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Järn"
+                ToolTip="Upgraderings kostnad"
+                Grid.Column="3"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Sten"
+                ToolTip="Upgraderings kostnad"
+                Grid.Column="5"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Timmer"
+                ToolTip="Upgraderings kostnad"
+                Grid.Column="7"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Pris"
+                ToolTip="Upgraderings kostnad"
+                Grid.Column="0"
+                Grid.Row="4"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=ShipyardModel.BuildCostBase}"
+                Grid.Column="1"
+                Grid.Row="4"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=ShipyardModel.BuildCostIron}"
+                Grid.Column="3"
+                Grid.Row="4"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=ShipyardModel.BuildCostStone}"
+                Grid.Column="5"
+                Grid.Row="4"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=ShipyardModel.BuildCostWood}"
+                Grid.Column="7"
+                Grid.Row="4"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+        </Grid>
+
+        <Grid
+            x:Name="UpgradingGrid"
+            Grid.Column="1"
+            Grid.ColumnSpan="7"
+            Grid.Row="14"
+            Grid.RowSpan="6">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=Upgrading, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="65"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="Hamnen upgraderas"
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <Label
+                Content="Dagsverk som behövs"
+                Grid.Column="0"
+                Grid.Row="2"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <TextBox
+                Text="{Binding Path=ShipyardModel.DaysWorkNeeded}"
+                Grid.Column="2"
+                Grid.Row="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Template="{DynamicResource TextBoxDisabled}"
+                IsReadOnly="True"
+                Padding="0"/>
+
+            <Label
+                Content="Dagsverk utsatta i år"
+                Grid.Column="0"
+                Grid.Row="4"
+                HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
+                Padding="0"/>
+
+            <iTextBox:iTextBox
+                Value="{Binding Path=ShipyardModel.DaysWorkThisYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="2"
+                Grid.Row="4"
+                Width="65"
+                HorizontalAlignment="Right"/>
+        </Grid>
 
         <Label
             Content="Fogdar"
             Grid.Column="3"
             Grid.ColumnSpan="3"
-            Grid.Row="18"
+            Grid.Row="20"
             HorizontalContentAlignment="Right"
             VerticalContentAlignment="Center"
             Padding="0"/>
@@ -260,26 +453,11 @@
         <iTextBox:iTextBox
             Value="{Binding Path=ShipyardModel.Bailiffs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="7"
-            Grid.Row="18">
-        </iTextBox:iTextBox>
-
-        <Label
-            Content="Vaktkaptener"
-            Grid.Column="1"
-            Grid.ColumnSpan="5"
-            Grid.Row="20"
-            HorizontalContentAlignment="Right"
-            VerticalContentAlignment="Center"
-            Padding="0"/>
-
-        <iTextBox:iTextBox
-            Value="{Binding Path=ShipyardModel.Captains, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Grid.Column="7"
             Grid.Row="20">
         </iTextBox:iTextBox>
 
         <Label
-            Content="Vaktstyrka"
+            Content="Vaktkaptener"
             Grid.Column="1"
             Grid.ColumnSpan="5"
             Grid.Row="22"
@@ -288,13 +466,13 @@
             Padding="0"/>
 
         <iTextBox:iTextBox
-            Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Value="{Binding Path=ShipyardModel.Captains, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="7"
             Grid.Row="22">
         </iTextBox:iTextBox>
 
         <Label
-            Content="Kriminalitet"
+            Content="Vaktstyrka"
             Grid.Column="1"
             Grid.ColumnSpan="5"
             Grid.Row="24"
@@ -302,14 +480,11 @@
             VerticalContentAlignment="Center"
             Padding="0"/>
 
-        <TextBox
-            Text="{Binding Path=ShipyardModel.Crime}"
+        <iTextBox:iTextBox
+            Value="{Binding Path=ShipyardModel.Guards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="7"
-            Grid.Row="24"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Template="{DynamicResource TextBoxDisabled}"
-            Padding="0"/>
+            Grid.Row="24">
+        </iTextBox:iTextBox>
 
         <Label
             Content="Dockplatser"

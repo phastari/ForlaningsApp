@@ -125,10 +125,12 @@ namespace FiefApp.Module.Manor
             _eventAggregator.GetEvent<UpdateEvent>().Subscribe(UpdateResponse);
             _eventAggregator.GetEvent<UpdateResponseEvent>().Subscribe(HandleUpdateEvent);
             _eventAggregator.GetEvent<EndOfYearCompletedEvent>().Subscribe(HandleEndOfYearComplete);
+            _eventAggregator.GetEvent<SaveEvent>().Subscribe(ExecuteSaveEventResponse);
         }
 
-        private void HandleEndOfYearComplete()
+        private void ExecuteSaveEventResponse()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -136,6 +138,27 @@ namespace FiefApp.Module.Manor
                 DataModel.ResidentsCollection = new ObservableCollection<IPeopleModel>(_manorService.GetResidentsCollection(x));
                 SaveData(x);
             }
+
+            _eventAggregator.GetEvent<SaveEventResponse>().Publish(new SaveEventParameters()
+            {
+                Completed = true,
+                ModuleName = "Manor"
+            });
+
+            DataModel = _baseService.GetDataModel<ManorDataModel>(Index);
+        }
+
+        private void HandleEndOfYearComplete()
+        {
+            DataModel = null;
+            UpdateFiefCollection();
+            for (int x = 1; x < FiefCollection.Count; x++)
+            {
+                DataModel = _baseService.GetDataModel<ManorDataModel>(x);
+                DataModel.ResidentsCollection = new ObservableCollection<IPeopleModel>(_manorService.GetResidentsCollection(x));
+                SaveData(x);
+            }
+            DataModel = _baseService.GetDataModel<ManorDataModel>(Index);
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
@@ -168,6 +191,7 @@ namespace FiefApp.Module.Manor
 
         private void UpdateResponse(string str)
         {
+            SaveData(Index);
             if (str != "Manor")
             {
                 UpdateFiefCollection();
@@ -206,6 +230,7 @@ namespace FiefApp.Module.Manor
 
         private void UpdateAndRespond()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {

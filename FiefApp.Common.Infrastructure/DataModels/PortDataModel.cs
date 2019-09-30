@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 using FiefApp.Common.Infrastructure.Models;
 
 namespace FiefApp.Common.Infrastructure.DataModels
@@ -59,6 +60,10 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _gotShipyard = value;
+                if (value)
+                {
+                    CanBuildShipyard = false;
+                }
                 NotifyPropertyChanged();
             }
         }
@@ -70,6 +75,10 @@ namespace FiefApp.Common.Infrastructure.DataModels
             set
             {
                 _buildingShipyard = value;
+                if (value)
+                {
+                    CanBuildShipyard = false;
+                }
                 NotifyPropertyChanged();
             }
         }
@@ -327,7 +336,18 @@ namespace FiefApp.Common.Infrastructure.DataModels
             }
         }
 
-        
+        #region Methods
+
+        public void CheckShipyardStates()
+        {
+            if (GotShipyard
+                || BuildingShipyard)
+            {
+                CanBuildShipyard = false;
+            }
+        }
+
+        #endregion
 
 
         #region INotifyPropertyChanged

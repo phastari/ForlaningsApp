@@ -104,7 +104,13 @@
                 Grid.Row="0"
                 Background="Transparent"
                 BorderBrush="Transparent"
-                IsTabStop="False"/>
+                IsTabStop="False">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <customCommands:CustomSetterAction PropertyName="Visibility" Value="Collapsed" TargetName="CanBuildShipyard"/>
+                    </i:EventTrigger>
+                    </i:Interaction.Triggers>
+            </CheckBox>
 
                 <CheckBox
                 x:Name="UpgradingShipyard"
@@ -122,7 +128,13 @@
                 Grid.Row="1"
                 Background="Transparent"
                 BorderBrush="Transparent"
-                IsTabStop="False"/>
+                IsTabStop="False">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <customCommands:CustomSetterAction PropertyName="Visibility" Value="Collapsed" TargetName="CanBuildShipyard"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </CheckBox>
 
             <CheckBox
                 x:Name="CanBuildShipyard"

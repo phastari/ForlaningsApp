@@ -120,6 +120,7 @@ namespace FiefApp.Module.Army
 
         private void ExecuteSaveEventResponse()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -142,6 +143,7 @@ namespace FiefApp.Module.Army
 
         private void HandleEndOfYearComplete()
         {
+            DataModel = null;
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
@@ -150,6 +152,7 @@ namespace FiefApp.Module.Army
                 _armyService.UpdateBaseExpenses(x, DataModel.TotalBase);
                 SaveData(x);
             }
+            DataModel = _baseService.GetDataModel<ArmyDataModel>(Index);
         }
 
         private void HandleUpdateEvent(UpdateEventParameters param)
@@ -182,6 +185,7 @@ namespace FiefApp.Module.Army
 
         private void UpdateResponse(string str)
         {
+            SaveData(Index);
             if (str != "Army")
             {
                 UpdateFiefCollection();
@@ -204,6 +208,7 @@ namespace FiefApp.Module.Army
 
         private void UpdateAndRespond()
         {
+            SaveData(Index);
             UpdateFiefCollection();
             for (int x = 1; x < FiefCollection.Count; x++)
             {
